@@ -25,14 +25,14 @@
   },
   "devDependencies": {
     "@types/jszip": "^3.1.7",
-    "parcel-bundler": "^1.12.4",
-    "typescript": "^3.7.5",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "prettier": "1.18.2"
+    "parcel-bundler": "^1.12.4",
+    "prettier": "1.18.2",
+    "typescript": "^3.7.5"
   },
   "files": [
     "dist/dotlottie-player.js",
