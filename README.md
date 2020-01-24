@@ -3,7 +3,7 @@
 This is a Web Component for easily embedding and playing dotLottie animations on websites.
 
 [![npm](https://img.shields.io/npm/v/@dotlottie/player-component.svg)](https://www.npmjs.com/package/@dotlottie/player-component)
-[![webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/@dotlottie/lottie-player-component)
+[![webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/@dotlottie/dotlottie-player)
 
 ## Demo
 
@@ -22,13 +22,13 @@ This is a Web Component for easily embedding and playing dotLottie animations on
 - Import from CDN.
 
 ```html
-<script src="https://unpkg.com/@dotlottie/player-component@0.1.0/dist/player-component.js"></script>
+<script src="https://unpkg.com/@dotlottie/player-component@0.1.0/dist/dotlottie-player.js"></script>
 ```
 
 - Import from local node_modules directory.
 
 ```html
-<script src="/node_modules/@dotlottie/player-component/dist/player-component.js"></script>
+<script src="/node_modules/@dotlottie/player-component/dist/dotlottie-player.js"></script>
 ```
 
 #### In Javascript or TypeScript:
@@ -57,7 +57,7 @@ Add the element `dotlottie-player` and set the `src` property to a URL pointing 
   controls
   loop
   mode="normal"
-  src="https://assets3.lottiefiles.com/packages/hello.lottie"
+  src="http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/animation-external-image.lottie"
   style="width: 320px"
 >
 </dotlottie-player>
@@ -72,7 +72,7 @@ You may set and load animations programmatically as well.
 
 ```js
 const player = document.querySelector("dotlottie-player");
-player.load("https://assets3.lottiefiles.com/packages/hello.lottie");
+player.load("http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/animation-external-image.lottie");
 ```
 
 ## Properties
@@ -93,7 +93,7 @@ player.load("https://assets3.lottiefiles.com/packages/hello.lottie");
 
 ## Methods
 
-### `load(src: string | object) => void`
+### `load(src: string) => void`
 
 Load (and play) a given Lottie animation.
 
@@ -101,7 +101,7 @@ Load (and play) a given Lottie animation.
 
 | Name  | Type                 | Description                                                    |
 | ----- | -------------------- | -------------------------------------------------------------- |
-| `src` | `string` or `object` | URL to a .lottie file.                                         |
+| `src` | `string`             | URL to a .lottie file.                                         |
 
 #### Returns
 
