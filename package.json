@@ -1,0 +1,55 @@
+{
+  "name": "@dotlottie/player-component",
+  "version": "0.1.0",
+  "description": "dotlottie animation player web component.",
+  "main": "dist/dotlottie-player.js",
+  "module": "dist/dotlottie-player.js",
+  "types": "dist/dotlottie-player.d.ts",
+  "homepage": "https://dotlottie.com/players",
+  "repository": "https://github.com/dotlottie/player-component.git",
+  "bugs": "https://github.com/dotlottie/player-component/issues",
+  "author": "Jawish Hameed <jawish@lottiefiles.com>",
+  "license": "MIT",
+  "scripts": {
+    "build": "yarn build-dotlottie",
+    "build-dotlottie": "parcel build src/dotlottie-player.ts --detailed-report 50 --out-file dotlottie-player.js",
+    "build:types": "tsc --declaration",
+    "start": "parcel src/index.html",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  },
+  "dependencies": {
+    "jszip": "^3.2.2",
+    "lit-element": "^2.2.1",
+    "lottie-web": "^5.6.2"
+  },
+  "devDependencies": {
+    "@types/jszip": "^3.1.7",
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.7.5",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "1.18.2"
+  },
+  "files": [
+    "dist/dotlottie-player.js",
+    "dist/dotlottie-player.js.map"
+  ],
+  "keywords": [
+    "dotlottie",
+    "animation",
+    "web component",
+    "component",
+    "lit-element",
+    "player"
+  ],
+  "browserslist": [
+    "> 3%"
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
+}
