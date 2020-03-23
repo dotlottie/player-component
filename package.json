@@ -1,6 +1,6 @@
 {
   "name": "@dotlottie/player-component",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "dotlottie animation player web component.",
   "main": "dist/dotlottie-player.js",
   "module": "dist/dotlottie-player.js",
@@ -20,8 +20,8 @@
   },
   "dependencies": {
     "jszip": "^3.2.2",
-    "lit-element": "^2.2.1",
-    "lottie-web": "^5.6.2"
+    "lit-element": "^2.3.1",
+    "lottie-web": "^5.6.6"
   },
   "devDependencies": {
     "@types/jszip": "^3.1.7",
