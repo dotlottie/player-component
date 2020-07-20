@@ -63,11 +63,15 @@ export function fetchPath(path: string): Promise<string> {
 
                 zip.file(`animations/${defaultLottie.id}.json`).async('string')
                   .then((lottieFile: string) => {
-                    let lottieJson = JSON.parse(lottieFile);
+                    const lottieJson = JSON.parse(lottieFile);
 
                     if ('assets' in lottieJson) {
                       Promise.all(
                         lottieJson.assets.map((asset: any) => {
+                          if (!asset.p) {
+                            return;
+                          }
+
                           return new Promise((resolveAsset) => {
                             zip.file(`images/${asset.p}`).async('base64').then((assetB64: any) => {
                               asset.p = 'data:;base64,' + assetB64;
@@ -183,7 +187,7 @@ export class DotLottiePlayer extends LitElement {
   public seeker: any;
 
   @property()
-  public intermission: number = 1;
+  public intermission = 1;
 
   private _io?: any;
   private _lottie?: any;
@@ -436,7 +440,7 @@ export class DotLottiePlayer extends LitElement {
    *
    * If 'download' argument is boolean true, then a download is triggered in browser.
    */
-  public snapshot(download: boolean = true): string | void {
+  public snapshot(download = true): string | void {
     if (!this.shadowRoot) return;
 
     // Get SVG element and serialize markup
