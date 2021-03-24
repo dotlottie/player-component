@@ -46,7 +46,7 @@ export function fetchPath(path: string): Promise<string> {
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4 && xhr.status == 200) {
         JSZip.loadAsync(xhr.response)
-          .then((zip: JSZip) => {
+          .then((zip: any) => {
             zip
               .file('manifest.json')
               .async('string')
@@ -75,8 +75,11 @@ export function fetchPath(path: string): Promise<string> {
                           if (!asset.p) {
                             return;
                           }
+                          if (zip.file(`images/${asset.p}`) == null) {
+                            return;
+                          }
 
-                          return new Promise(resolveAsset => {
+                          return new Promise((resolveAsset: any) => {
                             zip
                               .file(`images/${asset.p}`)
                               .async('base64')
