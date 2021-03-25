@@ -42,7 +42,7 @@ npm install --save @dotlottie/player-component
 2. Import package in your code.
 
 ```javascript
-import "@dotlottie/player-component";
+import '@dotlottie/player-component';
 ```
 
 ## Usage
@@ -66,30 +66,112 @@ Add the element `dotlottie-player` and set the `src` property to a URL pointing 
 You may set and load animations programmatically as well.
 
 ```html
-<dotlottie-player autoplay controls loop mode="normal" style="width: 320px">
-</dotlottie-player>
+<dotlottie-player autoplay controls loop mode="normal" style="width: 320px"> </dotlottie-player>
 ```
 
 ```js
-const player = document.querySelector("dotlottie-player");
-player.load("http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/animation-external-image.lottie");
+const player = document.querySelector('dotlottie-player');
+player.load('http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/animation-external-image.lottie');
 ```
+
+## Usage example in ReactJS
+
+1 - import the player and use as follows
+
+```javascript
+import '@dotlottie/player-component';
+
+function App() {
+  return (
+    <div className="App">
+      <dotlottie-player
+        src="https://assets2.lottiefiles.com/dotlotties/dlf10_l12sw9oo.lottie"
+        autoplay
+        loop
+        style={{ height: '100%', width: '100%' }}
+      />
+    </div>
+  );
+}
+
+export default App;
+```
+
+## Usage example in ReactJS + Typescript
+
+1 - import as follows
+
+```javascript
+import '@dotlottie/player-component';
+
+function App() {
+  return (
+    <div className="App">
+      <dotlottie-player
+        src="https://assets2.lottiefiles.com/dotlotties/dlf10_l12sw9oo.lottie"
+        autoplay
+        loop
+        style={{ height: '100%', width: '100%' }}
+      />
+    </div>
+  );
+}
+
+export default App;
+```
+
+2 - create a global.d.ts file in your src folder and add the code below
+
+```javascript
+declare namespace JSX {
+  interface IntrinsicElements {
+    "dotlottie-player": any;
+  }
+}
+```
+
+## Usage example in NuxtJS / VueJS
+
+1 - update the plugins array in nuxt.config.js file in your root as follows
+
+```javascript
+plugins: [{ src: '~/plugins/lottie-player', mode: 'client' }];
+```
+
+2 - create a folder plugins in your root if it doesnt already exist, add a file lottie-player.js with the following content
+
+```javascript
+import * as LottiePlayer from '@dotlottie/player-component';
+```
+
+3 - the component can now be used in your pages or components template tag as follows without any import necessary
+
+```javascript
+<template>
+  <dotlottie-player src="https://assets2.lottiefiles.com/dotlotties/dlf10_l12sw9oo.lottie" autoplay loop />
+</template>
+<script>
+export default {};
+</script>
+```
+
+- note for vueJS the library/player must be declared as a client side plugin module.
 
 ## Properties
 
-| Property           | Attribute    | Description                         | Type                                 | Default           |
-| ------------------ | ------------ | ----------------------------------- | ------------------------------------ | ----------------- |
-| `autoplay`         | `autoplay`   | Autoplay animation on load.         | `boolean`                            | `false`           |
-| `background`       | `background` | Background color.                   | `string`                             | `undefined`       |
-| `controls`         | `controls`   | Show controls.                      | `boolean`                            | `false`           |
-| `count`            | `count`      | Number of times to loop animation.  | `number`                             | `undefined`       |
-| `direction`        | `direction`  | Direction of animation.             | `number`                             | `1`               |
-| `hover`            | `hover`      | Whether to play on mouse hover.     | `boolean`                            | `false`           |
-| `loop`             | `loop`       | Whether to loop animation.          | `boolean`                            | `false`           |
-| `mode`             | `mode`       | Play mode.                          | `PlayMode.Bounce \| PlayMode.Normal` | `PlayMode.Normal` |
-| `renderer`         | `renderer`   | Renderer to use.                    | `"svg"`                              | `'svg'`           |
-| `speed`            | `speed`      | Animation speed.                    | `number`                             | `1`               |
-| `src` _(required)_ | `src`        | URL to .lottie file.                | `string`                             | `undefined`       |
+| Property           | Attribute    | Description                        | Type                                 | Default           |
+| ------------------ | ------------ | ---------------------------------- | ------------------------------------ | ----------------- |
+| `autoplay`         | `autoplay`   | Autoplay animation on load.        | `boolean`                            | `false`           |
+| `background`       | `background` | Background color.                  | `string`                             | `undefined`       |
+| `controls`         | `controls`   | Show controls.                     | `boolean`                            | `false`           |
+| `count`            | `count`      | Number of times to loop animation. | `number`                             | `undefined`       |
+| `direction`        | `direction`  | Direction of animation.            | `number`                             | `1`               |
+| `hover`            | `hover`      | Whether to play on mouse hover.    | `boolean`                            | `false`           |
+| `loop`             | `loop`       | Whether to loop animation.         | `boolean`                            | `false`           |
+| `mode`             | `mode`       | Play mode.                         | `PlayMode.Bounce \| PlayMode.Normal` | `PlayMode.Normal` |
+| `renderer`         | `renderer`   | Renderer to use.                   | `"svg"`                              | `'svg'`           |
+| `speed`            | `speed`      | Animation speed.                   | `number`                             | `1`               |
+| `src` _(required)_ | `src`        | URL to .lottie file.               | `string`                             | `undefined`       |
 
 ## Methods
 
@@ -99,9 +181,9 @@ Load (and play) a given Lottie animation.
 
 #### Parameters
 
-| Name  | Type                 | Description                                                    |
-| ----- | -------------------- | -------------------------------------------------------------- |
-| `src` | `string`             | URL to a .lottie file.                                         |
+| Name  | Type     | Description            |
+| ----- | -------- | ---------------------- |
+| `src` | `string` | URL to a .lottie file. |
 
 #### Returns
 
