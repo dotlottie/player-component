@@ -22,7 +22,7 @@ This is a Web Component for easily embedding and playing dotLottie animations on
 - Import from CDN.
 
 ```html
-<script src="https://unpkg.com/@dotlottie/player-component@0.1.0/dist/dotlottie-player.js"></script>
+<script src="https://unpkg.com/@dotlottie/player-component@1.0.0/dist/dotlottie-player.js"></script>
 ```
 
 - Import from local node_modules directory.
