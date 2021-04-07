@@ -598,7 +598,7 @@ export class DotLottiePlayer extends LitElement {
 
     return html`
       <div class="toolbar">
-        <button @click=${this.togglePlay} class=${isPlaying || isPaused ? 'active' : ''}>
+        <button @click=${this.togglePlay} class=${isPlaying || isPaused ? 'active' : ''} style="align-items:center;">
           ${isPlaying
             ? html`
                 <svg width="24" height="24">
@@ -609,7 +609,7 @@ export class DotLottiePlayer extends LitElement {
                 <svg width="24" height="24"><path d="M8.016 5.016L18.985 12 8.016 18.984V5.015z" /></svg>
               `}
         </button>
-        <button @click=${this.stop} class=${isStopped ? 'active' : ''}>
+        <button @click=${this.stop} class=${isStopped ? 'active' : ''} style="align-items:center;">
           <svg width="24" height="24"><path d="M6 6h12v12H6V6z" /></svg>
         </button>
         <input
@@ -628,7 +628,7 @@ export class DotLottiePlayer extends LitElement {
             this._prevState === PlayerState.Playing && this.play();
           }}
         />
-        <button @click=${this.toggleLooping} class=${this.loop ? 'active' : ''}>
+        <button @click=${this.toggleLooping} class=${this.loop ? 'active' : ''} style="align-items:center;">
           <svg width="24" height="24">
             <path
               d="M17.016 17.016v-4.031h1.969v6h-12v3l-3.984-3.984 3.984-3.984v3h10.031zM6.984 6.984v4.031H5.015v-6h12v-3l3.984 3.984-3.984 3.984v-3H6.984z"
