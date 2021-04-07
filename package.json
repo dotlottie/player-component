@@ -1,6 +1,6 @@
 {
   "name": "@dotlottie/player-component",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "dotlottie animation player web component.",
   "main": "dist/dotlottie-player.js",
   "module": "dist/dotlottie-player.esm.js",
@@ -55,7 +55,12 @@
   },
   "files": [
     "dist/dotlottie-player.js",
-    "dist/dotlottie-player.js.map"
+    "dist/dotlottie-player.js.map",
+    "dist/dotlottie-player.esm.js",
+    "dist/dotlottie-player.esm.js.map",
+    "dist/dotlottie-player.d.ts",
+    "dist/dotlottie-player.styles.d.ts",
+    "dist/dotlottie-player.styles.d.map"
   ],
   "keywords": [
     "dotlottie",
