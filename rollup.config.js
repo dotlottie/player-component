@@ -13,7 +13,7 @@ const outputDir = './dist/';
 
 export default {
   input: './src/dotlottie-player.ts',
-  treeshake: !!production,
+  treeshake: false,
   output: [
     {
       file: './dist/dotlottie-player.esm.js',
