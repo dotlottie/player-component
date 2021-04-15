@@ -4,7 +4,7 @@
   "description": "Functional tests",
   "main": "index.js",
   "scripts": {
-    "start": "cd app & http-server",
+    "start": "cd app & cp ../node_modules/@dotlottie/player-component/dist/dotlottie-player.js & http-server",
     "test-folio": "folio --config=config.ts",
     "test": "concurrently \"npm run start\" \"npm run test-folio\" ",
     "posttest": "pkill -f http-server"

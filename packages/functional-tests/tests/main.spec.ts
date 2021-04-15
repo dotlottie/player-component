@@ -7,7 +7,7 @@ test.describe("Player", ()=>{
   });
 
   test("is present", async ({ page }) => {
-    const selector = "lottie-player";
+    const selector = "dotlottie-player";
     const element = await page.innerHTML(selector);
     expect(element).toBeDefined();
   });
