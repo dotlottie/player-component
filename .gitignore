@@ -5,3 +5,5 @@
 
 dist/
 node_modules
+
+packages/functional-tests/app/dotlottie-player.js
