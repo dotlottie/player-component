@@ -13,6 +13,7 @@
   "scripts": {
     "prebuild": "node -p \"'export const DOTLOTTIE_PLAYER_VERSION = ' + JSON.stringify(require('./package.json').version) + '; \\n' + 'export const LOTTIE_WEB_VERSION = ' + JSON.stringify(require('./package.json').dependencies['lottie-web']) + ';'\" > src/versions.ts",
     "build": "yarn build-dotlottie",
+    "build-with-coverage": "CODE_COVERAGE=true yarn build-dotlottie",
     "build-dotlottie": "npm run cleanup && rollup -c",
     "build:types": "tsc --declaration",
     "prestart": "node -p \"'export const DOTLOTTIE_PLAYER_VERSION = ' + JSON.stringify(require('./package.json').version) + '; \\n' + 'export const LOTTIE_WEB_VERSION = ' + JSON.stringify(require('./package.json').dependencies['lottie-web']) + ';'\" > src/versions.ts",
@@ -20,7 +21,10 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "cleanup": "shx rm -rf dist && shx mkdir dist",
-    "serve": "yarn build && cp dist/dotlottie-player.js src/ && http-server src/ -o"
+    "serve": "node ./cypress/pages/server.js -p 8000 &",
+    "start-cypress": "yarn run cypress run && npx nyc report --reporter=text-summary",
+    "run-tests": "yarn run build-with-coverage && yarn run serve && yarn run start-cypress",
+    "postrun-tests": "kill $(lsof -t -i:8000)"
   },
   "dependencies": {
     "jszip": "^3.5.0",
@@ -34,16 +38,21 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-typescript": "^7.10.4",
     "@changesets/cli": "^2.24.4",
+    "@cypress/code-coverage": "^3.9.12",
+    "@istanbuljs/nyc-config-typescript": "^1.0.2",
     "@rollup/plugin-babel": "^5.1.0",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
     "@types/jszip": "^3.4.1",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
+    "babel-plugin-istanbul": "^6.1.1",
+    "cypress": "^9.4.1",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
-    "http-server": "^14.1.1",
+    "fastify": "^3.27.1",
+    "fastify-static": "^4.5.0",
     "lerna": "^4.0.0",
     "parcel-bundler": "^1.12.4",
     "prettier": "1.18.2",
@@ -57,6 +66,8 @@
     "rollup-plugin-typescript2": "^0.27.1",
     "rollup-plugin-visualizer": "^4.0.4",
     "shx": "^0.3.3",
+    "source-map-support": "^0.5.21",
+    "ts-node": "^10.5.0",
     "typescript": "^3.7.5"
   },
   "files": [
@@ -81,5 +92,9 @@
   ],
   "publishConfig": {
     "access": "public"
+  },
+  "nyc": {
+    "extends": "@istanbuljs/nyc-config-typescript",
+    "all": true
   }
 }
