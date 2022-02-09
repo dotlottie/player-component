@@ -46,7 +46,7 @@ export function fetchPath(path: string): Promise<string> {
     xhr.responseType = 'arraybuffer';
     xhr.send();
     xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4 && xhr.status == 200) {
+      if (xhr.readyState === 4 && xhr.status === 200) {
         JSZip.loadAsync(xhr.response)
           .then((zip: any) => {
             zip
@@ -103,6 +103,8 @@ export function fetchPath(path: string): Promise<string> {
           .catch((err: Error) => {
             reject(err);
           });
+      } else if(xhr.status === 0 && xhr.readyState === 4) {
+        reject("Not able to fetch requested animation!");
       }
     };
   });
@@ -293,10 +295,16 @@ export class DotLottiePlayer extends LitElement {
           this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
           return;
         }
-
         if (!this.loop || (this.count && this._counter >= this.count)) {
           this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
-          return;
+  
+          if (this.mode === PlayMode.Bounce) {
+            if (this._lottie.currentFrame === 0) {
+              return;
+            }
+          } else {
+            return;
+          }
         }
 
         if (this.mode === PlayMode.Bounce) {
@@ -321,8 +329,14 @@ export class DotLottiePlayer extends LitElement {
             this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
 
             if (this.currentState === PlayerState.Playing) {
-              this._lottie.stop();
-              this._lottie.play();
+              if (this.direction === -1) {
+                // Prevents flickering
+                this.seek("99%");
+                this.play();
+              } else {
+                this._lottie.stop();
+                this._lottie.play();
+              }
             }
           }, this.intermission);
         }
