@@ -33,6 +33,7 @@ export enum PlayerEvents {
   Freeze = 'freeze',
   Loop = 'loop',
   Complete = 'complete',
+  Rendered = "rendered",
   Frame = 'frame',
 }
 
@@ -125,7 +126,7 @@ export function fetchPath(path: string): Record<string, any> {
           .catch((err: Error) => {
             reject(err);
           });
-      } else if(xhr.status === 0 && xhr.readyState === 4) {
+      } else if(xhr.status === 0 && xhr.readyState === 4 || xhr.status === 404) {
         reject("Not able to fetch requested animation!");
       }
     };
@@ -652,6 +653,7 @@ export class DotLottiePlayer extends LitElement {
     if (this.src) {
       await this.load(this.src);
     }
+    this.dispatchEvent(new CustomEvent(PlayerEvents.Rendered));
   }
 
   /**

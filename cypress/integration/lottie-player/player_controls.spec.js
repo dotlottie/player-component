@@ -8,13 +8,14 @@ context("Player controls", () => {
   });
 
   it("clicks on play button and verifies animation is playing", function (done) {
-    cy.get("#player-one").shadow().find("#lottie-play-button").click();
-
-    cy.get("#player-one").then(($el) => {
+    cy.get("#player-one").wait(1000).then(($el) => {
       const playerOne = $el.get(0);
+      cy.get("#player-one").shadow().find("#lottie-play-button").click();
 
-      expect(playerOne.currentState).to.eq("playing");
-      done();
+      playerOne.addEventListener("play", () => {
+        expect(playerOne.currentState).to.eq("playing");
+        done();
+      });
     });
   });
 
@@ -31,8 +32,6 @@ context("Player controls", () => {
     cy.wait(1000);
     cy.get("#player-two")
       .shadow()
-      .find("#animation-container")
-      .find("#lottie-controls")
       .find("#lottie-play-button")
       .click();
   });
@@ -52,21 +51,17 @@ context("Player controls", () => {
     cy.wait(1000);
     cy.get("#player-three")
       .shadow()
-      .find("#animation-container")
-      .find("#lottie-controls")
       .find("#lottie-stop-button")
       .click();
   });
 
   it("clicks on loop button and verififes animation loops", function (done) {
     cy.get("#player-four")
-      .shadow()
-      .find("#animation-container")
-      .find("#lottie-controls")
-      .find("#lottie-loop-toggle")
-      .click();
-
-    cy.get("#player-four").then(($el) => {
+    .wait(1000)
+    .shadow()
+    .find("#lottie-loop-toggle")
+    .click();
+  cy.get("#player-four").then(($el) => {
       const playerFour = $el.get(0);
 
       expect(playerFour.loop).to.eq(true);
