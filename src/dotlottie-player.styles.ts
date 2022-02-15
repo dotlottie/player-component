@@ -3,8 +3,6 @@ import { css } from 'lit-element';
 export default css`
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 :host {
@@ -17,34 +15,34 @@ export default css`
   --lottie-player-seeker-thumb-color: rgba(0, 107, 120, 0.8);
 
   display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .main {
-  display: grid;
-  grid-auto-columns: auto;
-  grid-template-rows: auto;
-  height: inherit;
-  width: inherit;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
 }
 
 .main.controls {
-  grid-template-rows: 1fr var(--lottie-player-toolbar-height);
+  height: calc(100% - 35px);
 }
 
 .animation {
+  width: 100%;
+  height: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  width: inherit;
-  height: inherit;
 }
 
 .toolbar {
-  display: grid;
-  grid-template-columns: 32px 32px 1fr 32px;
+  display: flex;
   align-items: center;
   justify-items: center;
   background-color: var(--lottie-player-toolbar-background-color);
+  margin: 0 5px;
+  height: 35px;
 }
 
 .toolbar button {
@@ -95,6 +93,8 @@ export default css`
   -webkit-appearance: none;
   width: 95%;
   outline: none;
+  background-color: var(--lottie-player-toolbar-background-color);
+  display: var(--lottie-player-seeker-display);
 }
 
 .seeker::-webkit-slider-runnable-track {
@@ -166,5 +166,6 @@ export default css`
   justify-content: center;
   height: 100%;
   align-items: center;
+  margin: auto;
 }
 `;
