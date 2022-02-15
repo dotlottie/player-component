@@ -28,32 +28,33 @@
     ></script>
     <script type="text/javascript">
       $("#player-one").html(
-        '<lottie-player autoplay controls loop mode="normal" style="width: 320px" id="test-player"></lottie-player>'
+        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="test-player"></lottie-player>'
       );
       const player = document.getElementById("test-player");
       player.addEventListener("rendered", (e) => {
         player.load(
-          "https://assets3.lottiefiles.com/packages/lf20_UJNc2t.json"
+          "https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie"
         );
       });
 
       $("#player-two-container").html(
-        '<lottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-two"></lottie-player>'
+        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-two"></lottie-player>'
       );
       const playerTwo = document.getElementById("player-two");
       playerTwo.addEventListener("rendered", (e) => {
+        console.log("player two rendered event fired");
         playerTwo.load(
           "./stacks.json"
         );
       });
 
       $("#player-three-container").html(
-        '<lottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-three"></lottie-player>'
+        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-three"></lottie-player>'
       );
       const playerThree = document.getElementById("player-three");
       playerThree.addEventListener("rendered", (e) => {
         playerThree.load(
-          "https://assetsssss3.lottiefiles.com/packages/lf20_UJNc2t.json"
+          "https://assesssssssts8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie"
         );
       });
     </script>

@@ -2,6 +2,8 @@
  * Copyright 2022 Design Barn Inc.
  */
 
+const { WatchDirectoryFlags } = require("typescript");
+
 context("Player component DOM check", () => {
   beforeEach(() => {
     cy.visit("http://localhost:8000/");
@@ -42,25 +44,34 @@ context("Player component DOM check", () => {
     });
   });
 
-  it("looks inside shadow-dom div for animation-container class", () => {
-    cy.get("#player-one lottie-player")
+  it("looks inside shadow-dom div for animation class", () => {
+    cy.get("#player-one dotlottie-player")
       .shadow()
-      .find("#animation-container")
+      .find(".main")
       .should("have.class", "main");
   });
 
-  it("looks inside shadow-dom for aria-label", () => {
-    cy.get("#player-one lottie-player")
+  it.skip("looks inside shadow-dom for aria-label", () => {
+    cy.get("#player-one dotlottie-player")
       .shadow()
       .find("#animation-container")
       .should("have.attr", "aria-label");
   });
 
   it("looks inside shadow-dom for controls", () => {
-    cy.get("#player-one lottie-player")
+    cy.wait(100);
+    cy.get("#test-player")
       .shadow()
       .find("#animation-container")
-      .find("#lottie-controls")
-      .should("have.attr", "aria-label");
+      .should("have.class", "main controls")
+  });
+
+  it("looks inside shadow-dom controls for buttons", () => {
+    cy.wait(100);
+    cy.get("#test-player")
+    .shadow()
+    .find("#lottie-controls")
+    .children()
+    .should("have.length", 4);
   });
 });
