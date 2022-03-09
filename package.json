@@ -25,7 +25,7 @@
     "postrun-tests": "kill $(lsof -t -i:8000)"
   },
   "dependencies": {
-    "jszip": "^3.5.0",
+    "fflate": "^0.7.3",
     "lit": "^2.1.2",
     "lottie-web": "^5.8.1"
   },
