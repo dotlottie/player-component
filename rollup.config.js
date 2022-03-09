@@ -47,6 +47,7 @@ export default {
         targets: [
           { src: './src/index.html', dest: outputDir },
           { src: './src/sample_dotlottie.lottie', dest: outputDir },
+          { src: './src/animation.lottie', dest: outputDir },
           {
             src: './node_modules/@webcomponents/webcomponentsjs/bundles/',
             dest: outputDir,

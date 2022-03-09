@@ -2,7 +2,7 @@ import { LitElement, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { TemplateResult } from 'lit/html.js';
 import * as lottie from 'lottie-web/build/player/lottie_svg';
-import JSZip from 'jszip/dist/jszip';
+import { unzipSync, strFromU8 } from 'fflate';
 import { DOTLOTTIE_PLAYER_VERSION, LOTTIE_WEB_VERSION } from './versions';
 import styles from './dotlottie-player.styles';
 
@@ -42,9 +42,9 @@ export type Versions = {
   dotLottiePlayerVersion: string;
 }
 
-/**
- * Load a resource from a path URL.
- */
+//todo: assets
+//todo: multiple lotties in the same zip?
+//
 export function fetchPath(path: string): Record<string, any> {
   const fileFormat = path.split('.').pop()?.toLowerCase();
   let jsonFlag = false;
@@ -59,75 +59,65 @@ export function fetchPath(path: string): Record<string, any> {
     else
       xhr.responseType = 'arraybuffer';
     xhr.send();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status == 200) {
 
         if (jsonFlag) {
           resolve(xhr.response)
         }
-        JSZip.loadAsync(xhr.response)
-          .then((zip: any) => {
-            zip
-              .file('manifest.json')
-              .async('string')
-              .then((manifestFile: string) => {
-                const manifest = JSON.parse(manifestFile);
+        // yourZipFile is a Uint8Array, e.g. from this:
+        // const yourZipFile = new Uint8Array(await (await fetch('/example.dotLottie')).arrayBuffer());
+        const data = unzipSync(new Uint8Array(xhr.response));
+        // strFromU8 converts Uint8Array output from fflate into strings that can be parsed
+        if (data['manifest.json']) {
+          let str = strFromU8(data['manifest.json']);
+          const manifest = JSON.parse(str);
 
-                if (!('animations' in manifest)) {
-                  throw new Error('Manifest not found');
-                }
+          if (!('animations' in manifest)) {
+            throw new Error('Manifest not found');
+          }
 
-                if (manifest.animations.length === 0) {
-                  throw new Error('No animations listed in the manifest');
-                }
+          if (manifest.animations.length === 0) {
+            throw new Error('No animations listed in the manifest');
+          }
 
-                const defaultLottie = manifest.animations[0];
+          for (const animName of manifest.animations) {
 
-                zip
-                  .file(`animations/${defaultLottie.id}.json`)
-                  .async('string')
-                  .then((lottieFile: string) => {
-                    const lottieJson = JSON.parse(lottieFile);
+            const lottieJson = JSON.parse(strFromU8(data[`animations/${animName.id}.json`]));
 
-                    if ('assets' in lottieJson) {
-                      Promise.all(
-                        lottieJson.assets.map((asset: any) => {
-                          if (!asset.p) {
-                            return;
-                          }
-                          if (zip.file(`images/${asset.p}`) == null) {
-                            return;
-                          }
-
-                          return new Promise((resolveAsset: any) => {
+            if ('assets' in lottieJson) {
+              Promise.all(
+                lottieJson.assets.map((asset: any) => {
+                  if (!asset.p) {
+                    return;
+                  }
+                  if (data[`images/${asset.p}`] === null) {
+                    return;
+                  }
+                  // To get base64 PNG, you should probably use base64-js on the Uint8Arrays for performance and memory
+                  // However you can also pass stnorFromU8(data, true) to make a binary string, which btoa understands
+                  // This is going to cause performance issues for PNGs over 500 kB due to binary strings being wasteful, so be careful
+                  // const base64Png = btoa(strFromU8(data['your-png-file.png'], true));
+                  return new Promise((resolveAsset: any) => {
                             const assetFileExtension = asset.p.split('.').pop();
 
-                            zip
-                              .file(`images/${asset.p}`)
-                              .async('base64')
-                              .then((assetB64: any) => {
-                                if (assetFileExtension === 'svg' || assetFileExtension === 'svg+xml')
-                                  asset.p = 'data:image/svg+xml;base64,' + assetB64;
-                                else asset.p = 'data:;base64,' + assetB64;
+                    const base64Png = btoa(strFromU8(data[`images/${asset.p}`], true));
+                  if (assetFileExtension === 'svg' || assetFileExtension === 'svg+xml')
+                      asset.p = 'data:image/svg+xml;base64,' + base64Png;
+                                else asset.p = 'data:;base64,' + base64Png;
 
-                                asset.e = 1;
+                    asset.e = 1;
+                    resolveAsset();
 
-                                resolveAsset();
-                              });
-                          });
-                        }),
-                      ).then(() => {
-                        resolve(lottieJson);
-                      });
-                    }
                   });
+                }),
+              ).then(() => {
+                resolve(lottieJson);
               });
-          })
-          .catch((err: Error) => {
-            reject(err);
-          });
-      } else if(xhr.status === 0 && xhr.readyState === 4 || xhr.status === 404) {
-        reject("Not able to fetch requested animation!");
+            }
+            resolve(lottieJson);
+          }
+        }
       }
     };
   });
@@ -490,9 +480,9 @@ export class DotLottiePlayer extends LitElement {
     this.dispatchEvent(new CustomEvent(PlayerEvents.Stop));
   }
 
- /**
-   * Seek to a given frame.
-   */
+  /**
+    * Seek to a given frame.
+    */
   public seek(value: number | string): void {
     if (!this._lottie) {
       return;
@@ -694,12 +684,12 @@ export class DotLottiePlayer extends LitElement {
           aria-label="play-pause"
         >
           ${isPlaying
-            ? html`
+        ? html`
                 <svg width="24" height="24" aria-hidden="true" focusable="false">
                   <path d="M14.016 5.016H18v13.969h-3.984V5.016zM6 18.984V5.015h3.984v13.969H6z" />
                 </svg>
               `
-            : html`
+        : html`
                 <svg width="24" height="24" aria-hidden="true" focusable="false">
                   <path d="M8.016 5.016L18.985 12 8.016 18.984V5.015z" />
                 </svg>
@@ -727,13 +717,13 @@ export class DotLottiePlayer extends LitElement {
           .value=${this.seeker}
           @input=${this._handleSeekChange}
           @mousedown=${() => {
-            this._prevState = this.currentState;
-            this.freeze();
-          }}
+        this._prevState = this.currentState;
+        this.freeze();
+      }}
           @mouseup=${() => {
-            this._prevState === PlayerState.Playing && this.play();
+        this._prevState === PlayerState.Playing && this.play();
             this.seek(this._lottie.currentFrame)
-          }}
+      }}
           aria-valuemin="1"
           aria-valuemax="100"
           role="slider"
@@ -766,10 +756,10 @@ export class DotLottiePlayer extends LitElement {
       <div id="animation-container" class=${className} lang="en" role="img">
         <div id="animation" class=${animationClass} style="background:${this.background};">
           ${this.currentState === PlayerState.Error
-            ? html`
+        ? html`
                 <div class="error">⚠️</div>
               `
-            : undefined}
+        : undefined}
         </div>
         ${this.controls ? this.renderControls() : undefined}
       </div>
