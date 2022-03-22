@@ -1778,6 +1778,7 @@
     to-fast-properties "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@gar/promisify@^1.0.1":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
@@ -2474,6 +2475,8 @@
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
   integrity sha512-bPHp6Ji8b41szTOcaP63VlnbbO5Ny6dwAATtY6JTjh5N2OLrb5Qk/Th5cRkRQhkWCt+EJsYrNB0MiL+Gpn6e3g==
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 "@babel/types@^7.16.0", "@babel/types@^7.16.7", "@babel/types@^7.16.8", "@babel/types@^7.17.0":
   version "7.17.0"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.17.0.tgz#a826e368bccb6b3d84acd76acad5c0d87342390b"
@@ -2491,7 +2494,707 @@
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-support/-/source-map-support-0.7.0.tgz#4789840aa859e46d2f3173727ab707c66bf344f5"
   integrity sha512-X4xqRHqN8ACt2aHVe51OxeA2HjbcL4MqFqXkrmQszJ1NOUuUu5u6Vqx/0lZSVNku7velL5FC/s5uEAj1lsBMhA==
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+"@gar/promisify@^1.0.1":
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
+  integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
+
+"@hutson/parse-repository-url@^3.0.0":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@hutson/parse-repository-url/-/parse-repository-url-3.0.2.tgz#98c23c950a3d9b6c8f0daed06da6c3af06981340"
+  integrity sha512-H9XAx3hc0BQHY6l+IFSWHDySypcXsvsuLhgYLUGywmJ5pswRVQJUHpOsobnLYp2ZUaUlKiKDrgWWhosOwAEM8Q==
+
+"@iarna/toml@^2.2.0":
+  version "2.2.5"
+  resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.5.tgz#b32366c89b43c6f8cefbdefac778b9c828e3ba8c"
+  integrity sha512-trnsAYxU3xnS1gPHPyU961coFyLkh4gAD/0zQ5mymY4yOZ+CYvsPqUbOFSw0aDM4y0tV7tiFxL/1XfXPNC6IPg==
+
+"@lerna/add@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/add/-/add-4.0.0.tgz#c36f57d132502a57b9e7058d1548b7a565ef183f"
+  integrity sha512-cpmAH1iS3k8JBxNvnMqrGTTjbY/ZAiKa1ChJzFevMYY3eeqbvhsBKnBcxjRXtdrJ6bd3dCQM+ZtK+0i682Fhng==
+  dependencies:
+    "@lerna/bootstrap" "4.0.0"
+    "@lerna/command" "4.0.0"
+    "@lerna/filter-options" "4.0.0"
+    "@lerna/npm-conf" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    dedent "^0.7.0"
+    npm-package-arg "^8.1.0"
+    p-map "^4.0.0"
+    pacote "^11.2.6"
+    semver "^7.3.4"
+
+"@lerna/bootstrap@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/bootstrap/-/bootstrap-4.0.0.tgz#5f5c5e2c6cfc8fcec50cb2fbe569a8c607101891"
+  integrity sha512-RkS7UbeM2vu+kJnHzxNRCLvoOP9yGNgkzRdy4UV2hNalD7EP41bLvRVOwRYQ7fhc2QcbhnKNdOBihYRL0LcKtw==
+  dependencies:
+    "@lerna/command" "4.0.0"
+    "@lerna/filter-options" "4.0.0"
+    "@lerna/has-npm-version" "4.0.0"
+    "@lerna/npm-install" "4.0.0"
+    "@lerna/package-graph" "4.0.0"
+    "@lerna/pulse-till-done" "4.0.0"
+    "@lerna/rimraf-dir" "4.0.0"
+    "@lerna/run-lifecycle" "4.0.0"
+    "@lerna/run-topologically" "4.0.0"
+    "@lerna/symlink-binary" "4.0.0"
+    "@lerna/symlink-dependencies" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    dedent "^0.7.0"
+    get-port "^5.1.1"
+    multimatch "^5.0.0"
+    npm-package-arg "^8.1.0"
+    npmlog "^4.1.2"
+    p-map "^4.0.0"
+    p-map-series "^2.1.0"
+    p-waterfall "^2.1.1"
+    read-package-tree "^5.3.1"
+    semver "^7.3.4"
+
+"@lerna/changed@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/changed/-/changed-4.0.0.tgz#b9fc76cea39b9292a6cd263f03eb57af85c9270b"
+  integrity sha512-cD+KuPRp6qiPOD+BO6S6SN5cARspIaWSOqGBpGnYzLb4uWT8Vk4JzKyYtc8ym1DIwyoFXHosXt8+GDAgR8QrgQ==
+  dependencies:
+    "@lerna/collect-updates" "4.0.0"
+    "@lerna/command" "4.0.0"
+    "@lerna/listable" "4.0.0"
+    "@lerna/output" "4.0.0"
+
+"@lerna/check-working-tree@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/check-working-tree/-/check-working-tree-4.0.0.tgz#257e36a602c00142e76082a19358e3e1ae8dbd58"
+  integrity sha512-/++bxM43jYJCshBiKP5cRlCTwSJdRSxVmcDAXM+1oUewlZJVSVlnks5eO0uLxokVFvLhHlC5kHMc7gbVFPHv6Q==
+  dependencies:
+    "@lerna/collect-uncommitted" "4.0.0"
+    "@lerna/describe-ref" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+
+"@lerna/child-process@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/child-process/-/child-process-4.0.0.tgz#341b96a57dffbd9705646d316e231df6fa4df6e1"
+  integrity sha512-XtCnmCT9eyVsUUHx6y/CTBYdV9g2Cr/VxyseTWBgfIur92/YKClfEtJTbOh94jRT62hlKLqSvux/UhxXVh613Q==
+  dependencies:
+    chalk "^4.1.0"
+    execa "^5.0.0"
+    strong-log-transformer "^2.1.0"
+
+"@lerna/clean@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/clean/-/clean-4.0.0.tgz#8f778b6f2617aa2a936a6b5e085ae62498e57dc5"
+  integrity sha512-uugG2iN9k45ITx2jtd8nEOoAtca8hNlDCUM0N3lFgU/b1mEQYAPRkqr1qs4FLRl/Y50ZJ41wUz1eazS+d/0osA==
+  dependencies:
+    "@lerna/command" "4.0.0"
+    "@lerna/filter-options" "4.0.0"
+    "@lerna/prompt" "4.0.0"
+    "@lerna/pulse-till-done" "4.0.0"
+    "@lerna/rimraf-dir" "4.0.0"
+    p-map "^4.0.0"
+    p-map-series "^2.1.0"
+    p-waterfall "^2.1.1"
+
+"@lerna/cli@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/cli/-/cli-4.0.0.tgz#8eabd334558836c1664df23f19acb95e98b5bbf3"
+  integrity sha512-Neaw3GzFrwZiRZv2g7g6NwFjs3er1vhraIniEs0jjVLPMNC4eata0na3GfE5yibkM/9d3gZdmihhZdZ3EBdvYA==
+  dependencies:
+    "@lerna/global-options" "4.0.0"
+    dedent "^0.7.0"
+    npmlog "^4.1.2"
+    yargs "^16.2.0"
+
+"@lerna/collect-uncommitted@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/collect-uncommitted/-/collect-uncommitted-4.0.0.tgz#855cd64612969371cfc2453b90593053ff1ba779"
+  integrity sha512-ufSTfHZzbx69YNj7KXQ3o66V4RC76ffOjwLX0q/ab//61bObJ41n03SiQEhSlmpP+gmFbTJ3/7pTe04AHX9m/g==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    chalk "^4.1.0"
+    npmlog "^4.1.2"
+
+"@lerna/collect-updates@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/collect-updates/-/collect-updates-4.0.0.tgz#8e208b1bafd98a372ff1177f7a5e288f6bea8041"
+  integrity sha512-bnNGpaj4zuxsEkyaCZLka9s7nMs58uZoxrRIPJ+nrmrZYp1V5rrd+7/NYTuunOhY2ug1sTBvTAxj3NZQ+JKnOw==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@lerna/describe-ref" "4.0.0"
+    minimatch "^3.0.4"
+    npmlog "^4.1.2"
+    slash "^3.0.0"
+
+"@lerna/command@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/command/-/command-4.0.0.tgz#991c7971df8f5bf6ae6e42c808869a55361c1b98"
+  integrity sha512-LM9g3rt5FsPNFqIHUeRwWXLNHJ5NKzOwmVKZ8anSp4e1SPrv2HNc1V02/9QyDDZK/w+5POXH5lxZUI1CHaOK/A==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@lerna/package-graph" "4.0.0"
+    "@lerna/project" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    "@lerna/write-log-file" "4.0.0"
+    clone-deep "^4.0.1"
+    dedent "^0.7.0"
+    execa "^5.0.0"
+    is-ci "^2.0.0"
+    npmlog "^4.1.2"
+
+"@lerna/conventional-commits@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/conventional-commits/-/conventional-commits-4.0.0.tgz#660fb2c7b718cb942ead70110df61f18c6f99750"
+  integrity sha512-CSUQRjJHFrH8eBn7+wegZLV3OrNc0Y1FehYfYGhjLE2SIfpCL4bmfu/ViYuHh9YjwHaA+4SX6d3hR+xkeseKmw==
+  dependencies:
+    "@lerna/validation-error" "4.0.0"
+    conventional-changelog-angular "^5.0.12"
+    conventional-changelog-core "^4.2.2"
+    conventional-recommended-bump "^6.1.0"
+    fs-extra "^9.1.0"
+    get-stream "^6.0.0"
+    lodash.template "^4.5.0"
+    npm-package-arg "^8.1.0"
+    npmlog "^4.1.2"
+    pify "^5.0.0"
+    semver "^7.3.4"
+
+"@lerna/create-symlink@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/create-symlink/-/create-symlink-4.0.0.tgz#8c5317ce5ae89f67825443bd7651bf4121786228"
+  integrity sha512-I0phtKJJdafUiDwm7BBlEUOtogmu8+taxq6PtIrxZbllV9hWg59qkpuIsiFp+no7nfRVuaasNYHwNUhDAVQBig==
+  dependencies:
+    cmd-shim "^4.1.0"
+    fs-extra "^9.1.0"
+    npmlog "^4.1.2"
+
+"@lerna/create@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/create/-/create-4.0.0.tgz#b6947e9b5dfb6530321952998948c3e63d64d730"
+  integrity sha512-mVOB1niKByEUfxlbKTM1UNECWAjwUdiioIbRQZEeEabtjCL69r9rscIsjlGyhGWCfsdAG5wfq4t47nlDXdLLag==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@lerna/command" "4.0.0"
+    "@lerna/npm-conf" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    dedent "^0.7.0"
+    fs-extra "^9.1.0"
+    globby "^11.0.2"
+    init-package-json "^2.0.2"
+    npm-package-arg "^8.1.0"
+    p-reduce "^2.1.0"
+    pacote "^11.2.6"
+    pify "^5.0.0"
+    semver "^7.3.4"
+    slash "^3.0.0"
+    validate-npm-package-license "^3.0.4"
+    validate-npm-package-name "^3.0.0"
+    whatwg-url "^8.4.0"
+    yargs-parser "20.2.4"
+
+"@lerna/describe-ref@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/describe-ref/-/describe-ref-4.0.0.tgz#53c53b4ea65fdceffa072a62bfebe6772c45d9ec"
+  integrity sha512-eTU5+xC4C5Gcgz+Ey4Qiw9nV2B4JJbMulsYJMW8QjGcGh8zudib7Sduj6urgZXUYNyhYpRs+teci9M2J8u+UvQ==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    npmlog "^4.1.2"
+
+"@lerna/diff@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/diff/-/diff-4.0.0.tgz#6d3071817aaa4205a07bf77cfc6e932796d48b92"
+  integrity sha512-jYPKprQVg41+MUMxx6cwtqsNm0Yxx9GDEwdiPLwcUTFx+/qKCEwifKNJ1oGIPBxyEHX2PFCOjkK39lHoj2qiag==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@lerna/command" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    npmlog "^4.1.2"
+
+"@lerna/exec@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/exec/-/exec-4.0.0.tgz#eb6cb95cb92d42590e9e2d628fcaf4719d4a8be6"
+  integrity sha512-VGXtL/b/JfY84NB98VWZpIExfhLOzy0ozm/0XaS4a2SmkAJc5CeUfrhvHxxkxiTBLkU+iVQUyYEoAT0ulQ8PCw==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@lerna/command" "4.0.0"
+    "@lerna/filter-options" "4.0.0"
+    "@lerna/profiler" "4.0.0"
+    "@lerna/run-topologically" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    p-map "^4.0.0"
+
+"@lerna/filter-options@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/filter-options/-/filter-options-4.0.0.tgz#ac94cc515d7fa3b47e2f7d74deddeabb1de5e9e6"
+  integrity sha512-vV2ANOeZhOqM0rzXnYcFFCJ/kBWy/3OA58irXih9AMTAlQLymWAK0akWybl++sUJ4HB9Hx12TOqaXbYS2NM5uw==
+  dependencies:
+    "@lerna/collect-updates" "4.0.0"
+    "@lerna/filter-packages" "4.0.0"
+    dedent "^0.7.0"
+    npmlog "^4.1.2"
+
+"@lerna/filter-packages@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/filter-packages/-/filter-packages-4.0.0.tgz#b1f70d70e1de9cdd36a4e50caa0ac501f8d012f2"
+  integrity sha512-+4AJIkK7iIiOaqCiVTYJxh/I9qikk4XjNQLhE3kixaqgMuHl1NQ99qXRR0OZqAWB9mh8Z1HA9bM5K1HZLBTOqA==
+  dependencies:
+    "@lerna/validation-error" "4.0.0"
+    multimatch "^5.0.0"
+    npmlog "^4.1.2"
+
+"@lerna/get-npm-exec-opts@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/get-npm-exec-opts/-/get-npm-exec-opts-4.0.0.tgz#dc955be94a4ae75c374ef9bce91320887d34608f"
+  integrity sha512-yvmkerU31CTWS2c7DvmAWmZVeclPBqI7gPVr5VATUKNWJ/zmVcU4PqbYoLu92I9Qc4gY1TuUplMNdNuZTSL7IQ==
+  dependencies:
+    npmlog "^4.1.2"
+
+"@lerna/get-packed@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/get-packed/-/get-packed-4.0.0.tgz#0989d61624ac1f97e393bdad2137c49cd7a37823"
+  integrity sha512-rfWONRsEIGyPJTxFzC8ECb3ZbsDXJbfqWYyeeQQDrJRPnEJErlltRLPLgC2QWbxFgFPsoDLeQmFHJnf0iDfd8w==
+  dependencies:
+    fs-extra "^9.1.0"
+    ssri "^8.0.1"
+    tar "^6.1.0"
+
+"@lerna/github-client@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/github-client/-/github-client-4.0.0.tgz#2ced67721363ef70f8e12ffafce4410918f4a8a4"
+  integrity sha512-2jhsldZtTKXYUBnOm23Lb0Fx8G4qfSXF9y7UpyUgWUj+YZYd+cFxSuorwQIgk5P4XXrtVhsUesIsli+BYSThiw==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@octokit/plugin-enterprise-rest" "^6.0.1"
+    "@octokit/rest" "^18.1.0"
+    git-url-parse "^11.4.4"
+    npmlog "^4.1.2"
+
+"@lerna/gitlab-client@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/gitlab-client/-/gitlab-client-4.0.0.tgz#00dad73379c7b38951d4b4ded043504c14e2b67d"
+  integrity sha512-OMUpGSkeDWFf7BxGHlkbb35T7YHqVFCwBPSIR6wRsszY8PAzCYahtH3IaJzEJyUg6vmZsNl0FSr3pdA2skhxqA==
+  dependencies:
+    node-fetch "^2.6.1"
+    npmlog "^4.1.2"
+    whatwg-url "^8.4.0"
+
+"@lerna/global-options@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/global-options/-/global-options-4.0.0.tgz#c7d8b0de6a01d8a845e2621ea89e7f60f18c6a5f"
+  integrity sha512-TRMR8afAHxuYBHK7F++Ogop2a82xQjoGna1dvPOY6ltj/pEx59pdgcJfYcynYqMkFIk8bhLJJN9/ndIfX29FTQ==
+
+"@lerna/has-npm-version@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/has-npm-version/-/has-npm-version-4.0.0.tgz#d3fc3292c545eb28bd493b36e6237cf0279f631c"
+  integrity sha512-LQ3U6XFH8ZmLCsvsgq1zNDqka0Xzjq5ibVN+igAI5ccRWNaUsE/OcmsyMr50xAtNQMYMzmpw5GVLAivT2/YzCg==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    semver "^7.3.4"
+
+"@lerna/import@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/import/-/import-4.0.0.tgz#bde656c4a451fa87ae41733ff8a8da60547c5465"
+  integrity sha512-FaIhd+4aiBousKNqC7TX1Uhe97eNKf5/SC7c5WZANVWtC7aBWdmswwDt3usrzCNpj6/Wwr9EtEbYROzxKH8ffg==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@lerna/command" "4.0.0"
+    "@lerna/prompt" "4.0.0"
+    "@lerna/pulse-till-done" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    dedent "^0.7.0"
+    fs-extra "^9.1.0"
+    p-map-series "^2.1.0"
+
+"@lerna/info@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/info/-/info-4.0.0.tgz#b9fb0e479d60efe1623603958a831a88b1d7f1fc"
+  integrity sha512-8Uboa12kaCSZEn4XRfPz5KU9XXoexSPS4oeYGj76s2UQb1O1GdnEyfjyNWoUl1KlJ2i/8nxUskpXIftoFYH0/Q==
+  dependencies:
+    "@lerna/command" "4.0.0"
+    "@lerna/output" "4.0.0"
+    envinfo "^7.7.4"
+
+"@lerna/init@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/init/-/init-4.0.0.tgz#dadff67e6dfb981e8ccbe0e6a310e837962f6c7a"
+  integrity sha512-wY6kygop0BCXupzWj5eLvTUqdR7vIAm0OgyV9WHpMYQGfs1V22jhztt8mtjCloD/O0nEe4tJhdG62XU5aYmPNQ==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@lerna/command" "4.0.0"
+    fs-extra "^9.1.0"
+    p-map "^4.0.0"
+    write-json-file "^4.3.0"
+
+"@lerna/link@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/link/-/link-4.0.0.tgz#c3a38aabd44279d714e90f2451e31b63f0fb65ba"
+  integrity sha512-KlvPi7XTAcVOByfaLlOeYOfkkDcd+bejpHMCd1KcArcFTwijOwXOVi24DYomIeHvy6HsX/IUquJ4PPUJIeB4+w==
+  dependencies:
+    "@lerna/command" "4.0.0"
+    "@lerna/package-graph" "4.0.0"
+    "@lerna/symlink-dependencies" "4.0.0"
+    p-map "^4.0.0"
+    slash "^3.0.0"
+
+"@lerna/list@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/list/-/list-4.0.0.tgz#24b4e6995bd73f81c556793fe502b847efd9d1d7"
+  integrity sha512-L2B5m3P+U4Bif5PultR4TI+KtW+SArwq1i75QZ78mRYxPc0U/piau1DbLOmwrdqr99wzM49t0Dlvl6twd7GHFg==
+  dependencies:
+    "@lerna/command" "4.0.0"
+    "@lerna/filter-options" "4.0.0"
+    "@lerna/listable" "4.0.0"
+    "@lerna/output" "4.0.0"
+
+"@lerna/listable@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/listable/-/listable-4.0.0.tgz#d00d6cb4809b403f2b0374fc521a78e318b01214"
+  integrity sha512-/rPOSDKsOHs5/PBLINZOkRIX1joOXUXEtyUs5DHLM8q6/RP668x/1lFhw6Dx7/U+L0+tbkpGtZ1Yt0LewCLgeQ==
+  dependencies:
+    "@lerna/query-graph" "4.0.0"
+    chalk "^4.1.0"
+    columnify "^1.5.4"
+
+"@lerna/log-packed@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/log-packed/-/log-packed-4.0.0.tgz#95168fe2e26ac6a71e42f4be857519b77e57a09f"
+  integrity sha512-+dpCiWbdzgMAtpajLToy9PO713IHoE6GV/aizXycAyA07QlqnkpaBNZ8DW84gHdM1j79TWockGJo9PybVhrrZQ==
+  dependencies:
+    byte-size "^7.0.0"
+    columnify "^1.5.4"
+    has-unicode "^2.0.1"
+    npmlog "^4.1.2"
+
+"@lerna/npm-conf@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/npm-conf/-/npm-conf-4.0.0.tgz#b259fd1e1cee2bf5402b236e770140ff9ade7fd2"
+  integrity sha512-uS7H02yQNq3oejgjxAxqq/jhwGEE0W0ntr8vM3EfpCW1F/wZruwQw+7bleJQ9vUBjmdXST//tk8mXzr5+JXCfw==
+  dependencies:
+    config-chain "^1.1.12"
+    pify "^5.0.0"
+
+"@lerna/npm-dist-tag@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/npm-dist-tag/-/npm-dist-tag-4.0.0.tgz#d1e99b4eccd3414142f0548ad331bf2d53f3257a"
+  integrity sha512-F20sg28FMYTgXqEQihgoqSfwmq+Id3zT23CnOwD+XQMPSy9IzyLf1fFVH319vXIw6NF6Pgs4JZN2Qty6/CQXGw==
+  dependencies:
+    "@lerna/otplease" "4.0.0"
+    npm-package-arg "^8.1.0"
+    npm-registry-fetch "^9.0.0"
+    npmlog "^4.1.2"
+
+"@lerna/npm-install@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/npm-install/-/npm-install-4.0.0.tgz#31180be3ab3b7d1818a1a0c206aec156b7094c78"
+  integrity sha512-aKNxq2j3bCH3eXl3Fmu4D54s/YLL9WSwV8W7X2O25r98wzrO38AUN6AB9EtmAx+LV/SP15et7Yueg9vSaanRWg==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@lerna/get-npm-exec-opts" "4.0.0"
+    fs-extra "^9.1.0"
+    npm-package-arg "^8.1.0"
+    npmlog "^4.1.2"
+    signal-exit "^3.0.3"
+    write-pkg "^4.0.0"
+
+"@lerna/npm-publish@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/npm-publish/-/npm-publish-4.0.0.tgz#84eb62e876fe949ae1fd62c60804423dbc2c4472"
+  integrity sha512-vQb7yAPRo5G5r77DRjHITc9piR9gvEKWrmfCH7wkfBnGWEqu7n8/4bFQ7lhnkujvc8RXOsYpvbMQkNfkYibD/w==
+  dependencies:
+    "@lerna/otplease" "4.0.0"
+    "@lerna/run-lifecycle" "4.0.0"
+    fs-extra "^9.1.0"
+    libnpmpublish "^4.0.0"
+    npm-package-arg "^8.1.0"
+    npmlog "^4.1.2"
+    pify "^5.0.0"
+    read-package-json "^3.0.0"
+
+"@lerna/npm-run-script@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/npm-run-script/-/npm-run-script-4.0.0.tgz#dfebf4f4601442e7c0b5214f9fb0d96c9350743b"
+  integrity sha512-Jmyh9/IwXJjOXqKfIgtxi0bxi1pUeKe5bD3S81tkcy+kyng/GNj9WSqD5ZggoNP2NP//s4CLDAtUYLdP7CU9rA==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    "@lerna/get-npm-exec-opts" "4.0.0"
+    npmlog "^4.1.2"
+
+"@lerna/otplease@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/otplease/-/otplease-4.0.0.tgz#84972eb43448f8a1077435ba1c5e59233b725850"
+  integrity sha512-Sgzbqdk1GH4psNiT6hk+BhjOfIr/5KhGBk86CEfHNJTk9BK4aZYyJD4lpDbDdMjIV4g03G7pYoqHzH765T4fxw==
+  dependencies:
+    "@lerna/prompt" "4.0.0"
+
+"@lerna/output@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/output/-/output-4.0.0.tgz#b1d72215c0e35483e4f3e9994debc82c621851f2"
+  integrity sha512-Un1sHtO1AD7buDQrpnaYTi2EG6sLF+KOPEAMxeUYG5qG3khTs2Zgzq5WE3dt2N/bKh7naESt20JjIW6tBELP0w==
+  dependencies:
+    npmlog "^4.1.2"
+
+"@lerna/pack-directory@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/pack-directory/-/pack-directory-4.0.0.tgz#8b617db95d20792f043aaaa13a9ccc0e04cb4c74"
+  integrity sha512-NJrmZNmBHS+5aM+T8N6FVbaKFScVqKlQFJNY2k7nsJ/uklNKsLLl6VhTQBPwMTbf6Tf7l6bcKzpy7aePuq9UiQ==
+  dependencies:
+    "@lerna/get-packed" "4.0.0"
+    "@lerna/package" "4.0.0"
+    "@lerna/run-lifecycle" "4.0.0"
+    npm-packlist "^2.1.4"
+    npmlog "^4.1.2"
+    tar "^6.1.0"
+    temp-write "^4.0.0"
+
+"@lerna/package-graph@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/package-graph/-/package-graph-4.0.0.tgz#16a00253a8ac810f72041481cb46bcee8d8123dd"
+  integrity sha512-QED2ZCTkfXMKFoTGoccwUzjHtZMSf3UKX14A4/kYyBms9xfFsesCZ6SLI5YeySEgcul8iuIWfQFZqRw+Qrjraw==
+  dependencies:
+    "@lerna/prerelease-id-from-version" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    npm-package-arg "^8.1.0"
+    npmlog "^4.1.2"
+    semver "^7.3.4"
+
+"@lerna/package@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/package/-/package-4.0.0.tgz#1b4c259c4bcff45c876ee1d591a043aacbc0d6b7"
+  integrity sha512-l0M/izok6FlyyitxiQKr+gZLVFnvxRQdNhzmQ6nRnN9dvBJWn+IxxpM+cLqGACatTnyo9LDzNTOj2Db3+s0s8Q==
+  dependencies:
+    load-json-file "^6.2.0"
+    npm-package-arg "^8.1.0"
+    write-pkg "^4.0.0"
+
+"@lerna/prerelease-id-from-version@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/prerelease-id-from-version/-/prerelease-id-from-version-4.0.0.tgz#c7e0676fcee1950d85630e108eddecdd5b48c916"
+  integrity sha512-GQqguzETdsYRxOSmdFZ6zDBXDErIETWOqomLERRY54f4p+tk4aJjoVdd9xKwehC9TBfIFvlRbL1V9uQGHh1opg==
+  dependencies:
+    semver "^7.3.4"
+
+"@lerna/profiler@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/profiler/-/profiler-4.0.0.tgz#8a53ab874522eae15d178402bff90a14071908e9"
+  integrity sha512-/BaEbqnVh1LgW/+qz8wCuI+obzi5/vRE8nlhjPzdEzdmWmZXuCKyWSEzAyHOJWw1ntwMiww5dZHhFQABuoFz9Q==
+  dependencies:
+    fs-extra "^9.1.0"
+    npmlog "^4.1.2"
+    upath "^2.0.1"
+
+"@lerna/project@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/project/-/project-4.0.0.tgz#ff84893935833533a74deff30c0e64ddb7f0ba6b"
+  integrity sha512-o0MlVbDkD5qRPkFKlBZsXZjoNTWPyuL58564nSfZJ6JYNmgAptnWPB2dQlAc7HWRZkmnC2fCkEdoU+jioPavbg==
+  dependencies:
+    "@lerna/package" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    cosmiconfig "^7.0.0"
+    dedent "^0.7.0"
+    dot-prop "^6.0.1"
+    glob-parent "^5.1.1"
+    globby "^11.0.2"
+    load-json-file "^6.2.0"
+    npmlog "^4.1.2"
+    p-map "^4.0.0"
+    resolve-from "^5.0.0"
+    write-json-file "^4.3.0"
+
+"@lerna/prompt@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/prompt/-/prompt-4.0.0.tgz#5ec69a803f3f0db0ad9f221dad64664d3daca41b"
+  integrity sha512-4Ig46oCH1TH5M7YyTt53fT6TuaKMgqUUaqdgxvp6HP6jtdak6+amcsqB8YGz2eQnw/sdxunx84DfI9XpoLj4bQ==
+  dependencies:
+    inquirer "^7.3.3"
+    npmlog "^4.1.2"
+
+"@lerna/publish@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/publish/-/publish-4.0.0.tgz#f67011305adeba120066a3b6d984a5bb5fceef65"
+  integrity sha512-K8jpqjHrChH22qtkytA5GRKIVFEtqBF6JWj1I8dWZtHs4Jywn8yB1jQ3BAMLhqmDJjWJtRck0KXhQQKzDK2UPg==
+  dependencies:
+    "@lerna/check-working-tree" "4.0.0"
+    "@lerna/child-process" "4.0.0"
+    "@lerna/collect-updates" "4.0.0"
+    "@lerna/command" "4.0.0"
+    "@lerna/describe-ref" "4.0.0"
+    "@lerna/log-packed" "4.0.0"
+    "@lerna/npm-conf" "4.0.0"
+    "@lerna/npm-dist-tag" "4.0.0"
+    "@lerna/npm-publish" "4.0.0"
+    "@lerna/otplease" "4.0.0"
+    "@lerna/output" "4.0.0"
+    "@lerna/pack-directory" "4.0.0"
+    "@lerna/prerelease-id-from-version" "4.0.0"
+    "@lerna/prompt" "4.0.0"
+    "@lerna/pulse-till-done" "4.0.0"
+    "@lerna/run-lifecycle" "4.0.0"
+    "@lerna/run-topologically" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    "@lerna/version" "4.0.0"
+    fs-extra "^9.1.0"
+    libnpmaccess "^4.0.1"
+    npm-package-arg "^8.1.0"
+    npm-registry-fetch "^9.0.0"
+    npmlog "^4.1.2"
+    p-map "^4.0.0"
+    p-pipe "^3.1.0"
+    pacote "^11.2.6"
+    semver "^7.3.4"
+
+"@lerna/pulse-till-done@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/pulse-till-done/-/pulse-till-done-4.0.0.tgz#04bace7d483a8205c187b806bcd8be23d7bb80a3"
+  integrity sha512-Frb4F7QGckaybRhbF7aosLsJ5e9WuH7h0KUkjlzSByVycxY91UZgaEIVjS2oN9wQLrheLMHl6SiFY0/Pvo0Cxg==
+  dependencies:
+    npmlog "^4.1.2"
+
+"@lerna/query-graph@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/query-graph/-/query-graph-4.0.0.tgz#09dd1c819ac5ee3f38db23931143701f8a6eef63"
+  integrity sha512-YlP6yI3tM4WbBmL9GCmNDoeQyzcyg1e4W96y/PKMZa5GbyUvkS2+Jc2kwPD+5KcXou3wQZxSPzR3Te5OenaDdg==
+  dependencies:
+    "@lerna/package-graph" "4.0.0"
+
+"@lerna/resolve-symlink@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/resolve-symlink/-/resolve-symlink-4.0.0.tgz#6d006628a210c9b821964657a9e20a8c9a115e14"
+  integrity sha512-RtX8VEUzqT+uLSCohx8zgmjc6zjyRlh6i/helxtZTMmc4+6O4FS9q5LJas2uGO2wKvBlhcD6siibGt7dIC3xZA==
+  dependencies:
+    fs-extra "^9.1.0"
+    npmlog "^4.1.2"
+    read-cmd-shim "^2.0.0"
+
+"@lerna/rimraf-dir@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/rimraf-dir/-/rimraf-dir-4.0.0.tgz#2edf3b62d4eb0ef4e44e430f5844667d551ec25a"
+  integrity sha512-QNH9ABWk9mcMJh2/muD9iYWBk1oQd40y6oH+f3wwmVGKYU5YJD//+zMiBI13jxZRtwBx0vmBZzkBkK1dR11cBg==
+  dependencies:
+    "@lerna/child-process" "4.0.0"
+    npmlog "^4.1.2"
+    path-exists "^4.0.0"
+    rimraf "^3.0.2"
+
+"@lerna/run-lifecycle@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/run-lifecycle/-/run-lifecycle-4.0.0.tgz#e648a46f9210a9bcd7c391df6844498cb5079334"
+  integrity sha512-IwxxsajjCQQEJAeAaxF8QdEixfI7eLKNm4GHhXHrgBu185JcwScFZrj9Bs+PFKxwb+gNLR4iI5rpUdY8Y0UdGQ==
+  dependencies:
+    "@lerna/npm-conf" "4.0.0"
+    npm-lifecycle "^3.1.5"
+    npmlog "^4.1.2"
+
+"@lerna/run-topologically@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/run-topologically/-/run-topologically-4.0.0.tgz#af846eeee1a09b0c2be0d1bfb5ef0f7b04bb1827"
+  integrity sha512-EVZw9hGwo+5yp+VL94+NXRYisqgAlj0jWKWtAIynDCpghRxCE5GMO3xrQLmQgqkpUl9ZxQFpICgYv5DW4DksQA==
+  dependencies:
+    "@lerna/query-graph" "4.0.0"
+    p-queue "^6.6.2"
+
+"@lerna/run@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/run/-/run-4.0.0.tgz#4bc7fda055a729487897c23579694f6183c91262"
+  integrity sha512-9giulCOzlMPzcZS/6Eov6pxE9gNTyaXk0Man+iCIdGJNMrCnW7Dme0Z229WWP/UoxDKg71F2tMsVVGDiRd8fFQ==
+  dependencies:
+    "@lerna/command" "4.0.0"
+    "@lerna/filter-options" "4.0.0"
+    "@lerna/npm-run-script" "4.0.0"
+    "@lerna/output" "4.0.0"
+    "@lerna/profiler" "4.0.0"
+    "@lerna/run-topologically" "4.0.0"
+    "@lerna/timer" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    p-map "^4.0.0"
+
+"@lerna/symlink-binary@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/symlink-binary/-/symlink-binary-4.0.0.tgz#21009f62d53a425f136cb4c1a32c6b2a0cc02d47"
+  integrity sha512-zualodWC4q1QQc1pkz969hcFeWXOsVYZC5AWVtAPTDfLl+TwM7eG/O6oP+Rr3fFowspxo6b1TQ6sYfDV6HXNWA==
+  dependencies:
+    "@lerna/create-symlink" "4.0.0"
+    "@lerna/package" "4.0.0"
+    fs-extra "^9.1.0"
+    p-map "^4.0.0"
+
+"@lerna/symlink-dependencies@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/symlink-dependencies/-/symlink-dependencies-4.0.0.tgz#8910eca084ae062642d0490d8972cf2d98e9ebbd"
+  integrity sha512-BABo0MjeUHNAe2FNGty1eantWp8u83BHSeIMPDxNq0MuW2K3CiQRaeWT3EGPAzXpGt0+hVzBrA6+OT0GPn7Yuw==
+  dependencies:
+    "@lerna/create-symlink" "4.0.0"
+    "@lerna/resolve-symlink" "4.0.0"
+    "@lerna/symlink-binary" "4.0.0"
+    fs-extra "^9.1.0"
+    p-map "^4.0.0"
+    p-map-series "^2.1.0"
+
+"@lerna/timer@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/timer/-/timer-4.0.0.tgz#a52e51bfcd39bfd768988049ace7b15c1fd7a6da"
+  integrity sha512-WFsnlaE7SdOvjuyd05oKt8Leg3ENHICnvX3uYKKdByA+S3g+TCz38JsNs7OUZVt+ba63nC2nbXDlUnuT2Xbsfg==
+
+"@lerna/validation-error@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/validation-error/-/validation-error-4.0.0.tgz#af9d62fe8304eaa2eb9a6ba1394f9aa807026d35"
+  integrity sha512-1rBOM5/koiVWlRi3V6dB863E1YzJS8v41UtsHgMr6gB2ncJ2LsQtMKlJpi3voqcgh41H8UsPXR58RrrpPpufyw==
+  dependencies:
+    npmlog "^4.1.2"
+
+"@lerna/version@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/version/-/version-4.0.0.tgz#532659ec6154d8a8789c5ab53878663e244e3228"
+  integrity sha512-otUgiqs5W9zGWJZSCCMRV/2Zm2A9q9JwSDS7s/tlKq4mWCYriWo7+wsHEA/nPTMDyYyBO5oyZDj+3X50KDUzeA==
+  dependencies:
+    "@lerna/check-working-tree" "4.0.0"
+    "@lerna/child-process" "4.0.0"
+    "@lerna/collect-updates" "4.0.0"
+    "@lerna/command" "4.0.0"
+    "@lerna/conventional-commits" "4.0.0"
+    "@lerna/github-client" "4.0.0"
+    "@lerna/gitlab-client" "4.0.0"
+    "@lerna/output" "4.0.0"
+    "@lerna/prerelease-id-from-version" "4.0.0"
+    "@lerna/prompt" "4.0.0"
+    "@lerna/run-lifecycle" "4.0.0"
+    "@lerna/run-topologically" "4.0.0"
+    "@lerna/validation-error" "4.0.0"
+    chalk "^4.1.0"
+    dedent "^0.7.0"
+    load-json-file "^6.2.0"
+    minimatch "^3.0.4"
+    npmlog "^4.1.2"
+    p-map "^4.0.0"
+    p-pipe "^3.1.0"
+    p-reduce "^2.1.0"
+    p-waterfall "^2.1.1"
+    semver "^7.3.4"
+    slash "^3.0.0"
+    temp-write "^4.0.0"
+    write-json-file "^4.3.0"
+
+"@lerna/write-log-file@4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@lerna/write-log-file/-/write-log-file-4.0.0.tgz#18221a38a6a307d6b0a5844dd592ad53fa27091e"
+  integrity sha512-XRG5BloiArpXRakcnPHmEHJp+4AtnhRtpDIHSghmXD5EichI1uD73J7FgPp30mm2pDRq3FdqB0NbwSEsJ9xFQg==
+  dependencies:
+    npmlog "^4.1.2"
+    write-file-atomic "^3.0.3"
+
+"@lit/reactive-element@^1.3.0":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@lit/reactive-element/-/reactive-element-1.3.1.tgz#3021ad0fa30a75a41212c5e7f1f169c5762ef8bb"
+  integrity sha512-nOJARIr3pReqK3hfFCSW2Zg/kFcFsSAlIE7z4a0C9D2dPrgD/YSn3ZP2ET/rxKB65SXyG7jJbkynBRm+tGlacw==
+
+"@mrmlnc/readdir-enhanced@^2.2.1":
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
+  integrity sha512-bPHp6Ji8b41szTOcaP63VlnbbO5Ny6dwAATtY6JTjh5N2OLrb5Qk/Th5cRkRQhkWCt+EJsYrNB0MiL+Gpn6e3g==
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
@@ -3341,6 +4044,7 @@
 
 "@npmcli/fs@^1.0.0":
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-1.1.1.tgz#72f719fe935e687c56a4faecf3c03d06ba593257"
   integrity sha512-8KG5RD0GVP4ydEzRn/I4BNDuxDtqVbOdm8675T49OIG/NGhaK0pjPX7ZcDlvKYbA+ulvVK3ztfcF4uBdOxuJbQ==
@@ -3349,6 +4053,16 @@
   resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-1.1.0.tgz#bec1d1b89c170d40e1b73ad6c943b0b75e7d2951"
   integrity sha512-VhP1qZLXcrXRIaPoqb4YA55JQxLNF3jNR4T55IdOJa3+IFJKNYHtPvtXx8slmeMavj37vCzCfrqQM1vWLsYKLA==
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-1.1.0.tgz#bec1d1b89c170d40e1b73ad6c943b0b75e7d2951"
+  integrity sha512-VhP1qZLXcrXRIaPoqb4YA55JQxLNF3jNR4T55IdOJa3+IFJKNYHtPvtXx8slmeMavj37vCzCfrqQM1vWLsYKLA==
+=======
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-1.1.1.tgz#72f719fe935e687c56a4faecf3c03d06ba593257"
+  integrity sha512-8KG5RD0GVP4ydEzRn/I4BNDuxDtqVbOdm8675T49OIG/NGhaK0pjPX7ZcDlvKYbA+ulvVK3ztfcF4uBdOxuJbQ==
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   dependencies:
     "@gar/promisify" "^1.0.1"
     semver "^7.3.5"
@@ -3430,6 +4144,7 @@
 
 "@octokit/core@^3.5.1":
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@octokit/core/-/core-3.6.0.tgz#3376cb9f3008d9b3d110370d90e0a1fcd5fe6085"
   integrity sha512-7RKRKuA4xTjMhY+eG3jthb3hlZCsOwg3rztWh75Xc+ShDWOfDDATWbeZpAHBNRpm4Tv9WgBMOy1zEJYXG6NJ7Q==
@@ -3438,6 +4153,8 @@
     "@octokit/graphql" "^4.5.8"
     "@octokit/request" "^5.6.3"
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/@octokit/core/-/core-3.5.1.tgz#8601ceeb1ec0e1b1b8217b960a413ed8e947809b"
   integrity sha512-omncwpLVxMP+GLpLPgeGJBF6IWJFjXDS5flY5VbppePYX9XehevbDykRH9PdCdvqt9TS5AOTiDide7h0qrkHjw==
@@ -3445,7 +4162,19 @@
     "@octokit/auth-token" "^2.4.4"
     "@octokit/graphql" "^4.5.8"
     "@octokit/request" "^5.6.0"
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/@octokit/core/-/core-3.6.0.tgz#3376cb9f3008d9b3d110370d90e0a1fcd5fe6085"
+  integrity sha512-7RKRKuA4xTjMhY+eG3jthb3hlZCsOwg3rztWh75Xc+ShDWOfDDATWbeZpAHBNRpm4Tv9WgBMOy1zEJYXG6NJ7Q==
+  dependencies:
+    "@octokit/auth-token" "^2.4.4"
+    "@octokit/graphql" "^4.5.8"
+    "@octokit/request" "^5.6.3"
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
     "@octokit/request-error" "^2.0.5"
     "@octokit/types" "^6.0.3"
     before-after-hook "^2.2.0"
@@ -3509,10 +4238,17 @@
     once "^1.4.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@octokit/request@^5.6.0", "@octokit/request@^5.6.3":
 =======
 "@octokit/request@^5.6.0":
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+"@octokit/request@^5.6.0":
+=======
+"@octokit/request@^5.6.0", "@octokit/request@^5.6.3":
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "5.6.3"
   resolved "https://registry.yarnpkg.com/@octokit/request/-/request-5.6.3.tgz#19a022515a5bba965ac06c9d1334514eb50c48b0"
   integrity sha512-bFJl0I1KVc9jYTe9tdGGpAMPy32dLBXXo1dS/YwSCTL/2nd9XeHsY616RE3HPXDVk+a+dBuzyz5YdlXwcDTr2A==
@@ -3713,13 +4449,21 @@
   integrity sha512-XYmBiy+ohOR4Lh5jE379fV2IU+6Jn4g5qASinhitfyO71b/sCo6MKsMLF5tc7Zf2CE8hViVQyYSobJNke8OvUw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 "@types/node@^14.14.31":
   version "14.18.10"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.10.tgz#774f43868964f3cfe4ced1f5417fe15818a4eaea"
   integrity sha512-6iihJ/Pp5fsFJ/aEDGyvT4pHGmCpq7ToQ/yf4bl5SbVAvwpspYJ+v3jO7n8UyjhQVHTy+KNszOozDdv+O6sovQ==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
@@ -3743,11 +4487,14 @@
     "@types/node" "*"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@types/trusted-types@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.2.tgz#fc25ad9943bcac11cceb8168db4f275e0e72e756"
   integrity sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 "@types/sinonjs__fake-timers@8.1.1":
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-8.1.1.tgz#b49c2c70150141a15e0fa7e79cf1f92a72934ce3"
@@ -3764,7 +4511,16 @@
   integrity sha512-8uALY5LTvSuHgloDVUvWP3pIauILm+8/0pDMokuDYIoNsOkSwd5AiHBTSEJjKTDcZr5z8UpgOWZkxBF4iJftoA==
   dependencies:
     "@types/node" "*"
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+"@types/trusted-types@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.2.tgz#fc25ad9943bcac11cceb8168db4f275e0e72e756"
+  integrity sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 
 "@typescript-eslint/eslint-plugin@^2.6.1":
   version "2.34.0"
@@ -3810,10 +4566,17 @@
     tsutils "^3.17.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 JSONStream@^1.0.4:
 =======
 JSONStream@^1.0.3, JSONStream@^1.0.4:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+JSONStream@^1.0.3, JSONStream@^1.0.4:
+=======
+JSONStream@^1.0.4:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.5.tgz#3208c1f08d3a4d99261ab64f92302bc15e111ca0"
   integrity sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==
@@ -3889,13 +4652,21 @@ acorn@^7.0.0, acorn@^7.1.1:
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 acorn@^8.4.1:
   version "8.7.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.7.0.tgz#90951fde0f8f09df93549481e5fc141445b791cf"
   integrity sha512-V/LGr1APy+PXIwKebEWrkZPwoeoF+w1jiOBUmuxuiUIaOHtob8Qc9BTrYo7VuI5fR8tqsy+buA2WFooR5olqvQ==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 add-stream@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/add-stream/-/add-stream-1.0.0.tgz#6a7990437ca736d5e1288db92bd3266d5f5cb2aa"
@@ -4054,7 +4825,10 @@ aproba@^2.0.0:
   integrity sha512-lYe4Gx7QT+MKGbDsA+Z+he/Wtef0BiwDOlK/XkBrdfsh9J/jPPXbX0tE9x9cl27Tmu5gg3QUbUrQYa/y+KOHPQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 arch@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/arch/-/arch-2.2.0.tgz#1bc47818f305764f23ab3306b0bfc086c5a29d11"
@@ -4065,7 +4839,12 @@ archy@^1.0.0:
   resolved "https://registry.yarnpkg.com/archy/-/archy-1.0.0.tgz#f9c8c13757cc1dd7bc379ac77b2c62a5c2868c40"
   integrity sha1-+cjBN1fMHde8N5rHeyxipcKGjEA=
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 are-we-there-yet@~1.1.2:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/are-we-there-yet/-/are-we-there-yet-1.1.5.tgz#4b35c2944f062a8bfcda66410760350fe9ddfc21"
@@ -4912,10 +5691,17 @@ camelcase-keys@^6.2.2:
     quick-lru "^4.0.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 camelcase@^5.3.1:
 =======
 camelcase@^5.0.0, camelcase@^5.3.1:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+camelcase@^5.0.0, camelcase@^5.3.1:
+=======
+camelcase@^5.3.1:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
@@ -5016,7 +5802,10 @@ chokidar@^2.1.5:
     fsevents "^1.2.7"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 chokidar@^3.4.0:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
@@ -5032,7 +5821,12 @@ chokidar@^3.4.0:
   optionalDependencies:
     fsevents "~2.3.2"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 chownr@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.4.tgz#6fc9d7b42d32a583596337666e7d08084da2cc6b"
@@ -5049,13 +5843,21 @@ ci-info@^2.0.0:
   integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 ci-info@^3.2.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.3.0.tgz#b4ed1fb6818dea4803a55c623041f9165d2066b2"
   integrity sha512-riT/3vI5YpVH6/qomlDnJow6TBee2PBKSEpx3O32EGPYbWGIRsIlGRms3Sm74wYE1JMo8RnO04Hb12+v1J5ICw==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/cipher-base/-/cipher-base-1.0.4.tgz#8760e4ecc272f4c363532f926d874aae2c1397de"
@@ -5268,7 +6070,10 @@ columnify@^1.5.4:
     wcwidth "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 combine-source-map@^0.8.0, combine-source-map@~0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/combine-source-map/-/combine-source-map-0.8.0.tgz#a58d0df042c186fcf822a8e8015f5450d2d79a8b"
@@ -5279,7 +6084,12 @@ combine-source-map@^0.8.0, combine-source-map@~0.8.0:
     lodash.memoize "~3.0.3"
     source-map "~0.5.3"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 combined-stream@^1.0.6, combined-stream@~1.0.6:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/combined-stream/-/combined-stream-1.0.8.tgz#c3d45a8b34fd730631a110a8a2520682b31d5a7f"
@@ -5331,6 +6141,7 @@ concat-map@0.0.1:
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 concat-stream@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-2.0.0.tgz#414cf5af790a48c60ab9be4527d56d5e41133cb1"
@@ -5345,16 +6156,8 @@ concat-stream@~1.6.0:
 =======
 concat-stream@^1.6.0, concat-stream@^1.6.1, concat-stream@~1.6.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
-  version "1.6.2"
-  resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.2.tgz#904bdf194cd3122fc675c77fc4ac3d4ff0fd1a34"
-  integrity sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==
-  dependencies:
-    buffer-from "^1.0.0"
-    inherits "^2.0.3"
-    readable-stream "^2.2.2"
-    typedarray "^0.0.6"
-
-<<<<<<< HEAD
+=======
+concat-stream@^1.6.0, concat-stream@^1.6.1, concat-stream@~1.6.0:
 =======
 concat-stream@^2.0.0:
   version "2.0.0"
@@ -5366,7 +6169,39 @@ concat-stream@^2.0.0:
     readable-stream "^3.0.2"
     typedarray "^0.0.6"
 
+concat-stream@~1.6.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.2.tgz#904bdf194cd3122fc675c77fc4ac3d4ff0fd1a34"
+  integrity sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==
+  dependencies:
+    buffer-from "^1.0.0"
+    inherits "^2.0.3"
+    readable-stream "^2.2.2"
+    typedarray "^0.0.6"
+
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+concat-stream@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-2.0.0.tgz#414cf5af790a48c60ab9be4527d56d5e41133cb1"
+  integrity sha512-MWufYdFw53ccGjCA+Ol7XJYpAlW6/prSMzuPOTRnJGcGzuhLn4Scrz7qf6o8bROZ514ltazcIFJZevcfbo0x7A==
+  dependencies:
+    buffer-from "^1.0.0"
+    inherits "^2.0.3"
+    readable-stream "^3.0.2"
+    typedarray "^0.0.6"
+
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 config-chain@^1.1.12:
   version "1.1.13"
   resolved "https://registry.yarnpkg.com/config-chain/-/config-chain-1.1.13.tgz#fad0795aa6a6cdaff9ed1b68e9dff94372c232f4"
@@ -5391,7 +6226,10 @@ constants-browserify@^1.0.0, constants-browserify@~1.0.0:
   integrity sha1-wguW2MYXdIqvHBYCF2DNJ/y4y3U=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 content-disposition@^0.5.3:
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/content-disposition/-/content-disposition-0.5.4.tgz#8b82b4efac82512a02bb0b1dcec9d2c5e8eb5bfe"
@@ -5399,7 +6237,12 @@ content-disposition@^0.5.3:
   dependencies:
     safe-buffer "5.2.1"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 conventional-changelog-angular@^5.0.12:
   version "5.0.13"
   resolved "https://registry.yarnpkg.com/conventional-changelog-angular/-/conventional-changelog-angular-5.0.13.tgz#896885d63b914a70d4934b59d2fe7bde1832b28c"
@@ -5483,7 +6326,10 @@ conventional-recommended-bump@^6.1.0:
     q "^1.5.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 convert-source-map@^1.3.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.8.0.tgz#f3373c32d21b4d780dd8004514684fb791ca4369"
@@ -5491,7 +6337,12 @@ convert-source-map@^1.3.0:
   dependencies:
     safe-buffer "~5.1.1"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 convert-source-map@^1.5.1, convert-source-map@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.7.0.tgz#17a2cb882d7f77d3490585e2ce6c524424a3a442"
@@ -5609,10 +6460,17 @@ cross-spawn@^6.0.4, cross-spawn@^6.0.5:
     which "^1.2.9"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 cross-spawn@^7.0.3:
 =======
 cross-spawn@^7.0.0, cross-spawn@^7.0.3:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+cross-spawn@^7.0.0, cross-spawn@^7.0.3:
+=======
+cross-spawn@^7.0.3:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
   integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
@@ -5622,10 +6480,17 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.3:
     which "^2.0.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 crypto-browserify@^3.11.0:
 =======
 crypto-browserify@^3.0.0, crypto-browserify@^3.11.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+crypto-browserify@^3.0.0, crypto-browserify@^3.11.0:
+=======
+crypto-browserify@^3.11.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/crypto-browserify/-/crypto-browserify-3.12.0.tgz#396cf9f3137f03e4b8e532c58f698254e00f80ec"
   integrity sha512-fz4spIh+znjO2VjL+IdhEpRJ3YN6sMzITSBijk6FK2UvTqruSQW+/cCZTSNsMiZNvUeq0CqurF+dAbyiGOY6Wg==
@@ -5804,7 +6669,10 @@ cssstyle@^1.1.1:
     cssom "0.3.x"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 cypress@^9.4.1:
   version "9.4.1"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.4.1.tgz#1a4ba706435829c24b7edf350c2b059e05da9084"
@@ -5853,20 +6721,33 @@ cypress@^9.4.1:
     untildify "^4.0.0"
     yauzl "^2.10.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 dargs@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/dargs/-/dargs-7.0.0.tgz#04015c41de0bcb69ec84050f3d9be0caf8d6d5cc"
   integrity sha512-2iy1EkLdlBzQGvbweYRFxmFath8+K7+AKB0TlhHWkNuH+TmovaMH/Wp7V7R4u7f4SnX3OgLsU9t1NI9ioDnUpg==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 dash-ast@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/dash-ast/-/dash-ast-1.0.0.tgz#12029ba5fb2f8aa6f0a861795b23c1b4b6c27d37"
   integrity sha512-Vy4dx7gquTeMcQR/hDkYLGUnwVil6vk4FOOct+djUnHOUWt+zJPJAaRIXaAFkPXtJjvlY7o3rfRu0/3hpnwoUA==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -5889,13 +6770,21 @@ dateformat@^3.0.0:
   integrity sha512-jyCETtSl3VMZMWeRo7iY1FL19ges1t55hMo5yaam4Jrsm5EPL89UQkoQRyiI+Yf4k8r2ZpdngkV8hr1lIdjb3Q==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 dayjs@1.10.7, dayjs@^1.10.4:
   version "1.10.7"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 deasync@^0.1.14:
   version "0.1.21"
   resolved "https://registry.yarnpkg.com/deasync/-/deasync-0.1.21.tgz#bb11eabd4466c0d8776f0d82deb8a6126460d30f"
@@ -5919,6 +6808,7 @@ debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
     ms "2.1.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 debug@^4.3.1:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
@@ -5927,6 +6817,8 @@ debug@^4.3.1:
     ms "2.1.2"
 
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 debug@4.3.3, debug@^4.0.0, debug@^4.3.1, debug@^4.3.2:
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
@@ -5941,7 +6833,19 @@ debug@^3.1.0:
   dependencies:
     ms "^2.1.1"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+debug@^4.3.1:
+  version "4.3.4"
+  resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
+  integrity sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ==
+  dependencies:
+    ms "2.1.2"
+
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 debuglog@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/debuglog/-/debuglog-1.0.1.tgz#aa24ffb9ac3df9a2351837cfb2d279360cd78492"
@@ -5956,10 +6860,17 @@ decamelize-keys@^1.1.0:
     map-obj "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 decamelize@^1.1.0:
 =======
 decamelize@^1.1.0, decamelize@^1.2.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+decamelize@^1.1.0, decamelize@^1.2.0:
+=======
+decamelize@^1.1.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
@@ -6058,7 +6969,10 @@ deprecation@^2.0.0, deprecation@^2.3.1:
   integrity sha512-xmHIy4F3scKVwMsQ4WnVaS8bHOx0DmVwRywosKhaILI0ywMDWPtBSku2HNxRvF7jtwDRsoEwYQSfbxj8b7RlJQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 deps-sort@^2.0.0, deps-sort@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/deps-sort/-/deps-sort-2.0.1.tgz#9dfdc876d2bcec3386b6829ac52162cda9fa208d"
@@ -6069,7 +6983,12 @@ deps-sort@^2.0.0, deps-sort@^2.0.1:
     subarg "^1.0.0"
     through2 "^2.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 des.js@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/des.js/-/des.js-1.0.1.tgz#5382142e1bdc53f85d86d53e5f4aa7deb91e0843"
@@ -6094,7 +7013,10 @@ detect-indent@^6.0.0:
   integrity sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 detective@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/detective/-/detective-5.2.0.tgz#feb2a77e85b904ecdea459ad897cc90a99bd2a7b"
@@ -6104,7 +7026,12 @@ detective@^5.2.0:
     defined "^1.0.0"
     minimist "^1.1.1"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 dezalgo@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/dezalgo/-/dezalgo-1.0.3.tgz#7f742de066fc748bc8db820569dddce49bf0d456"
@@ -6114,13 +7041,21 @@ dezalgo@^1.0.0:
     wrappy "1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 diff@^4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 diffie-hellman@^5.0.0:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz#40e8ee98f55a2149607146921c63e1ae5f3d2875"
@@ -6362,10 +7297,17 @@ es-abstract@^1.17.2, es-abstract@^1.18.0-next.2:
     unbox-primitive "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 es-abstract@^1.19.1:
 =======
 es-abstract@^1.18.5, es-abstract@^1.19.1:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+es-abstract@^1.18.5, es-abstract@^1.19.1:
+=======
+es-abstract@^1.19.1:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.19.1.tgz#d4885796876916959de78edaa0df456627115ec3"
   integrity sha512-2vJ6tjA/UfqLm2MPs7jxVybLoB8i1t1Jd9R3kISld20sIxPcTbLuggQOUxeWeAvIUkduv/CfMjuh4WmiXr2v9w==
@@ -6597,26 +7539,42 @@ etag@~1.8.1:
   integrity sha1-Qa4u62XvpiJorr/qg6x9eSmbCIc=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 eventemitter2@^6.4.3:
   version "6.4.5"
   resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-6.4.5.tgz#97380f758ae24ac15df8353e0cc27f8b95644655"
   integrity sha512-bXE7Dyc1i6oQElDG0jMRZJrRAn9QR2xyyFGmBdZleNmyQX0FqGYmhZIrIrpPfm/w//LTo4tVQGOGQcGCb5q9uw==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 eventemitter3@^4.0.4:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
   integrity sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 events@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/events/-/events-2.1.0.tgz#2a9a1e18e6106e0e812aa9ebd4a819b3c29c0ba5"
   integrity sha512-3Zmiobend8P9DjmKAty0Era4jV8oJ0yGYe2nJJAxgymF9+N8F2m0hhZiMoWtcfepExzNKZumFU3ksdQbInGWCg==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 events@^3.0.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
@@ -6631,7 +7589,10 @@ evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
     safe-buffer "^5.1.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 execa@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/execa/-/execa-4.1.0.tgz#4e5491ad1572f2f17a77d388c6c857135b22847a"
@@ -6647,7 +7608,12 @@ execa@4.1.0:
     signal-exit "^3.0.2"
     strip-final-newline "^2.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 execa@^5.0.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/execa/-/execa-5.1.1.tgz#f80ad9cbf4298f7bd1d4c9555c21e93741c411dd"
@@ -6664,7 +7630,10 @@ execa@^5.0.0:
     strip-final-newline "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 executable@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/executable/-/executable-4.1.1.tgz#41532bff361d3e57af4d763b70582db18f5d133c"
@@ -6672,7 +7641,12 @@ executable@^4.1.1:
   dependencies:
     pify "^2.2.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 expand-brackets@^2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/expand-brackets/-/expand-brackets-2.1.4.tgz#b77735e315ce30f6b6eff0f83b04151a22449622"
@@ -6800,10 +7774,17 @@ fast-glob@^3.0.3:
     picomatch "^2.2.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 fast-glob@^3.2.9:
 =======
 fast-glob@^3.1.1, fast-glob@^3.2.9:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+fast-glob@^3.1.1, fast-glob@^3.2.9:
+=======
+fast-glob@^3.2.9:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "3.2.11"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.11.tgz#a1172ad95ceb8a16e20caa5c5e56480e5129c1d9"
   integrity sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==
@@ -6971,7 +7952,10 @@ filter-obj@^1.1.0:
   integrity sha1-mzERErxsYSehbgFsbF1/GeCAXFs=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 find-cache-dir@^3.2.0:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/find-cache-dir/-/find-cache-dir-3.3.2.tgz#b30c5b6eff0730731aea9bbd9dbecbd80256d64b"
@@ -6981,7 +7965,12 @@ find-cache-dir@^3.2.0:
     make-dir "^3.0.2"
     pkg-dir "^4.1.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 find-cache-dir@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/find-cache-dir/-/find-cache-dir-3.3.1.tgz#89b33fad4a4670daa94f855f7fbe31d6d84fe880"
@@ -6992,7 +7981,10 @@ find-cache-dir@^3.3.1:
     pkg-dir "^4.1.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 find-my-way@^4.5.0:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/find-my-way/-/find-my-way-4.5.1.tgz#758e959194b90aea0270db18fff75e2fceb2239f"
@@ -7003,7 +7995,12 @@ find-my-way@^4.5.0:
     safe-regex2 "^2.0.0"
     semver-store "^0.3.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 find-up@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-2.1.0.tgz#45d1b7e506c717ddd482775a2b77920a3c0c57a7"
@@ -7102,10 +8099,17 @@ fs-extra@8.1.0, fs-extra@^8.1.0:
     universalify "^0.1.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 fs-extra@^9.1.0:
 =======
 fs-extra@^9.0.0, fs-extra@^9.1.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+fs-extra@^9.0.0, fs-extra@^9.1.0:
+=======
+fs-extra@^9.1.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
   integrity sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==
@@ -7196,13 +8200,21 @@ get-intrinsic@^1.0.2, get-intrinsic@^1.1.0, get-intrinsic@^1.1.1:
     has-symbols "^1.0.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 get-package-type@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/get-package-type/-/get-package-type-0.1.0.tgz#8de2d803cff44df3bc6c456e6668b36c3926e11a"
   integrity sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 get-pkg-repo@^4.0.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/get-pkg-repo/-/get-pkg-repo-4.2.1.tgz#75973e1c8050c73f48190c52047c4cee3acbf385"
@@ -7229,7 +8241,10 @@ get-stdin@^6.0.0:
   integrity sha512-jp4tHawyV7+fkkSKyvjuLZswblUtz+SQKzSWnBbii16BuZksJlU1wuBYXY75r+duh/llF1ur6oNwi+2ZzjKZ7g==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 get-stream@^5.0.0, get-stream@^5.1.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-5.2.0.tgz#4966a1795ee5ace65e706c4b7beb71257d6e22d3"
@@ -7237,7 +8252,12 @@ get-stream@^5.0.0, get-stream@^5.1.0:
   dependencies:
     pump "^3.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 get-stream@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-6.0.1.tgz#a262d8eef67aced57c2852ad6167526a43cbf7b7"
@@ -7328,10 +8348,17 @@ glob-parent@^3.1.0:
     path-dirname "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@^5.1.1, glob-parent@^5.1.2:
 =======
 glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@^5.1.1, glob-parent@^5.1.2, glob-parent@~5.1.2:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@^5.1.1, glob-parent@^5.1.2, glob-parent@~5.1.2:
+=======
+glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@^5.1.1, glob-parent@^5.1.2:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
   integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
@@ -7356,10 +8383,17 @@ glob@^7.0.0, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
     path-is-absolute "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 glob@^7.1.1:
 =======
 glob@^7.1.0, glob@^7.1.1:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+glob@^7.1.0, glob@^7.1.1:
+=======
+glob@^7.1.1:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.0.tgz#d15535af7732e02e948f4c41628bd910293f6023"
   integrity sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==
@@ -7372,7 +8406,10 @@ glob@^7.1.0, glob@^7.1.1:
     path-is-absolute "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 global-dirs@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/global-dirs/-/global-dirs-3.0.0.tgz#70a76fe84ea315ab37b1f5576cbde7d48ef72686"
@@ -7380,7 +8417,12 @@ global-dirs@^3.0.0:
   dependencies:
     ini "2.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 globals@^11.1.0:
   version "11.12.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
@@ -7408,7 +8450,10 @@ globby@10.0.1:
     slash "^3.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 globby@11.0.4:
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/globby/-/globby-11.0.4.tgz#2cbaff77c2f2a62e71e9b2813a67b97a3a3001a5"
@@ -7421,7 +8466,12 @@ globby@11.0.4:
     merge2 "^1.3.0"
     slash "^3.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 globby@^11.0.2:
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/globby/-/globby-11.1.0.tgz#bd4be98bb042f83d796f7e3811991fbe82a0d34b"
@@ -7757,13 +8807,21 @@ https-proxy-agent@^5.0.0:
     debug "4"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 human-signals@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 human-signals@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
@@ -7818,10 +8876,17 @@ ignore@^5.1.1:
   integrity sha512-BMpfD7PpiETpBl/A6S498BaIJ6Y/ABT93ETbby2fP00v4EbvPBXWEoaR1UBPKs3iR53pJY7EtZk5KACI57i1Uw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 ignore@^5.2.0:
 =======
 ignore@^5.1.4, ignore@^5.2.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+ignore@^5.1.4, ignore@^5.2.0:
+=======
+ignore@^5.2.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.0.tgz#6d3bac8fa7fe0d45d9f9be7bac2fc279577e345a"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
@@ -7899,13 +8964,21 @@ inherits@2.0.3:
   integrity sha1-Yzwsg+PaQqUC9SRmAiSA9CCCYd4=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 ini@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ini/-/ini-2.0.0.tgz#e5fd556ecdd5726be978fa1001862eacb0a94bc5"
   integrity sha512-7PnF4oN3CvZF23ADhA5wRaYEQpJ8qygSkbtTXWBeXWXmEVRXK+1ITciHWwHhsjv1TmW0MgacIv6hEi5pX5NQdA==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 ini@^1.3.2, ini@^1.3.4:
   version "1.3.8"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
@@ -7925,7 +8998,10 @@ init-package-json@^2.0.2:
     validate-npm-package-name "^3.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 inline-source-map@~0.6.0:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/inline-source-map/-/inline-source-map-0.6.2.tgz#f9393471c18a79d1724f863fa38b586370ade2a5"
@@ -7933,7 +9009,12 @@ inline-source-map@~0.6.0:
   dependencies:
     source-map "~0.5.3"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 inquirer@^7.0.0, inquirer@^7.3.3:
   version "7.3.3"
   resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-7.3.3.tgz#04d176b2af04afc157a83fd7c100e98ee0aad003"
@@ -7954,7 +9035,10 @@ inquirer@^7.0.0, inquirer@^7.3.3:
     through "^2.3.6"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 insert-module-globals@^7.0.0, insert-module-globals@^7.2.1:
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/insert-module-globals/-/insert-module-globals-7.2.1.tgz#d5e33185181a4e1f33b15f7bf100ee91890d5cb3"
@@ -7971,7 +9055,12 @@ insert-module-globals@^7.0.0, insert-module-globals@^7.2.1:
     undeclared-identifiers "^1.1.2"
     xtend "^4.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 internal-slot@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/internal-slot/-/internal-slot-1.0.3.tgz#7347e307deeea2faac2ac6205d4bc7d34967f59c"
@@ -8087,7 +9176,10 @@ is-ci@^2.0.0:
     ci-info "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 is-ci@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-3.0.1.tgz#db6ecbed1bd659c43dac0f45661e7674103d1867"
@@ -8095,7 +9187,12 @@ is-ci@^3.0.0:
   dependencies:
     ci-info "^3.2.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 is-color-stop@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-color-stop/-/is-color-stop-1.1.0.tgz#cfff471aee4dd5c9e158598fbe12967b5cdad345"
@@ -8284,13 +9381,21 @@ is-obj@^2.0.0:
   integrity sha512-drqDG3cbczxxEJRoOXcOjtdp1J/lyp1mNn0xaznRs8+muBhgQcrnbspox5X5fOw0HnMnbfDzvnEMEtqDEJEo8w==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 is-path-inside@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/is-path-inside/-/is-path-inside-3.0.3.tgz#d231362e53a07ff2b0e0ea7fed049161ffd16283"
   integrity sha512-Fd4gABb+ycGAmKou8eMftCupSir5lRxqf4aD/vd0cD2qc4HL07OjCeuHMr8Ro4CoMaeCKDB0/ECBOVWjTwUvPQ==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 is-plain-obj@^1.0.0, is-plain-obj@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-plain-obj/-/is-plain-obj-1.1.0.tgz#71a50c8429dfca773c92a390a4a03b39fcd51d3e"
@@ -8390,7 +9495,10 @@ is-text-path@^1.0.1:
     text-extensions "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 is-typed-array@^1.1.3, is-typed-array@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/is-typed-array/-/is-typed-array-1.1.8.tgz#cbaa6585dc7db43318bc5b89523ea384a6f65e79"
@@ -8402,7 +9510,12 @@ is-typed-array@^1.1.3, is-typed-array@^1.1.7:
     foreach "^2.0.5"
     has-tostringtag "^1.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 is-typedarray@^1.0.0, is-typedarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-typedarray/-/is-typedarray-1.0.0.tgz#e479c80858df0c1b11ddda6940f96011fcda4a9a"
@@ -8656,7 +9769,10 @@ json-stable-stringify-without-jsonify@^1.0.1:
   integrity sha1-nbe1lJatPzz+8wp1FC0tkwrXJlE=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 json-stable-stringify@~0.0.0:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/json-stable-stringify/-/json-stable-stringify-0.0.1.tgz#611c23e814db375527df851193db59dd2af27f45"
@@ -8664,7 +9780,12 @@ json-stable-stringify@~0.0.0:
   dependencies:
     jsonify "~0.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
@@ -8701,13 +9822,21 @@ jsonfile@^6.0.1:
     graceful-fs "^4.1.6"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 jsonparse@^1.2.0, jsonparse@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/jsonparse/-/jsonparse-1.3.1.tgz#3f4dae4a91fac315f71062f8521cc239f1366280"
@@ -8768,7 +9897,10 @@ kind-of@^6.0.0, kind-of@^6.0.2, kind-of@^6.0.3:
   integrity sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 labeled-stream-splicer@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/labeled-stream-splicer/-/labeled-stream-splicer-2.0.2.tgz#42a41a16abcd46fd046306cf4f2c3576fffb1c21"
@@ -8782,7 +9914,12 @@ lazy-ass@^1.6.0:
   resolved "https://registry.yarnpkg.com/lazy-ass/-/lazy-ass-1.6.0.tgz#7999655e8646c17f089fdd187d150d3324d54513"
   integrity sha1-eZllXoZGwX8In90YfRUNMyTVRRM=
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 lerna@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/lerna/-/lerna-4.0.0.tgz#b139d685d50ea0ca1be87713a7c2f44a5b678e9e"
@@ -8844,7 +9981,10 @@ lie@~3.3.0:
     immediate "~3.0.5"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 light-my-request@^4.2.0:
   version "4.7.1"
   resolved "https://registry.yarnpkg.com/light-my-request/-/light-my-request-4.7.1.tgz#deb33c4485a08395760f16e5a7a044e6102bb4c4"
@@ -8855,12 +9995,18 @@ light-my-request@^4.2.0:
     fastify-warning "^0.2.0"
     set-cookie-parser "^2.4.1"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 lines-and-columns@^1.1.6:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 lit-element@^3.2.0:
   version "3.2.0"
@@ -8875,6 +10021,8 @@ lit-html@^2.2.0:
   resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-2.2.1.tgz#762f112a8b54eaf0bbae3f516de935a25dcc12d1"
   integrity sha512-AiJ/Rs0awjICs2FioTnHSh+Np5dhYSkyRczKy3wKjp8qjLhr1Ov+GiHrUQNdX8ou1LMuznpIME990AZsa/tR8g==
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 listr2@^3.8.3:
   version "3.14.0"
   resolved "https://registry.yarnpkg.com/listr2/-/listr2-3.14.0.tgz#23101cc62e1375fd5836b248276d1d2b51fdbe9e"
@@ -8893,10 +10041,30 @@ lit-element@^2.3.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-2.4.0.tgz#b22607a037a8fc08f5a80736dddf7f3f5d401452"
   integrity sha512-pBGLglxyhq/Prk2H91nA0KByq/hx/wssJBQFiYqXhGDvEnY31PRGYf1RglVzyLeRysu0IHm2K0P196uLLWmwFg==
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
+=======
+=======
+lit-element@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-3.2.0.tgz#9c981c55dfd9a8f124dc863edb62cc529d434db7"
+  integrity sha512-HbE7yt2SnUtg5DCrWt028oaU4D5F4k/1cntAFHTkzY8ZIa8N0Wmu92PxSxucsQSOXlODFrICkQ5x/tEshKi13g==
+  dependencies:
+    "@lit/reactive-element" "^1.3.0"
+    lit-html "^2.2.0"
+
+lit-html@^2.2.0:
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-2.2.1.tgz#762f112a8b54eaf0bbae3f516de935a25dcc12d1"
+  integrity sha512-AiJ/Rs0awjICs2FioTnHSh+Np5dhYSkyRczKy3wKjp8qjLhr1Ov+GiHrUQNdX8ou1LMuznpIME990AZsa/tR8g==
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+  dependencies:
+    "@types/trusted-types" "^2.0.2"
+
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 lit@^2.1.2:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/lit/-/lit-2.2.1.tgz#4b679e1d8cb6c7977b64921b1ea3eca7850ca1dd"
@@ -8990,13 +10158,21 @@ lodash.debounce@^4.0.8:
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 lodash.flattendeep@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
   integrity sha1-+wMJF/hqMTTlvJvsDWngAT3f7bI=
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 lodash.ismatch@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.ismatch/-/lodash.ismatch-4.4.0.tgz#756cb5150ca3ba6f11085a78849645f188f85f37"
@@ -9043,10 +10219,17 @@ lodash.uniq@^4.5.0:
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.7.0:
 =======
 lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.7.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.7.0:
+=======
+lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.7.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -9059,11 +10242,14 @@ log-symbols@^2.2.0:
     chalk "^2.0.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 lottie-web@^5.8.1:
   version "5.9.1"
   resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.9.1.tgz#0090e575de74e49843606c1722767604e068f061"
   integrity sha512-3uKtU6BhIK6ZRCE/QyiXq/KuRvPeEAz/VFwqd99jPbpgFY9gHLw2krqvcuCFGepeW94BipS/B3TqIfTc9pUeZg==
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 log-symbols@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-4.1.0.tgz#3fbdbb95b4683ac9fc785111e792e558d4abd503"
@@ -9086,7 +10272,16 @@ lottie-web@^5.7.8:
   version "5.7.8"
   resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.7.8.tgz#c7a2e42983bcb42093590a03ccdde8741d3f960e"
   integrity sha512-VxKCZk33GwZac6mVHvT3grUFR/zrMsW85M7vxQPrgpJOP2IhcnjMbuD0h7muBkXgw84K9KmGulmcyzvhpzSMAg==
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+lottie-web@^5.8.1:
+  version "5.9.1"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.9.1.tgz#0090e575de74e49843606c1722767604e068f061"
+  integrity sha512-3uKtU6BhIK6ZRCE/QyiXq/KuRvPeEAz/VFwqd99jPbpgFY9gHLw2krqvcuCFGepeW94BipS/B3TqIfTc9pUeZg==
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 
 lru-cache@^6.0.0:
   version "6.0.0"
@@ -9354,10 +10549,17 @@ minimist-options@4.1.0:
     kind-of "^6.0.3"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
 =======
 minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
+=======
+minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
@@ -9448,13 +10650,21 @@ mixin-deep@^1.2.0:
     is-extendable "^1.0.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 mkdirp-classic@^0.5.2:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/mkdirp-classic/-/mkdirp-classic-0.5.3.tgz#fa10c9115cc6d8865be221ba47ee9bed78601113"
   integrity sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 mkdirp-infer-owner@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/mkdirp-infer-owner/-/mkdirp-infer-owner-2.0.0.tgz#55d3b368e7d89065c38f32fd38e638f0ab61d316"
@@ -9482,7 +10692,10 @@ modify-values@^1.0.0:
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 module-deps@^6.2.3:
   version "6.2.3"
   resolved "https://registry.yarnpkg.com/module-deps/-/module-deps-6.2.3.tgz#15490bc02af4b56cf62299c7c17cba32d71a96ee"
@@ -9504,7 +10717,12 @@ module-deps@^6.2.3:
     through2 "^2.0.0"
     xtend "^4.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -9680,13 +10898,21 @@ node-releases@^1.1.70:
   integrity sha512-zR6HoT6LrLCRBwukmrVbHv0EpEQjksO6GmFcZQQuCAy139BEsoVKPYnf3jongYW83fAa1torLGYwxxky/p28sg==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 node-releases@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.1.tgz#3d1d395f204f1f2f29a54358b9fb678765ad2fc5"
   integrity sha512-CqyzN6z7Q6aMeF/ktcMVTzhAHCEpf8SOarwpzpf8pNBY2k5/oM34UHldUwp8VKI7uxct2HxSRdJjBaZeESzcxA==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 nopt@^4.0.1:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/nopt/-/nopt-4.0.3.tgz#a375cad9d02fd921278d954c2254d5aa57e15e48"
@@ -9842,10 +11068,17 @@ npm-registry-fetch@^9.0.0:
     npm-package-arg "^8.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 npm-run-path@^4.0.1:
 =======
 npm-run-path@^4.0.0, npm-run-path@^4.0.1:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+npm-run-path@^4.0.0, npm-run-path@^4.0.1:
+=======
+npm-run-path@^4.0.1:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-4.0.1.tgz#b7ecd1e5ed53da8e37a55e1c2269e0b97ed748ea"
   integrity sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==
@@ -10011,10 +11244,17 @@ on-finished@~2.3.0:
     ee-first "1.1.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 once@^1.3.0, once@^1.4.0:
 =======
 once@^1.3.0, once@^1.3.1, once@^1.4.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+once@^1.3.0, once@^1.3.1, once@^1.4.0:
+=======
+once@^1.3.0, once@^1.4.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
   integrity sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
@@ -10103,7 +11343,10 @@ osenv@^0.1.4:
     os-tmpdir "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 ospath@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/ospath/-/ospath-1.2.2.tgz#1276639774a3f8ef2572f7fe4280e0ea4550c07b"
@@ -10116,7 +11359,12 @@ outpipe@^1.1.0:
   dependencies:
     shell-quote "^1.4.2"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 p-finally@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
@@ -10137,7 +11385,10 @@ p-limit@^2.2.0:
     p-try "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 p-limit@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-3.1.0.tgz#e1daccbe78d0d1388ca18c64fea38e3e57e3706b"
@@ -10145,7 +11396,12 @@ p-limit@^3.1.0:
   dependencies:
     yocto-queue "^0.1.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 p-locate@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
@@ -10166,7 +11422,10 @@ p-map-series@^2.1.0:
   integrity sha512-RpYIIK1zXSNEOdwxcfe7FdvGcs7+y5n8rifMhMNWvaxRNMPINJHF5GDeuVxWqnfrcHPSCnp7Oo5yNXHId9Av2Q==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 p-map@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-3.0.0.tgz#d704d9af8a2ba684e2600d9a215983d4141a979d"
@@ -10174,7 +11433,12 @@ p-map@^3.0.0:
   dependencies:
     aggregate-error "^3.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 p-map@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-4.0.0.tgz#bb2f95a5eda2ec168ec9274e06a747c3e2904d2b"
@@ -10225,7 +11489,10 @@ p-waterfall@^2.1.1:
     p-reduce "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 package-hash@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/package-hash/-/package-hash-4.0.0.tgz#3537f654665ec3cc38827387fc904c163c54f506"
@@ -10236,7 +11503,12 @@ package-hash@^4.0.0:
     lodash.flattendeep "^4.4.0"
     release-zalgo "^1.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 pacote@^11.2.6:
   version "11.3.5"
   resolved "https://registry.yarnpkg.com/pacote/-/pacote-11.3.5.tgz#73cf1fc3772b533f575e39efa96c50be8c3dc9d2"
@@ -10521,13 +11793,21 @@ path-parse@^1.0.7:
   integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 path-platform@~0.11.15:
   version "0.11.15"
   resolved "https://registry.yarnpkg.com/path-platform/-/path-platform-0.11.15.tgz#e864217f74c36850f0852b78dc7bf7d4a5721bf2"
   integrity sha1-6GQhf3TDaFDwhSt43Hv31KVyG/I=
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 path-type@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-3.0.0.tgz#cef31dc8e0a1a3bb0d105c0cd97cf3bf47f4e36f"
@@ -10582,6 +11862,7 @@ picomatch@^2.0.5, picomatch@^2.2.1, picomatch@^2.2.2:
   integrity sha512-q0M/9eZHzmr0AulXyPwNfZjtwZ/RBZlbN3K3CErVrk50T2ASYI7Bye0EvekFY3IP1Nt2DHu0re+V2ZHIpMkuWg==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 picomatch@^2.2.3:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
@@ -10591,6 +11872,17 @@ pify@^2.3.0:
 =======
 pify@^2.2.0, pify@^2.3.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+pify@^2.2.0, pify@^2.3.0:
+=======
+picomatch@^2.2.3:
+  version "2.3.1"
+  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
+  integrity sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==
+
+pify@^2.3.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha1-7RQaasBDqEnqWISY59yosVMw6Qw=
@@ -10611,7 +11903,10 @@ pify@^5.0.0:
   integrity sha512-eW/gHNMlxdSP6dmG6uJip6FXN0EQBwm2clYYd8Wul42Cwu/DK8HEftzsapcNdYe2MfLiIwZqsDk2RDEsTE79hA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 pino-std-serializers@^3.1.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/pino-std-serializers/-/pino-std-serializers-3.2.0.tgz#b56487c402d882eb96cd67c257868016b61ad671"
@@ -10630,7 +11925,12 @@ pino@^6.13.0:
     quick-format-unescaped "^4.0.3"
     sonic-boom "^1.0.2"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 pkg-dir@^4.1.0, pkg-dir@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
@@ -11119,7 +12419,10 @@ protocols@^1.1.0, protocols@^1.4.0:
   integrity sha512-IgjKyaUSjsROSO8/D49Ab7hP8mJgTYcqApOqdPhLoPxAplXmkp+zRvsrSQjFn5by0rhm4VH0GAUELIPpx7B1yg==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 proxy-addr@^2.0.7:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.7.tgz#f19fe69ceab311eeb94b42e70e8c2070f9ba1025"
@@ -11133,7 +12436,12 @@ proxy-from-env@1.0.0:
   resolved "https://registry.yarnpkg.com/proxy-from-env/-/proxy-from-env-1.0.0.tgz#33c50398f70ea7eb96d21f7b817630a55791c7ee"
   integrity sha1-M8UDmPcOp+uW0h97gXYwpVeRx+4=
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 psl@^1.1.28:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
@@ -11212,10 +12520,17 @@ query-string@^6.13.8:
     strict-uri-encode "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 querystring-es3@^0.2.0:
 =======
 querystring-es3@^0.2.0, querystring-es3@~0.2.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+querystring-es3@^0.2.0, querystring-es3@~0.2.0:
+=======
+querystring-es3@^0.2.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
   integrity sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM=
@@ -11231,13 +12546,21 @@ queue-microtask@^1.1.2, queue-microtask@^1.2.2:
   integrity sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 quick-format-unescaped@^4.0.3:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/quick-format-unescaped/-/quick-format-unescaped-4.0.4.tgz#93ef6dd8d3453cbc7970dd614fad4c5954d6b5a7"
   integrity sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
@@ -11278,7 +12601,10 @@ read-cmd-shim@^2.0.0:
   integrity sha512-HJpV9bQpkl6KwjxlJcBoqu9Ba0PQg8TqSNIOrulGt54a0uup0HtevreFHzYzkm0lpnleRdNBzXznKrgxglEHQw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 read-only-stream@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/read-only-stream/-/read-only-stream-2.0.0.tgz#2724fd6a8113d73764ac288d4386270c1dbf17f0"
@@ -11286,7 +12612,12 @@ read-only-stream@^2.0.0:
   dependencies:
     readable-stream "^2.0.2"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 read-package-json-fast@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/read-package-json-fast/-/read-package-json-fast-2.0.2.tgz#2dcb24d9e8dd50fb322042c8c35a954e6cc7ac9e"
@@ -11317,6 +12648,7 @@ read-package-json@^3.0.0:
 
 read-package-json@^4.1.1:
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/read-package-json/-/read-package-json-4.1.2.tgz#b444d047de7c75d4a160cb056d00c0693c1df703"
   integrity sha512-Dqer4pqzamDE2O4M55xp1qZMuLPqi4ldk2ya648FOMHRjwMzFhuxVrG04wd0c38IsvkVdr3vgHI6z+QTPdAjrQ==
@@ -11325,6 +12657,16 @@ read-package-json@^4.1.1:
   resolved "https://registry.yarnpkg.com/read-package-json/-/read-package-json-4.1.1.tgz#153be72fce801578c1c86b8ef2b21188df1b9eea"
   integrity sha512-P82sbZJ3ldDrWCOSKxJT0r/CXMWR0OR3KRh55SgKo3p91GSIEEC32v3lSHAvO/UcH3/IoL7uqhOFBduAnwdldw==
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/read-package-json/-/read-package-json-4.1.1.tgz#153be72fce801578c1c86b8ef2b21188df1b9eea"
+  integrity sha512-P82sbZJ3ldDrWCOSKxJT0r/CXMWR0OR3KRh55SgKo3p91GSIEEC32v3lSHAvO/UcH3/IoL7uqhOFBduAnwdldw==
+=======
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/read-package-json/-/read-package-json-4.1.2.tgz#b444d047de7c75d4a160cb056d00c0693c1df703"
+  integrity sha512-Dqer4pqzamDE2O4M55xp1qZMuLPqi4ldk2ya648FOMHRjwMzFhuxVrG04wd0c38IsvkVdr3vgHI6z+QTPdAjrQ==
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   dependencies:
     glob "^7.1.1"
     json-parse-even-better-errors "^2.3.0"
@@ -11384,10 +12726,17 @@ read@1, read@~1.0.1:
     mute-stream "~0.0.4"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1, readable-stream@^3.6.0:
 =======
 readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1, readable-stream@^3.4.0, readable-stream@^3.5.0, readable-stream@^3.6.0:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1, readable-stream@^3.4.0, readable-stream@^3.5.0, readable-stream@^3.6.0:
+=======
+readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1, readable-stream@^3.6.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.6.0.tgz#337bbda3adc0706bd3e024426a286d4b4b2c9198"
   integrity sha512-BViHy7LKeTz4oNnkcLJ+lVSL6vpiFeX6/d3oSH8zCW7UxP2onchk+vTGB143xuFjHS3deTgkKoXXymXqymiIdA==
@@ -11451,7 +12800,10 @@ redent@^3.0.0:
     strip-indent "^3.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 regenerate-unicode-properties@^10.0.1:
   version "10.0.1"
   resolved "https://registry.yarnpkg.com/regenerate-unicode-properties/-/regenerate-unicode-properties-10.0.1.tgz#7f442732aa7934a3740c779bb9b3340dccc1fb56"
@@ -11459,7 +12811,12 @@ regenerate-unicode-properties@^10.0.1:
   dependencies:
     regenerate "^1.4.2"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/regenerate-unicode-properties/-/regenerate-unicode-properties-8.2.0.tgz#e5de7111d655e7ba60c057dbe9ff37c87e65cdec"
@@ -11637,7 +12994,10 @@ require-directory@^2.1.1:
   integrity sha1-jGStX9MNqxyXbiNE/+f3kqam30I=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 require-from-string@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/require-from-string/-/require-from-string-2.0.2.tgz#89a7fdd938261267318eafe14f9c32e598c36909"
@@ -11648,7 +13008,12 @@ require-main-filename@^2.0.0:
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-2.0.0.tgz#d0b329ecc7cc0f61649f62215be69af54aa8989b"
   integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 resolve-cwd@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/resolve-cwd/-/resolve-cwd-3.0.0.tgz#0f0075f1bb2544766cf73ba6a6e2adfebcb13f2d"
@@ -11906,8 +13271,11 @@ rxjs@^6.6.0:
     tslib "^1.9.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 rxjs@^7.5.1:
   version "7.5.2"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.5.2.tgz#11e4a3a1dfad85dbf7fb6e33cbba17668497490b"
@@ -11916,7 +13284,13 @@ rxjs@^7.5.1:
     tslib "^2.1.0"
 
 safe-buffer@5.2.1, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
@@ -11958,6 +13332,7 @@ saxes@^3.1.9:
     xmlchars "^2.1.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "semver@2 || 3 || 4 || 5", semver@^5.4.1, semver@^5.5.0, semver@^5.6.0, semver@^5.7.1:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
@@ -11969,6 +13344,8 @@ semver@7.0.0:
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 secure-json-parse@^2.0.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/secure-json-parse/-/secure-json-parse-2.4.0.tgz#5aaeaaef85c7a417f76271a4f5b0cc3315ddca85"
@@ -11989,7 +13366,22 @@ semver@7.0.0:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+"semver@2 || 3 || 4 || 5", semver@^5.4.1, semver@^5.5.0, semver@^5.6.0, semver@^5.7.1:
+  version "5.7.1"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
+  integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
+
+semver@7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-7.0.0.tgz#5f3ca35761e47e05b206c6daff2cf814f0316b8e"
+  integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
+
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 semver@^6.0.0, semver@^6.1.1, semver@^6.1.2, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
@@ -12162,13 +13554,21 @@ shebang-regex@^3.0.0:
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 shell-quote@^1.4.2, shell-quote@^1.6.1:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.7.3.tgz#aa40edac170445b9a431e17bb62c0b881b9c4123"
   integrity sha512-Vpfqwm4EnqGdlsBFNmHhxhElJYrdfcxPThu+ryKS5J8L/fhAwLazFZtq+S+TWZ9ANj2piSQLGj6NQg+lKPmxrw==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 shelljs@^0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.4.tgz#de7684feeb767f8716b326078a8a00875890e3c2"
@@ -12206,13 +13606,21 @@ signal-exit@^3.0.3:
   integrity sha512-wnD2ZE+l+SPC/uoS0vXeE9L1+0wuaMqKlfz9AMUo38JsyLSBWSFcHR1Rri62LZc12vLr1gb3jl7iwQhgwpAbGQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 simple-concat@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/simple-concat/-/simple-concat-1.0.1.tgz#f46976082ba35c2263f1c8ab5edfe26c41c9552f"
   integrity sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 simple-swizzle@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
@@ -12235,7 +13643,10 @@ slice-ansi@^2.1.0:
     is-fullwidth-code-point "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 slice-ansi@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-3.0.0.tgz#31ddc10930a1b7e0b67b08c96c2f49b77a789787"
@@ -12254,7 +13665,12 @@ slice-ansi@^4.0.0:
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 slide@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
@@ -12328,6 +13744,7 @@ socks@^2.3.3:
 
 socks@^2.6.1:
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.2.tgz#ec042d7960073d40d94268ff3bb727dc685f111a"
   integrity sha512-zDZhHhZRY9PxRruRMR7kMhnf3I8hDs4S3f9RecfnGxvcBHQcKcIH/oUcEWffsfl1XxdYlA7nnlGbbTvPz9D8gA==
@@ -12335,6 +13752,8 @@ socks@^2.6.1:
     ip "^1.1.5"
     smart-buffer "^4.2.0"
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.1.tgz#989e6534a07cf337deb1b1c94aaa44296520d30e"
   integrity sha512-kLQ9N5ucj8uIcxrDwjm0Jsqk06xdpBjGNQtpXy4Q8/QY2k+fY7nZH8CARy+hkbG+SGAovmzzuauCpBlb8FrnBA==
@@ -12349,7 +13768,18 @@ sonic-boom@^1.0.2:
   dependencies:
     atomic-sleep "^1.0.0"
     flatstr "^1.0.12"
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.2.tgz#ec042d7960073d40d94268ff3bb727dc685f111a"
+  integrity sha512-zDZhHhZRY9PxRruRMR7kMhnf3I8hDs4S3f9RecfnGxvcBHQcKcIH/oUcEWffsfl1XxdYlA7nnlGbbTvPz9D8gA==
+  dependencies:
+    ip "^1.1.5"
+    smart-buffer "^4.2.0"
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 
 sort-keys@^2.0.0:
   version "2.0.0"
@@ -12418,7 +13848,10 @@ sourcemap-codec@^1.4.4:
   integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 spawn-wrap@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/spawn-wrap/-/spawn-wrap-2.0.0.tgz#103685b8b8f9b79771318827aa78650a610d457e"
@@ -12431,7 +13864,12 @@ spawn-wrap@^2.0.0:
     signal-exit "^3.0.2"
     which "^2.0.1"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 spdx-correct@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/spdx-correct/-/spdx-correct-3.1.1.tgz#dece81ac9c1e6713e5f7d1b6f17d468fa53d89a9"
@@ -12617,7 +14055,10 @@ stream-http@^2.7.2:
     xtend "^4.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 stream-http@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/stream-http/-/stream-http-3.2.0.tgz#1872dfcf24cb15752677e40e5c3f9cc1926028b5"
@@ -12636,20 +14077,33 @@ stream-splicer@^2.0.0:
     inherits "^2.0.1"
     readable-stream "^2.0.2"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 strict-uri-encode@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
   integrity sha1-ucczDHBChi9rFC3CdLvMWGbONUY=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 string-similarity@^4.0.1:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/string-similarity/-/string-similarity-4.0.4.tgz#42d01ab0b34660ea8a018da8f56a3309bb8b2a5b"
   integrity sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 string-width@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-1.0.2.tgz#118bdf5b8cdc51a2a7e70d211e07e2b0b9b107d3"
@@ -12836,7 +14290,10 @@ supports-color@^7.0.0, supports-color@^7.1.0:
     has-flag "^4.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 supports-color@^8.1.1:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-8.1.1.tgz#cd6fc17e28500cff56c1b86c0a7fd4a54a73005c"
@@ -12844,7 +14301,12 @@ supports-color@^8.1.1:
   dependencies:
     has-flag "^4.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
@@ -12960,7 +14422,10 @@ terser@^5.6.0:
     source-map-support "~0.5.19"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 test-exclude@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/test-exclude/-/test-exclude-6.0.0.tgz#04a8698661d805ea6fa293b6cb9e63ac044ef15e"
@@ -12970,7 +14435,12 @@ test-exclude@^6.0.0:
     glob "^7.1.4"
     minimatch "^3.0.4"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 text-extensions@^1.0.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/text-extensions/-/text-extensions-1.9.0.tgz#1853e45fee39c945ce6f6c36b2d659b5aabc2a26"
@@ -12995,10 +14465,17 @@ through2@^2.0.0, through2@~2.0.3:
     xtend "~4.0.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 through2@^4.0.0:
 =======
 through2@^4.0.0, through2@^4.0.2:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+through2@^4.0.0, through2@^4.0.2:
+=======
+through2@^4.0.0:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/through2/-/through2-4.0.2.tgz#a7ce3ac2a7a8b0b966c80e7c49f0484c3b239764"
   integrity sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw==
@@ -13006,10 +14483,17 @@ through2@^4.0.0, through2@^4.0.2:
     readable-stream "3"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6:
 =======
 through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6, through@^2.3.8:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6, through@^2.3.8:
+=======
+through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
@@ -13147,7 +14631,10 @@ trim-newlines@^3.0.0:
   integrity sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 ts-node@^10.5.0:
   version "10.5.0"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.5.0.tgz#618bef5854c1fbbedf5e31465cbb224a1d524ef9"
@@ -13167,7 +14654,12 @@ ts-node@^10.5.0:
     v8-compile-cache-lib "^3.0.0"
     yn "3.1.1"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 tslib@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
@@ -13245,10 +14737,17 @@ type-fest@^0.6.0:
   integrity sha512-q+MB8nYR1KDLrgr4G5yemftpMC7/QLqVndBmEEdqzmNj5dcFOO4Oo8qlwZE3ULT3+Zim1F8Kq4cBnikNhlCMlg==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 type-fest@^0.8.1:
 =======
 type-fest@^0.8.0, type-fest@^0.8.1:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+type-fest@^0.8.0, type-fest@^0.8.1:
+=======
+type-fest@^0.8.1:
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
@@ -13272,6 +14771,7 @@ typescript@^3.7.5:
 
 uglify-js@^3.1.4:
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "3.15.3"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.15.3.tgz#9aa82ca22419ba4c0137642ba0df800cb06e0471"
   integrity sha512-6iCVm2omGJbsu3JWac+p6kUiOpg3wFO2f8lIXjfEb8RrmLjzog1wTPMmwKB7swfzzqxj9YM+sGUM++u1qN4qJg==
@@ -13280,6 +14780,16 @@ uglify-js@^3.1.4:
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.15.0.tgz#2d6a689d94783cab43975721977a13c2afec28f1"
   integrity sha512-x+xdeDWq7FiORDvyIJ0q/waWd4PhjBNOm5dQUOq2AKC0IEjxOS66Ha9tctiVDGcRQuh69K7fgU5oRuTK4cysSg==
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+  version "3.15.0"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.15.0.tgz#2d6a689d94783cab43975721977a13c2afec28f1"
+  integrity sha512-x+xdeDWq7FiORDvyIJ0q/waWd4PhjBNOm5dQUOq2AKC0IEjxOS66Ha9tctiVDGcRQuh69K7fgU5oRuTK4cysSg==
+=======
+  version "3.15.3"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.15.3.tgz#9aa82ca22419ba4c0137642ba0df800cb06e0471"
+  integrity sha512-6iCVm2omGJbsu3JWac+p6kUiOpg3wFO2f8lIXjfEb8RrmLjzog1wTPMmwKB7swfzzqxj9YM+sGUM++u1qN4qJg==
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 
 uid-number@0.0.6:
   version "0.0.6"
@@ -13292,13 +14802,21 @@ umask@^1.1.0:
   integrity sha1-8pzr8B31F5ErtY/5xOUP3o4zMg0=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 umd@^3.0.0:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/umd/-/umd-3.0.3.tgz#aa9fe653c42b9097678489c01000acb69f0b26cf"
   integrity sha512-4IcGSufhFshvLNcMCV80UnQVlZ5pMOC8mvNPForqwA4+lzYQuetTESLDQkeLmihq8bRcnpbQa48Wb8Lh16/xow==
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 unbox-primitive@^1.0.0, unbox-primitive@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/unbox-primitive/-/unbox-primitive-1.0.1.tgz#085e215625ec3162574dc8859abee78a59b14471"
@@ -13622,7 +15140,10 @@ w3c-xmlserializer@^1.1.2:
     xml-name-validator "^3.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 watchify@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/watchify/-/watchify-4.0.0.tgz#53b002d51e7b0eb640b851bb4de517a689973392"
@@ -13636,7 +15157,12 @@ watchify@^4.0.0:
     through2 "^4.0.2"
     xtend "^4.0.2"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 wcwidth@^1.0.0, wcwidth@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/wcwidth/-/wcwidth-1.0.1.tgz#f0b0dcf915bc5ff1528afadb2c0e17b532da2fe8"
@@ -13709,7 +15235,10 @@ which-boxed-primitive@^1.0.2:
     is-symbol "^1.0.3"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 which-module@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
@@ -13727,7 +15256,12 @@ which-typed-array@^1.1.2:
     has-tostringtag "^1.0.0"
     is-typed-array "^1.1.7"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 which@^1.2.9, which@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/which/-/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
@@ -13767,7 +15301,10 @@ wordwrap@^1.0.0:
   integrity sha1-J1hIEIkUVqQXHI0CJkQa3pDLyus=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
@@ -13777,7 +15314,12 @@ wrap-ansi@^6.2.0:
     string-width "^4.1.0"
     strip-ansi "^6.0.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
@@ -13911,7 +15453,10 @@ yargs-parser@20.2.4:
   integrity sha512-WOkpgNhPTlE73h4VFAFsOnomJVaovO8VqLDzy5saChRBFQFBoMYirowyW+Q9HB4HFF4Z7VZTiG3iSzJJA29yRA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 yargs-parser@^18.1.2:
   version "18.1.3"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-18.1.3.tgz#be68c4975c6b2abf469236b0c870362fab09a7b0"
@@ -13920,7 +15465,12 @@ yargs-parser@^18.1.2:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 yargs-parser@^20.2.2:
   version "20.2.7"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.7.tgz#61df85c113edfb5a7a4e36eb8aa60ef423cbc90a"
@@ -13932,7 +15482,10 @@ yargs-parser@^20.2.3:
   integrity sha512-y11nGElTIV+CT3Zv9t7VKl+Q3hTQoT9a1Qzezhhl6Rp21gJ/IVTW7Z3y9EWXhuUBC2Shnf+DX0antecpAwSP8w==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 yargs@^15.0.2:
   version "15.4.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.4.1.tgz#0d87a16de01aee9d8bec2bfbf74f67851730f4f8"
@@ -13950,7 +15503,12 @@ yargs@^15.0.2:
     y18n "^4.0.0"
     yargs-parser "^18.1.2"
 
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
+=======
+=======
+>>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+>>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 yargs@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-16.2.0.tgz#1c82bf0f6b6a66eafce7ef30e376f49a12477f66"
