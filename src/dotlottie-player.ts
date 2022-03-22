@@ -1,4 +1,6 @@
-import { customElement, LitElement, html, property, query, TemplateResult } from 'lit-element';
+import { LitElement, html } from 'lit';
+import { customElement, property, query } from 'lit/decorators.js';
+import { TemplateResult } from 'lit/html.js';
 import * as lottie from 'lottie-web/build/player/lottie_svg';
 import JSZip from 'jszip/dist/jszip';
 
@@ -592,27 +594,46 @@ export class DotLottiePlayer extends LitElement {
   }
 
   protected renderControls() {
-    const isPlaying = this.currentState === PlayerState.Playing;
-    const isPaused = this.currentState === PlayerState.Paused;
-    const isStopped = this.currentState === PlayerState.Stopped;
+    const isPlaying: boolean = this.currentState === PlayerState.Playing;
+    const isPaused: boolean = this.currentState === PlayerState.Paused;
+    const isStopped: boolean = this.currentState === PlayerState.Stopped;
 
     return html`
-      <div class="toolbar">
-        <button @click=${this.togglePlay} class=${isPlaying || isPaused ? 'active' : ''} style="align-items:center;">
+      <div id="lottie-controls" aria-label="lottie-animation-controls" class="toolbar">
+        <button
+          id="lottie-play-button"
+          @click=${this.togglePlay}
+          class=${isPlaying || isPaused ? 'active' : ''}
+          style="align-items:center;"
+          tabindex="0"
+          aria-label="play-pause"
+        >
           ${isPlaying
             ? html`
-                <svg width="24" height="24">
+                <svg width="24" height="24" aria-hidden="true" focusable="false">
                   <path d="M14.016 5.016H18v13.969h-3.984V5.016zM6 18.984V5.015h3.984v13.969H6z" />
                 </svg>
               `
             : html`
-                <svg width="24" height="24"><path d="M8.016 5.016L18.985 12 8.016 18.984V5.015z" /></svg>
+                <svg width="24" height="24" aria-hidden="true" focusable="false">
+                  <path d="M8.016 5.016L18.985 12 8.016 18.984V5.015z" />
+                </svg>
               `}
         </button>
-        <button @click=${this.stop} class=${isStopped ? 'active' : ''} style="align-items:center;">
-          <svg width="24" height="24"><path d="M6 6h12v12H6V6z" /></svg>
+        <button
+          id="lottie-stop-button"
+          @click=${this.stop}
+          class=${isStopped ? 'active' : ''}
+          style="align-items:center;"
+          tabindex="0"
+          aria-label="stop"
+        >
+          <svg width="24" height="24" aria-hidden="true" focusable="false">
+            <path d="M6 6h12v12H6V6z" />
+          </svg>
         </button>
         <input
+          id="lottie-seeker-input"
           class="seeker"
           type="range"
           min="0"
@@ -627,9 +648,22 @@ export class DotLottiePlayer extends LitElement {
           @mouseup=${() => {
             this._prevState === PlayerState.Playing && this.play();
           }}
+          aria-valuemin="1"
+          aria-valuemax="100"
+          role="slider"
+          aria-valuenow=${this.seeker}
+          tabindex="0"
+          aria-label="lottie-seek-input"
         />
-        <button @click=${this.toggleLooping} class=${this.loop ? 'active' : ''} style="align-items:center;">
-          <svg width="24" height="24">
+        <button
+          id="lottie-loop-toggle"
+          @click=${this.toggleLooping}
+          class=${this.loop ? 'active' : ''}
+          style="align-items:center;"
+          tabindex="0"
+          aria-label="loop-toggle"
+        >
+          <svg width="24" height="24" aria-hidden="true" focusable="false">
             <path
               d="M17.016 17.016v-4.031h1.969v6h-12v3l-3.984-3.984 3.984-3.984v3h10.031zM6.984 6.984v4.031H5.015v-6h12v-3l3.984 3.984-3.984 3.984v-3H6.984z"
             />
@@ -640,14 +674,14 @@ export class DotLottiePlayer extends LitElement {
   }
 
   render(): TemplateResult | void {
-    const className = this.controls ? 'controls' : '';
-
+    const className: string = this.controls ? 'main controls' : 'main';
+    const animationClass: string = this.controls ? 'animation controls' : 'animation';
     return html`
-      <div class=${'main ' + className}>
-        <div class="animation" style=${'background:' + this.background}>
+      <div id="animation-container" class=${className} lang="en" role="img">
+        <div id="animation" class=${animationClass} style="background:${this.background};">
           ${this.currentState === PlayerState.Error
             ? html`
-                <div class="error">⚠</div>
+                <div class="error">⚠️</div>
               `
             : undefined}
         </div>
