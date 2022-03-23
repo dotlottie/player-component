@@ -159,6 +159,7 @@ export default css`
     display: flex;
     margin: auto;
     justify-content: center;
+    margin: auto;
     height: 100%;
     align-items: center;
   }
