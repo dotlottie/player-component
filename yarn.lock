@@ -1779,6 +1779,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@gar/promisify@^1.0.1":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
@@ -2477,6 +2478,8 @@
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 "@babel/types@^7.16.0", "@babel/types@^7.16.7", "@babel/types@^7.16.8", "@babel/types@^7.17.0":
   version "7.17.0"
   resolved "https://registry.yarnpkg.com/@babel/types/-/types-7.17.0.tgz#a826e368bccb6b3d84acd76acad5c0d87342390b"
@@ -2494,6 +2497,7 @@
   version "0.7.0"
   resolved "https://registry.yarnpkg.com/@cspotcode/source-map-support/-/source-map-support-0.7.0.tgz#4789840aa859e46d2f3173727ab707c66bf344f5"
   integrity sha512-X4xqRHqN8ACt2aHVe51OxeA2HjbcL4MqFqXkrmQszJ1NOUuUu5u6Vqx/0lZSVNku7velL5FC/s5uEAj1lsBMhA==
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
@@ -3195,6 +3199,8 @@
   integrity sha512-bPHp6Ji8b41szTOcaP63VlnbbO5Ny6dwAATtY6JTjh5N2OLrb5Qk/Th5cRkRQhkWCt+EJsYrNB0MiL+Gpn6e3g==
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
   dependencies:
     "@cspotcode/source-map-consumer" "0.8.0"
 
@@ -4003,6 +4009,11 @@
     npmlog "^4.1.2"
     write-file-atomic "^3.0.3"
 
+"@lit/reactive-element@^1.3.0":
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/@lit/reactive-element/-/reactive-element-1.3.1.tgz#3021ad0fa30a75a41212c5e7f1f169c5762ef8bb"
+  integrity sha512-nOJARIr3pReqK3hfFCSW2Zg/kFcFsSAlIE7z4a0C9D2dPrgD/YSn3ZP2ET/rxKB65SXyG7jJbkynBRm+tGlacw==
+
 "@mrmlnc/readdir-enhanced@^2.2.1":
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/@mrmlnc/readdir-enhanced/-/readdir-enhanced-2.2.1.tgz#524af240d1a360527b730475ecfa1344aa540dde"
@@ -4045,6 +4056,7 @@
 "@npmcli/fs@^1.0.0":
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-1.1.1.tgz#72f719fe935e687c56a4faecf3c03d06ba593257"
   integrity sha512-8KG5RD0GVP4ydEzRn/I4BNDuxDtqVbOdm8675T49OIG/NGhaK0pjPX7ZcDlvKYbA+ulvVK3ztfcF4uBdOxuJbQ==
@@ -4063,6 +4075,11 @@
   integrity sha512-8KG5RD0GVP4ydEzRn/I4BNDuxDtqVbOdm8675T49OIG/NGhaK0pjPX7ZcDlvKYbA+ulvVK3ztfcF4uBdOxuJbQ==
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@npmcli/fs/-/fs-1.1.1.tgz#72f719fe935e687c56a4faecf3c03d06ba593257"
+  integrity sha512-8KG5RD0GVP4ydEzRn/I4BNDuxDtqVbOdm8675T49OIG/NGhaK0pjPX7ZcDlvKYbA+ulvVK3ztfcF4uBdOxuJbQ==
+>>>>>>> ad17e3e (fix: centered error icon)
   dependencies:
     "@gar/promisify" "^1.0.1"
     semver "^7.3.5"
@@ -4145,6 +4162,7 @@
 "@octokit/core@^3.5.1":
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@octokit/core/-/core-3.6.0.tgz#3376cb9f3008d9b3d110370d90e0a1fcd5fe6085"
   integrity sha512-7RKRKuA4xTjMhY+eG3jthb3hlZCsOwg3rztWh75Xc+ShDWOfDDATWbeZpAHBNRpm4Tv9WgBMOy1zEJYXG6NJ7Q==
@@ -4166,6 +4184,8 @@
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@octokit/core/-/core-3.6.0.tgz#3376cb9f3008d9b3d110370d90e0a1fcd5fe6085"
   integrity sha512-7RKRKuA4xTjMhY+eG3jthb3hlZCsOwg3rztWh75Xc+ShDWOfDDATWbeZpAHBNRpm4Tv9WgBMOy1zEJYXG6NJ7Q==
@@ -4173,8 +4193,11 @@
     "@octokit/auth-token" "^2.4.4"
     "@octokit/graphql" "^4.5.8"
     "@octokit/request" "^5.6.3"
+<<<<<<< HEAD
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
     "@octokit/request-error" "^2.0.5"
     "@octokit/types" "^6.0.3"
     before-after-hook "^2.2.0"
@@ -4239,6 +4262,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@octokit/request@^5.6.0", "@octokit/request@^5.6.3":
 =======
 "@octokit/request@^5.6.0":
@@ -4249,6 +4273,9 @@
 "@octokit/request@^5.6.0", "@octokit/request@^5.6.3":
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+"@octokit/request@^5.6.0", "@octokit/request@^5.6.3":
+>>>>>>> ad17e3e (fix: centered error icon)
   version "5.6.3"
   resolved "https://registry.yarnpkg.com/@octokit/request/-/request-5.6.3.tgz#19a022515a5bba965ac06c9d1334514eb50c48b0"
   integrity sha512-bFJl0I1KVc9jYTe9tdGGpAMPy32dLBXXo1dS/YwSCTL/2nd9XeHsY616RE3HPXDVk+a+dBuzyz5YdlXwcDTr2A==
@@ -4450,20 +4477,26 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 "@types/node@^14.14.31":
   version "14.18.10"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.18.10.tgz#774f43868964f3cfe4ced1f5417fe15818a4eaea"
   integrity sha512-6iihJ/Pp5fsFJ/aEDGyvT4pHGmCpq7ToQ/yf4bl5SbVAvwpspYJ+v3jO7n8UyjhQVHTy+KNszOozDdv+O6sovQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 "@types/normalize-package-data@^2.4.0":
   version "2.4.1"
   resolved "https://registry.yarnpkg.com/@types/normalize-package-data/-/normalize-package-data-2.4.1.tgz#d3357479a0fdfdd5907fe67e17e0a85c906e1301"
@@ -4488,6 +4521,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@types/trusted-types@^2.0.2":
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.2.tgz#fc25ad9943bcac11cceb8168db4f275e0e72e756"
@@ -4495,6 +4529,8 @@
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 "@types/sinonjs__fake-timers@8.1.1":
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/@types/sinonjs__fake-timers/-/sinonjs__fake-timers-8.1.1.tgz#b49c2c70150141a15e0fa7e79cf1f92a72934ce3"
@@ -4505,12 +4541,18 @@
   resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
   integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
 
+"@types/trusted-types@^2.0.2":
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@types/trusted-types/-/trusted-types-2.0.2.tgz#fc25ad9943bcac11cceb8168db4f275e0e72e756"
+  integrity sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==
+
 "@types/yauzl@^2.9.1":
   version "2.9.2"
   resolved "https://registry.yarnpkg.com/@types/yauzl/-/yauzl-2.9.2.tgz#c48e5d56aff1444409e39fa164b0b4d4552a7b7a"
   integrity sha512-8uALY5LTvSuHgloDVUvWP3pIauILm+8/0pDMokuDYIoNsOkSwd5AiHBTSEJjKTDcZr5z8UpgOWZkxBF4iJftoA==
   dependencies:
     "@types/node" "*"
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
@@ -4521,6 +4563,8 @@
   integrity sha512-F5DIZ36YVLE+PN+Zwws4kJogq47hNgX3Nx6WyDJ3kcplxyke3XIzB8uK5n/Lpm1HBsbGzd6nmGehL8cPekP+Tg==
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 
 "@typescript-eslint/eslint-plugin@^2.6.1":
   version "2.34.0"
@@ -4567,6 +4611,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 JSONStream@^1.0.4:
 =======
 JSONStream@^1.0.3, JSONStream@^1.0.4:
@@ -4577,6 +4622,9 @@ JSONStream@^1.0.3, JSONStream@^1.0.4:
 JSONStream@^1.0.4:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+JSONStream@^1.0.3, JSONStream@^1.0.4:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "1.3.5"
   resolved "https://registry.yarnpkg.com/JSONStream/-/JSONStream-1.3.5.tgz#3208c1f08d3a4d99261ab64f92302bc15e111ca0"
   integrity sha512-E+iruNOY8VV9s4JEbe1aNEm6MiszPRr/UfcHMz0TQh1BXSxHK+ASV1R6W4HpjBhSeS+54PIsAMCBmwD06LLsqQ==
@@ -4653,20 +4701,26 @@ acorn@^7.0.0, acorn@^7.1.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 acorn@^8.4.1:
   version "8.7.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.7.0.tgz#90951fde0f8f09df93549481e5fc141445b791cf"
   integrity sha512-V/LGr1APy+PXIwKebEWrkZPwoeoF+w1jiOBUmuxuiUIaOHtob8Qc9BTrYo7VuI5fR8tqsy+buA2WFooR5olqvQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 add-stream@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/add-stream/-/add-stream-1.0.0.tgz#6a7990437ca736d5e1288db92bd3266d5f5cb2aa"
@@ -4826,9 +4880,12 @@ aproba@^2.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 arch@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/arch/-/arch-2.2.0.tgz#1bc47818f305764f23ab3306b0bfc086c5a29d11"
@@ -4840,11 +4897,14 @@ archy@^1.0.0:
   integrity sha1-+cjBN1fMHde8N5rHeyxipcKGjEA=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 are-we-there-yet@~1.1.2:
   version "1.1.5"
   resolved "https://registry.yarnpkg.com/are-we-there-yet/-/are-we-there-yet-1.1.5.tgz#4b35c2944f062a8bfcda66410760350fe9ddfc21"
@@ -5692,6 +5752,7 @@ camelcase-keys@^6.2.2:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 camelcase@^5.3.1:
 =======
 camelcase@^5.0.0, camelcase@^5.3.1:
@@ -5702,6 +5763,9 @@ camelcase@^5.0.0, camelcase@^5.3.1:
 camelcase@^5.3.1:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+camelcase@^5.0.0, camelcase@^5.3.1:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "5.3.1"
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-5.3.1.tgz#e3c9b31569e106811df242f715725a1f4c494320"
   integrity sha512-L28STB170nwWS63UjtlEOE3dldQApaJXZkOI1uMFfzf3rRuPegHaHesyee+YxQ+W6SvRDQV6UrdOdRiR153wJg==
@@ -5803,9 +5867,12 @@ chokidar@^2.1.5:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 chokidar@^3.4.0:
   version "3.5.3"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-3.5.3.tgz#1cf37c8707b932bd1af1ae22c0432e2acd1903bd"
@@ -5822,11 +5889,14 @@ chokidar@^3.4.0:
     fsevents "~2.3.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 chownr@^1.1.4:
   version "1.1.4"
   resolved "https://registry.yarnpkg.com/chownr/-/chownr-1.1.4.tgz#6fc9d7b42d32a583596337666e7d08084da2cc6b"
@@ -5844,20 +5914,26 @@ ci-info@^2.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 ci-info@^3.2.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-3.3.0.tgz#b4ed1fb6818dea4803a55c623041f9165d2066b2"
   integrity sha512-riT/3vI5YpVH6/qomlDnJow6TBee2PBKSEpx3O32EGPYbWGIRsIlGRms3Sm74wYE1JMo8RnO04Hb12+v1J5ICw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/cipher-base/-/cipher-base-1.0.4.tgz#8760e4ecc272f4c363532f926d874aae2c1397de"
@@ -6071,9 +6147,12 @@ columnify@^1.5.4:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 combine-source-map@^0.8.0, combine-source-map@~0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/combine-source-map/-/combine-source-map-0.8.0.tgz#a58d0df042c186fcf822a8e8015f5450d2d79a8b"
@@ -6085,11 +6164,14 @@ combine-source-map@^0.8.0, combine-source-map@~0.8.0:
     source-map "~0.5.3"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 combined-stream@^1.0.6, combined-stream@~1.0.6:
   version "1.0.8"
   resolved "https://registry.yarnpkg.com/combined-stream/-/combined-stream-1.0.8.tgz#c3d45a8b34fd730631a110a8a2520682b31d5a7f"
@@ -6142,6 +6224,7 @@ concat-map@0.0.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 concat-stream@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-2.0.0.tgz#414cf5af790a48c60ab9be4527d56d5e41133cb1"
@@ -6172,6 +6255,9 @@ concat-stream@^2.0.0:
 concat-stream@~1.6.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+concat-stream@^1.6.0, concat-stream@^1.6.1, concat-stream@~1.6.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-1.6.2.tgz#904bdf194cd3122fc675c77fc4ac3d4ff0fd1a34"
   integrity sha512-27HBghJxjiZtIk3Ycvn/4kbJk/1uZuJFfuPEns6LaEvpvG1f0hTea8lilrouyo9mVc2GWdcEZ8OLoGmSADlrCw==
@@ -6183,9 +6269,12 @@ concat-stream@~1.6.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 concat-stream@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/concat-stream/-/concat-stream-2.0.0.tgz#414cf5af790a48c60ab9be4527d56d5e41133cb1"
@@ -6197,11 +6286,14 @@ concat-stream@^2.0.0:
     typedarray "^0.0.6"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 config-chain@^1.1.12:
   version "1.1.13"
   resolved "https://registry.yarnpkg.com/config-chain/-/config-chain-1.1.13.tgz#fad0795aa6a6cdaff9ed1b68e9dff94372c232f4"
@@ -6227,9 +6319,12 @@ constants-browserify@^1.0.0, constants-browserify@~1.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 content-disposition@^0.5.3:
   version "0.5.4"
   resolved "https://registry.yarnpkg.com/content-disposition/-/content-disposition-0.5.4.tgz#8b82b4efac82512a02bb0b1dcec9d2c5e8eb5bfe"
@@ -6238,11 +6333,14 @@ content-disposition@^0.5.3:
     safe-buffer "5.2.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 conventional-changelog-angular@^5.0.12:
   version "5.0.13"
   resolved "https://registry.yarnpkg.com/conventional-changelog-angular/-/conventional-changelog-angular-5.0.13.tgz#896885d63b914a70d4934b59d2fe7bde1832b28c"
@@ -6327,9 +6425,12 @@ conventional-recommended-bump@^6.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 convert-source-map@^1.3.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.8.0.tgz#f3373c32d21b4d780dd8004514684fb791ca4369"
@@ -6338,11 +6439,14 @@ convert-source-map@^1.3.0:
     safe-buffer "~5.1.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 convert-source-map@^1.5.1, convert-source-map@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/convert-source-map/-/convert-source-map-1.7.0.tgz#17a2cb882d7f77d3490585e2ce6c524424a3a442"
@@ -6461,6 +6565,7 @@ cross-spawn@^6.0.4, cross-spawn@^6.0.5:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 cross-spawn@^7.0.3:
 =======
 cross-spawn@^7.0.0, cross-spawn@^7.0.3:
@@ -6471,6 +6576,9 @@ cross-spawn@^7.0.0, cross-spawn@^7.0.3:
 cross-spawn@^7.0.3:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+cross-spawn@^7.0.0, cross-spawn@^7.0.3:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "7.0.3"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-7.0.3.tgz#f73a85b9d5d41d045551c177e2882d4ac85728a6"
   integrity sha512-iRDPJKUPVEND7dHPO8rkbOnPpyDygcDFtWjpeWNCgy8WP2rXcxXL8TskReQl6OrB2G7+UJrags1q15Fudc7G6w==
@@ -6481,6 +6589,7 @@ cross-spawn@^7.0.3:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 crypto-browserify@^3.11.0:
 =======
 crypto-browserify@^3.0.0, crypto-browserify@^3.11.0:
@@ -6491,6 +6600,9 @@ crypto-browserify@^3.0.0, crypto-browserify@^3.11.0:
 crypto-browserify@^3.11.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+crypto-browserify@^3.0.0, crypto-browserify@^3.11.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "3.12.0"
   resolved "https://registry.yarnpkg.com/crypto-browserify/-/crypto-browserify-3.12.0.tgz#396cf9f3137f03e4b8e532c58f698254e00f80ec"
   integrity sha512-fz4spIh+znjO2VjL+IdhEpRJ3YN6sMzITSBijk6FK2UvTqruSQW+/cCZTSNsMiZNvUeq0CqurF+dAbyiGOY6Wg==
@@ -6670,9 +6782,12 @@ cssstyle@^1.1.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 cypress@^9.4.1:
   version "9.4.1"
   resolved "https://registry.yarnpkg.com/cypress/-/cypress-9.4.1.tgz#1a4ba706435829c24b7edf350c2b059e05da9084"
@@ -6722,11 +6837,14 @@ cypress@^9.4.1:
     yauzl "^2.10.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 dargs@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/dargs/-/dargs-7.0.0.tgz#04015c41de0bcb69ec84050f3d9be0caf8d6d5cc"
@@ -6734,20 +6852,26 @@ dargs@^7.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 dash-ast@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/dash-ast/-/dash-ast-1.0.0.tgz#12029ba5fb2f8aa6f0a861795b23c1b4b6c27d37"
   integrity sha512-Vy4dx7gquTeMcQR/hDkYLGUnwVil6vk4FOOct+djUnHOUWt+zJPJAaRIXaAFkPXtJjvlY7o3rfRu0/3hpnwoUA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 dashdash@^1.12.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/dashdash/-/dashdash-1.14.1.tgz#853cfa0f7cbe2fed5de20326b8dd581035f6e2f0"
@@ -6771,20 +6895,26 @@ dateformat@^3.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 dayjs@1.10.7, dayjs@^1.10.4:
   version "1.10.7"
   resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.10.7.tgz#2cf5f91add28116748440866a0a1d26f3a6ce468"
   integrity sha512-P6twpd70BcPK34K26uJ1KT3wlhpuOAPoMwJzpsIWUxHZ7wpmbdZL/hQqBDfz7hGurYSa5PhzdhDHtt319hL3ig==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 deasync@^0.1.14:
   version "0.1.21"
   resolved "https://registry.yarnpkg.com/deasync/-/deasync-0.1.21.tgz#bb11eabd4466c0d8776f0d82deb8a6126460d30f"
@@ -6809,6 +6939,7 @@ debug@4, debug@^4.0.1, debug@^4.1.0, debug@^4.1.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 debug@^4.3.1:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
@@ -6820,6 +6951,9 @@ debug@^4.3.1:
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 debug@4.3.3, debug@^4.0.0, debug@^4.3.1, debug@^4.3.2:
+=======
+debug@4.3.3, debug@^4.0.0, debug@^4.3.2:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "4.3.3"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.3.tgz#04266e0b70a98d4462e6e288e38259213332b664"
   integrity sha512-/zxw5+vh1Tfv+4Qn7a5nsbcJKPaSvCDhojn6FEl9vupwK2VCSDtEiEtqr8DFtzYFOdz63LBkxec7DYuc2jon6Q==
@@ -6834,9 +6968,12 @@ debug@^3.1.0:
     ms "^2.1.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 debug@^4.3.1:
   version "4.3.4"
   resolved "https://registry.yarnpkg.com/debug/-/debug-4.3.4.tgz#1319f6579357f2338d3337d2cdd4914bb5dcc865"
@@ -6844,8 +6981,11 @@ debug@^4.3.1:
   dependencies:
     ms "2.1.2"
 
+<<<<<<< HEAD
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 debuglog@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/debuglog/-/debuglog-1.0.1.tgz#aa24ffb9ac3df9a2351837cfb2d279360cd78492"
@@ -6861,6 +7001,7 @@ decamelize-keys@^1.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 decamelize@^1.1.0:
 =======
 decamelize@^1.1.0, decamelize@^1.2.0:
@@ -6871,6 +7012,9 @@ decamelize@^1.1.0, decamelize@^1.2.0:
 decamelize@^1.1.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+decamelize@^1.1.0, decamelize@^1.2.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/decamelize/-/decamelize-1.2.0.tgz#f6534d15148269b20352e7bee26f501f9a191290"
   integrity sha1-9lNNFRSCabIDUue+4m9QH5oZEpA=
@@ -6970,9 +7114,12 @@ deprecation@^2.0.0, deprecation@^2.3.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 deps-sort@^2.0.0, deps-sort@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/deps-sort/-/deps-sort-2.0.1.tgz#9dfdc876d2bcec3386b6829ac52162cda9fa208d"
@@ -6984,11 +7131,14 @@ deps-sort@^2.0.0, deps-sort@^2.0.1:
     through2 "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 des.js@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/des.js/-/des.js-1.0.1.tgz#5382142e1bdc53f85d86d53e5f4aa7deb91e0843"
@@ -7014,9 +7164,12 @@ detect-indent@^6.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 detective@^5.2.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/detective/-/detective-5.2.0.tgz#feb2a77e85b904ecdea459ad897cc90a99bd2a7b"
@@ -7027,11 +7180,14 @@ detective@^5.2.0:
     minimist "^1.1.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 dezalgo@^1.0.0:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/dezalgo/-/dezalgo-1.0.3.tgz#7f742de066fc748bc8db820569dddce49bf0d456"
@@ -7042,20 +7198,26 @@ dezalgo@^1.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 diff@^4.0.1:
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/diff/-/diff-4.0.2.tgz#60f3aecb89d5fae520c11aa19efc2bb982aade7d"
   integrity sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 diffie-hellman@^5.0.0:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/diffie-hellman/-/diffie-hellman-5.0.3.tgz#40e8ee98f55a2149607146921c63e1ae5f3d2875"
@@ -7298,6 +7460,7 @@ es-abstract@^1.17.2, es-abstract@^1.18.0-next.2:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 es-abstract@^1.19.1:
 =======
 es-abstract@^1.18.5, es-abstract@^1.19.1:
@@ -7308,6 +7471,9 @@ es-abstract@^1.18.5, es-abstract@^1.19.1:
 es-abstract@^1.19.1:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+es-abstract@^1.18.5, es-abstract@^1.19.1:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/es-abstract/-/es-abstract-1.19.1.tgz#d4885796876916959de78edaa0df456627115ec3"
   integrity sha512-2vJ6tjA/UfqLm2MPs7jxVybLoB8i1t1Jd9R3kISld20sIxPcTbLuggQOUxeWeAvIUkduv/CfMjuh4WmiXr2v9w==
@@ -7540,20 +7706,26 @@ etag@~1.8.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 eventemitter2@^6.4.3:
   version "6.4.5"
   resolved "https://registry.yarnpkg.com/eventemitter2/-/eventemitter2-6.4.5.tgz#97380f758ae24ac15df8353e0cc27f8b95644655"
   integrity sha512-bXE7Dyc1i6oQElDG0jMRZJrRAn9QR2xyyFGmBdZleNmyQX0FqGYmhZIrIrpPfm/w//LTo4tVQGOGQcGCb5q9uw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 eventemitter3@^4.0.4:
   version "4.0.7"
   resolved "https://registry.yarnpkg.com/eventemitter3/-/eventemitter3-4.0.7.tgz#2de9b68f6528d5644ef5c59526a1b4a07306169f"
@@ -7561,20 +7733,26 @@ eventemitter3@^4.0.4:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 events@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/events/-/events-2.1.0.tgz#2a9a1e18e6106e0e812aa9ebd4a819b3c29c0ba5"
   integrity sha512-3Zmiobend8P9DjmKAty0Era4jV8oJ0yGYe2nJJAxgymF9+N8F2m0hhZiMoWtcfepExzNKZumFU3ksdQbInGWCg==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 events@^3.0.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/events/-/events-3.3.0.tgz#31a95ad0a924e2d2c419a813aeb2c4e878ea7400"
@@ -7590,9 +7768,12 @@ evp_bytestokey@^1.0.0, evp_bytestokey@^1.0.3:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 execa@4.1.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/execa/-/execa-4.1.0.tgz#4e5491ad1572f2f17a77d388c6c857135b22847a"
@@ -7609,11 +7790,14 @@ execa@4.1.0:
     strip-final-newline "^2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 execa@^5.0.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/execa/-/execa-5.1.1.tgz#f80ad9cbf4298f7bd1d4c9555c21e93741c411dd"
@@ -7631,9 +7815,12 @@ execa@^5.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 executable@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/executable/-/executable-4.1.1.tgz#41532bff361d3e57af4d763b70582db18f5d133c"
@@ -7642,11 +7829,14 @@ executable@^4.1.1:
     pify "^2.2.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 expand-brackets@^2.1.4:
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/expand-brackets/-/expand-brackets-2.1.4.tgz#b77735e315ce30f6b6eff0f83b04151a22449622"
@@ -7775,6 +7965,7 @@ fast-glob@^3.0.3:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 fast-glob@^3.2.9:
 =======
 fast-glob@^3.1.1, fast-glob@^3.2.9:
@@ -7785,6 +7976,9 @@ fast-glob@^3.1.1, fast-glob@^3.2.9:
 fast-glob@^3.2.9:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+fast-glob@^3.1.1, fast-glob@^3.2.9:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "3.2.11"
   resolved "https://registry.yarnpkg.com/fast-glob/-/fast-glob-3.2.11.tgz#a1172ad95ceb8a16e20caa5c5e56480e5129c1d9"
   integrity sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==
@@ -7953,9 +8147,12 @@ filter-obj@^1.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 find-cache-dir@^3.2.0:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/find-cache-dir/-/find-cache-dir-3.3.2.tgz#b30c5b6eff0730731aea9bbd9dbecbd80256d64b"
@@ -7966,11 +8163,14 @@ find-cache-dir@^3.2.0:
     pkg-dir "^4.1.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 find-cache-dir@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/find-cache-dir/-/find-cache-dir-3.3.1.tgz#89b33fad4a4670daa94f855f7fbe31d6d84fe880"
@@ -7982,9 +8182,12 @@ find-cache-dir@^3.3.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 find-my-way@^4.5.0:
   version "4.5.1"
   resolved "https://registry.yarnpkg.com/find-my-way/-/find-my-way-4.5.1.tgz#758e959194b90aea0270db18fff75e2fceb2239f"
@@ -7996,11 +8199,14 @@ find-my-way@^4.5.0:
     semver-store "^0.3.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 find-up@^2.0.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/find-up/-/find-up-2.1.0.tgz#45d1b7e506c717ddd482775a2b77920a3c0c57a7"
@@ -8100,6 +8306,7 @@ fs-extra@8.1.0, fs-extra@^8.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 fs-extra@^9.1.0:
 =======
 fs-extra@^9.0.0, fs-extra@^9.1.0:
@@ -8110,6 +8317,9 @@ fs-extra@^9.0.0, fs-extra@^9.1.0:
 fs-extra@^9.1.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+fs-extra@^9.0.0, fs-extra@^9.1.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "9.1.0"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-9.1.0.tgz#5954460c764a8da2094ba3554bf839e6b9a7c86d"
   integrity sha512-hcg3ZmepS30/7BSFqRvoo3DOMQu7IjqxO5nCDt+zM9XWjb33Wg7ziNT+Qvqbuc3+gWpzO02JubVyk2G4Zvo1OQ==
@@ -8201,20 +8411,26 @@ get-intrinsic@^1.0.2, get-intrinsic@^1.1.0, get-intrinsic@^1.1.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 get-package-type@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/get-package-type/-/get-package-type-0.1.0.tgz#8de2d803cff44df3bc6c456e6668b36c3926e11a"
   integrity sha512-pjzuKtY64GYfWizNAJ0fr9VqttZkNiK2iS430LtIHzjBEr6bX8Am2zm4sW4Ro5wjWW5cAlRL1qAMTcXbjNAO2Q==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 get-pkg-repo@^4.0.0:
   version "4.2.1"
   resolved "https://registry.yarnpkg.com/get-pkg-repo/-/get-pkg-repo-4.2.1.tgz#75973e1c8050c73f48190c52047c4cee3acbf385"
@@ -8242,9 +8458,12 @@ get-stdin@^6.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 get-stream@^5.0.0, get-stream@^5.1.0:
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-5.2.0.tgz#4966a1795ee5ace65e706c4b7beb71257d6e22d3"
@@ -8253,11 +8472,14 @@ get-stream@^5.0.0, get-stream@^5.1.0:
     pump "^3.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 get-stream@^6.0.0:
   version "6.0.1"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-6.0.1.tgz#a262d8eef67aced57c2852ad6167526a43cbf7b7"
@@ -8349,6 +8571,7 @@ glob-parent@^3.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@^5.1.1, glob-parent@^5.1.2:
 =======
 glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@^5.1.1, glob-parent@^5.1.2, glob-parent@~5.1.2:
@@ -8359,6 +8582,9 @@ glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@^5.1.1, glob-parent@^5.1.2, 
 glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@^5.1.1, glob-parent@^5.1.2:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+glob-parent@^5.0.0, glob-parent@^5.1.0, glob-parent@^5.1.1, glob-parent@^5.1.2, glob-parent@~5.1.2:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "5.1.2"
   resolved "https://registry.yarnpkg.com/glob-parent/-/glob-parent-5.1.2.tgz#869832c58034fe68a4093c17dc15e8340d8401c4"
   integrity sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==
@@ -8384,6 +8610,7 @@ glob@^7.0.0, glob@^7.1.2, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 glob@^7.1.1:
 =======
 glob@^7.1.0, glob@^7.1.1:
@@ -8394,6 +8621,9 @@ glob@^7.1.0, glob@^7.1.1:
 glob@^7.1.1:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+glob@^7.1.0, glob@^7.1.1:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.0.tgz#d15535af7732e02e948f4c41628bd910293f6023"
   integrity sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==
@@ -8407,9 +8637,12 @@ glob@^7.1.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 global-dirs@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/global-dirs/-/global-dirs-3.0.0.tgz#70a76fe84ea315ab37b1f5576cbde7d48ef72686"
@@ -8418,11 +8651,14 @@ global-dirs@^3.0.0:
     ini "2.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 globals@^11.1.0:
   version "11.12.0"
   resolved "https://registry.yarnpkg.com/globals/-/globals-11.12.0.tgz#ab8795338868a0babd8525758018c2a7eb95c42e"
@@ -8451,9 +8687,12 @@ globby@10.0.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 globby@11.0.4:
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/globby/-/globby-11.0.4.tgz#2cbaff77c2f2a62e71e9b2813a67b97a3a3001a5"
@@ -8467,11 +8706,14 @@ globby@11.0.4:
     slash "^3.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 globby@^11.0.2:
   version "11.1.0"
   resolved "https://registry.yarnpkg.com/globby/-/globby-11.1.0.tgz#bd4be98bb042f83d796f7e3811991fbe82a0d34b"
@@ -8808,20 +9050,26 @@ https-proxy-agent@^5.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 human-signals@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-1.1.1.tgz#c5b1cd14f50aeae09ab6c59fe63ba3395fe4dfa3"
   integrity sha512-SEQu7vl8KjNL2eoGBLF3+wAjpsNfA9XMlXAYj/3EdaNfAlxKthD1xjEQfGOUhllCGGJVNY34bRr6lPINhNjyZw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 human-signals@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/human-signals/-/human-signals-2.1.0.tgz#dc91fcba42e4d06e4abaed33b3e7a3c02f514ea0"
@@ -8877,6 +9125,7 @@ ignore@^5.1.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 ignore@^5.2.0:
 =======
 ignore@^5.1.4, ignore@^5.2.0:
@@ -8887,6 +9136,9 @@ ignore@^5.1.4, ignore@^5.2.0:
 ignore@^5.2.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+ignore@^5.1.4, ignore@^5.2.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "5.2.0"
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.0.tgz#6d3bac8fa7fe0d45d9f9be7bac2fc279577e345a"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
@@ -8965,20 +9217,26 @@ inherits@2.0.3:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 ini@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ini/-/ini-2.0.0.tgz#e5fd556ecdd5726be978fa1001862eacb0a94bc5"
   integrity sha512-7PnF4oN3CvZF23ADhA5wRaYEQpJ8qygSkbtTXWBeXWXmEVRXK+1ITciHWwHhsjv1TmW0MgacIv6hEi5pX5NQdA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 ini@^1.3.2, ini@^1.3.4:
   version "1.3.8"
   resolved "https://registry.yarnpkg.com/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
@@ -8999,9 +9257,12 @@ init-package-json@^2.0.2:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 inline-source-map@~0.6.0:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/inline-source-map/-/inline-source-map-0.6.2.tgz#f9393471c18a79d1724f863fa38b586370ade2a5"
@@ -9010,11 +9271,14 @@ inline-source-map@~0.6.0:
     source-map "~0.5.3"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 inquirer@^7.0.0, inquirer@^7.3.3:
   version "7.3.3"
   resolved "https://registry.yarnpkg.com/inquirer/-/inquirer-7.3.3.tgz#04d176b2af04afc157a83fd7c100e98ee0aad003"
@@ -9036,9 +9300,12 @@ inquirer@^7.0.0, inquirer@^7.3.3:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 insert-module-globals@^7.0.0, insert-module-globals@^7.2.1:
   version "7.2.1"
   resolved "https://registry.yarnpkg.com/insert-module-globals/-/insert-module-globals-7.2.1.tgz#d5e33185181a4e1f33b15f7bf100ee91890d5cb3"
@@ -9056,11 +9323,14 @@ insert-module-globals@^7.0.0, insert-module-globals@^7.2.1:
     xtend "^4.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 internal-slot@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/internal-slot/-/internal-slot-1.0.3.tgz#7347e307deeea2faac2ac6205d4bc7d34967f59c"
@@ -9177,9 +9447,12 @@ is-ci@^2.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 is-ci@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-3.0.1.tgz#db6ecbed1bd659c43dac0f45661e7674103d1867"
@@ -9188,11 +9461,14 @@ is-ci@^3.0.0:
     ci-info "^3.2.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 is-color-stop@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-color-stop/-/is-color-stop-1.1.0.tgz#cfff471aee4dd5c9e158598fbe12967b5cdad345"
@@ -9382,20 +9658,26 @@ is-obj@^2.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 is-path-inside@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/is-path-inside/-/is-path-inside-3.0.3.tgz#d231362e53a07ff2b0e0ea7fed049161ffd16283"
   integrity sha512-Fd4gABb+ycGAmKou8eMftCupSir5lRxqf4aD/vd0cD2qc4HL07OjCeuHMr8Ro4CoMaeCKDB0/ECBOVWjTwUvPQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 is-plain-obj@^1.0.0, is-plain-obj@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/is-plain-obj/-/is-plain-obj-1.1.0.tgz#71a50c8429dfca773c92a390a4a03b39fcd51d3e"
@@ -9496,9 +9778,12 @@ is-text-path@^1.0.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 is-typed-array@^1.1.3, is-typed-array@^1.1.7:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/is-typed-array/-/is-typed-array-1.1.8.tgz#cbaa6585dc7db43318bc5b89523ea384a6f65e79"
@@ -9511,11 +9796,14 @@ is-typed-array@^1.1.3, is-typed-array@^1.1.7:
     has-tostringtag "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 is-typedarray@^1.0.0, is-typedarray@~1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/is-typedarray/-/is-typedarray-1.0.0.tgz#e479c80858df0c1b11ddda6940f96011fcda4a9a"
@@ -9770,9 +10058,12 @@ json-stable-stringify-without-jsonify@^1.0.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 json-stable-stringify@~0.0.0:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/json-stable-stringify/-/json-stable-stringify-0.0.1.tgz#611c23e814db375527df851193db59dd2af27f45"
@@ -9781,11 +10072,14 @@ json-stable-stringify@~0.0.0:
     jsonify "~0.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
@@ -9823,20 +10117,26 @@ jsonfile@^6.0.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 jsonify@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/jsonify/-/jsonify-0.0.0.tgz#2c74b6ee41d93ca51b7b5aaee8f503631d252a73"
   integrity sha1-LHS27kHZPKUbe1qu6PUDYx0lKnM=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 jsonparse@^1.2.0, jsonparse@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/jsonparse/-/jsonparse-1.3.1.tgz#3f4dae4a91fac315f71062f8521cc239f1366280"
@@ -9898,9 +10198,12 @@ kind-of@^6.0.0, kind-of@^6.0.2, kind-of@^6.0.3:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 labeled-stream-splicer@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/labeled-stream-splicer/-/labeled-stream-splicer-2.0.2.tgz#42a41a16abcd46fd046306cf4f2c3576fffb1c21"
@@ -9915,11 +10218,14 @@ lazy-ass@^1.6.0:
   integrity sha1-eZllXoZGwX8In90YfRUNMyTVRRM=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 lerna@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/lerna/-/lerna-4.0.0.tgz#b139d685d50ea0ca1be87713a7c2f44a5b678e9e"
@@ -9982,9 +10288,12 @@ lie@~3.3.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 light-my-request@^4.2.0:
   version "4.7.1"
   resolved "https://registry.yarnpkg.com/light-my-request/-/light-my-request-4.7.1.tgz#deb33c4485a08395760f16e5a7a044e6102bb4c4"
@@ -9996,16 +10305,20 @@ light-my-request@^4.2.0:
     set-cookie-parser "^2.4.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 lines-and-columns@^1.1.6:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.2.4.tgz#eca284f75d2965079309dc0ad9255abb2ebc1632"
   integrity sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
 lit-element@^3.2.0:
@@ -10023,6 +10336,8 @@ lit-html@^2.2.0:
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 listr2@^3.8.3:
   version "3.14.0"
   resolved "https://registry.yarnpkg.com/listr2/-/listr2-3.14.0.tgz#23101cc62e1375fd5836b248276d1d2b51fdbe9e"
@@ -10037,6 +10352,7 @@ listr2@^3.8.3:
     through "^2.3.8"
     wrap-ansi "^7.0.0"
 
+<<<<<<< HEAD
 lit-element@^2.3.1:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-2.4.0.tgz#b22607a037a8fc08f5a80736dddf7f3f5d401452"
@@ -10048,6 +10364,8 @@ lit-element@^2.3.1:
 
 =======
 =======
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 lit-element@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/lit-element/-/lit-element-3.2.0.tgz#9c981c55dfd9a8f124dc863edb62cc529d434db7"
@@ -10060,7 +10378,6 @@ lit-html@^2.2.0:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/lit-html/-/lit-html-2.2.1.tgz#762f112a8b54eaf0bbae3f516de935a25dcc12d1"
   integrity sha512-AiJ/Rs0awjICs2FioTnHSh+Np5dhYSkyRczKy3wKjp8qjLhr1Ov+GiHrUQNdX8ou1LMuznpIME990AZsa/tR8g==
->>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
   dependencies:
     "@types/trusted-types" "^2.0.2"
 
@@ -10073,34 +10390,6 @@ lit@^2.1.2:
     "@lit/reactive-element" "^1.3.0"
     lit-element "^3.2.0"
     lit-html "^2.2.0"
-
-load-json-file@^4.0.0:
-  version "4.0.0"
-  resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-4.0.0.tgz#2f5f45ab91e33216234fd53adab668eb4ec0993b"
-  integrity sha1-L19Fq5HjMhYjT9U62rZo607AmTs=
-  dependencies:
-    graceful-fs "^4.1.2"
-    parse-json "^4.0.0"
-    pify "^3.0.0"
-    strip-bom "^3.0.0"
-
-load-json-file@^6.2.0:
-  version "6.2.0"
-  resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-6.2.0.tgz#5c7770b42cafa97074ca2848707c61662f4251a1"
-  integrity sha512-gUD/epcRms75Cw8RT1pUdHugZYM5ce64ucs2GEISABwkRsOQr0q2wm/MV2TKThycIe5e0ytRweW2RZxclogCdQ==
-  dependencies:
-    graceful-fs "^4.1.15"
-    parse-json "^5.0.0"
-    strip-bom "^4.0.0"
-    type-fest "^0.6.0"
-
-locate-path@^2.0.0:
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
-  integrity sha1-K1aLJl7slExtnA3pw9u7ygNUzY4=
-  dependencies:
-    p-locate "^2.0.0"
-    path-exists "^3.0.0"
 
 load-json-file@^4.0.0:
   version "4.0.0"
@@ -10159,20 +10448,26 @@ lodash.debounce@^4.0.8:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 lodash.flattendeep@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.flattendeep/-/lodash.flattendeep-4.4.0.tgz#fb030917f86a3134e5bc9bec0d69e0013ddfedb2"
   integrity sha1-+wMJF/hqMTTlvJvsDWngAT3f7bI=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 lodash.ismatch@^4.4.0:
   version "4.4.0"
   resolved "https://registry.yarnpkg.com/lodash.ismatch/-/lodash.ismatch-4.4.0.tgz#756cb5150ca3ba6f11085a78849645f188f85f37"
@@ -10220,6 +10515,7 @@ lodash.uniq@^4.5.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.7.0:
 =======
 lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.7.0:
@@ -10230,6 +10526,9 @@ lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.17
 lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.4, lodash@^4.7.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+lodash@^4.17.14, lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.21, lodash@^4.17.4, lodash@^4.7.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "4.17.21"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.21.tgz#679591c564c3bffaae8454cf0b3df370c3d6911c"
   integrity sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==
@@ -10243,6 +10542,7 @@ log-symbols@^2.2.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 lottie-web@^5.8.1:
   version "5.9.1"
   resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.9.1.tgz#0090e575de74e49843606c1722767604e068f061"
@@ -10250,6 +10550,8 @@ lottie-web@^5.8.1:
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 log-symbols@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-4.1.0.tgz#3fbdbb95b4683ac9fc785111e792e558d4abd503"
@@ -10268,6 +10570,7 @@ log-update@^4.0.0:
     slice-ansi "^4.0.0"
     wrap-ansi "^6.2.0"
 
+<<<<<<< HEAD
 lottie-web@^5.7.8:
   version "5.7.8"
   resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.7.8.tgz#c7a2e42983bcb42093590a03ccdde8741d3f960e"
@@ -10276,12 +10579,17 @@ lottie-web@^5.7.8:
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 lottie-web@^5.8.1:
   version "5.9.1"
   resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.9.1.tgz#0090e575de74e49843606c1722767604e068f061"
   integrity sha512-3uKtU6BhIK6ZRCE/QyiXq/KuRvPeEAz/VFwqd99jPbpgFY9gHLw2krqvcuCFGepeW94BipS/B3TqIfTc9pUeZg==
+<<<<<<< HEAD
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 
 lru-cache@^6.0.0:
   version "6.0.0"
@@ -10550,6 +10858,7 @@ minimist-options@4.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
 =======
 minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
@@ -10560,6 +10869,9 @@ minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0, minimist@^1.
 minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+minimist@^1.1.0, minimist@^1.1.1, minimist@^1.1.3, minimist@^1.2.0, minimist@^1.2.3, minimist@^1.2.5:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "1.2.5"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.5.tgz#67d66014b66a6a8aaa0c083c5fd58df4e4e97602"
   integrity sha512-FM9nNUYrRBAELZQT3xeZQ7fmMOBg6nWNmJKTcgsJeaLstP/UODVpGsr5OhXhhXg6f+qtJ8uiZ+PUxkDWcgIXLw==
@@ -10651,20 +10963,26 @@ mixin-deep@^1.2.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 mkdirp-classic@^0.5.2:
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/mkdirp-classic/-/mkdirp-classic-0.5.3.tgz#fa10c9115cc6d8865be221ba47ee9bed78601113"
   integrity sha512-gKLcREMhtuZRwRAfqP3RFW+TK4JqApVBtOIftVgjuABpAtpxhPGaDcfvbhNvD0B8iD1oUr/txX35NjcaY6Ns/A==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 mkdirp-infer-owner@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/mkdirp-infer-owner/-/mkdirp-infer-owner-2.0.0.tgz#55d3b368e7d89065c38f32fd38e638f0ab61d316"
@@ -10693,9 +11011,12 @@ modify-values@^1.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 module-deps@^6.2.3:
   version "6.2.3"
   resolved "https://registry.yarnpkg.com/module-deps/-/module-deps-6.2.3.tgz#15490bc02af4b56cf62299c7c17cba32d71a96ee"
@@ -10718,11 +11039,14 @@ module-deps@^6.2.3:
     xtend "^4.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
@@ -10899,20 +11223,26 @@ node-releases@^1.1.70:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 node-releases@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.1.tgz#3d1d395f204f1f2f29a54358b9fb678765ad2fc5"
   integrity sha512-CqyzN6z7Q6aMeF/ktcMVTzhAHCEpf8SOarwpzpf8pNBY2k5/oM34UHldUwp8VKI7uxct2HxSRdJjBaZeESzcxA==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 nopt@^4.0.1:
   version "4.0.3"
   resolved "https://registry.yarnpkg.com/nopt/-/nopt-4.0.3.tgz#a375cad9d02fd921278d954c2254d5aa57e15e48"
@@ -11069,6 +11399,7 @@ npm-registry-fetch@^9.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 npm-run-path@^4.0.1:
 =======
 npm-run-path@^4.0.0, npm-run-path@^4.0.1:
@@ -11079,6 +11410,9 @@ npm-run-path@^4.0.0, npm-run-path@^4.0.1:
 npm-run-path@^4.0.1:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+npm-run-path@^4.0.0, npm-run-path@^4.0.1:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/npm-run-path/-/npm-run-path-4.0.1.tgz#b7ecd1e5ed53da8e37a55e1c2269e0b97ed748ea"
   integrity sha512-S48WzZW777zhNIrn7gxOlISNAqi9ZC/uQFnRdbeIHhZhCA6UqpkOT8T1G7BvfdgP4Er8gF4sUbaS0i7QvIfCWw==
@@ -11245,6 +11579,7 @@ on-finished@~2.3.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 once@^1.3.0, once@^1.4.0:
 =======
 once@^1.3.0, once@^1.3.1, once@^1.4.0:
@@ -11255,6 +11590,9 @@ once@^1.3.0, once@^1.3.1, once@^1.4.0:
 once@^1.3.0, once@^1.4.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+once@^1.3.0, once@^1.3.1, once@^1.4.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/once/-/once-1.4.0.tgz#583b1aa775961d4b113ac17d9c50baef9dd76bd1"
   integrity sha1-WDsap3WWHUsROsF9nFC6753Xa9E=
@@ -11344,9 +11682,12 @@ osenv@^0.1.4:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 ospath@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/ospath/-/ospath-1.2.2.tgz#1276639774a3f8ef2572f7fe4280e0ea4550c07b"
@@ -11360,11 +11701,14 @@ outpipe@^1.1.0:
     shell-quote "^1.4.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 p-finally@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/p-finally/-/p-finally-1.0.0.tgz#3fbcfb15b899a44123b34b6dcc18b724336a2cae"
@@ -11386,9 +11730,12 @@ p-limit@^2.2.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 p-limit@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/p-limit/-/p-limit-3.1.0.tgz#e1daccbe78d0d1388ca18c64fea38e3e57e3706b"
@@ -11397,11 +11744,14 @@ p-limit@^3.1.0:
     yocto-queue "^0.1.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 p-locate@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/p-locate/-/p-locate-2.0.0.tgz#20a0103b222a70c8fd39cc2e580680f3dde5ec43"
@@ -11423,9 +11773,12 @@ p-map-series@^2.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 p-map@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-3.0.0.tgz#d704d9af8a2ba684e2600d9a215983d4141a979d"
@@ -11434,11 +11787,14 @@ p-map@^3.0.0:
     aggregate-error "^3.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 p-map@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/p-map/-/p-map-4.0.0.tgz#bb2f95a5eda2ec168ec9274e06a747c3e2904d2b"
@@ -11490,9 +11846,12 @@ p-waterfall@^2.1.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 package-hash@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/package-hash/-/package-hash-4.0.0.tgz#3537f654665ec3cc38827387fc904c163c54f506"
@@ -11504,11 +11863,14 @@ package-hash@^4.0.0:
     release-zalgo "^1.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 pacote@^11.2.6:
   version "11.3.5"
   resolved "https://registry.yarnpkg.com/pacote/-/pacote-11.3.5.tgz#73cf1fc3772b533f575e39efa96c50be8c3dc9d2"
@@ -11697,36 +12059,6 @@ parse-url@^6.0.0:
     parse-path "^4.0.0"
     protocols "^1.4.0"
 
-parse-json@^5.0.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/parse-json/-/parse-json-5.2.0.tgz#c76fc66dee54231c962b22bcc8a72cf2f99753cd"
-  integrity sha512-ayCKvm/phCGxOkYRSCM82iDwct8/EonSEgCSxWxD7ve6jHggsFl4fZVQBPRNgQoKiuV/odhFrGzQXZwbifC8Rg==
-  dependencies:
-    "@babel/code-frame" "^7.0.0"
-    error-ex "^1.3.1"
-    json-parse-even-better-errors "^2.3.0"
-    lines-and-columns "^1.1.6"
-
-parse-path@^4.0.0:
-  version "4.0.3"
-  resolved "https://registry.yarnpkg.com/parse-path/-/parse-path-4.0.3.tgz#82d81ec3e071dcc4ab49aa9f2c9c0b8966bb22bf"
-  integrity sha512-9Cepbp2asKnWTJ9x2kpw6Fe8y9JDbqwahGCTvklzd/cEq5C5JC59x2Xb0Kx+x0QZ8bvNquGO8/BWP0cwBHzSAA==
-  dependencies:
-    is-ssh "^1.3.0"
-    protocols "^1.4.0"
-    qs "^6.9.4"
-    query-string "^6.13.8"
-
-parse-url@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/parse-url/-/parse-url-6.0.0.tgz#f5dd262a7de9ec00914939220410b66cff09107d"
-  integrity sha512-cYyojeX7yIIwuJzledIHeLUBVJ6COVLeT4eF+2P6aKVzwvgKQPndCBv3+yQ7pcWjqToYwaligxzSYNNmGoMAvw==
-  dependencies:
-    is-ssh "^1.3.0"
-    normalize-url "^6.1.0"
-    parse-path "^4.0.0"
-    protocols "^1.4.0"
-
 parse5@5.1.0:
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/parse5/-/parse5-5.1.0.tgz#c59341c9723f414c452975564c7c00a68d58acd2"
@@ -11794,20 +12126,26 @@ path-parse@^1.0.7:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 path-platform@~0.11.15:
   version "0.11.15"
   resolved "https://registry.yarnpkg.com/path-platform/-/path-platform-0.11.15.tgz#e864217f74c36850f0852b78dc7bf7d4a5721bf2"
   integrity sha1-6GQhf3TDaFDwhSt43Hv31KVyG/I=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 path-type@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-3.0.0.tgz#cef31dc8e0a1a3bb0d105c0cd97cf3bf47f4e36f"
@@ -11863,6 +12201,7 @@ picomatch@^2.0.5, picomatch@^2.2.1, picomatch@^2.2.2:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 picomatch@^2.2.3:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.1.tgz#3ba3833733646d9d3e4995946c1365a67fb07a42"
@@ -11883,6 +12222,9 @@ picomatch@^2.2.3:
 pify@^2.3.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+pify@^2.2.0, pify@^2.3.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "2.3.0"
   resolved "https://registry.yarnpkg.com/pify/-/pify-2.3.0.tgz#ed141a6ac043a849ea588498e7dca8b15330e90c"
   integrity sha1-7RQaasBDqEnqWISY59yosVMw6Qw=
@@ -11904,9 +12246,12 @@ pify@^5.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 pino-std-serializers@^3.1.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/pino-std-serializers/-/pino-std-serializers-3.2.0.tgz#b56487c402d882eb96cd67c257868016b61ad671"
@@ -11926,11 +12271,14 @@ pino@^6.13.0:
     sonic-boom "^1.0.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 pkg-dir@^4.1.0, pkg-dir@^4.2.0:
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/pkg-dir/-/pkg-dir-4.2.0.tgz#f099133df7ede422e81d1d8448270eeb3e4261f3"
@@ -12420,9 +12768,12 @@ protocols@^1.1.0, protocols@^1.4.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 proxy-addr@^2.0.7:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/proxy-addr/-/proxy-addr-2.0.7.tgz#f19fe69ceab311eeb94b42e70e8c2070f9ba1025"
@@ -12437,11 +12788,14 @@ proxy-from-env@1.0.0:
   integrity sha1-M8UDmPcOp+uW0h97gXYwpVeRx+4=
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 psl@^1.1.28:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/psl/-/psl-1.8.0.tgz#9326f8bcfb013adcc005fdff056acce020e51c24"
@@ -12521,6 +12875,7 @@ query-string@^6.13.8:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 querystring-es3@^0.2.0:
 =======
 querystring-es3@^0.2.0, querystring-es3@~0.2.0:
@@ -12531,6 +12886,9 @@ querystring-es3@^0.2.0, querystring-es3@~0.2.0:
 querystring-es3@^0.2.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+querystring-es3@^0.2.0, querystring-es3@~0.2.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/querystring-es3/-/querystring-es3-0.2.1.tgz#9ec61f79049875707d69414596fd907a4d711e73"
   integrity sha1-nsYfeQSYdXB9aUFFlv2Qek1xHnM=
@@ -12547,20 +12905,26 @@ queue-microtask@^1.1.2, queue-microtask@^1.2.2:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 quick-format-unescaped@^4.0.3:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/quick-format-unescaped/-/quick-format-unescaped-4.0.4.tgz#93ef6dd8d3453cbc7970dd614fad4c5954d6b5a7"
   integrity sha512-tYC1Q1hgyRuHgloV/YXs2w15unPVh8qfu/qCTfhTYamaw7fyhumKa2yGpdSo87vY32rIclj+4fWYQXUMs9EHvg==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 quick-lru@^4.0.1:
   version "4.0.1"
   resolved "https://registry.yarnpkg.com/quick-lru/-/quick-lru-4.0.1.tgz#5b8878f113a58217848c6482026c73e1ba57727f"
@@ -12602,9 +12966,12 @@ read-cmd-shim@^2.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 read-only-stream@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/read-only-stream/-/read-only-stream-2.0.0.tgz#2724fd6a8113d73764ac288d4386270c1dbf17f0"
@@ -12613,11 +12980,14 @@ read-only-stream@^2.0.0:
     readable-stream "^2.0.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 read-package-json-fast@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/read-package-json-fast/-/read-package-json-fast-2.0.2.tgz#2dcb24d9e8dd50fb322042c8c35a954e6cc7ac9e"
@@ -12649,6 +13019,7 @@ read-package-json@^3.0.0:
 read-package-json@^4.1.1:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/read-package-json/-/read-package-json-4.1.2.tgz#b444d047de7c75d4a160cb056d00c0693c1df703"
   integrity sha512-Dqer4pqzamDE2O4M55xp1qZMuLPqi4ldk2ya648FOMHRjwMzFhuxVrG04wd0c38IsvkVdr3vgHI6z+QTPdAjrQ==
@@ -12667,6 +13038,11 @@ read-package-json@^4.1.1:
   integrity sha512-Dqer4pqzamDE2O4M55xp1qZMuLPqi4ldk2ya648FOMHRjwMzFhuxVrG04wd0c38IsvkVdr3vgHI6z+QTPdAjrQ==
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/read-package-json/-/read-package-json-4.1.2.tgz#b444d047de7c75d4a160cb056d00c0693c1df703"
+  integrity sha512-Dqer4pqzamDE2O4M55xp1qZMuLPqi4ldk2ya648FOMHRjwMzFhuxVrG04wd0c38IsvkVdr3vgHI6z+QTPdAjrQ==
+>>>>>>> ad17e3e (fix: centered error icon)
   dependencies:
     glob "^7.1.1"
     json-parse-even-better-errors "^2.3.0"
@@ -12727,6 +13103,7 @@ read@1, read@~1.0.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1, readable-stream@^3.6.0:
 =======
 readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1, readable-stream@^3.4.0, readable-stream@^3.5.0, readable-stream@^3.6.0:
@@ -12737,6 +13114,9 @@ readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stre
 readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1, readable-stream@^3.6.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+readable-stream@3, readable-stream@^3.0.0, readable-stream@^3.0.2, readable-stream@^3.1.1, readable-stream@^3.4.0, readable-stream@^3.5.0, readable-stream@^3.6.0:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/readable-stream/-/readable-stream-3.6.0.tgz#337bbda3adc0706bd3e024426a286d4b4b2c9198"
   integrity sha512-BViHy7LKeTz4oNnkcLJ+lVSL6vpiFeX6/d3oSH8zCW7UxP2onchk+vTGB143xuFjHS3deTgkKoXXymXqymiIdA==
@@ -12801,9 +13181,12 @@ redent@^3.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 regenerate-unicode-properties@^10.0.1:
   version "10.0.1"
   resolved "https://registry.yarnpkg.com/regenerate-unicode-properties/-/regenerate-unicode-properties-10.0.1.tgz#7f442732aa7934a3740c779bb9b3340dccc1fb56"
@@ -12812,11 +13195,14 @@ regenerate-unicode-properties@^10.0.1:
     regenerate "^1.4.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 regenerate-unicode-properties@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/regenerate-unicode-properties/-/regenerate-unicode-properties-8.2.0.tgz#e5de7111d655e7ba60c057dbe9ff37c87e65cdec"
@@ -12995,9 +13381,12 @@ require-directory@^2.1.1:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 require-from-string@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/require-from-string/-/require-from-string-2.0.2.tgz#89a7fdd938261267318eafe14f9c32e598c36909"
@@ -13009,11 +13398,14 @@ require-main-filename@^2.0.0:
   integrity sha512-NKN5kMDylKuldxYLSUfrbo5Tuzh4hd+2E8NPPX02mZtn1VuREQToYe/ZdlJy+J3uCpfaiGF05e7B8W0iXbQHmg==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 resolve-cwd@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/resolve-cwd/-/resolve-cwd-3.0.0.tgz#0f0075f1bb2544766cf73ba6a6e2adfebcb13f2d"
@@ -13064,15 +13456,6 @@ resolve@^1.1.5, resolve@^1.1.6, resolve@^1.11.0, resolve@^1.14.2, resolve@^1.17.
   dependencies:
     is-core-module "^2.2.0"
     path-parse "^1.0.6"
-
-resolve@^1.10.0:
-  version "1.22.0"
-  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.22.0.tgz#5e0b8c67c15df57a89bdbabe603a002f21731198"
-  integrity sha512-Hhtrw0nLeSrFQ7phPp4OOcVjLPIeMnRlr5mcnVuMe7M/7eBn98A3hmFRLoFo3DLZkivSYwhRUJTyPyWAk56WLw==
-  dependencies:
-    is-core-module "^2.8.1"
-    path-parse "^1.0.7"
-    supports-preserve-symlinks-flag "^1.0.0"
 
 restore-cursor@^2.0.0:
   version "2.0.0"
@@ -13272,10 +13655,13 @@ rxjs@^6.6.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 rxjs@^7.5.1:
   version "7.5.2"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.5.2.tgz#11e4a3a1dfad85dbf7fb6e33cbba17668497490b"
@@ -13285,12 +13671,15 @@ rxjs@^7.5.1:
 
 safe-buffer@5.2.1, safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 safe-buffer@^5.0.1, safe-buffer@^5.1.0, safe-buffer@^5.1.1, safe-buffer@^5.1.2, safe-buffer@^5.2.0, safe-buffer@^5.2.1, safe-buffer@~5.2.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
   version "5.2.1"
   resolved "https://registry.yarnpkg.com/safe-buffer/-/safe-buffer-5.2.1.tgz#1eaf9fa9bdb1fdd4ec75f58f9cdb4e6b7827eec6"
   integrity sha512-rp3So07KcdmmKbGvgaNxQSJr7bGVSVk5S9Eq1F+ppbRo70+YeaDxkw5Dd8NPN+GD6bjnYm2VuPuCXmpuYvmCXQ==
@@ -13333,6 +13722,7 @@ saxes@^3.1.9:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 "semver@2 || 3 || 4 || 5", semver@^5.4.1, semver@^5.5.0, semver@^5.6.0, semver@^5.7.1:
   version "5.7.1"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
@@ -13346,6 +13736,8 @@ semver@7.0.0:
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 secure-json-parse@^2.0.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/secure-json-parse/-/secure-json-parse-2.4.0.tgz#5aaeaaef85c7a417f76271a4f5b0cc3315ddca85"
@@ -13367,6 +13759,7 @@ semver@7.0.0:
   integrity sha512-+GB6zVA9LWh6zovYQLALHwv5rb2PHGlJi3lfiqIHxR0uuwCgefcOJc59v9fv1w8GbStwxuuqqAjI9NMAOOgq1A==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
@@ -13382,6 +13775,8 @@ semver@7.0.0:
 
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 semver@^6.0.0, semver@^6.1.1, semver@^6.1.2, semver@^6.3.0:
   version "6.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
@@ -13555,20 +13950,26 @@ shebang-regex@^3.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 shell-quote@^1.4.2, shell-quote@^1.6.1:
   version "1.7.3"
   resolved "https://registry.yarnpkg.com/shell-quote/-/shell-quote-1.7.3.tgz#aa40edac170445b9a431e17bb62c0b881b9c4123"
   integrity sha512-Vpfqwm4EnqGdlsBFNmHhxhElJYrdfcxPThu+ryKS5J8L/fhAwLazFZtq+S+TWZ9ANj2piSQLGj6NQg+lKPmxrw==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 shelljs@^0.8.4:
   version "0.8.4"
   resolved "https://registry.yarnpkg.com/shelljs/-/shelljs-0.8.4.tgz#de7684feeb767f8716b326078a8a00875890e3c2"
@@ -13607,20 +14008,26 @@ signal-exit@^3.0.3:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 simple-concat@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/simple-concat/-/simple-concat-1.0.1.tgz#f46976082ba35c2263f1c8ab5edfe26c41c9552f"
   integrity sha512-cSFtAPtRhljv69IK0hTVZQ+OfE9nePi/rtJmw5UjHeVyVroEqJXP1sFztKUy1qU+xvz3u/sfYJLa947b7nAN2Q==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 simple-swizzle@^0.2.2:
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/simple-swizzle/-/simple-swizzle-0.2.2.tgz#a4da6b635ffcccca33f70d17cb92592de95e557a"
@@ -13644,9 +14051,12 @@ slice-ansi@^2.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 slice-ansi@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/slice-ansi/-/slice-ansi-3.0.0.tgz#31ddc10930a1b7e0b67b08c96c2f49b77a789787"
@@ -13666,11 +14076,14 @@ slice-ansi@^4.0.0:
     is-fullwidth-code-point "^3.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 slide@^1.1.6:
   version "1.1.6"
   resolved "https://registry.yarnpkg.com/slide/-/slide-1.1.6.tgz#56eb027d65b4d2dce6cb2e2d32c4d4afc9e1d707"
@@ -13745,6 +14158,7 @@ socks@^2.3.3:
 socks@^2.6.1:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.2.tgz#ec042d7960073d40d94268ff3bb727dc685f111a"
   integrity sha512-zDZhHhZRY9PxRruRMR7kMhnf3I8hDs4S3f9RecfnGxvcBHQcKcIH/oUcEWffsfl1XxdYlA7nnlGbbTvPz9D8gA==
@@ -13757,9 +14171,14 @@ socks@^2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.1.tgz#989e6534a07cf337deb1b1c94aaa44296520d30e"
   integrity sha512-kLQ9N5ucj8uIcxrDwjm0Jsqk06xdpBjGNQtpXy4Q8/QY2k+fY7nZH8CARy+hkbG+SGAovmzzuauCpBlb8FrnBA==
+=======
+  version "2.6.2"
+  resolved "https://registry.yarnpkg.com/socks/-/socks-2.6.2.tgz#ec042d7960073d40d94268ff3bb727dc685f111a"
+  integrity sha512-zDZhHhZRY9PxRruRMR7kMhnf3I8hDs4S3f9RecfnGxvcBHQcKcIH/oUcEWffsfl1XxdYlA7nnlGbbTvPz9D8gA==
+>>>>>>> ad17e3e (fix: centered error icon)
   dependencies:
     ip "^1.1.5"
-    smart-buffer "^4.1.0"
+    smart-buffer "^4.2.0"
 
 sonic-boom@^1.0.2:
   version "1.4.1"
@@ -13768,6 +14187,7 @@ sonic-boom@^1.0.2:
   dependencies:
     atomic-sleep "^1.0.0"
     flatstr "^1.0.12"
+<<<<<<< HEAD
 <<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
@@ -13780,6 +14200,8 @@ sonic-boom@^1.0.2:
     smart-buffer "^4.2.0"
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 
 sort-keys@^2.0.0:
   version "2.0.0"
@@ -13849,9 +14271,12 @@ sourcemap-codec@^1.4.4:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 spawn-wrap@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/spawn-wrap/-/spawn-wrap-2.0.0.tgz#103685b8b8f9b79771318827aa78650a610d457e"
@@ -13865,11 +14290,14 @@ spawn-wrap@^2.0.0:
     which "^2.0.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 spdx-correct@^3.0.0:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/spdx-correct/-/spdx-correct-3.1.1.tgz#dece81ac9c1e6713e5f7d1b6f17d468fa53d89a9"
@@ -14056,9 +14484,12 @@ stream-http@^2.7.2:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 stream-http@^3.0.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/stream-http/-/stream-http-3.2.0.tgz#1872dfcf24cb15752677e40e5c3f9cc1926028b5"
@@ -14078,11 +14509,14 @@ stream-splicer@^2.0.0:
     readable-stream "^2.0.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 strict-uri-encode@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/strict-uri-encode/-/strict-uri-encode-2.0.0.tgz#b9c7330c7042862f6b142dc274bbcc5866ce3546"
@@ -14090,20 +14524,26 @@ strict-uri-encode@^2.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 string-similarity@^4.0.1:
   version "4.0.4"
   resolved "https://registry.yarnpkg.com/string-similarity/-/string-similarity-4.0.4.tgz#42d01ab0b34660ea8a018da8f56a3309bb8b2a5b"
   integrity sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 string-width@^1.0.1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/string-width/-/string-width-1.0.2.tgz#118bdf5b8cdc51a2a7e70d211e07e2b0b9b107d3"
@@ -14291,9 +14731,12 @@ supports-color@^7.0.0, supports-color@^7.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 supports-color@^8.1.1:
   version "8.1.1"
   resolved "https://registry.yarnpkg.com/supports-color/-/supports-color-8.1.1.tgz#cd6fc17e28500cff56c1b86c0a7fd4a54a73005c"
@@ -14302,11 +14745,14 @@ supports-color@^8.1.1:
     has-flag "^4.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 supports-preserve-symlinks-flag@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/supports-preserve-symlinks-flag/-/supports-preserve-symlinks-flag-1.0.0.tgz#6eda4bd344a3c94aea376d4cc31bc77311039e09"
@@ -14423,9 +14869,12 @@ terser@^5.6.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 test-exclude@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/test-exclude/-/test-exclude-6.0.0.tgz#04a8698661d805ea6fa293b6cb9e63ac044ef15e"
@@ -14436,11 +14885,14 @@ test-exclude@^6.0.0:
     minimatch "^3.0.4"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 text-extensions@^1.0.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/text-extensions/-/text-extensions-1.9.0.tgz#1853e45fee39c945ce6f6c36b2d659b5aabc2a26"
@@ -14466,6 +14918,7 @@ through2@^2.0.0, through2@~2.0.3:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 through2@^4.0.0:
 =======
 through2@^4.0.0, through2@^4.0.2:
@@ -14476,6 +14929,9 @@ through2@^4.0.0, through2@^4.0.2:
 through2@^4.0.0:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+through2@^4.0.0, through2@^4.0.2:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "4.0.2"
   resolved "https://registry.yarnpkg.com/through2/-/through2-4.0.2.tgz#a7ce3ac2a7a8b0b966c80e7c49f0484c3b239764"
   integrity sha512-iOqSav00cVxEEICeD7TjLB1sueEL+81Wpzp2bY17uZjZN0pWZPuo4suZ/61VujxmqSGFfgOcNuTZ85QJwNZQpw==
@@ -14484,6 +14940,7 @@ through2@^4.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6:
 =======
 through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6, through@^2.3.8:
@@ -14494,6 +14951,9 @@ through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6, through@^2.3.8:
 through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+through@2, "through@>=2.2.7 <3", through@^2.3.4, through@^2.3.6, through@^2.3.8:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/through/-/through-2.3.8.tgz#0dd4c9ffaabc357960b1b724115d7e0e86a2e1f5"
   integrity sha1-DdTJ/6q8NXlgsbckEV1+Doai4fU=
@@ -14632,9 +15092,12 @@ trim-newlines@^3.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 ts-node@^10.5.0:
   version "10.5.0"
   resolved "https://registry.yarnpkg.com/ts-node/-/ts-node-10.5.0.tgz#618bef5854c1fbbedf5e31465cbb224a1d524ef9"
@@ -14655,11 +15118,14 @@ ts-node@^10.5.0:
     yn "3.1.1"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 tslib@2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-2.0.1.tgz#410eb0d113e5b6356490eec749603725b021b43e"
@@ -14738,6 +15204,7 @@ type-fest@^0.6.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 type-fest@^0.8.1:
 =======
 type-fest@^0.8.0, type-fest@^0.8.1:
@@ -14748,6 +15215,9 @@ type-fest@^0.8.0, type-fest@^0.8.1:
 type-fest@^0.8.1:
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+type-fest@^0.8.0, type-fest@^0.8.1:
+>>>>>>> ad17e3e (fix: centered error icon)
   version "0.8.1"
   resolved "https://registry.yarnpkg.com/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
@@ -14772,6 +15242,7 @@ typescript@^3.7.5:
 uglify-js@^3.1.4:
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   version "3.15.3"
   resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.15.3.tgz#9aa82ca22419ba4c0137642ba0df800cb06e0471"
   integrity sha512-6iCVm2omGJbsu3JWac+p6kUiOpg3wFO2f8lIXjfEb8RrmLjzog1wTPMmwKB7swfzzqxj9YM+sGUM++u1qN4qJg==
@@ -14790,6 +15261,11 @@ uglify-js@^3.1.4:
   integrity sha512-6iCVm2omGJbsu3JWac+p6kUiOpg3wFO2f8lIXjfEb8RrmLjzog1wTPMmwKB7swfzzqxj9YM+sGUM++u1qN4qJg==
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+  version "3.15.3"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.15.3.tgz#9aa82ca22419ba4c0137642ba0df800cb06e0471"
+  integrity sha512-6iCVm2omGJbsu3JWac+p6kUiOpg3wFO2f8lIXjfEb8RrmLjzog1wTPMmwKB7swfzzqxj9YM+sGUM++u1qN4qJg==
+>>>>>>> ad17e3e (fix: centered error icon)
 
 uid-number@0.0.6:
   version "0.0.6"
@@ -14803,20 +15279,26 @@ umask@^1.1.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 umd@^3.0.0:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/umd/-/umd-3.0.3.tgz#aa9fe653c42b9097678489c01000acb69f0b26cf"
   integrity sha512-4IcGSufhFshvLNcMCV80UnQVlZ5pMOC8mvNPForqwA4+lzYQuetTESLDQkeLmihq8bRcnpbQa48Wb8Lh16/xow==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 unbox-primitive@^1.0.0, unbox-primitive@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/unbox-primitive/-/unbox-primitive-1.0.1.tgz#085e215625ec3162574dc8859abee78a59b14471"
@@ -15141,9 +15623,12 @@ w3c-xmlserializer@^1.1.2:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 watchify@^4.0.0:
   version "4.0.0"
   resolved "https://registry.yarnpkg.com/watchify/-/watchify-4.0.0.tgz#53b002d51e7b0eb640b851bb4de517a689973392"
@@ -15158,11 +15643,14 @@ watchify@^4.0.0:
     xtend "^4.0.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 wcwidth@^1.0.0, wcwidth@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/wcwidth/-/wcwidth-1.0.1.tgz#f0b0dcf915bc5ff1528afadb2c0e17b532da2fe8"
@@ -15236,9 +15724,12 @@ which-boxed-primitive@^1.0.2:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 which-module@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/which-module/-/which-module-2.0.0.tgz#d9ef07dce77b9902b8a3a8fa4b31c3e3f7e6e87a"
@@ -15257,11 +15748,14 @@ which-typed-array@^1.1.2:
     is-typed-array "^1.1.7"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 which@^1.2.9, which@^1.3.1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/which/-/which-1.3.1.tgz#a45043d54f5805316da8d62f9f50918d3da70b0a"
@@ -15302,9 +15796,12 @@ wordwrap@^1.0.0:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 wrap-ansi@^6.2.0:
   version "6.2.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-6.2.0.tgz#e9393ba07102e6c91a3b221478f0257cd2856e53"
@@ -15315,11 +15812,14 @@ wrap-ansi@^6.2.0:
     strip-ansi "^6.0.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 wrap-ansi@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/wrap-ansi/-/wrap-ansi-7.0.0.tgz#67e145cff510a6a6984bdf1152911d69d2eb9e43"
@@ -15454,9 +15954,12 @@ yargs-parser@20.2.4:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 yargs-parser@^18.1.2:
   version "18.1.3"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-18.1.3.tgz#be68c4975c6b2abf469236b0c870362fab09a7b0"
@@ -15466,11 +15969,14 @@ yargs-parser@^18.1.2:
     decamelize "^1.2.0"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 yargs-parser@^20.2.2:
   version "20.2.7"
   resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-20.2.7.tgz#61df85c113edfb5a7a4e36eb8aa60ef423cbc90a"
@@ -15483,9 +15989,12 @@ yargs-parser@^20.2.3:
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 =======
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 yargs@^15.0.2:
   version "15.4.1"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-15.4.1.tgz#0d87a16de01aee9d8bec2bfbf74f67851730f4f8"
@@ -15504,11 +16013,14 @@ yargs@^15.0.2:
     yargs-parser "^18.1.2"
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 >>>>>>> ea1dea7 (test: first draft of cypress tests)
 =======
 =======
 >>>>>>> cb2cfa8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
 >>>>>>> 65a00d8 (refactor(refactors and bug fixes): safari glitch fix + other updates)
+=======
+>>>>>>> ad17e3e (fix: centered error icon)
 yargs@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/yargs/-/yargs-16.2.0.tgz#1c82bf0f6b6a66eafce7ef30e376f49a12477f66"
