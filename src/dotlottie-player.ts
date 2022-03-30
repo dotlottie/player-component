@@ -37,6 +37,8 @@ export enum PlayerEvents {
   Frame = 'frame',
 }
 
+let _animIdx: number = 0;
+
 /**
  * Load a resource from a path URL.
  */
@@ -64,9 +66,13 @@ export function fetchPath(path: string): Promise<string> {
                   throw new Error('No animations listed in the manifest');
                 }
 
-                const defaultLottie = manifest.animations[0];
+                const defaultLottie = manifest.animations[_animIdx];
 
-                zip
+                if (!defaultLottie) {
+                  throw(`[dotLottie] Animation not found at index: ` + _animIdx);
+                }
+                try {
+                  zip
                   .file(`animations/${defaultLottie.id}.json`)
                   .async('string')
                   .then((lottieFile: string) => {
@@ -99,6 +105,9 @@ export function fetchPath(path: string): Promise<string> {
                       });
                     }
                   });
+                } catch(err) {
+                  throw(`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
+                }
               });
           })
           .catch((err: Error) => {
@@ -384,6 +393,19 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
+   * dotLottie files can contain multiple animations
+   * this method loads the animation from the desired index.
+   */
+  public async loadAtIndex(index: number): Promise<void> {
+    _animIdx = index;
+
+    this.destroyCurrentAnimation();
+    if (this.src) {
+      await this.load(this.src);
+    }
+  }
+
+  /**
    * Returns the lottie-web instance used in the component.
    */
   public getLottie(): any {
@@ -416,6 +438,19 @@ export class DotLottiePlayer extends LitElement {
     this.currentState = PlayerState.Paused;
 
     this.dispatchEvent(new CustomEvent(PlayerEvents.Pause));
+  }
+
+  /**
+   * Stops current animation, removes listeners and destroy() it
+   */
+  private destroyCurrentAnimation(): void {
+    this.stop();
+
+    // this.player.removeEventListener()
+    // this.container.removeEventListener()
+
+    this._lottie.destroy();
+    this._lottie = null;
   }
 
   /**
