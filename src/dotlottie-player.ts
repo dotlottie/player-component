@@ -37,6 +37,7 @@ export enum PlayerEvents {
 }
 
 let _animIdx: number = 0;
+let _manifest: any;
 
 /**
  * Load a resource from a path URL.
@@ -66,6 +67,7 @@ export function fetchPath(path: string): Promise<string> {
                 }
 
                 const defaultLottie = manifest.animations[_animIdx];
+                _manifest = manifest;
 
                 if (!defaultLottie) {
                   throw(`[dotLottie] Animation not found at index: ` + _animIdx);
@@ -339,6 +341,10 @@ export class DotLottiePlayer extends LitElement {
 
       // Handle lottie-web ready event
       this._lottie.addEventListener('DOMLoaded', () => {
+        //Set speed
+        if (_manifest.animations[_animIdx].speed)
+          this.setSpeed(_manifest.animations[_animIdx].speed);
+
         this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
       });
 
@@ -535,7 +541,8 @@ export class DotLottiePlayer extends LitElement {
       return;
     }
 
-    this._lottie.setSpeed(value);
+    this.speed = value;
+    this._lottie.setSpeed(this.speed);
   }
 
   /**
