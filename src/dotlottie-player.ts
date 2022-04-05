@@ -433,7 +433,7 @@ export class DotLottiePlayer extends LitElement {
     this.dispatchEvent(new CustomEvent(PlayerEvents.Stop));
   }
 
-  /**
+ /**
    * Seek to a given frame.
    */
   public seek(value: number | string): void {
@@ -442,13 +442,17 @@ export class DotLottiePlayer extends LitElement {
     }
 
     // Extract frame number from either number or percentage value
-    const matches = value.toString().match(/^([0-9]+)(%?)$/);
+    const matches = /^(\d+)(%?)$/.exec(value.toString());
+
     if (!matches) {
       return;
     }
 
     // Calculate and set the frame number
-    const frame = matches[2] === '%' ? (this._lottie.totalFrames * Number(matches[1])) / 100 : matches[1];
+    const frame =
+      matches[2] === "%"
+        ? (this._lottie.totalFrames * Number(matches[1])) / 100
+        : Number(matches[1]);
 
     // Set seeker to new frame number
     this.seeker = frame;
