@@ -300,18 +300,14 @@ export class DotLottiePlayer extends LitElement {
 
       // Handle animation play complete
       this._lottie.addEventListener('complete', () => {
-        console.log("complete");
-
         if (this.currentState !== PlayerState.Playing) {
           this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
           return;
         }
-        console.log("after complete");
 
         if (!this.loop || (this.count && this._counter >= this.count)) {
           this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
 
-          console.log("this loop : " + this.loop);
           // If we're in bounce mode but not looping, wait to do one bounce before stopping
           if (this.mode === PlayMode.Bounce) {
             if (this._lottie.currentFrame === 0) {
@@ -322,9 +318,7 @@ export class DotLottiePlayer extends LitElement {
           }
         }
 
-        console.log("this.mode :" + this.mode);
         if (this.mode === PlayMode.Bounce) {
-          console.log("in here");
           if (this.count) {
             this._counter += 0.5;
           }
@@ -369,7 +363,6 @@ export class DotLottiePlayer extends LitElement {
         if (_manifest.animations[_animIdx].loop)
           this.loop = (_manifest.animations[_animIdx].loop);
 
-        console.log(_manifest.animations[_animIdx].mode);
         this.setDirection(this.direction);
         this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
       });
@@ -399,11 +392,8 @@ export class DotLottiePlayer extends LitElement {
       });
 
       //Set direction
-      console.log(_manifest.animations[_animIdx].direction);
       if (_manifest.animations[_animIdx].direction)
         this.direction = _manifest.animations[_animIdx].direction;
-
-      console.log("loop : " + _manifest.animations[_animIdx].loop);
 
       //Set playmode
       if (_manifest.animations[_animIdx].mode &&
@@ -415,7 +405,6 @@ export class DotLottiePlayer extends LitElement {
       this.setDirection(this.direction);
 
       // Start playing if autoplay is enabled
-      console.log("DIR: " + this.direction);
       if (this.autoplay) {
         if (this.direction === -1)
           this.seek('100%');
