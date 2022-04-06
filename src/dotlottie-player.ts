@@ -48,7 +48,7 @@ export function fetchPath(path: string): Promise<string> {
     xhr.open('GET', path, true);
     xhr.responseType = 'arraybuffer';
     xhr.send();
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
       if (xhr.readyState == 4 && xhr.status == 200) {
         JSZip.loadAsync(xhr.response)
           .then((zip: any) => {
@@ -70,44 +70,44 @@ export function fetchPath(path: string): Promise<string> {
                 _manifest = manifest;
 
                 if (!defaultLottie) {
-                  throw(`[dotLottie] Animation not found at index: ` + _animIdx);
+                  throw (`[dotLottie] Animation not found at index: ` + _animIdx);
                 }
                 try {
                   zip
-                  .file(`animations/${defaultLottie.id}.json`)
-                  .async('string')
-                  .then((lottieFile: string) => {
-                    const lottieJson = JSON.parse(lottieFile);
+                    .file(`animations/${defaultLottie.id}.json`)
+                    .async('string')
+                    .then((lottieFile: string) => {
+                      const lottieJson = JSON.parse(lottieFile);
 
-                    if ('assets' in lottieJson) {
-                      Promise.all(
-                        lottieJson.assets.map((asset: any) => {
-                          if (!asset.p) {
-                            return;
-                          }
-                          if (zip.file(`images/${asset.p}`) == null) {
-                            return;
-                          }
+                      if ('assets' in lottieJson) {
+                        Promise.all(
+                          lottieJson.assets.map((asset: any) => {
+                            if (!asset.p) {
+                              return;
+                            }
+                            if (zip.file(`images/${asset.p}`) == null) {
+                              return;
+                            }
 
-                          return new Promise((resolveAsset: any) => {
-                            zip
-                              .file(`images/${asset.p}`)
-                              .async('base64')
-                              .then((assetB64: any) => {
-                                asset.p = 'data:;base64,' + assetB64;
-                                asset.e = 1;
+                            return new Promise((resolveAsset: any) => {
+                              zip
+                                .file(`images/${asset.p}`)
+                                .async('base64')
+                                .then((assetB64: any) => {
+                                  asset.p = 'data:;base64,' + assetB64;
+                                  asset.e = 1;
 
-                                resolveAsset();
-                              });
-                          });
-                        }),
-                      ).then(() => {
-                        resolve(lottieJson);
-                      });
-                    }
-                  });
-                } catch(err) {
-                  throw(`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
+                                  resolveAsset();
+                                });
+                            });
+                          }),
+                        ).then(() => {
+                          resolve(lottieJson);
+                        });
+                      }
+                    });
+                } catch (err) {
+                  throw (`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
                 }
               });
           })
@@ -300,17 +300,31 @@ export class DotLottiePlayer extends LitElement {
 
       // Handle animation play complete
       this._lottie.addEventListener('complete', () => {
+        console.log("complete");
+
         if (this.currentState !== PlayerState.Playing) {
           this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
           return;
         }
+        console.log("after complete");
 
         if (!this.loop || (this.count && this._counter >= this.count)) {
           this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
-          return;
+
+          console.log("this loop : " + this.loop);
+          // If we're in bounce mode but not looping, wait to do one bounce before stopping
+          if (this.mode === PlayMode.Bounce) {
+            if (this._lottie.currentFrame === 0) {
+              return;
+            }
+          } else {
+            return;
+          }
         }
 
+        console.log("this.mode :" + this.mode);
         if (this.mode === PlayMode.Bounce) {
+          console.log("in here");
           if (this.count) {
             this._counter += 0.5;
           }
@@ -332,8 +346,14 @@ export class DotLottiePlayer extends LitElement {
             this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
 
             if (this.currentState === PlayerState.Playing) {
-              this._lottie.stop();
-              this._lottie.play();
+              // If we want to play in reverse, go to end of the animation and play
+              if (this.direction === -1) {
+                this.seek('100%');
+                this.play();
+              } else {
+                this._lottie.stop();
+                this._lottie.play();
+              }
             }
           }, this.intermission);
         }
@@ -341,10 +361,16 @@ export class DotLottiePlayer extends LitElement {
 
       // Handle lottie-web ready event
       this._lottie.addEventListener('DOMLoaded', () => {
-        //Set speed
+        // Set speed
         if (_manifest.animations[_animIdx].speed)
           this.setSpeed(_manifest.animations[_animIdx].speed);
 
+        //Set looping. Set this.loop rather than call setLooping to manage looping state internally
+        if (_manifest.animations[_animIdx].loop)
+          this.loop = (_manifest.animations[_animIdx].loop);
+
+        console.log(_manifest.animations[_animIdx].mode);
+        this.setDirection(this.direction);
         this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
       });
 
@@ -372,12 +398,27 @@ export class DotLottiePlayer extends LitElement {
         }
       });
 
+      //Set direction
+      console.log(_manifest.animations[_animIdx].direction);
+      if (_manifest.animations[_animIdx].direction)
+        this.direction = _manifest.animations[_animIdx].direction;
+
+      console.log("loop : " + _manifest.animations[_animIdx].loop);
+
+      //Set playmode
+      if (_manifest.animations[_animIdx].mode &&
+        _manifest.animations[_animIdx].mode === PlayMode.Bounce)
+        this.mode = PlayMode.Bounce;
+
       // Set initial playback speed and direction
       this.setSpeed(this.speed);
       this.setDirection(this.direction);
 
       // Start playing if autoplay is enabled
+      console.log("DIR: " + this.direction);
       if (this.autoplay) {
+        if (this.direction === -1)
+          this.seek('100%');
         this.play();
       }
     }
@@ -651,12 +692,12 @@ export class DotLottiePlayer extends LitElement {
           aria-label="play-pause"
         >
           ${isPlaying
-            ? html`
+        ? html`
                 <svg width="24" height="24" aria-hidden="true" focusable="false">
                   <path d="M14.016 5.016H18v13.969h-3.984V5.016zM6 18.984V5.015h3.984v13.969H6z" />
                 </svg>
               `
-            : html`
+        : html`
                 <svg width="24" height="24" aria-hidden="true" focusable="false">
                   <path d="M8.016 5.016L18.985 12 8.016 18.984V5.015z" />
                 </svg>
@@ -684,12 +725,12 @@ export class DotLottiePlayer extends LitElement {
           .value=${this.seeker}
           @input=${this._handleSeekChange}
           @mousedown=${() => {
-            this._prevState = this.currentState;
-            this.freeze();
-          }}
+        this._prevState = this.currentState;
+        this.freeze();
+      }}
           @mouseup=${() => {
-            this._prevState === PlayerState.Playing && this.play();
-          }}
+        this._prevState === PlayerState.Playing && this.play();
+      }}
           aria-valuemin="1"
           aria-valuemax="100"
           role="slider"
@@ -722,10 +763,10 @@ export class DotLottiePlayer extends LitElement {
       <div id="animation-container" class=${className} lang="en" role="img">
         <div id="animation" class=${animationClass} style="background:${this.background};">
           ${this.currentState === PlayerState.Error
-            ? html`
+        ? html`
                 <div class="error">⚠️</div>
               `
-            : undefined}
+        : undefined}
         </div>
         ${this.controls ? this.renderControls() : undefined}
       </div>
