@@ -1,0 +1,82 @@
+<html>
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Roboto+Mono&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+  <a href="./interactivity.html">Interactivity page</a>
+  <div style="display: block">
+    <!-- Check animation loads via method -->
+    <div class="player-container">
+      <h1 style="text-align: center; text-decoration: underline;">bounce-loop</h1>
+      <dotlottie-player id="player-one" mode="normal" controls loop autoplay src="./dotlotties/bounce_loop.lottie">
+      </dotlottie-player>
+    </div>
+
+    <div class="player-container">
+      <h1 style="text-align: center; text-decoration: underline;">bounce-non-loop</h1>
+      <dotlottie-player id="bounce-non-loop" mode="normal" controls loop autoplay
+        src="./dotlotties/bounce_non_loop.lottie"></dotlottie-player>
+    </div>
+
+
+    <div class="player-container">
+      <h1 style="text-align: center; text-decoration: underline;">reverse_direction_2x_speed</h1>
+      <dotlottie-player id="reverse_direction_2x_speed" mode="normal" controls autoplay
+        src="./dotlotties/reverse_direction_2x_speed.lottie">
+      </dotlottie-player>
+    </div>
+
+    <div class="player-container">
+      <h1 style="text-align: center; text-decoration: underline;">reverse_non_loop</h1>
+      <dotlottie-player id="reverse_non_loop" mode="normal" controls loop autoplay
+        src="./dotlotties/reverse_non_loop.lottie"></dotlottie-player>
+    </div>
+
+    <div class="player-container">
+      <h1 style="text-align: center; text-decoration: underline;">speed_x3</h1>
+      <dotlottie-player id="speed_x3" mode="normal" controls loop autoplay src="./dotlotties/speed_x3.lottie">
+      </dotlottie-player>
+    </div>
+  </div>
+
+  <script src="../dist/dotlottie-player.js"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-interactivity@latest/dist/lottie-interactivity.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+    integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript">
+
+    const player = document.getElementById("player-one");
+    const playerTwo = document.getElementById("player-two");
+    const btn = document.getElementById("switch-btn");
+    let toggle = 0;
+    btn.addEventListener("click", () => {
+      toggle++;
+      console.log(player.getNbAnimations());
+      if (toggle > player.getNbAnimations() - 1)
+        toggle = 0;
+      player.loadAtIndex(toggle);
+    });
+  </script>
+  <style>
+    body {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .player-container {
+      width: 500px;
+      height: 500px;
+      margin: auto;
+      margin-bottom: 15%;
+      justify-content: center;
+      background-color: lightgrey;
+    }
+  </style>
+</body>
+
+</html>

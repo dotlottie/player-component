@@ -36,88 +36,85 @@ export enum PlayerEvents {
   Frame = 'frame',
 }
 
-let _animIdx: number = 0;
-let _manifest: any;
-
 /**
  * Load a resource from a path URL.
  */
-export function fetchPath(path: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', path, true);
-    xhr.responseType = 'arraybuffer';
-    xhr.send();
-    xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        JSZip.loadAsync(xhr.response)
-          .then((zip: any) => {
-            zip
-              .file('manifest.json')
-              .async('string')
-              .then((manifestFile: string) => {
-                const manifest = JSON.parse(manifestFile);
+// export function fetchPath(path: string, index: number): Promise<string> {
+//   return new Promise((resolve, reject) => {
+//     const xhr = new XMLHttpRequest();
+//     xhr.open('GET', path, true);
+//     xhr.responseType = 'arraybuffer';
+//     xhr.send();
+//     xhr.onreadystatechange = function () {
+//       if (xhr.readyState == 4 && xhr.status == 200) {
+//         JSZip.loadAsync(xhr.response)
+//           .then((zip: any) => {
+//             zip
+//               .file('manifest.json')
+//               .async('string')
+//               .then((manifestFile: string) => {
+//                 const manifest = JSON.parse(manifestFile);
 
-                if (!('animations' in manifest)) {
-                  throw new Error('Manifest not found');
-                }
+//                 if (!('animations' in manifest)) {
+//                   throw new Error('Manifest not found');
+//                 }
 
-                if (manifest.animations.length === 0) {
-                  throw new Error('No animations listed in the manifest');
-                }
+//                 if (manifest.animations.length === 0) {
+//                   throw new Error('No animations listed in the manifest');
+//                 }
 
-                const defaultLottie = manifest.animations[_animIdx];
-                _manifest = manifest;
+//                 const defaultLottie = manifest.animations[index];
+//                 this._manifest = manifest;
 
-                if (!defaultLottie) {
-                  throw (`[dotLottie] Animation not found at index: ` + _animIdx);
-                }
-                try {
-                  zip
-                    .file(`animations/${defaultLottie.id}.json`)
-                    .async('string')
-                    .then((lottieFile: string) => {
-                      const lottieJson = JSON.parse(lottieFile);
+//                 if (!defaultLottie) {
+//                   throw (`[dotLottie] Animation not found at index: ` + index);
+//                 }
+//                 try {
+//                   zip
+//                     .file(`animations/${defaultLottie.id}.json`)
+//                     .async('string')
+//                     .then((lottieFile: string) => {
+//                       const lottieJson = JSON.parse(lottieFile);
 
-                      if ('assets' in lottieJson) {
-                        Promise.all(
-                          lottieJson.assets.map((asset: any) => {
-                            if (!asset.p) {
-                              return;
-                            }
-                            if (zip.file(`images/${asset.p}`) == null) {
-                              return;
-                            }
+//                       if ('assets' in lottieJson) {
+//                         Promise.all(
+//                           lottieJson.assets.map((asset: any) => {
+//                             if (!asset.p) {
+//                               return;
+//                             }
+//                             if (zip.file(`images/${asset.p}`) == null) {
+//                               return;
+//                             }
 
-                            return new Promise((resolveAsset: any) => {
-                              zip
-                                .file(`images/${asset.p}`)
-                                .async('base64')
-                                .then((assetB64: any) => {
-                                  asset.p = 'data:;base64,' + assetB64;
-                                  asset.e = 1;
+//                             return new Promise((resolveAsset: any) => {
+//                               zip
+//                                 .file(`images/${asset.p}`)
+//                                 .async('base64')
+//                                 .then((assetB64: any) => {
+//                                   asset.p = 'data:;base64,' + assetB64;
+//                                   asset.e = 1;
 
-                                  resolveAsset();
-                                });
-                            });
-                          }),
-                        ).then(() => {
-                          resolve(lottieJson);
-                        });
-                      }
-                    });
-                } catch (err) {
-                  throw (`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
-                }
-              });
-          })
-          .catch((err: Error) => {
-            reject(err);
-          });
-      }
-    };
-  });
-}
+//                                   resolveAsset();
+//                                 });
+//                             });
+//                           }),
+//                         ).then(() => {
+//                           resolve(lottieJson);
+//                         });
+//                       }
+//                     });
+//                 } catch (err) {
+//                   throw (`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
+//                 }
+//               });
+//           })
+//           .catch((err: Error) => {
+//             reject(err);
+//           });
+//       }
+//     };
+//   });
+// }
 
 /**
  * DotLottiePlayer web component class
@@ -216,6 +213,86 @@ export class DotLottiePlayer extends LitElement {
   private _lottie?: any;
   private _prevState?: any;
   private _counter = 0;
+  private _animIdx = 0;
+  private _manifestOptions = new Map();
+  private _manifest: any;
+
+  private fetchPath(path: string, index: number): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      xhr.open('GET', path, true);
+      xhr.responseType = 'arraybuffer';
+      xhr.send();
+      xhr.onreadystatechange = () => {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          JSZip.loadAsync(xhr.response)
+            .then((zip: any) => {
+              zip
+                .file('manifest.json')
+                .async('string')
+                .then((manifestFile: string) => {
+                  const manifest = JSON.parse(manifestFile);
+
+                  if (!('animations' in manifest)) {
+                    throw new Error('Manifest not found');
+                  }
+
+                  if (manifest.animations.length === 0) {
+                    throw new Error('No animations listed in the manifest');
+                  }
+
+                  const defaultLottie = manifest.animations[index];
+                  this._manifest = manifest;
+
+                  if (!defaultLottie) {
+                    throw (`[dotLottie] Animation not found at index: ` + index);
+                  }
+                  try {
+                    zip
+                      .file(`animations/${defaultLottie.id}.json`)
+                      .async('string')
+                      .then((lottieFile: string) => {
+                        const lottieJson = JSON.parse(lottieFile);
+
+                        if ('assets' in lottieJson) {
+                          Promise.all(
+                            lottieJson.assets.map((asset: any) => {
+                              if (!asset.p) {
+                                return;
+                              }
+                              if (zip.file(`images/${asset.p}`) == null) {
+                                return;
+                              }
+
+                              return new Promise((resolveAsset: any) => {
+                                zip
+                                  .file(`images/${asset.p}`)
+                                  .async('base64')
+                                  .then((assetB64: any) => {
+                                    asset.p = 'data:;base64,' + assetB64;
+                                    asset.e = 1;
+
+                                    resolveAsset();
+                                  });
+                              });
+                            }),
+                          ).then(() => {
+                            resolve(lottieJson);
+                          });
+                        }
+                      });
+                  } catch (err) {
+                    throw (`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
+                  }
+                });
+            })
+            .catch((err: Error) => {
+              reject(err);
+            });
+        }
+      };
+    });
+  }
 
   /**
    * Handle visibility change events.
@@ -262,9 +339,12 @@ export class DotLottiePlayer extends LitElement {
       },
     };
 
+    // Intialize the options
+    this.initOptionsMap();
+
     // Load the resource information
     try {
-      const srcParsed = await fetchPath(src);
+      const srcParsed = await this.fetchPath(src, this._animIdx);
 
       // Clear previous animation, if any
       if (this._lottie) {
@@ -355,50 +435,90 @@ export class DotLottiePlayer extends LitElement {
 
       // Handle lottie-web ready event
       this._lottie.addEventListener('DOMLoaded', () => {
+        // let speed = this._manifest.animations[this._animIdx].speed;
+        // let loop = this._manifest.animations[this._animIdx].loop;
+        // let interactivity = this._manifest.animations[this._animIdx].interactivity;
+
+        this._manifestOptions.get("speed").call();
+        this._manifestOptions.get("loop").call();
+        this._manifestOptions.get("interactivity").call();
+        /**
+         * todo: Optimize checking the manifest for options.
+         */
+
         // Set speed
-        if (_manifest.animations[_animIdx].speed)
-          this.setSpeed(_manifest.animations[_animIdx].speed);
+        // if (this._manifest.animations[this._animIdx].speed)
+        //   this.setSpeed(this._manifest.animations[this._animIdx].speed);
 
         //Set looping. Set this.loop rather than call setLooping to manage looping state internally
-        if (_manifest.animations[_animIdx].loop)
-          this.loop = (_manifest.animations[_animIdx].loop);
+        // if (this._manifest.animations[this._animIdx].loop)
+        //   this.loop = (this._manifest.animations[this._animIdx].loop);
 
-        this.setDirection(this.direction);
+        // this.setDirection(this.direction);
+
+        //Set interactivity
+        // if (this._manifest.animations[this._animIdx].interactivity) {
+        // if (!this._manifest.animations[this._animIdx].interactivity.mode ||
+        //   !this._manifest.animations[this._animIdx].interactivity.actions) {
+        //   throw new Error("[dotLottie] Interactivity was detected in your manifest but needs 'mode' and 'actions' declared to work correctly.")
+        // }
+        // let interactivityConfig = {
+        //   mode: this._manifest.animations[this._animIdx].interactivity.mode,
+        //   player: this._lottie,
+        //   container: this.container,
+        //   actions: this._manifest.animations[this._animIdx].interactivity.actions,
+        // }
+
+        // if (window.LottieInteractivity) {
+        //   window.LottieInteractivity.create(
+        //     interactivityConfig
+        //   );
+        // } else {
+        //   throw new Error("[dotLottie] Interactivity actions were detected in manifest.json but Lottie-Interactivity has not been detected on the page.");
+        // }
+        // }
+
         this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
       });
 
       // Handle animation data load complete
-      this._lottie.addEventListener('data_ready', () => {
-        this.dispatchEvent(new CustomEvent(PlayerEvents.Load));
-      });
+      this._manifestOptions.get("dataReadyEvent").call();
+      // this._lottie.addEventListener('data_ready', () => {
+      //   this.dispatchEvent(new CustomEvent(PlayerEvents.Load));
+      // });
 
       // Set error state when animation load fail event triggers
-      this._lottie.addEventListener('data_failed', () => {
-        this.currentState = PlayerState.Error;
+      this._manifestOptions.get("dataFailedEvent").call();
+      // this._lottie.addEventListener('data_failed', () => {
+      //   this.currentState = PlayerState.Error;
 
-        this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
-      });
+      //   this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
+      // });
 
       // Set handlers to auto play animation on hover if enabled
-      this.container.addEventListener('mouseenter', () => {
-        if (this.hover && this.currentState !== PlayerState.Playing) {
-          this.play();
-        }
-      });
-      this.container.addEventListener('mouseleave', () => {
-        if (this.hover && this.currentState === PlayerState.Playing) {
-          this.stop();
-        }
-      });
+      this._manifestOptions.get("mouseEnterEvent").call();
+      this._manifestOptions.get("mouseLeaveEvent").call();
+      // this.container.addEventListener('mouseenter', () => {
+      //   if (this.hover && this.currentState !== PlayerState.Playing) {
+      //     this.play();
+      //   }
+      // });
+      // this.container.addEventListener('mouseleave', () => {
+      //   if (this.hover && this.currentState === PlayerState.Playing) {
+      //     this.stop();
+      //   }
+      // });
 
       //Set direction
-      if (_manifest.animations[_animIdx].direction)
-        this.direction = _manifest.animations[_animIdx].direction;
+      this._manifestOptions.get("direction").call();
+      // if (this._manifest.animations[this._animIdx].direction)
+      //   this.direction = this._manifest.animations[this._animIdx].direction;
 
       //Set playmode
-      if (_manifest.animations[_animIdx].mode &&
-        _manifest.animations[_animIdx].mode === PlayMode.Bounce)
-        this.mode = PlayMode.Bounce;
+      this._manifestOptions.get("mode").call();
+      // if (this._manifest.animations[this._animIdx].mode &&
+      //   this._manifest.animations[this._animIdx].mode === PlayMode.Bounce)
+      //   this.mode = PlayMode.Bounce;
 
       // Set initial playback speed and direction
       this.setSpeed(this.speed);
@@ -413,12 +533,119 @@ export class DotLottiePlayer extends LitElement {
     }
   }
 
+  private initOptionsMap(): Map<string, string> {
+    // let currOptions = this._manifest.animations[this._animIdx];
+
+    let speed = () => {
+      if (this._manifest.animations[this._animIdx].speed)
+        this.setSpeed(this._manifest.animations[this._animIdx].speed);
+    }
+
+    let loop = () => {
+      if (this._manifest.animations[this._animIdx].speed)
+        this.loop = (this._manifest.animations[this._animIdx].loop);
+    }
+
+    let direction = () => {
+      if (this._manifest.animations[this._animIdx].direction)
+        this.direction = this._manifest.animations[this._animIdx].direction;
+    }
+
+    let playMode = () => {
+      if (this._manifest.animations[this._animIdx].mode) {
+        if (this._manifest.animations[this._animIdx].mode === PlayMode.Bounce)
+          this.mode = PlayMode.Bounce;
+        else if (this._manifest.animations[this._animIdx].mode === PlayMode.Normal)
+          this.mode = PlayMode.Normal;
+      }
+    }
+
+    let dataReadyEvent = () => {
+      // Handle animation data load complete
+      this._lottie.addEventListener('data_ready', () => {
+        this.dispatchEvent(new CustomEvent(PlayerEvents.Load));
+      });
+    }
+
+    let dataFailedEvent = () => {
+
+      // Set error state when animation load fail event triggers
+      this._lottie.addEventListener('data_failed', () => {
+        this.currentState = PlayerState.Error;
+
+        this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
+      });
+    }
+
+    let mouseEnterEvent = () => {
+      // Set handlers to auto play animation on hover if enabled
+      this.container.addEventListener('mouseenter', () => {
+        if (this.hover && this.currentState !== PlayerState.Playing) {
+          this.play();
+        }
+      });
+
+    }
+
+    let mouseLeaveEvent = () => {
+      this.container.addEventListener('mouseleave', () => {
+        if (this.hover && this.currentState === PlayerState.Playing) {
+          this.stop();
+        }
+      });
+    }
+
+    let interactivityConfig = () => {
+      if (!this._manifest.animations[this._animIdx].interactivity)
+        return;
+      if (!this._manifest.animations[this._animIdx].interactivity.mode ||
+        !this._manifest.animations[this._animIdx].interactivity.actions) {
+        throw new Error("[dotLottie] Interactivity was detected in your manifest but needs 'mode' and 'actions' declared to work correctly.")
+      }
+      let interactivityConfig = {
+        mode: this._manifest.animations[this._animIdx].interactivity.mode,
+        player: this._lottie,
+        container: this.container,
+        actions: this._manifest.animations[this._animIdx].interactivity.actions,
+      }
+
+      if (window.LottieInteractivity) {
+        window.LottieInteractivity.create(
+          interactivityConfig
+        );
+      } else {
+        throw new Error("[dotLottie] Interactivity actions were detected in manifest.json but Lottie-Interactivity has not been detected on the page.");
+      }
+    }
+
+    this._manifestOptions.set('speed', speed);
+    this._manifestOptions.set('loop', loop);
+    this._manifestOptions.set('interactivity', interactivityConfig);
+    this._manifestOptions.set('direction', direction);
+    this._manifestOptions.set('mode', playMode);
+
+    this._manifestOptions.set('dataReadyEvent', dataReadyEvent);
+    this._manifestOptions.set('dataFailedEvent', dataFailedEvent);
+    this._manifestOptions.set('mouseEnterEvent', mouseEnterEvent);
+    this._manifestOptions.set('mouseLeaveEvent', mouseLeaveEvent);
+
+    return this._manifestOptions;
+  }
+
+  public getNbAnimations(): number {
+    if (this._manifest !== null) {
+      return this._manifest.animations.length;
+    }
+    else
+      return 0
+  }
+
   /**
    * dotLottie files can contain multiple animations
    * this method loads the animation from the desired index.
    */
   public async loadAtIndex(index: number): Promise<void> {
-    _animIdx = index;
+    this._animIdx = index;
 
     this.destroyCurrentAnimation();
     if (this.src) {
@@ -470,7 +697,8 @@ export class DotLottiePlayer extends LitElement {
     // this.player.removeEventListener()
     // this.container.removeEventListener()
 
-    this._lottie.destroy();
+    if (this._lottie)
+      this._lottie.destroy();
     this._lottie = null;
   }
 

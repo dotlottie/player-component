@@ -1,0 +1,63 @@
+<html>
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&family=Roboto+Mono&display=swap"
+    rel="stylesheet">
+  <title>Interactivity with dotlottie</title>
+</head>
+
+<body>
+  <a href="./index.html">home page</a>
+
+  <div style="display: block">
+    <!-- Check animation loads via method -->
+    <div class="player-container">
+      <h1 style="text-align: center; text-decoration: underline;">exploding-pigeon (click it)</h1>
+      <dotlottie-player id="player-one" mode="normal" loop autoplay
+        src="./dotlotties/interactivity/exploding_pigeon.lottie">
+      </dotlottie-player>
+    </div>
+
+    <div class="player-container">
+      <h1 style="text-align: center; text-decoration: underline;">no-mode-test</h1>
+      <!-- <dotlottie-player id="no-mode" mode="normal" controls loop autoplay
+        src="./dotlotties/interactivity/no_mode_test.lottie"></dotlottie-player> -->
+    </div>
+
+    <div class="player-container">
+      <h1 style="text-align: center; text-decoration: underline;">on scroll</h1>
+      <dotlottie-player id="on-scroll" mode="normal" controls loop autoplay
+        src="./dotlotties/interactivity/exploding_pigeon_and_lighthouse.lottie"></dotlottie-player>
+    </div>
+  </div>
+
+  <script src="../dist/dotlottie-player.js"></script>
+  <script src="https://unpkg.com/@lottiefiles/lottie-interactivity@latest/dist/lottie-interactivity.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+    integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script type="text/javascript">
+    let secondPlayer = document.getElementById("on-scroll");
+    secondPlayer.addEventListener("ready", () => {
+      secondPlayer.loadAtIndex(1);
+    }, { once: true });
+  </script>
+  <style>
+    body {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .player-container {
+      width: 500px;
+      height: 500px;
+      margin: auto;
+      margin-bottom: 15%;
+      justify-content: center;
+      background-color: lightgrey;
+    }
+  </style>
+</body>
+
+</html>
