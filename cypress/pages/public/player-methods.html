@@ -19,6 +19,19 @@
       <div id="player-three-container"></div>
     </div>
 
+    <!-- Check playing second animation of dotlottie on load -->
+    <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+      <dotlottie-player id="player-four" autoplay loop controls
+        src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie">
+      </dotlottie-player>
+    </div>
+
+    <!-- Check playing second animation of dotlottie on load -->
+    <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+      <dotlottie-player id="player-five" autoplay loop controls
+        src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie">
+      </dotlottie-player>
+    </div>
   </div>
 
   <script src="./dist/dotlottie-player.js"></script>
@@ -43,7 +56,7 @@
     playerTwo.addEventListener("rendered", (e) => {
       console.log("player two rendered event fired");
       playerTwo.load(
-        "./exploding_pigeon_and_lighthouse-error.lottie"
+        "./stacks.json"
       );
     });
 
@@ -56,6 +69,16 @@
         "https://assesssssssts8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie"
       );
     });
+
+    const playerFour = document.getElementById("player-four");
+    playerFour.addEventListener("ready", (e) => {
+      playerFour.loadAtIndex(1);
+    }, { once: true });
+
+    const playerFive = document.getElementById("player-five");
+    playerFive.addEventListener("ready", (e) => {
+      playerFive.loadAtId('lighthouse');
+    }, { once: true });
   </script>
 </body>
 

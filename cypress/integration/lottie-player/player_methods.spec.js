@@ -6,7 +6,34 @@ const { WatchDirectoryFlags } = require("typescript");
 
 context("Player modifiers tests", () => {
     beforeEach(() => {
-        cy.visit("http://localhost:8000/");
+        cy.visit("http://localhost:8000/player-methods.html");
+    });
+
+    it("Load animation using loadAtIndex", function (done) {
+        cy.get("#player-four").then(($el) => {
+            const playerFour = $el.get(0);
+
+            playerFour.addEventListener(
+                "ready",
+                () => {
+                    expect(playerFour.getAnimationIndex()).to.eq(1);
+                    done();
+                }
+            );
+        });
+    });
+
+    it("Load animation using loadAtId", function () {
+        cy.get("#player-five").then(($el) => {
+            const playerFive = $el.get(0);
+
+            playerFive.addEventListener(
+                "ready",
+                () => {
+                    expect(playerFive.getAnimationIndex()).to.eq(1);
+                }
+            );
+        });
     });
 
     //setspeed
