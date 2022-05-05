@@ -72,25 +72,19 @@ context("Player state", () => {
     cy.get("#player-six").then(($el) => {
       const playerSix = $el.get(0);
 
-      playerSix.addEventListener("error", () => {
-          expect(playerSix.currentState).to.eq("error");
-          done();
-      });
+      cy.wait(3000);
+      if (playerSix.currentState === "error")
+        done();
     });
-
   });
 
   it("Player-seven should have an error (invalid json).", function (done) {
     cy.get("#player-seven").then(($el) => {
       const playerSeven = $el.get(0);
 
-      playerSeven.addEventListener(
-        "error",
-        () => {
-          expect(playerSeven.currentState).to.eq("error");
-          done();
-        }
-      );
+      cy.wait(3000);
+      if (playerSeven.currentState === "error")
+        done();
     });
   });
 
@@ -104,5 +98,30 @@ context("Player state", () => {
       });
     });
     cy.get("#player-eight").trigger("mouseenter");
+  });
+
+  it("Player-nine should load it's second animation first.", function (done) {
+    cy.get("#player-nine").then(($el) => {
+      const playerNine = $el.get(0);
+
+      playerNine.addEventListener("play", () => {
+        expect(playerNine.getAnimationIndex()).to.eq(1);
+        done();
+      });
+    });
+  });
+
+  it("Player-ten shoud play its first animation.", function (done) {
+    cy.get("#player-ten").then(($el) => {
+      const playerTen = $el.get(0);
+
+      playerTen.addEventListener(
+        "error",
+        () => {
+          expect(playerTen.currentState).to.eq("error");
+          done();
+        }
+      );
+    });
   });
 });

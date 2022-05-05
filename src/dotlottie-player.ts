@@ -200,6 +200,12 @@ export class DotLottiePlayer extends LitElement {
   public src?: string;
 
   /**
+  * Load and play desired animation first.
+  */
+  @property({ type: String })
+  public animation?: string;
+
+  /**
    * Player state.
    */
   @property({ type: String })
@@ -290,6 +296,8 @@ export class DotLottiePlayer extends LitElement {
             .catch((err: Error) => {
               reject(err);
             });
+        } else if (xhr.readyState === 4 && xhr.status === 0) {
+          reject(`[dotLottie] Error finding dotLottie file at ${path}`);
         }
       };
     });
@@ -355,8 +363,9 @@ export class DotLottiePlayer extends LitElement {
         animationData: srcParsed,
       });
     } catch (err) {
-      this.currentState = PlayerState.Error;
+      console.error(err);
 
+      this.currentState = PlayerState.Error;
       this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
       return;
     }
@@ -476,8 +485,8 @@ export class DotLottiePlayer extends LitElement {
   public async loadAtIndex(index: number): Promise<void> {
     this._animIdx = index;
 
-    this.destroyCurrentAnimation();
     if (this.src) {
+      this.destroyCurrentAnimation();
       await this.load(this.src);
     }
   }
@@ -489,23 +498,37 @@ export class DotLottiePlayer extends LitElement {
   public async loadAtId(id: string): Promise<void> {
     let i = 0;
     let found = false;
-    if (!this._manifest)
-      return;
 
-    this._manifest.animations.forEach((element: { id: string; }) => {
-      if (element.id === id) {
-        this._animIdx = i;
-        found = true;
+    try {
+      // We need a manifest to check if desired animation is present
+      if (!this._manifest) {
+        if (this.src)
+          await this.fetchPath(this.src, this._animIdx);
+        else
+          return;
       }
-      i++;
-    });
-    if (found) {
-      this.destroyCurrentAnimation();
-      if (this.src) {
-        await this.load(this.src);
+
+      this._manifest.animations.forEach((element: { id: string; }) => {
+        if (element.id === id) {
+          this._animIdx = i;
+          found = true;
+        }
+        i++;
+      });
+      if (found) {
+        this.destroyCurrentAnimation();
+        if (this.src) {
+          return this.load(this.src);
+        }
+      } else {
+        throw (`[dotLottie] No animation with the id '${id}' was found.`);
       }
-    } else {
-      throw (`[dotLottie] No animation with the id '${id}' was found.`);
+    } catch (e) {
+      console.error(e);
+      this.currentState = PlayerState.Error;
+
+      this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
+      return;
     }
   }
 
@@ -553,7 +576,8 @@ export class DotLottiePlayer extends LitElement {
     // this.player.removeEventListener()
     // this.container.removeEventListener()
 
-    this._lottie.destroy();
+    if (this._lottie)
+      this._lottie.destroy();
     this._lottie = null;
   }
 
@@ -675,6 +699,13 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
+   * Get current animation's index
+   */
+  public getAnimationIndex(): number {
+    return (this._animIdx);
+  }
+
+  /**
    * Sets the looping of the animation.
    *
    * @param value Whether to enable looping. Boolean true enables looping.
@@ -731,8 +762,11 @@ export class DotLottiePlayer extends LitElement {
       document.addEventListener('visibilitychange', () => this._onVisibilityChange());
     }
 
-    // Setup lottie player
-    if (this.src) {
+    // Setup lottie player, if animation attribute is present, load animation
+    // with that id first
+    if (this.src && this.animation) {
+      await this.loadAtId(this.animation);
+    } else if (this.src) {
       await this.load(this.src);
     }
     this.dispatchEvent(new CustomEvent(PlayerEvents.Rendered));
