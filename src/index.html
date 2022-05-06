@@ -5,35 +5,68 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>dotlottie player web component</title>
-  <script src="./dotlottie-player.js"></script>
+  <script src="../dist/dotlottie-player.js"></script>
 </head>
 
 <body>
-  <dotlottie-player autoplay controls loop src="./sample_dotlottie.lottie" speed="1" mode="normal"
+  <dotlottie-player id="ufo" autoplay controls loop
+    src="https://assets5.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie" speed="1" mode="normal"
     style="height: 500px; display: block;">
   </dotlottie-player>
   <dotlottie-player id="two" autoplay controls loop
     src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie" animation="lighthouse" speed="1"
     mode="normal" style="height: 500px; display: inline-block;">
   </dotlottie-player>
+
+  <dotlottie-player id="three" autoplay controls loop
+    src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie" animation="lighthouse" speed="1"
+    mode="normal" style="height: 500px; display: inline-block;">
+  </dotlottie-player>
+
+
+  <canvas id="theCanvas" width="1080" height="1920"></canvas>
 </body>
 
 <script>
   let player = document.getElementById("two");
 
-  console.log("hi");
-  player.addEventListener("ready", () => {
-    // player.loadAtId("lighthouse");
+  // player.addEventListener("ready", () => {
+  //   // player.loadAtId("lighthouse");
 
-    setTimeout(() => {
-      player.loadAtId("pigeon");
-    }, 5000);
+  //   setTimeout(() => {
+  //     player.loadAtId("pigeon");
+  //   }, 5000);
 
-    setTimeout(() => {
-      player.loadAtId("this-should-cause-an-error");
-    }, 10000);
+  //   setTimeout(() => {
+  //     player.loadAtId("this-should-cause-an-error");
+  //   }, 10000);
 
-  }, { once: true });
+  // }, { once: true });
+
+  let three = document.getElementById("three");
+
+  // three.addEventListener("ready", () => {
+  //   // three.snapshot(true);
+  //   three.pause();
+  //   three.seek("50%");
+  //   let blurHash = three.encodeImage();
+  //   console.log("lighthouse");
+  //   console.log(blurHash);
+  // })
+
+  let ufo = document.getElementById("ufo");
+
+  ufo.addEventListener("ready", () => {
+    // three.snapshot(true);
+    ufo.pause();
+    ufo.seek("0%");
+    let blurHash = ufo.encodeImage();
+    console.log("ufo");
+    console.log(blurHash);
+  })
+  // let blurHash = three.encodeImage();
+  // console.log(blurHash);
+  // const validRes = isBlur
 
 </script>
 

@@ -3,6 +3,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 import { TemplateResult } from 'lit/html.js';
 import * as lottie from 'lottie-web/build/player/lottie_svg';
 import JSZip from 'jszip/dist/jszip';
+import { encode, decode } from "blurhash";
 
 import styles from './dotlottie-player.styles';
 
@@ -36,87 +37,6 @@ export enum PlayerEvents {
   Rendered = "rendered",
   Frame = 'frame',
 }
-
-// let _animIdx: number = 0;
-
-/**
- * Load a resource from a path URL.
- */
-// export function fetchPath(path: string): Promise<string> {
-//   return new Promise((resolve, reject) => {
-//     const xhr = new XMLHttpRequest();
-//     xhr.open('GET', path, true);
-//     xhr.responseType = 'arraybuffer';
-//     xhr.send();
-//     xhr.onreadystatechange = function () {
-//       if (xhr.readyState == 4 && xhr.status == 200) {
-//         JSZip.loadAsync(xhr.response)
-//           .then((zip: any) => {
-//             zip
-//               .file('manifest.json')
-//               .async('string')
-//               .then((manifestFile: string) => {
-//                 const manifest = JSON.parse(manifestFile);
-
-//                 if (!('animations' in manifest)) {
-//                   throw new Error('Manifest not found');
-//                 }
-
-//                 if (manifest.animations.length === 0) {
-//                   throw new Error('No animations listed in the manifest');
-//                 }
-
-//                 const defaultLottie = manifest.animations[_animIdx];
-
-//                 if (!defaultLottie) {
-//                   throw (`[dotLottie] Animation not found at index: ` + _animIdx);
-//                 }
-//                 try {
-//                   zip
-//                     .file(`animations/${defaultLottie.id}.json`)
-//                     .async('string')
-//                     .then((lottieFile: string) => {
-//                       const lottieJson = JSON.parse(lottieFile);
-
-//                       if ('assets' in lottieJson) {
-//                         Promise.all(
-//                           lottieJson.assets.map((asset: any) => {
-//                             if (!asset.p) {
-//                               return;
-//                             }
-//                             if (zip.file(`images/${asset.p}`) == null) {
-//                               return;
-//                             }
-
-//                             return new Promise((resolveAsset: any) => {
-//                               zip
-//                                 .file(`images/${asset.p}`)
-//                                 .async('base64')
-//                                 .then((assetB64: any) => {
-//                                   asset.p = 'data:;base64,' + assetB64;
-//                                   asset.e = 1;
-
-//                                   resolveAsset();
-//                                 });
-//                             });
-//                           }),
-//                         ).then(() => {
-//                           resolve(lottieJson);
-//                         });
-//                       }
-//                     });
-//                 } catch (err) {
-//                   throw (`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
-//                 }
-//               });
-//           })
-//           .catch((err: Error) => {
-//             reject(err);
-//           });
-//       }
-//     };
-//   });
-// }
 
 /**
  * DotLottiePlayer web component class
@@ -629,23 +549,95 @@ export class DotLottiePlayer extends LitElement {
     }
   }
 
+  public loadImage = async (): Promise<HTMLImageElement> =>
+    new Promise((resolve, reject) => {
+      // const img = new Image();
+      // img.onload = () => resolve(img);
+      // img.onerror = (...args) => reject(args);
+      // img.src = src;
+      if (!this.shadowRoot)
+        return null;
+      const svgElement = this.shadowRoot.querySelector('.animation svg') as Node;
+
+      console.log("typeof : " + typeof (svgElement));
+
+      const data = new XMLSerializer().serializeToString(svgElement);
+      var svgBlob = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
+      var url = window.URL.createObjectURL(svgBlob);
+      var img = new Image();
+      img.src = url;
+      // copy it to the canvas
+      let theCanvas = document.getElementById('theCanvas') as HTMLCanvasElement;
+      if (!theCanvas)
+        return null;
+      var context = theCanvas.getContext('2d');
+
+      img.onload = () => {
+        if (!context) return null;
+
+        console.log(img.width);
+        console.log(img.height);
+        theCanvas.width = img.width;
+        theCanvas.height = img.height;
+        theCanvas.style.backgroundColor = "orange";
+        context.fillStyle = "white";
+        context.fillRect(0, 0, theCanvas.width, theCanvas.height);
+        context.drawImage(img, 0, 0);
+        window.URL.revokeObjectURL(url);
+        resolve(img)
+      }
+    });
+
+  public getImageData = (): ImageData | null => {
+    let theCanvas = document.getElementById('theCanvas') as HTMLCanvasElement;
+    var context = theCanvas.getContext('2d');
+    if (!context) return null;
+    return context.getImageData(0, 0, theCanvas.width, theCanvas.width);
+  };
+
+  public encodeImage = async () => {
+    const image: HTMLImageElement = await this.loadImage();
+    const imageData: ImageData | null = this.getImageData();
+    if (imageData) {
+      let encodeData = encode(imageData.data, imageData.width, imageData.height, 4, 3);
+
+      const pixels = decode(encodeData, imageData.width, imageData.height);
+      const canvas = document.createElement("canvas");
+      canvas.width = imageData.width;
+      canvas.height = imageData.height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return null;
+      const newImageData = ctx.createImageData(imageData.width, imageData.height);
+      newImageData.data.set(pixels);
+      ctx.putImageData(newImageData, 0, 0);
+      document.body.append(canvas);
+
+      return encodeData;
+    }
+    else
+      return null;
+  };
+
   /**
    * Snapshot the current frame as SVG.
    *
    * If 'download' argument is boolean true, then a download is triggered in browser.
    */
-  public snapshot(download = true): string | void {
+  public snapshot(download: boolean = true): string | void {
     if (!this.shadowRoot) return;
 
     // Get SVG element and serialize markup
-    const svgElement = this.shadowRoot.querySelector('.animation svg') as Node;
+    const svgElement = this.shadowRoot.querySelector(".animation svg") as Node;
     const data = new XMLSerializer().serializeToString(svgElement);
 
     // Trigger file download
     if (download) {
-      const element = document.createElement('a');
-      element.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(data);
-      element.download = 'download_' + this.seeker + '.svg';
+      const element = document.createElement("a");
+
+      element.href = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(
+        data
+      )}`;
+      element.download = `download_${this.seeker}.svg`;
       document.body.appendChild(element);
 
       element.click();

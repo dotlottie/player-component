@@ -25,6 +25,7 @@
     "postrun-tests": "kill $(lsof -t -i:8000)"
   },
   "dependencies": {
+    "blurhash": "^1.1.5",
     "jszip": "^3.5.0",
     "lit": "^2.1.2",
     "lottie-web": "^5.8.1"
@@ -60,12 +61,12 @@
     "rollup-plugin-node-globals": "^1.4.0",
     "rollup-plugin-serve": "^1.0.3",
     "rollup-plugin-terser": "^6.1.0",
-    "rollup-plugin-typescript2": "^0.27.1",
+    "rollup-plugin-typescript2": "^0.31.1",
     "rollup-plugin-visualizer": "^4.0.4",
     "shx": "^0.3.3",
     "source-map-support": "^0.5.21",
     "ts-node": "^10.5.0",
-    "typescript": "^3.7.5"
+    "typescript": "^4.5.5"
   },
   "files": [
     "dist/dotlottie-player.js",
