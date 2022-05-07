@@ -7,7 +7,7 @@ context("Player state", () => {
     cy.visit("http://localhost:8000/player-state.html");
   });
 
-  it("Player-one should be autoplaying and looping.", function (done) {
+  it("5.1 Player-one should be autoplaying and looping.", function (done) {
     cy.get("#player-one").then(($el) => {
       const playerOne = $el.get(0);
 
@@ -19,7 +19,7 @@ context("Player state", () => {
     });
   });
 
-  it("Player-two should not be autoplaying.", function (done) {
+  it("5.2 Player-two should not be autoplaying.", function (done) {
     cy.get("#player-two").then(($el) => {
       const playerTwo = $el.get(0);
 
@@ -30,7 +30,7 @@ context("Player state", () => {
     });
   });
 
-  it("Player-three should be paused.", function (done) {
+  it("5.3 Player-three should be paused.", function (done) {
     cy.get("#player-three").then(($el) => {
       const playerThree = $el.get(0);
 
@@ -42,7 +42,7 @@ context("Player state", () => {
     });
   });
 
-  it("Player-four should resume playing.", function (done) {
+  it("5.4 Player-four should resume playing.", function (done) {
     cy.get("#player-four").then(($el) => {
       const playerFour = $el.get(0);
 
@@ -55,7 +55,7 @@ context("Player state", () => {
     });
   });
 
-  it.skip("Player-five should be destroyed.", function (done) {
+  it.skip("5.5 Player-five should be destroyed.", function (done) {
     cy.get("#player-five").then(($el) => {
       const playerFive = $el.get(0);
 
@@ -69,7 +69,7 @@ context("Player state", () => {
   });
 
   // Skipping due to trouble catching error with cypress
-  it.skip("Player-six should have an error (bad url).", function (done) {
+  it.skip("5.6 Player-six should have an error (bad url).", function (done) {
     cy.get("#player-six").then(($el) => {
       const playerSix = $el.get(0);
 
@@ -81,7 +81,7 @@ context("Player state", () => {
 
 
   // Skipping due to trouble catching error with cypress
-  it.skip("Player-seven should have an error (invalid json).", function (done) {
+  it.skip("5.7 Player-seven should have an error (invalid json).", function (done) {
     cy.get("#player-seven").then(($el) => {
       const playerSeven = $el.get(0);
 
@@ -91,7 +91,7 @@ context("Player state", () => {
     });
   });
 
-  it("Player-eight should play on hover.", function (done) {
+  it("5.8 Player-eight should play on hover.", function (done) {
     cy.get("#player-eight").then(($el) => {
       const playerEight = $el.get(0);
 
@@ -104,7 +104,7 @@ context("Player state", () => {
   });
 
   // Leaving test for later implementation of loading from attributes
-  it.skip("Player-nine should load it's second animation first.", function (done) {
+  it.skip("5.9 Player-nine should load it's second animation first.", function (done) {
     cy.get("#player-nine").then(($el) => {
       const playerNine = $el.get(0);
 
@@ -116,7 +116,7 @@ context("Player state", () => {
   });
 
   // Leaving test for later implementation of loading from attributes
-  it.skip("Player-ten shoud play its first animation.", function (done) {
+  it.skip("5.10 Player-ten shoud play its first animation.", function (done) {
     cy.get("#player-ten").then(($el) => {
       const playerTen = $el.get(0);
 
