@@ -143,6 +143,7 @@ export class DotLottiePlayer extends LitElement {
   private _counter = 0;
   private _animIdx = 0;
   private _manifest: any;
+  private _blurhashContainer: any;
 
   private fetchPath(path: string, index: number): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -170,6 +171,10 @@ export class DotLottiePlayer extends LitElement {
 
                   const defaultLottie = manifest.animations[index];
                   this._manifest = manifest;
+
+                  if (defaultLottie.blurHash) {
+                    this.decodeBlurhash(defaultLottie.blurHash);
+                  }
 
                   if (!defaultLottie) {
                     throw (`[dotLottie] Animation not found at index: ` + index);
@@ -360,6 +365,9 @@ export class DotLottiePlayer extends LitElement {
 
       // Handle lottie-web ready event
       this._lottie.addEventListener('DOMLoaded', () => {
+        if (this._manifest.animations[this._animIdx].blurHash) {
+          this._blurhashContainer?.remove();
+        }
         this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
       });
 
@@ -412,9 +420,9 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
- * dotLottie files can contain multiple animations
- * this method loads the animation from the desired id.
- */
+   * * dotLottie files can contain multiple animations
+   * * this method loads the animation from the desired id.
+   * */
   public async loadAtId(id: string): Promise<void> {
     let i = 0;
     let found = false;
@@ -422,6 +430,7 @@ export class DotLottiePlayer extends LitElement {
     try {
       // We need a manifest to check if desired animation is present
       if (!this._manifest) {
+        // Better way to load the manifest?
         if (this.src)
           await this.fetchPath(this.src, this._animIdx);
         else
@@ -551,15 +560,9 @@ export class DotLottiePlayer extends LitElement {
 
   public loadImage = async (): Promise<HTMLImageElement> =>
     new Promise((resolve, reject) => {
-      // const img = new Image();
-      // img.onload = () => resolve(img);
-      // img.onerror = (...args) => reject(args);
-      // img.src = src;
       if (!this.shadowRoot)
         return null;
       const svgElement = this.shadowRoot.querySelector('.animation svg') as Node;
-
-      console.log("typeof : " + typeof (svgElement));
 
       const data = new XMLSerializer().serializeToString(svgElement);
       var svgBlob = new Blob([data], { type: "image/svg+xml;charset=utf-8" });
@@ -579,11 +582,11 @@ export class DotLottiePlayer extends LitElement {
         console.log(img.height);
         theCanvas.width = img.width;
         theCanvas.height = img.height;
-        theCanvas.style.backgroundColor = "orange";
         context.fillStyle = "white";
         context.fillRect(0, 0, theCanvas.width, theCanvas.height);
         context.drawImage(img, 0, 0);
         window.URL.revokeObjectURL(url);
+        theCanvas.remove();
         resolve(img)
       }
     });
@@ -595,11 +598,28 @@ export class DotLottiePlayer extends LitElement {
     return context.getImageData(0, 0, theCanvas.width, theCanvas.width);
   };
 
+  public decodeBlurhash = (hash: string): void => {
+    const pixels = decode(hash, this.container.clientWidth, this.container.clientHeight);
+
+    this._blurhashContainer = document.createElement("canvas");
+    this._blurhashContainer.id = "placeholder_blurhash";
+    this._blurhashContainer.width = this.container.clientWidth;
+    this._blurhashContainer.height = this.container.clientHeight;
+    const ctx = this._blurhashContainer.getContext("2d");
+    if (!ctx) return;
+    const newImageData = ctx.createImageData(this.container.clientWidth,
+      this.container.clientHeight);
+    newImageData.data.set(pixels);
+    ctx.putImageData(newImageData, 0, 0);
+    this.container.append(this._blurhashContainer);
+  }
+
+  // Move to dotlottie-js
   public encodeImage = async () => {
     const image: HTMLImageElement = await this.loadImage();
     const imageData: ImageData | null = this.getImageData();
     if (imageData) {
-      let encodeData = encode(imageData.data, imageData.width, imageData.height, 4, 3);
+      let encodeData = encode(imageData.data, imageData.width, imageData.height, 9, 9);
 
       const pixels = decode(encodeData, imageData.width, imageData.height);
       const canvas = document.createElement("canvas");
