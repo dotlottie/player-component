@@ -18,24 +18,34 @@
     src="https://assets6.lottiefiles.com/dotlotties/dlf10_rmop9amq.lottie" speed="1" mode="normal"
     style="height: 500px; display: inline-block;">
   </dotlottie-player>
+
+  <!-- <dotlottie-player id="two" autoplay controls loop debug src="./sample_dotlottie/animations/test.lottie" speed="1"
+    mode="normal" style="height: 500px; display: inline-block;">
+  </dotlottie-player> -->
+
+  <div style="justify-content: center;margin: auto; align-items:center; text-align: center;">
+    <button onclick="nextAnimation()">Next
+      animation
+    </button>
+  </div>
 </body>
 
 <script>
   let player = document.getElementById("two");
 
-  // todo: how to use with once?
-  // todo: how to remove timeout?
-  // todo: why can't i catch another custom event?
-  // player.addEventListener("ready", () => {
+  // player.addEventListener("load", () => {
+  //   console.error("/////LOAD CAUGHT");
+  // });
+
+  let idx = 0
+  function nextAnimation() {
+    idx++;
+    player.setActive(idx);
+  }
+
   player.addEventListener("ready", () => {
-    // player.setActive("lighthouse");
-    console.log("LOADED CAUGHT");
-    // player.setActive("pigeon");
+    player.setActive("pigeon");
     // player.setActive(1);
-    setTimeout(() => {
-      // player.setActive("pigeon");
-      player.setActive(1);
-    }, 10);
 
     // setTimeout(() => {
     //   player.setActive("no-animation-with-this-id");

@@ -284,8 +284,137 @@ export type Manifest = {
 //  * @param path URL to resource .
 //  * @returns Object containing the manifest of the dotLottie and the desired animation.
 //  */
+// export function fetchPath(path: string): Promise<Record<string, any>> {
+//   return new Promise((resolve: any, reject) => {
+//     const xhr = new XMLHttpRequest();
+//     xhr.open('GET', path, true);
+//     xhr.responseType = 'arraybuffer';
+//     xhr.send();
+//     xhr.onreadystatechange = function () {
+//       if (xhr.readyState === 4 && xhr.status === 200) {
+//         let unzippedManifest: Manifest;
+//         let animations: any[] = [];
+//         let animAndManifest: Record<string, any> = {};
+//         let promises: any[] = [];
+
+//         JSZip.loadAsync(xhr.response)
+//           .then((zip: any) => {
+//             zip
+//               .file('manifest.json')
+//               .async('string')
+//               .then((manifestFile: string) => {
+//                 const manifest = JSON.parse(manifestFile);
+
+//                 if (!('animations' in manifest)) {
+//                   throw new Error('Manifest not found');
+//                 }
+
+//                 if (manifest.animations.length === 0) {
+//                   throw new Error('No animations listed in the manifest');
+//                 }
+
+//                 const defaultLottie = manifest.animations[0];
+
+//                 unzippedManifest = manifest;
+
+//                 // if (!defaultLottie) {
+//                 //   throw (`[dotLottie] Animation not found at index: ` + animationIndex);
+//                 // }
+
+//                 try {
+//                   // use stand for loop
+//                   // promise.all and map everything in to a variable
+//                   // await zip file to be resolved
+//                   manifest.animations.forEach((element: { id: string }) => {
+
+//                     console.log(element.id);
+//                     zip
+//                       .file(`animations/${element.id}.json`)
+//                       .async('string')
+//                       .then((lottieFile: string) => {
+//                         const lottieJson = JSON.parse(lottieFile);
+
+//                         if ('assets' in lottieJson) {
+//                           let prom = new Promise((resolveJson: any) => {
+//                             lottieJson.assets.map((asset: any) => {
+//                               if (!asset.p) {
+//                                 return;
+//                               }
+//                               if (zip.file(`images/${asset.p}`) == null) {
+//                                 return;
+//                               }
+
+//                               return new Promise((resolveAsset: any) => {
+//                                 console.log("resolving asset");
+//                                 zip
+//                                   .file(`images/${asset.p}`)
+//                                   .async('base64')
+//                                   .then((assetB64: any) => {
+//                                     asset.p = 'data:;base64,' + assetB64;
+//                                     asset.e = 1;
+
+//                                     resolveAsset();
+//                                   });
+//                               });
+//                             })
+//                             // animations.push(lottieJson);
+//                             resolveJson(lottie);
+//                             // resolve();
+//                           }).then(() => {
+//                             console.log("pushing lottie json -> " + lottieJson.markers);
+//                             animations.push(lottieJson);
+//                             // return animAndManifest;
+//                             // resolveJson();
+//                             // unzippedManifest.animation = lottieJson;
+//                             // animations.push(lottieJson);
+//                           });
+
+//                           // [ why does resolving animaAndManifest work here and not below? ]
+//                           resolve(animAndManifest);
+//                           promises.push(prom);
+//                         }
+//                       });
+//                   });
+//                   // console.log(animAndManifest);
+//                   // resolve(animAndManifest);
+//                   console.log(`These are all the promises: ${promises}`);
+//                   console.log(promises);
+
+//                   Promise.all(promises).then(() => {
+//                     animAndManifest.manifest = manifest;
+//                     animAndManifest.animations = animations;
+//                     console.log(animAndManifest);
+//                     // console.log(values);
+
+//                     // [why does resolving this not work? ]
+//                     // resolve(animAndManifest);
+//                     // return (animAndManifest);
+//                   });
+//                 } catch (err) {
+//                   throw (`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
+//                 }
+//               });
+//           })
+//           .catch((err: Error) => {
+//             reject(err);
+//           });
+//       } else if ((xhr.readyState === 4 || xhr.status === 404) && xhr.status === 0) {
+//         reject(`[dotLottie] Error finding dotLottie file at ${path}`);
+//       }
+//     };
+//   });
+// }
+
+// /**
+//  * [v4 of the method]
+//  * [todo] : animations not resolving in the order of their file
+//  * Load a resource from a path URL.
+//  * 
+//  * @param path URL to resource .
+//  * @returns Object containing the manifest of the dotLottie and the desired animation.
+//  */
 export function fetchPath(path: string): Promise<Record<string, any>> {
-  return new Promise((resolve: any, reject) => {
+  return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', path, true);
     xhr.responseType = 'arraybuffer';
@@ -316,80 +445,64 @@ export function fetchPath(path: string): Promise<Record<string, any>> {
                 const defaultLottie = manifest.animations[0];
 
                 unzippedManifest = manifest;
-
-                // if (!defaultLottie) {
-                //   throw (`[dotLottie] Animation not found at index: ` + animationIndex);
-                // }
-
-                try {
-                  manifest.animations.forEach((element: { id: string }) => {
-                    console.log(element.id);
-                    zip
-                      .file(`animations/${element.id}.json`)
-                      .async('string')
-                      .then((lottieFile: string) => {
-                        const lottieJson = JSON.parse(lottieFile);
-
-                        if ('assets' in lottieJson) {
-                          let prom = new Promise((resolveJson: any) => {
-                            lottieJson.assets.map((asset: any) => {
-                              if (!asset.p) {
-                                return;
-                              }
-                              if (zip.file(`images/${asset.p}`) == null) {
-                                return;
-                              }
-
-                              return new Promise((resolveAsset: any) => {
-                                console.log("resolving asset");
-                                zip
-                                  .file(`images/${asset.p}`)
-                                  .async('base64')
-                                  .then((assetB64: any) => {
-                                    asset.p = 'data:;base64,' + assetB64;
-                                    asset.e = 1;
-
-                                    resolveAsset();
-                                  });
-                              });
-                            })
-                            // animations.push(lottieJson);
-                            resolveJson(lottie);
-                            // resolve();
-                          }).then(() => {
-                            console.log("pushing lottie json -> " + lottieJson.markers);
-                            animations.push(lottieJson);
-                            // return animAndManifest;
-                            // resolveJson();
-                            // unzippedManifest.animation = lottieJson;
-                            // animations.push(lottieJson);
-                          });
-
-
-                          // [ why does resolving animaAndManifest work here and not below? ]
-                          resolve(animAndManifest);
-                          promises.push(prom);
-                        }
-                      });
-                  });
-                  // console.log(animAndManifest);
-                  // resolve(animAndManifest);
-                  console.log(`These are all the promises: ${promises}`);
-                  console.log(promises);
-
-                  Promise.all(promises).then(() => {
-                    animAndManifest.manifest = manifest;
-                    animAndManifest.animations = animations;
-                    console.log(animAndManifest);
-                    // console.log(values);
-
-                    // [why does resolving this not work? ]
-                    // resolve(animAndManifest);
-                    // return (animAndManifest);
-                  });
-                } catch (err) {
-                  throw (`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
+                animAndManifest.manifest = manifest;
+                if (!defaultLottie) {
+                  throw (`[dotLottie] Animation not found at index: ` + 0);
                 }
+
+                for (let i = 0; i < manifest.animations.length; i++) {
+                  console.log(`ANIMATION ID : ${manifest.animations[i].id}`)
+                  let prom = new Promise((resolvedJson, rejectedJson) => {
+                    try {
+                      console.log(`UNZIPPING : ${manifest.animations[i].id}`)
+                      zip
+                        .file(`animations/${manifest.animations[i].id}.json`)
+                        .async('string')
+                        .then((lottieFile: string) => {
+                          const lottieJson = JSON.parse(lottieFile);
+
+                          if ('assets' in lottieJson) {
+                            Promise.all(
+                              lottieJson.assets.map((asset: any) => {
+                                if (!asset.p) {
+                                  return;
+                                }
+                                if (zip.file(`images/${asset.p}`) == null) {
+                                  return;
+                                }
+
+                                return new Promise((resolveAsset: any) => {
+                                  zip
+                                    .file(`images/${asset.p}`)
+                                    .async('base64')
+                                    .then((assetB64: any) => {
+                                      asset.p = 'data:;base64,' + assetB64;
+                                      asset.e = 1;
+
+                                      resolveAsset();
+                                    });
+                                });
+                              }),
+                            ).then(() => {
+                              animations.push(lottieJson);
+                              // animations.unshift(lottieJson);
+                              resolvedJson(lottieJson);
+                            });
+                          }
+                        })
+                    } catch (err) {
+                      throw (`[dotLottie] Error finding '${defaultLottie.id}' in .lottie file. Does your manifest contain the correct animation id?`);
+                    }
+                  });
+                  promises.push(prom);
+                }
+                console.log(`LIST OF PROMISES: ` + promises);
+                console.log(promises);
+                Promise.all(promises).then(() => {
+                  animAndManifest.manifest = manifest;
+                  animAndManifest.animations = animations;
+                  resolve(animAndManifest);
+                })
               });
           })
           .catch((err: Error) => {
@@ -575,16 +688,17 @@ export class DotLottiePlayer extends LitElement {
       },
     };
 
-    console.log(typeof src);
-    console.log(src);
+    // console.log(typeof src);
+    // console.log(src);
 
     // Load the resource information
     try {
       let srcParsed;
 
       if (typeof src === "string") {
-        console.log("fetching path..");
+        // console.log("fetching path..");
 
+        // [todo] await is fetched but asset hasnt finished loading
         const manifestAndAnimation = await fetchPath(src);
 
         this._animations = manifestAndAnimation.animations;
@@ -707,7 +821,7 @@ export class DotLottiePlayer extends LitElement {
 
       // Handle lottie-web ready event
       this._lottie.addEventListener('DOMLoaded', () => {
-        console.log("loaded lottie...");
+        // console.log("loaded lottie...");
         // console.log(this._lottie);
         // this._lottie.play();
         this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
@@ -715,7 +829,7 @@ export class DotLottiePlayer extends LitElement {
 
       // Handle animation data load complete
       this._lottie.addEventListener('data_ready', () => {
-        console.log("data_ready fired!!");
+        console.error("data_ready fired!!");
         this.dispatchEvent(new CustomEvent(PlayerEvents.Load));
       });
 
@@ -762,7 +876,7 @@ export class DotLottiePlayer extends LitElement {
           throw ("animations is null!");
 
         console.log("///");
-        console.log("loading..");
+        // console.log("loading..");
         console.log(this._animations);
         console.log("///");
 
@@ -780,15 +894,10 @@ export class DotLottiePlayer extends LitElement {
         return;
       }
       // Find desired animation by and set the current animation index
-      this._manifest.animations.forEach((element: { id: string; }, index: number) => {
-        if (element.id === animationId) {
-          this._active = index;
-          console.log(`${element.id} + " " + ${animationId} + " " + ${index}`);
-          found = true;
-        }
-      });
-      if (found) {
-        // this.destroyCurrentAnimation();
+      // [todo] use .find
+      let ret = this._manifest.animations.findIndex(element => element.id === animationId);
+      if (ret !== -1) {
+        this._active = ret;
         if (this.src) {
           if (!this._animations)
             throw ("animations is null!");
@@ -797,6 +906,23 @@ export class DotLottiePlayer extends LitElement {
       } else {
         console.warn(`[dotLottie] No animation with the id '${animationId}' was found.`);
       }
+      // this._manifest.animations.forEach((element: { id: string; }, index: number) => {
+      //   if (element.id === animationId) {
+      //     this._active = index;
+      //     console.log(`${element.id} + " " + ${animationId} + " " + ${index}`);
+      //     found = true;
+      //   }
+      // });
+      // if (found) {
+      //   // this.destroyCurrentAnimation();
+      //   if (this.src) {
+      //     if (!this._animations)
+      //       throw ("animations is null!");
+      //     this.load(this._animations[this._active]);
+      //   }
+      // } else {
+      //   console.warn(`[dotLottie] No animation with the id '${animationId}' was found.`);
+      // }
     }
   }
 
