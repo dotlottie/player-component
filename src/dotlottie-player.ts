@@ -42,24 +42,28 @@ export enum PlayerEvents {
 /**
  * Load a resource from a path URL.
  */
-export const fetchDotLottie = async (path: string): Promise<ArrayBuffer> => {
+const fetchDotLottie = async (path: string): Promise<ArrayBuffer> => {
   const response = await fetch(path);
   return response.arrayBuffer();
 };
 
+const isLottie = (json: Record<string, any>): boolean => {
+  const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
 
-export const base64Arraybuffer = async (data: ArrayBuffer) => {
+  return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
+};
+
+const base64Arraybuffer = async (data: ArrayBuffer) => {
   const base64url = await new Promise(r => {
     const reader = new FileReader();
     reader.onload = () => r(reader.result);
     reader.readAsDataURL(new Blob([data]));
   });
 
-    return base64url.split(',', 2)[1];
+  return base64url.split(',', 2)[1];
 };
 
-export const fetchPath = async (path: string): Promise<string> {
-
+const fetchPath = async (path: string): Promise<string> => {
   try {
     const response = await fetchDotLottie(path);
     const massiveFile = new Uint8Array(response);
@@ -77,11 +81,9 @@ export const fetchPath = async (path: string): Promise<string> {
     const { id } = manifest.animations[0];
     const lottieJson = JSON.parse(strFromU8(unzip[`animations/${id}.json`]));
 
-
-
     if ('assets' in lottieJson) {
       await Promise.all(
-        lottieJson.assets.map(async (asset :any) => {
+        lottieJson.assets.map(async (asset: any) => {
           if (!asset.p) {
             return;
           }
@@ -94,19 +96,17 @@ export const fetchPath = async (path: string): Promise<string> {
 
           asset.p = 'data:;base64,' + assetB64;
           asset.e = 1;
-  
-        })
+        }),
       );
     }
-    
-    return new Promise((resolve) => {
+
+    return new Promise(resolve => {
       resolve(lottieJson);
     });
-
-  } catch (error :Error) {
+  } catch (error) {
     throw new Error(error);
   }
-}
+};
 
 /**
  * DotLottiePlayer web component class
@@ -118,22 +118,10 @@ export const fetchPath = async (path: string): Promise<string> {
 @customElement('dotlottie-player')
 export class DotLottiePlayer extends LitElement {
   /**
-   * Animation container.
-   */
-  @query('.animation')
-  protected container!: HTMLElement;
-
-  /**
-   * Play mode.
-   */
-  @property()
-  public mode: PlayMode = PlayMode.Normal;
-
-  /**
    * Autoplay animation on load.
    */
   @property({ type: Boolean })
-  public autoplay = false;
+  public autoplay: boolean = false;
 
   /**
    * Background color.
@@ -145,7 +133,7 @@ export class DotLottiePlayer extends LitElement {
    * Show controls.
    */
   @property({ type: Boolean })
-  public controls = false;
+  public controls: boolean = false;
 
   /**
    * Number of times to loop animation.
@@ -154,22 +142,52 @@ export class DotLottiePlayer extends LitElement {
   public count?: number;
 
   /**
+   * Player state.
+   */
+  @property({ type: String })
+  public currentState: PlayerState = PlayerState.Loading;
+
+  /**
+   * Animation description for screen readers.
+   */
+  @property({ type: String })
+  public description: string = 'Lottie animation';
+
+  /**
    * Direction of animation.
    */
   @property({ type: Number })
-  public direction = 1;
+  public direction: number = 1;
 
   /**
    * Whether to play on mouse hover
    */
   @property({ type: Boolean })
-  public hover = false;
+  public hover: boolean = false;
+
+  /**
+   * Intermission
+   */
+  @property()
+  public intermission: number = 1;
 
   /**
    * Whether to loop animation.
    */
   @property({ type: Boolean, reflect: true })
-  public loop = false;
+  public loop: boolean = false;
+
+  /**
+   * Play mode.
+   */
+  @property()
+  public mode: PlayMode = PlayMode.Normal;
+
+  /**
+   * Aspect ratio to pass to lottie-web.
+   */
+  @property({ type: String })
+  public preserveAspectRatio: string = 'xMidYMid meet';
 
   /**
    * Renderer to use.
@@ -178,10 +196,17 @@ export class DotLottiePlayer extends LitElement {
   public renderer: 'svg' = 'svg';
 
   /**
+   * seeker
+   */
+
+  @property()
+  public seeker: any;
+
+  /**
    * Animation speed.
    */
   @property({ type: Number })
-  public speed = 1;
+  public speed: number = 1;
 
   /**
    * Bodymovin JSON data or URL to JSON.
@@ -190,50 +215,30 @@ export class DotLottiePlayer extends LitElement {
   public src?: string;
 
   /**
-   * Player state.
+   * Enable web workers
    */
-  @property({ type: String })
-  public currentState: PlayerState = PlayerState.Loading;
+  @property({ type: Boolean })
+  public webworkers?: boolean;
 
-  @property()
-  public seeker: any;
+  /**
+   * Animation container.
+   */
+  @query('.animation')
+  protected container!: HTMLElement;
 
-  @property()
-  public intermission = 1;
+  private _io: IntersectionObserver | undefined = undefined;
 
-  private _io?: any;
+  // private _ro: ResizeObserver | undefined = undefined;
   private _lottie?: any;
+
   private _prevState?: any;
-  private _counter = 0;
 
-  /**
-   * Handle visibility change events.
-   */
-  private _onVisibilityChange(): void {
-    if (document.hidden && this.currentState === PlayerState.Playing) {
-      this.freeze();
-    } else if (this.currentState === PlayerState.Frozen) {
-      this.play();
-    }
-  }
-
-  /**
-   * Handles click and drag actions on the progress track.
-   */
-  private _handleSeekChange(e: any): void {
-    if (!this._lottie || isNaN(e.target.value)) {
-      return;
-    }
-
-    const frame: number = (e.target.value / 100) * this._lottie.totalFrames;
-
-    this.seek(frame);
-  }
+  private _counter: number = 1;
 
   /**
    * Configure and initialize lottie-web player instance.
    */
-  public async load(src: string): Promise<void> {
+  public async load(src: string | object): Promise<void> {
     if (!this.shadowRoot) {
       return;
     }
@@ -244,7 +249,7 @@ export class DotLottiePlayer extends LitElement {
       autoplay: false,
       renderer: this.renderer,
       rendererSettings: {
-        scaleMode: 'noScale',
+        preserveAspectRatio: this.preserveAspectRatio,
         clearCanvas: false,
         progressiveLoad: true,
         hideOnTransparent: true,
@@ -255,119 +260,32 @@ export class DotLottiePlayer extends LitElement {
     try {
       const srcParsed = await fetchPath(src);
 
- 
       // Clear previous animation, if any
       if (this._lottie) {
         this._lottie.destroy();
       }
 
+      if (this.webworkers) {
+        lottie.useWebWorker(true);
+      }
+
       // Initialize lottie player and load animation
-      
       this._lottie = lottie.loadAnimation({
         ...options,
+
         animationData: srcParsed,
       });
 
+      // Attach the event listeners before we check the requested json file for errors
+      this._attachEventListeners();
+
+      if (!isLottie(srcParsed)) {
+        this.currentState = PlayerState.Error;
+        this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
+      }
     } catch (err) {
       this.currentState = PlayerState.Error;
-
       this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
-      return;
-    }
-
-    if (this._lottie) {
-      // Calculate and save the current progress of the animation
-      this._lottie.addEventListener('enterFrame', () => {
-        this.seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
-
-        this.dispatchEvent(
-          new CustomEvent(PlayerEvents.Frame, {
-            detail: {
-              frame: this._lottie.currentFrame,
-              seeker: this.seeker,
-            },
-          }),
-        );
-      });
-
-      // Handle animation play complete
-      this._lottie.addEventListener('complete', () => {
-        if (this.currentState !== PlayerState.Playing) {
-          this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
-          return;
-        }
-
-        if (!this.loop || (this.count && this._counter >= this.count)) {
-          this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
-          return;
-        }
-
-        if (this.mode === PlayMode.Bounce) {
-          if (this.count) {
-            this._counter += 0.5;
-          }
-
-          setTimeout(() => {
-            this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
-
-            if (this.currentState === PlayerState.Playing) {
-              this._lottie.setDirection(this._lottie.playDirection * -1);
-              this._lottie.play();
-            }
-          }, this.intermission);
-        } else {
-          if (this.count) {
-            this._counter += 1;
-          }
-
-          window.setTimeout(() => {
-            this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
-
-            if (this.currentState === PlayerState.Playing) {
-              this._lottie.stop();
-              this._lottie.play();
-            }
-          }, this.intermission);
-        }
-      });
-
-      // Handle lottie-web ready event
-      this._lottie.addEventListener('DOMLoaded', () => {
-        this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
-      });
-
-      // Handle animation data load complete
-      this._lottie.addEventListener('data_ready', () => {
-        this.dispatchEvent(new CustomEvent(PlayerEvents.Load));
-      });
-
-      // Set error state when animation load fail event triggers
-      this._lottie.addEventListener('data_failed', () => {
-        this.currentState = PlayerState.Error;
-
-        this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
-      });
-
-      // Set handlers to auto play animation on hover if enabled
-      this.container.addEventListener('mouseenter', () => {
-        if (this.hover && this.currentState !== PlayerState.Playing) {
-          this.play();
-        }
-      });
-      this.container.addEventListener('mouseleave', () => {
-        if (this.hover && this.currentState === PlayerState.Playing) {
-          this.stop();
-        }
-      });
-
-      // Set initial playback speed and direction
-      this.setSpeed(this.speed);
-      this.setDirection(this.direction);
-
-      // Start playing if autoplay is enabled
-      if (this.autoplay) {
-        this.play();
-      }
     }
   }
 
@@ -414,11 +332,26 @@ export class DotLottiePlayer extends LitElement {
       return;
     }
 
-    this._counter = 0;
+    this._counter = 1;
     this._lottie.stop();
     this.currentState = PlayerState.Stopped;
 
     this.dispatchEvent(new CustomEvent(PlayerEvents.Stop));
+  }
+
+  /**
+   * Destroy animation and lottie-player element.
+   */
+  public destroy(): void {
+    if (!this._lottie) {
+      return;
+    }
+
+    this._lottie.destroy();
+    this._lottie = null;
+    this.currentState = PlayerState.Destroyed;
+    this.dispatchEvent(new CustomEvent(PlayerEvents.Destroyed));
+    this.remove();
   }
 
   /**
@@ -430,13 +363,14 @@ export class DotLottiePlayer extends LitElement {
     }
 
     // Extract frame number from either number or percentage value
-    const matches = value.toString().match(/^([0-9]+)(%?)$/);
+    const matches = /^(\d+)(%?)$/.exec(value.toString());
+
     if (!matches) {
       return;
     }
 
     // Calculate and set the frame number
-    const frame = matches[2] === '%' ? (this._lottie.totalFrames * Number(matches[1])) / 100 : matches[1];
+    const frame = matches[2] === '%' ? (this._lottie.totalFrames * Number(matches[1])) / 100 : Number(matches[1]);
 
     // Set seeker to new frame number
     this.seeker = frame;
@@ -455,7 +389,7 @@ export class DotLottiePlayer extends LitElement {
    *
    * If 'download' argument is boolean true, then a download is triggered in browser.
    */
-  public snapshot(download = true): string | void {
+  public snapshot(download: boolean = true): string | void {
     if (!this.shadowRoot) return;
 
     // Get SVG element and serialize markup
@@ -465,8 +399,9 @@ export class DotLottiePlayer extends LitElement {
     // Trigger file download
     if (download) {
       const element = document.createElement('a');
-      element.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(data);
-      element.download = 'download_' + this.seeker + '.svg';
+
+      element.href = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(data)}`;
+      element.download = `download_${this.seeker}.svg`;
       document.body.appendChild(element);
 
       element.click();
@@ -475,22 +410,6 @@ export class DotLottiePlayer extends LitElement {
     }
 
     return data;
-  }
-
-  /**
-   * Freeze animation play.
-   * This internal state pauses animation and is used to differentiate between
-   * user requested pauses and component instigated pauses.
-   */
-  private freeze(): void {
-    if (!this._lottie) {
-      return;
-    }
-
-    this._lottie.pause();
-    this.currentState = PlayerState.Frozen;
-
-    this.dispatchEvent(new CustomEvent(PlayerEvents.Freeze));
   }
 
   /**
@@ -546,6 +465,17 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
+   * Resize animation.
+   */
+  public resize() {
+    if (!this._lottie) {
+      return;
+    }
+
+    this._lottie.resize();
+  }
+
+  /**
    * Returns the styles for the component.
    */
   static get styles() {
@@ -553,9 +483,53 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
+   * Cleanup on component destroy.
+   */
+  public disconnectedCallback(): void {
+    // Don't clean up if node is still connected to the context (i.e. this is a move).
+    if (this.isConnected) return;
+
+    // Remove intersection observer for detecting component being out-of-view.
+    if (this._io) {
+      this._io.disconnect();
+      this._io = undefined;
+    }
+
+    // Remove resize observer for detecting resize/reflow events affecting element.
+    // if (this._ro) {
+    //   this._ro.disconnect();
+    //   this._ro = undefined;
+    // }
+
+    // Remove the attached Visibility API's change event listener.
+    document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
+
+    // Destroy the animation instance and element
+    this.destroy();
+  }
+
+  public render(): TemplateResult | void {
+    const className: string = this.controls ? 'main controls' : 'main';
+    const animationClass: string = this.controls ? 'animation controls' : 'animation';
+
+    return html`
+      <div id="animation-container" class=${className} lang="en" aria-label=${this.description} role="img">
+        <div id="animation" class=${animationClass} style="background:${this.background};">
+          ${this.currentState === PlayerState.Error
+            ? html`
+                <div class="error">⚠️</div>
+              `
+            : undefined}
+        </div>
+        ${this.controls ? this.renderControls() : undefined}
+      </div>
+    `;
+  }
+
+  /**
    * Initialize everything on component first render.
    */
-  protected async firstUpdated(): Promise<void> {
+  protected firstUpdated(): void {
     // Add intersection observer for detecting component being out-of-view.
     if ('IntersectionObserver' in window) {
       this._io = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
@@ -578,25 +552,12 @@ export class DotLottiePlayer extends LitElement {
 
     // Setup lottie player
     if (this.src) {
-      await this.load(this.src);
+      this.load(this.src);
     }
+    this.dispatchEvent(new CustomEvent(PlayerEvents.Rendered));
   }
 
-  /**
-   * Cleanup on component destroy.
-   */
-  public disconnectedCallback(): void {
-    // Remove intersection observer for detecting component being out-of-view.
-    if (this._io) {
-      this._io.disconnect();
-      this._io = undefined;
-    }
-
-    // Remove the attached Visibility API's change event listener.
-    document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
-  }
-
-  protected renderControls() {
+  protected renderControls(): TemplateResult {
     const isPlaying: boolean = this.currentState === PlayerState.Playing;
     const isPaused: boolean = this.currentState === PlayerState.Paused;
     const isStopped: boolean = this.currentState === PlayerState.Stopped;
@@ -676,20 +637,152 @@ export class DotLottiePlayer extends LitElement {
     `;
   }
 
-  render(): TemplateResult | void {
-    const className: string = this.controls ? 'main controls' : 'main';
-    const animationClass: string = this.controls ? 'animation controls' : 'animation';
-    return html`
-      <div id="animation-container" class=${className} lang="en" role="img">
-        <div id="animation" class=${animationClass} style="background:${this.background};">
-          ${this.currentState === PlayerState.Error
-            ? html`
-                <div class="error">⚠️</div>
-              `
-            : undefined}
-        </div>
-        ${this.controls ? this.renderControls() : undefined}
-      </div>
-    `;
+  /**
+   * Handle visibility change events.
+   */
+  private _onVisibilityChange(): void {
+    if (document.hidden === true && this.currentState === PlayerState.Playing) {
+      this.freeze();
+    } else if (this.currentState === PlayerState.Frozen) {
+      this.play();
+    }
+  }
+
+  /**
+   * Handles click and drag actions on the progress track.
+   */
+  private _handleSeekChange(e: any): void {
+    if (!this._lottie || isNaN(e.target.value)) {
+      return;
+    }
+
+    const frame: number = (e.target.value / 100) * this._lottie.totalFrames;
+
+    this.seek(frame);
+  }
+
+  private _attachEventListeners(): void {
+    this._lottie.addEventListener('enterFrame', () => {
+      this.seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
+
+      this.dispatchEvent(
+        new CustomEvent(PlayerEvents.Frame, {
+          detail: {
+            frame: this._lottie.currentFrame,
+            seeker: this.seeker,
+          },
+        }),
+      );
+    });
+
+    // Handle animation play complete
+    this._lottie.addEventListener('complete', () => {
+      if (this.currentState !== PlayerState.Playing) {
+        this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
+
+        return;
+      }
+
+      if (!this.loop || (this.count && this._counter >= this.count)) {
+        this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
+
+        if (this.mode === PlayMode.Bounce) {
+          if (this._lottie.currentFrame === 0) {
+            return;
+          }
+        } else {
+          return;
+        }
+      }
+
+      if (this.mode === PlayMode.Bounce) {
+        if (this.count) {
+          this._counter += 0.5;
+        }
+
+        setTimeout(() => {
+          this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
+
+          if (this.currentState === PlayerState.Playing) {
+            this._lottie.setDirection(this._lottie.playDirection * -1);
+            this._lottie.play();
+          }
+        }, this.intermission);
+      } else {
+        if (this.count) {
+          this._counter += 1;
+        }
+
+        window.setTimeout(() => {
+          this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
+
+          if (this.currentState === PlayerState.Playing) {
+            if (this.direction === -1) {
+              // Prevents flickering
+              this.seek('99%');
+              this.play();
+            } else {
+              this._lottie.stop();
+              this._lottie.play();
+            }
+          }
+        }, this.intermission);
+      }
+    });
+
+    // Handle lottie-web ready event
+    this._lottie.addEventListener('DOMLoaded', () => {
+      // Set initial playback speed and direction
+      this.setSpeed(this.speed);
+      this.setDirection(this.direction);
+
+      // Start playing if autoplay is enabled
+      if (this.autoplay) {
+        if (this.direction === -1) this.seek('100%');
+        this.play();
+      }
+
+      this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
+    });
+
+    // Handle animation data load complete
+    this._lottie.addEventListener('data_ready', () => {
+      this.dispatchEvent(new CustomEvent(PlayerEvents.Load));
+    });
+
+    // Set error state when animation load fail event triggers
+    this._lottie.addEventListener('data_failed', () => {
+      this.currentState = PlayerState.Error;
+
+      this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
+    });
+
+    // Set handlers to auto play animation on hover if enabled
+    this.container.addEventListener('mouseenter', () => {
+      if (this.hover && this.currentState !== PlayerState.Playing) {
+        this.play();
+      }
+    });
+    this.container.addEventListener('mouseleave', () => {
+      if (this.hover && this.currentState === PlayerState.Playing) {
+        this.stop();
+      }
+    });
+  }
+
+  /**
+   * Freeze animation play.
+   * This internal state pauses animation and is used to differentiate between
+   * user requested pauses and component instigated pauses.
+   */
+  private freeze(): void {
+    if (!this._lottie) {
+      return;
+    }
+
+    this._lottie.pause();
+    this.currentState = PlayerState.Frozen;
+
+    this.dispatchEvent(new CustomEvent(PlayerEvents.Freeze));
   }
 }
