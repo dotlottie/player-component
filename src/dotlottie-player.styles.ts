@@ -8,7 +8,6 @@ export default css`
   * {
     box-sizing: border-box;
   }
-
   :host {
     --lottie-player-toolbar-height: 35px;
     --lottie-player-toolbar-background-color: transparent;
@@ -18,19 +17,16 @@ export default css`
     --lottie-player-seeker-track-color: #ccc;
     --lottie-player-seeker-thumb-color: rgba(0, 107, 120, 0.8);
     --lottie-player-seeker-display: block;
-
     display: block;
     width: 100%;
     height: 100%;
   }
-
   .main {
     display: flex;
     flex-direction: column;
     height: 100%;
     width: 100%;
   }
-
   .animation {
     width: 100%;
     height: 100%;
@@ -39,7 +35,6 @@ export default css`
   .animation.controls {
     height: calc(100% - 35px);
   }
-
   .toolbar {
     display: flex;
     align-items: center;
@@ -48,7 +43,6 @@ export default css`
     margin: 0 5px;
     height: 35px;
   }
-
   .toolbar button {
     cursor: pointer;
     fill: var(--lottie-player-toolbar-icon-color);
@@ -59,30 +53,23 @@ export default css`
     outline: none;
     height: 100%;
   }
-
   .toolbar button:hover {
     fill: var(--lottie-player-toolbar-icon-hover-color);
   }
-
   .toolbar button.active {
     fill: var(--lottie-player-toolbar-icon-active-color);
   }
-
   .toolbar button.active:hover {
     fill: var(--lottie-player-toolbar-icon-hover-color);
   }
-
   .toolbar button:focus {
     outline: 1px dotted var(--lottie-player-toolbar-icon-active-color);
   }
-
   .toolbar button svg {
   }
-
   .toolbar button.disabled svg {
     display: none;
   }
-
   .seeker {
     -webkit-appearance: none;
     width: 95%;
@@ -90,7 +77,6 @@ export default css`
     background-color: var(--lottie-player-toolbar-background-color);
     display: var(--lottie-player-seeker-display);
   }
-
   .seeker::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
@@ -154,7 +140,6 @@ export default css`
   .seeker:focus::-ms-fill-upper {
     background: var(--lottie-player-seeker-track-color);
   }
-
   .error {
     display: flex;
     justify-content: center;

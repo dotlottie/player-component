@@ -20,9 +20,9 @@
     "cleanup": "shx rm -rf dist && shx mkdir dist"
   },
   "dependencies": {
-    "jszip": "^3.5.0",
+    "fflate": "^0.7.3",
     "lit": "^2.1.2",
-    "lottie-web": "^5.8.1"
+    "lottie-web": "^5.9.4"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",

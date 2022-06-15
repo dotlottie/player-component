@@ -1,111 +1,111 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { TemplateResult } from 'lit/html.js';
-import * as lottie from 'lottie-web/build/player/lottie_svg';
-import JSZip from 'jszip/dist/jszip';
+import * as lottie from 'lottie-web/build/player/lottie';
+import { unzipSync, strFromU8 } from 'fflate';
 
 import styles from './dotlottie-player.styles';
 
 // Define valid player states
 export enum PlayerState {
-  Loading = 'loading',
-  Playing = 'playing',
-  Paused = 'paused',
-  Stopped = 'stopped',
-  Frozen = 'frozen',
+  Destroyed = 'destroyed',
   Error = 'error',
+  Frozen = 'frozen',
+  Loading = 'loading',
+  Paused = 'paused',
+  Playing = 'playing',
+  Stopped = 'stopped',
 }
 
 // Define play modes
 export enum PlayMode {
-  Normal = 'normal',
   Bounce = 'bounce',
+  Normal = 'normal',
 }
 
 // Define player events
 export enum PlayerEvents {
-  Load = 'load',
-  Error = 'error',
-  Ready = 'ready',
-  Play = 'play',
-  Pause = 'pause',
-  Stop = 'stop',
-  Freeze = 'freeze',
-  Loop = 'loop',
   Complete = 'complete',
+  Destroyed = 'destroyed',
+  Error = 'error',
   Frame = 'frame',
+  Freeze = 'freeze',
+  Load = 'load',
+  Loop = 'loop',
+  Pause = 'pause',
+  Play = 'play',
+  Ready = 'ready',
+  Rendered = 'rendered',
+  Stop = 'stop',
 }
 
 /**
  * Load a resource from a path URL.
  */
-export function fetchPath(path: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', path, true);
-    xhr.responseType = 'arraybuffer';
-    xhr.send();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState == 4 && xhr.status == 200) {
-        JSZip.loadAsync(xhr.response)
-          .then((zip: any) => {
-            zip
-              .file('manifest.json')
-              .async('string')
-              .then((manifestFile: string) => {
-                const manifest = JSON.parse(manifestFile);
+export const fetchDotLottie = async (path: string): Promise<ArrayBuffer> => {
+  const response = await fetch(path);
+  return response.arrayBuffer();
+};
 
-                if (!('animations' in manifest)) {
-                  throw new Error('Manifest not found');
-                }
 
-                if (manifest.animations.length === 0) {
-                  throw new Error('No animations listed in the manifest');
-                }
-
-                const defaultLottie = manifest.animations[0];
-
-                zip
-                  .file(`animations/${defaultLottie.id}.json`)
-                  .async('string')
-                  .then((lottieFile: string) => {
-                    const lottieJson = JSON.parse(lottieFile);
-
-                    if ('assets' in lottieJson) {
-                      Promise.all(
-                        lottieJson.assets.map((asset: any) => {
-                          if (!asset.p) {
-                            return;
-                          }
-                          if (zip.file(`images/${asset.p}`) == null) {
-                            return;
-                          }
-
-                          return new Promise((resolveAsset: any) => {
-                            zip
-                              .file(`images/${asset.p}`)
-                              .async('base64')
-                              .then((assetB64: any) => {
-                                asset.p = 'data:;base64,' + assetB64;
-                                asset.e = 1;
-
-                                resolveAsset();
-                              });
-                          });
-                        }),
-                      ).then(() => {
-                        resolve(lottieJson);
-                      });
-                    }
-                  });
-              });
-          })
-          .catch((err: Error) => {
-            reject(err);
-          });
-      }
-    };
+export const base64Arraybuffer = async (data: ArrayBuffer) => {
+  const base64url = await new Promise(r => {
+    const reader = new FileReader();
+    reader.onload = () => r(reader.result);
+    reader.readAsDataURL(new Blob([data]));
   });
+
+    return base64url.split(',', 2)[1];
+};
+
+export const fetchPath = async (path: string): Promise<string> {
+
+  try {
+    const response = await fetchDotLottie(path);
+    const massiveFile = new Uint8Array(response);
+    const unzip = unzipSync(massiveFile);
+    const manifest = JSON.parse(strFromU8(unzip['manifest.json']));
+
+    if (!('animations' in manifest)) {
+      throw new Error('Manifest not found');
+    }
+
+    if (manifest.animations.length === 0) {
+      throw new Error('No animations listed in the manifest');
+    }
+
+    const { id } = manifest.animations[0];
+    const lottieJson = JSON.parse(strFromU8(unzip[`animations/${id}.json`]));
+
+
+
+    if ('assets' in lottieJson) {
+      await Promise.all(
+        lottieJson.assets.map(async (asset :any) => {
+          if (!asset.p) {
+            return;
+          }
+
+          if (unzip[`images/${asset.p}`] == null) {
+            return;
+          }
+
+          const assetB64 = await base64Arraybuffer(unzip[`images/${asset.p}`]);
+
+          asset.p = 'data:;base64,' + assetB64;
+          asset.e = 1;
+  
+        })
+      );
+    }
+    
+    return new Promise((resolve) => {
+      resolve(lottieJson);
+    });
+
+  } catch (error :Error) {
+    throw new Error(error);
+  }
 }
 
 /**
@@ -255,16 +255,19 @@ export class DotLottiePlayer extends LitElement {
     try {
       const srcParsed = await fetchPath(src);
 
+ 
       // Clear previous animation, if any
       if (this._lottie) {
         this._lottie.destroy();
       }
 
       // Initialize lottie player and load animation
+      
       this._lottie = lottie.loadAnimation({
         ...options,
         animationData: srcParsed,
       });
+
     } catch (err) {
       this.currentState = PlayerState.Error;
 
