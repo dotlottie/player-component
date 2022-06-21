@@ -43,29 +43,26 @@ export default {
       exclude: ['./node_modules/**'],
     }),
     !production &&
-      copy({
-        targets: [
-          { src: './src/index.html', dest: outputDir },
-          { src: './src/sample_dotlottie.lottie', dest: outputDir },
-          { src: './src/animation.lottie', dest: outputDir },
-          {
-            src: './node_modules/@webcomponents/webcomponentsjs/bundles/',
-            dest: outputDir,
-          },
-          {
-            src: './node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js',
-            dest: outputDir,
-          },
-        ],
-      }),
+    copy({
+      targets: [
+        {
+          src: './node_modules/@webcomponents/webcomponentsjs/bundles/',
+          dest: outputDir,
+        },
+        {
+          src: './node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js',
+          dest: outputDir,
+        },
+      ],
+    }),
     filesize(),
     !production &&
-      serve({
-        contentBase: [outputDir],
-        open: true,
-        host: 'localhost',
-        port: 10000,
-      }),
+    serve({
+      contentBase: [outputDir],
+      open: true,
+      host: 'localhost',
+      port: 10000,
+    }),
 
     production && terser(),
   ],

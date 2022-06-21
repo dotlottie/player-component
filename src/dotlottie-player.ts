@@ -86,16 +86,13 @@ export type Versions = {
   dotLottiePlayerVersion: string;
 }
 
-//todo: assets
-//todo: multiple lotties in the same zip?
-export function fetchPath(path: string): Record<Record<string, any>, any> {
+export function fetchPath(path: string): Promise<Record<string, any>> {
   const fileFormat = path.split('.').pop()?.toLowerCase();
   let jsonFlag = false;
 
   if (fileFormat === 'json') jsonFlag = true;
 
   return new Promise((resolve, reject) => {
-
     const xhr = new XMLHttpRequest();
     xhr.open('GET', path, true);
     if (jsonFlag)
@@ -115,7 +112,6 @@ export function fetchPath(path: string): Record<Record<string, any>, any> {
         // yourZipFile is a Uint8Array, e.g. from this:
         // const yourZipFile = new Uint8Array(await (await fetch('/example.dotLottie')).arrayBuffer());
         const data = unzipSync(new Uint8Array(xhr.response));
-        // strFromU8 converts Uint8Array output from fflate into strings that can be parsed
         if (data['manifest.json']) {
           let str = strFromU8(data['manifest.json']);
           const manifest = JSON.parse(str);
@@ -516,7 +512,7 @@ export class DotLottiePlayer extends LitElement {
       if (!this._manifest) {
         throw (`[dotLottie] No manifest has been loaded.`);
       }
-      // Find desired animation by and set the current animation index
+      // Find desired animation and set the current animation index
       let ret = this._manifest.animations.findIndex(element => element.id === animationId);
       if (ret !== -1) {
         this._active = ret;
@@ -539,7 +535,7 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
-  * Get current animation's index
+  * Get current animation's id
   */
   public getActiveId(): string | null {
     if (!this._manifest.animations)
