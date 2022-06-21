@@ -3,8 +3,52 @@ import { customElement, property, query } from 'lit/decorators.js';
 import { TemplateResult } from 'lit/html.js';
 import * as lottie from 'lottie-web/build/player/lottie_svg';
 import { unzipSync, strFromU8 } from 'fflate';
+import { AnimationItem } from 'lottie-web';
 
 import styles from './dotlottie-player.styles';
+
+export type Animation = {
+  // Name of the Lottie animation file without .json
+  id: string,
+
+  // Desired playback speed
+  speed?: number,
+
+  // Theme color
+  themeColor?: string,
+
+  // Whether to loop or not
+  loop?: boolean,
+
+  // blurHash loading image
+  blurHash?: string,
+
+  // Define playback direction
+  direction?: number
+
+  // Choice between 'bounce' and 'normal
+  playmode?: string
+}
+
+export type Manifest = {
+  // Name and version of the software that created the dotLottie
+  generator: string;
+
+  // Target dotLottie version
+  version: string,
+
+  // Revision version number of the dotLottie
+  revision: number,
+
+  // Name of the author
+  author: string,
+
+  // List of animations
+  animations?: [Animation],
+
+  // Custom data to be made available to the player and animations
+  custom?: {}
+}
 
 // Define valid player states
 export enum PlayerState {
@@ -39,15 +83,18 @@ export enum PlayerEvents {
 
 //todo: assets
 //todo: multiple lotties in the same zip?
-//
-export function fetchPath(path: string): Promise<string> {
+export function fetchPath(path: string): Promise<Record<string, any>> {
   return new Promise((resolve, reject) => {
+
     const xhr = new XMLHttpRequest();
     xhr.open('GET', path, true);
     xhr.responseType = 'arraybuffer';
     xhr.send();
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status == 200) {
+        let animations: any[] = [];
+        let animAndManifest: Record<string, any> = {};
+
         // yourZipFile is a Uint8Array, e.g. from this:
         // const yourZipFile = new Uint8Array(await (await fetch('/example.dotLottie')).arrayBuffer());
         const data = unzipSync(new Uint8Array(xhr.response));
@@ -64,38 +111,33 @@ export function fetchPath(path: string): Promise<string> {
             throw new Error('No animations listed in the manifest');
           }
 
-          for (const animName of manifest.animations) {
+          animAndManifest.manifest = manifest;
 
-            const lottieJson = JSON.parse(strFromU8(data[`animations/${animName.id}.json`]));
+          let lottieJson;
+          for (const animName of manifest.animations) {
+            lottieJson = JSON.parse(strFromU8(data[`animations/${animName.id}.json`]));
 
             if ('assets' in lottieJson) {
-              Promise.all(
-                lottieJson.assets.map((asset: any) => {
-                  if (!asset.p) {
-                    return;
-                  }
-                  if (data[`images/${asset.p}`] === null) {
-                    return;
-                  }
-                  // To get base64 PNG, you should probably use base64-js on the Uint8Arrays for performance and memory
-                  // However you can also pass stnorFromU8(data, true) to make a binary string, which btoa understands
-                  // This is going to cause performance issues for PNGs over 500 kB due to binary strings being wasteful, so be careful
-                  // const base64Png = btoa(strFromU8(data['your-png-file.png'], true));
-                  return new Promise((resolveAsset: any) => {
-                    const base64Png = btoa(strFromU8(data[`images/${asset.p}`], true));
-                    asset.p = 'data:;base64,' + base64Png;
-                    asset.e = 1;
-                    resolveAsset();
-
-                  });
-                }),
-              ).then(() => {
-                resolve(lottieJson);
-              });
+              lottieJson.assets.map((asset: any) => {
+                if (!asset.p) {
+                  return;
+                }
+                if (data[`images/${asset.p}`] === null) {
+                  return;
+                }
+                const base64Png = btoa(strFromU8(data[`images/${asset.p}`], true));
+                asset.p = 'data:;base64,' + base64Png;
+                asset.e = 1;
+              })
             }
-            resolve(lottieJson);
+            animations.push(lottieJson);
           }
+          animAndManifest.manifest = manifest;
+          animAndManifest.animations = animations;
+          resolve(animAndManifest);
         }
+      } else if ((xhr.readyState === 4 || xhr.status === 404) && xhr.status === 0) {
+        throw new Error(`[dotLottie] Error finding dotLottie file at ${path}`);
       }
     };
   });
@@ -198,6 +240,20 @@ export class DotLottiePlayer extends LitElement {
   private _lottie?: any;
   private _prevState?: any;
   private _counter = 0;
+  private _active = 0;
+  private _manifest: Manifest;
+  private _animations?: [AnimationItem];
+
+  constructor() {
+    super();
+
+    this._manifest = {
+      generator: "",
+      version: "",
+      revision: 0,
+      author: '',
+    };
+  }
 
   /**
    * Handle visibility change events.
@@ -223,10 +279,18 @@ export class DotLottiePlayer extends LitElement {
     this.seek(frame);
   }
 
+  private isLottie(json: Record<string, any>): boolean {
+    const mandatory: string[] = ["v", "ip", "op", "layers", "fr", "w", "h"];
+
+    return mandatory.every((field: string) =>
+      Object.prototype.hasOwnProperty.call(json, field)
+    );
+  }
+
   /**
    * Configure and initialize lottie-web player instance.
    */
-  public async load(src: string): Promise<void> {
+  public async load(src: string | AnimationItem): Promise<void> {
     if (!this.shadowRoot) {
       return;
     }
@@ -244,11 +308,29 @@ export class DotLottiePlayer extends LitElement {
       },
     };
 
-    // Load the resource information
     try {
-      const srcParsed = await fetchPath(src);
+      let srcParsed;
 
-      // Clear previous animation, if any
+      if (typeof src === "string") {
+
+        const manifestAndAnimation = await fetchPath(src);
+
+        this._animations = manifestAndAnimation.animations;
+        this._manifest = manifestAndAnimation.manifest;
+
+        if (!this._animations)
+          throw new Error("[dotLottie] Animations are empty");
+
+        srcParsed = this._animations[this._active];
+        if (srcParsed === undefined)
+          throw new Error("[dotLottie] No animation to load!");
+
+      } else if (typeof src === "object") {
+        if (!this.isLottie(src))
+          throw new Error("[dotLottie] Load method failing. Object is not a valid Lottie.");
+        srcParsed = src;
+      }
+
       if (this._lottie) {
         this._lottie.destroy();
       }
@@ -258,7 +340,8 @@ export class DotLottiePlayer extends LitElement {
         ...options,
         animationData: srcParsed,
       });
-    } catch (err) {
+    }
+    catch (err) {
       this.currentState = PlayerState.Error;
 
       this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
@@ -371,6 +454,64 @@ export class DotLottiePlayer extends LitElement {
         this.play();
       }
     }
+  }
+
+  public setActive(animationId: number | string): void {
+    if (!this._manifest.animations)
+      return;
+
+    if (typeof animationId === "number") {
+      if (this.src && this._manifest.animations && this._manifest.animations[animationId]) {
+        this._active = animationId;
+        if (!this._animations)
+          throw (`[dotLottie] No animations have been loaded.`);
+        this.load(this._animations[animationId] as AnimationItem);
+      } else {
+        console.warn(`[dotLottie] Animation not found at index: ${animationId}`);
+      }
+    } else if (typeof animationId === "string") {
+      // We need a manifest to check if desired animation is present
+      if (!this._manifest) {
+        throw (`[dotLottie] No manifest has been loaded.`);
+      }
+      // Find desired animation by and set the current animation index
+      let ret = this._manifest.animations.findIndex(element => element.id === animationId);
+      if (ret !== -1) {
+        this._active = ret;
+        if (this.src) {
+          if (!this._animations)
+            throw (`[dotLottie] No animations have been loaded.`);
+          this.load(this._animations[this._active]);
+        }
+      } else {
+        console.warn(`[dotLottie] No animation with the id '${animationId}' was found.`);
+      }
+    }
+  }
+
+  /**
+  * Get current animation's index
+  */
+  public getActive(): number {
+    return (this._active);
+  }
+
+  /**
+  * Get current animation's index
+  */
+  public getActiveId(): string | null {
+    if (!this._manifest.animations)
+      return (null);
+    return (this._manifest.animations[this._active].id);
+  }
+
+  /**
+  * Get current number of animations
+  */
+  public animationCount(): number {
+    if (this._animations)
+      return this._animations.length;
+    return (0);
   }
 
   /**
@@ -698,5 +839,6 @@ export class DotLottiePlayer extends LitElement {
         ${this.controls ? this.renderControls() : undefined}
       </div>
     `;
+
   }
 }
