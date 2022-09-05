@@ -1,5 +1,6 @@
 <html>
   <head> </head>
+
   <body>
     <div style="display: block">
       <!-- Check animation loads via method -->
@@ -16,8 +17,7 @@
       <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
         <div id="player-three-container"></div>
       </div>
-      
-  </div>
+    </div>
 
     <script src="./dist/dotlottie-player.js"></script>
     <script
@@ -27,35 +27,33 @@
       referrerpolicy="no-referrer"
     ></script>
     <script type="text/javascript">
-      $("#player-one").html(
-        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="test-player"></lottie-player>'
+      $('#player-one').html(
+        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="test-player"></lottie-player>',
       );
-      const player = document.getElementById("test-player");
-      player.addEventListener("rendered", (e) => {
-        player.load(
-          "https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie"
-        );
+      const player = document.getElementById('test-player');
+      player.addEventListener('rendered', e => {
+        player.load('https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie');
       });
 
-      $("#player-two-container").html(
-        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-two"></lottie-player>'
+      $('#player-two-container').html(
+        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-two"></lottie-player>',
       );
-      const playerTwo = document.getElementById("player-two");
-      playerTwo.addEventListener("rendered", (e) => {
-        console.log("player two rendered event fired");
-        playerTwo.load(
-          "./stacks.json"
-        );
+      const playerTwo = document.getElementById('player-two');
+      playerTwo.addEventListener('rendered', e => {
+        console.log('player two rendered event fired');
+        try {
+          playerTwo.load('./exploding_pigeon_and_lighthouse-error.lottie');
+        } catch (e) {
+          console.log('Error caught');
+        }
       });
 
-      $("#player-three-container").html(
-        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-three"></lottie-player>'
+      $('#player-three-container').html(
+        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-three"></lottie-player>',
       );
-      const playerThree = document.getElementById("player-three");
-      playerThree.addEventListener("rendered", (e) => {
-        playerThree.load(
-          "https://assesssssssts8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie"
-        );
+      const playerThree = document.getElementById('player-three');
+      playerThree.addEventListener('rendered', e => {
+        playerThree.load('https://assesssssssts8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie');
       });
     </script>
   </body>

@@ -15,7 +15,7 @@
     "build-with-coverage": "CODE_COVERAGE=true yarn build-dotlottie",
     "build-dotlottie": "npm run cleanup && rollup -c",
     "build:types": "tsc --declaration",
-    "start": "npm run cleanup && rollup -c --watch",
+    "dev": "npm run cleanup && rollup -c --watch",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "cleanup": "shx rm -rf dist && shx mkdir dist",
