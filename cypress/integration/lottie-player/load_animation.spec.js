@@ -9,17 +9,19 @@ context("Player component DOM check", () => {
     cy.visit("http://localhost:8000/");
   });
 
-  it('Loads an animation using the "load" method of the player.', () => {
+  it('1.1 Loads an animation using the "load" method of the player.', () => {
     cy.get("#player-one").should("have.length", 1);
   });
 
-  it('Loads an animation using the "load" method of the player with invalid json.', function (done) {
+  it('1.2 Loads an animation using the "load" method of the player with invalid json.', function (done) {
     cy.get("#player-two").then(($el) => {
       const playerTwo = $el.get(0);
 
+      console.log(playerTwo.currentState);
       playerTwo.addEventListener(
         "error",
         () => {
+          console.log('caught');
           expect(playerTwo.currentState).to.eq("error");
           done();
         },
@@ -28,7 +30,7 @@ context("Player component DOM check", () => {
     });
   });
 
-  it('Loads an animation using the "load" method of the player with invalid url.', function (done) {
+  it('1.3 Loads an animation using the "load" method of the player with invalid url.', function (done) {
     cy.get("#player-three").then(($el) => {
       const playerThree = $el.get(0);
 
@@ -44,21 +46,21 @@ context("Player component DOM check", () => {
     });
   });
 
-  it("looks inside shadow-dom div for animation class", () => {
+  it("1.4 looks inside shadow-dom div for animation class", () => {
     cy.get("#player-one dotlottie-player")
       .shadow()
       .find(".main")
       .should("have.class", "main");
   });
 
-  it.skip("looks inside shadow-dom for aria-label", () => {
+  it.skip("1.5 looks inside shadow-dom for aria-label", () => {
     cy.get("#player-one dotlottie-player")
       .shadow()
       .find("#animation-container")
       .should("have.attr", "aria-label");
   });
 
-  it("looks inside shadow-dom for controls", () => {
+  it("1.6 looks inside shadow-dom for controls", () => {
     cy.wait(100);
     cy.get("#test-player")
       .shadow()
@@ -66,12 +68,12 @@ context("Player component DOM check", () => {
       .should("have.class", "main controls")
   });
 
-  it("looks inside shadow-dom controls for buttons", () => {
+  it("1.7 looks inside shadow-dom controls for buttons", () => {
     cy.wait(100);
     cy.get("#test-player")
-    .shadow()
-    .find("#lottie-controls")
-    .children()
-    .should("have.length", 4);
+      .shadow()
+      .find("#lottie-controls")
+      .children()
+      .should("have.length", 4);
   });
 });

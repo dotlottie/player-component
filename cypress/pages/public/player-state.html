@@ -1,70 +1,96 @@
 <html>
-  <head> </head>
-  <body>
-      <div style="display: block">
-            <!-- Check animation does autoplay and loop -->
-            <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
-                <dotlottie-player id="player-one" autoplay loop src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
-                </dotlottie-player>
-            </div>
 
-            <!-- Check animation doesn't autoplay -->
-            <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
-                <dotlottie-player id="player-two" src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
-                </dotlottie-player>
-            </div>
-            
-            <!-- Check pausing -->
-            <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
-                <dotlottie-player id="player-three" autoplay loop src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
-                </dotlottie-player>
-            </div>
+<head> </head>
 
-            <!-- Check pausing and resume play -->
-            <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
-                <dotlottie-player id="player-four" autoplay loop src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
-                </dotlottie-player>
-            </div>
-
-            <!-- Check destroying -->
-            <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
-                <dotlottie-player id="player-five" autoplay loop src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
-                </dotlottie-player>
-            </div>
-
-            <!-- Check error (invalid url) -->
-            <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
-                <dotlottie-player id="player-six" autoplay loop src="https://assetsssss3.lottiefiles.com/packages/lf20_UJNc2t.json">
-                </dotlottie-player>
-            </div>
-
-            <!-- Check error (invalid Lottie) -->
-            <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
-                <dotlottie-player id="player-seven" autoplay loop src="./stacks.json">
-                </dotlottie-player>
-            </div>
-
-            <!-- Check playing on hover -->
-            <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
-                <dotlottie-player id="player-eight" autoplay loop hover src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
-                </dotlottie-player>
-            </div>
+<body>
+    <div style="display: block">
+        <!-- Check animation does autoplay and loop -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-one" autoplay loop
+                src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
+            </dotlottie-player>
         </div>
 
-        <script src="./dist/dotlottie-player.js"></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
-      integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
-      crossorigin="anonymous"
-      referrerpolicy="no-referrer"
-    ></script>
+        <!-- Check animation doesn't autoplay -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-two" src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
+            </dotlottie-player>
+        </div>
+
+        <!-- Check pausing -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-three" autoplay loop
+                src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
+            </dotlottie-player>
+        </div>
+
+        <!-- Check pausing and resume play -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-four" autoplay loop
+                src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
+            </dotlottie-player>
+        </div>
+
+        <!-- Check destroying -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-five" autoplay loop
+                src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
+            </dotlottie-player>
+        </div>
+
+        <!-- Check error (invalid url) -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-six" autoplay loop
+                src="https://assetsssss3.lottiefiles.com/packages/lf20_UJNc2t.json">
+            </dotlottie-player>
+        </div>
+
+        <!-- Check error (invalid Lottie) -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-seven" autoplay loop src="./exploding_pigeon_and_lighthouse-error.lottie">
+            </dotlottie-player>
+        </div>
+
+        <!-- Check playing on hover -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-eight" autoplay loop hover
+                src="https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie">
+            </dotlottie-player>
+        </div>
+
+        <!-- Check playing second animation of dotlottie on load -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-nine" autoplay loop animation="lighthouse" controls
+                src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie">
+            </dotlottie-player>
+        </div>
+
+        <!-- Check playing non-existant animation in dotlottie -->
+        <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+            <dotlottie-player id="player-ten" autoplay loop animation="not-here" controls
+                src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie">
+            </dotlottie-player>
+        </div>
+    </div>
+
+    <script src="./dist/dotlottie-player.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+        integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <script>
         let playerSix = document.getElementById("player-six");
 
         playerSix.addEventListener("error", () => {
-            console.log("error on 6");
+            window.errorOnSix = true;
+        })
+
+        let playerSeven = document.getElementById("player-seven");
+
+        playerSeven.addEventListener("error", () => {
+            window.errorOnSeven = true;
         })
     </script>
-  </body>
+</body>
+
 </html>

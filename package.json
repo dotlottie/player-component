@@ -17,7 +17,7 @@
     "build-dotlottie": "pnpm run cleanup && rollup -c",
     "build:types": "tsc --declaration",
     "prestart": "node -p \"'export const DOTLOTTIE_PLAYER_VERSION = ' + JSON.stringify(require('./package.json').version) + '; \\n' + 'export const LOTTIE_WEB_VERSION = ' + JSON.stringify(require('./package.json').dependencies['lottie-web']) + ';'\" > src/versions.ts",
-    "start": "pnpm run cleanup && rollup -c --watch",
+    "dev": "pnpm run cleanup && rollup -c --watch",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "cleanup": "shx rm -rf dist && shx mkdir dist",
