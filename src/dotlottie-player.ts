@@ -82,11 +82,16 @@ export function fetchPath(path: string): Promise<string> {
                           }
 
                           return new Promise((resolveAsset: any) => {
+                            const assetFileExtension = asset.p.split('.').pop();
+
                             zip
                               .file(`images/${asset.p}`)
                               .async('base64')
                               .then((assetB64: any) => {
-                                asset.p = 'data:;base64,' + assetB64;
+                                if (assetFileExtension === 'svg' || assetFileExtension === 'svg+xml')
+                                  asset.p = 'data:image/svg+xml;base64,' + assetB64;
+                                else asset.p = 'data:;base64,' + assetB64;
+
                                 asset.e = 1;
 
                                 resolveAsset();
