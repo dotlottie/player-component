@@ -322,7 +322,7 @@ export class DotLottiePlayer extends LitElement {
             this._counter += 1;
           }
 
-          window.setTimeout(() => {
+          setTimeout(() => {
             this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
 
             if (this.currentState === PlayerState.Playing) {
@@ -559,7 +559,7 @@ export class DotLottiePlayer extends LitElement {
    */
   protected async firstUpdated(): Promise<void> {
     // Add intersection observer for detecting component being out-of-view.
-    if ('IntersectionObserver' in window) {
+    if (typeof window !== 'undefined' && 'IntersectionObserver' in window) {
       this._io = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
         if (entries[0].isIntersecting) {
           if (this.currentState === PlayerState.Frozen) {
