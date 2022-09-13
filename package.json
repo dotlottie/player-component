@@ -22,7 +22,7 @@
     "lint:fix": "eslint --fix",
     "cleanup": "shx rm -rf dist && shx mkdir dist",
     "serve": "node ./cypress/pages/server.js -p 8000 &",
-    "start-cypress": "pnpm run cypress run && npx nyc report --reporter=text-summary",
+    "start-cypress": "npx cypress run && npx nyc report --reporter=text-summary",
     "run-tests": "pnpm run build-with-coverage && pnpm run serve && pnpm run start-cypress",
     "postrun-tests": "kill $(lsof -t -i:8000)"
   },
