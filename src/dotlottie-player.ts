@@ -39,14 +39,26 @@ export enum PlayerEvents {
 /**
  * Load a resource from a path URL.
  */
-export function fetchPath(path: string): Promise<string> {
+export function fetchPath(path: string): Record<string, any> {
+  const fileFormat = path.split('.').pop()?.toLowerCase();
+  let jsonFlag = false;
+
+  if (fileFormat === 'json') jsonFlag = true;
+
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', path, true);
-    xhr.responseType = 'arraybuffer';
+    if (jsonFlag)
+      xhr.responseType = 'json';
+    else
+      xhr.responseType = 'arraybuffer';
     xhr.send();
     xhr.onreadystatechange = function() {
       if (xhr.readyState == 4 && xhr.status == 200) {
+
+        if (jsonFlag) {
+          resolve(xhr.response)
+        }
         JSZip.loadAsync(xhr.response)
           .then((zip: any) => {
             zip
@@ -235,10 +247,16 @@ export class DotLottiePlayer extends LitElement {
     this.seek(frame);
   }
 
+  private isLottie(json: Record<string, any>): boolean {
+    const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
+
+    return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
+  }
+
   /**
    * Configure and initialize lottie-web player instance.
    */
-  public async load(src: string): Promise<void> {
+  public async load(src: string | Record<string, any>): Promise<void> {
     if (!this.shadowRoot) {
       return;
     }
@@ -258,7 +276,16 @@ export class DotLottiePlayer extends LitElement {
 
     // Load the resource information
     try {
-      const srcParsed = await fetchPath(src);
+      let srcParsed;
+
+      if (typeof src === 'string') {
+        srcParsed = await fetchPath(src);
+        if (srcParsed === undefined) throw new Error('[dotLottie] No animation to load!');
+        if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
+      } else if (typeof src === 'object') {
+        srcParsed = src;
+        if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
+      }
 
       // Clear previous animation, if any
       if (this._lottie) {
