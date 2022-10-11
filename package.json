@@ -1,6 +1,6 @@
 {
   "name": "@dotlottie/player-component",
-  "version": "1.1.1",
+  "version": "1.2.1",
   "description": "dotlottie animation player web component.",
   "main": "dist/dotlottie-player.js",
   "module": "dist/dotlottie-player.esm.js",
@@ -17,12 +17,13 @@
     "start": "npm run cleanup && rollup -c --watch",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "cleanup": "shx rm -rf dist && shx mkdir dist"
+    "cleanup": "shx rm -rf dist && shx mkdir dist",
+    "serve": "yarn build && cp dist/dotlottie-player.js src/ && http-server src/ -o"
   },
   "dependencies": {
     "jszip": "^3.5.0",
     "lit": "^2.1.2",
-    "lottie-web": "^5.8.1"
+    "lottie-web": "^5.9.6"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",
@@ -40,6 +41,7 @@
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
+    "http-server": "^14.1.1",
     "lerna": "^4.0.0",
     "parcel-bundler": "^1.12.4",
     "prettier": "1.18.2",
