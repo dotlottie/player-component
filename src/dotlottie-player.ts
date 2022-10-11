@@ -2,9 +2,53 @@ import { LitElement, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { TemplateResult } from 'lit/html.js';
 import * as lottie from 'lottie-web/build/player/lottie_svg';
-import JSZip from 'jszip/dist/jszip';
+import { unzipSync, strFromU8 } from 'fflate';
+import { AnimationItem } from 'lottie-web';
 
 import styles from './dotlottie-player.styles';
+
+export type Animation = {
+  // Name of the Lottie animation file without .json
+  id: string;
+
+  // Desired playback speed
+  speed?: number;
+
+  // Theme color
+  themeColor?: string;
+
+  // Whether to loop or not
+  loop?: boolean;
+
+  // blurHash loading image
+  blurHash?: string;
+
+  // Define playback direction
+  direction?: number;
+
+  // Choice between 'bounce' and 'normal
+  playmode?: string;
+};
+
+export type Manifest = {
+  // Name and version of the software that created the dotLottie
+  generator: string;
+
+  // Target dotLottie version
+  version: string;
+
+  // Revision version number of the dotLottie
+  revision: number;
+
+  // Name of the author
+  author: string;
+
+  // List of animations
+  animations?: [Animation];
+
+  // Custom data to be made available to the player and animations
+  custom?: {};
+};
 
 // Define valid player states
 export enum PlayerState {
@@ -33,79 +77,63 @@ export enum PlayerEvents {
   Freeze = 'freeze',
   Loop = 'loop',
   Complete = 'complete',
-  Rendered = "rendered",
+  Rendered = 'rendered',
   Frame = 'frame',
 }
 
-/**
- * Load a resource from a path URL.
- */
-export function fetchPath(path: string): Promise<string> {
+export function fetchPath(path: string): Promise<Record<string, any>> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', path, true);
     xhr.responseType = 'arraybuffer';
     xhr.send();
     xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status === 200) {
-        JSZip.loadAsync(xhr.response)
-          .then((zip: any) => {
-            zip
-              .file('manifest.json')
-              .async('string')
-              .then((manifestFile: string) => {
-                const manifest = JSON.parse(manifestFile);
+      if (xhr.readyState === 4 && xhr.status == 200) {
+        const animations: any[] = [];
+        const animAndManifest: Record<string, any> = {};
 
-                if (!('animations' in manifest)) {
-                  throw new Error('Manifest not found');
+        const data = unzipSync(new Uint8Array(xhr.response));
+        if (data['manifest.json']) {
+          const str = strFromU8(data['manifest.json']);
+          const manifest = JSON.parse(str);
+
+          if (!('animations' in manifest)) {
+            throw new Error('Manifest not found');
+          }
+
+          if (manifest.animations.length === 0) {
+            throw new Error('No animations listed in the manifest');
+          }
+
+          animAndManifest.manifest = manifest;
+
+          let lottieJson;
+          for (const animName of manifest.animations) {
+            lottieJson = JSON.parse(strFromU8(data[`animations/${animName.id}.json`]));
+
+            if ('assets' in lottieJson) {
+              lottieJson.assets.map((asset: any) => {
+                if (!asset.p) {
+                  return;
                 }
-
-                if (manifest.animations.length === 0) {
-                  throw new Error('No animations listed in the manifest');
+                if (data[`images/${asset.p}`] === null) {
+                  return;
                 }
-
-                const defaultLottie = manifest.animations[0];
-
-                zip
-                  .file(`animations/${defaultLottie.id}.json`)
-                  .async('string')
-                  .then((lottieFile: string) => {
-                    const lottieJson = JSON.parse(lottieFile);
-
-                    if ('assets' in lottieJson) {
-                      Promise.all(
-                        lottieJson.assets.map((asset: any) => {
-                          if (!asset.p) {
-                            return;
-                          }
-                          if (zip.file(`images/${asset.p}`) == null) {
-                            return;
-                          }
-
-                          return new Promise((resolveAsset: any) => {
-                            zip
-                              .file(`images/${asset.p}`)
-                              .async('base64')
-                              .then((assetB64: any) => {
-                                asset.p = 'data:;base64,' + assetB64;
-                                asset.e = 1;
-
-                                resolveAsset();
-                              });
-                          });
-                        }),
-                      ).then(() => {
-                        resolve(lottieJson);
-                      });
-                    }
-                  });
+                const base64Png = btoa(strFromU8(data[`images/${asset.p}`], true));
+                asset.p = 'data:;base64,' + base64Png;
+                asset.e = 1;
               });
-          })
-          .catch((err: Error) => {
-            reject(err);
-          });
-      } else if(xhr.status === 0 && xhr.readyState === 4 || xhr.status === 404) {
-        reject("Not able to fetch requested animation!");
+            }
+            animations.push(lottieJson);
+          }
+          animAndManifest.manifest = manifest;
+          animAndManifest.animations = animations;
+          resolve(animAndManifest);
+        } else {
+          reject('[dotLottie] No manifest found in file.');
+        }
+      } else if ((xhr.readyState === 4 || xhr.status === 404) && xhr.status === 0) {
+        reject(`[dotLottie] Error finding dotLottie file at ${path}`);
       }
     };
   });
@@ -208,6 +236,20 @@ export class DotLottiePlayer extends LitElement {
   private _lottie?: any;
   private _prevState?: any;
   private _counter = 0;
+  private _active = 0;
+  private _manifest: Manifest;
+  private _animations?: [AnimationItem];
+
+  constructor() {
+    super();
+
+    this._manifest = {
+      generator: '',
+      version: '',
+      revision: 0,
+      author: '',
+    };
+  }
 
   /**
    * Handle visibility change events.
@@ -233,10 +275,16 @@ export class DotLottiePlayer extends LitElement {
     this.seek(frame);
   }
 
+  private isLottie(json: Record<string, any>): boolean {
+    const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
+
+    return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
+  }
+
   /**
    * Configure and initialize lottie-web player instance.
    */
-  public async load(src: string): Promise<void> {
+  public async load(src: string | AnimationItem): Promise<void> {
     if (!this.shadowRoot) {
       return;
     }
@@ -254,11 +302,24 @@ export class DotLottiePlayer extends LitElement {
       },
     };
 
-    // Load the resource information
     try {
-      const srcParsed = await fetchPath(src);
+      let srcParsed;
 
-      // Clear previous animation, if any
+      if (typeof src === 'string') {
+        const manifestAndAnimation = await fetchPath(src);
+
+        this._animations = manifestAndAnimation.animations;
+        this._manifest = manifestAndAnimation.manifest;
+
+        if (!this._animations) throw new Error('[dotLottie] Animations are empty');
+
+        srcParsed = this._animations[this._active];
+        if (srcParsed === undefined) throw new Error('[dotLottie] No animation to load!');
+      } else if (typeof src === 'object') {
+        if (!this.isLottie(src)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
+        srcParsed = src;
+      }
+
       if (this._lottie) {
         this._lottie.destroy();
       }
@@ -272,6 +333,7 @@ export class DotLottiePlayer extends LitElement {
       this.currentState = PlayerState.Error;
 
       this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
+      console.error(err);
       return;
     }
 
@@ -298,7 +360,7 @@ export class DotLottiePlayer extends LitElement {
         }
         if (!this.loop || (this.count && this._counter >= this.count)) {
           this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
-  
+
           if (this.mode === PlayMode.Bounce) {
             if (this._lottie.currentFrame === 0) {
               return;
@@ -332,7 +394,7 @@ export class DotLottiePlayer extends LitElement {
             if (this.currentState === PlayerState.Playing) {
               if (this.direction === -1) {
                 // Prevents flickering
-                this.seek("99%");
+                this.seek('99%');
                 this.play();
               } else {
                 this._lottie.stop();
@@ -383,10 +445,63 @@ export class DotLottiePlayer extends LitElement {
     }
   }
 
+  public setActive(animationId: number | string): void {
+    if (!this._manifest.animations) return;
+
+    if (typeof animationId === 'number') {
+      if (this.src && this._manifest.animations && this._manifest.animations[animationId]) {
+        this._active = animationId;
+        if (!this._animations) throw `[dotLottie] No animations have been loaded.`;
+        this.load(this._animations[animationId] as AnimationItem);
+      } else {
+        console.warn(`[dotLottie] Animation not found at index: ${animationId}`);
+      }
+    } else if (typeof animationId === 'string') {
+      // We need a manifest to check if desired animation is present
+      if (!this._manifest) {
+        throw `[dotLottie] No manifest has been loaded.`;
+      }
+      // Find desired animation and set the current animation index
+      let ret = this._manifest.animations.findIndex(element => element.id === animationId);
+      if (ret !== -1) {
+        this._active = ret;
+        if (this.src) {
+          if (!this._animations) throw `[dotLottie] No animations have been loaded.`;
+          this.load(this._animations[this._active]);
+        }
+      } else {
+        console.warn(`[dotLottie] No animation with the id '${animationId}' was found.`);
+      }
+    }
+  }
+
+  /**
+   * Get current animation's index
+   */
+  public getActive(): number {
+    return this._active;
+  }
+
+  /**
+   * Get current animation's id
+   */
+  public getActiveId(): string | null {
+    if (!this._manifest.animations) return null;
+    return this._manifest.animations[this._active].id;
+  }
+
+  /**
+   * Get current number of animations
+   */
+  public animationCount(): number {
+    if (this._animations) return this._animations.length;
+    return 0;
+  }
+
   /**
    * Returns the lottie-web instance used in the component.
    */
-  public getLottie(): any {
+  public getLottie(): AnimationItem {
     return this._lottie;
   }
 
@@ -433,7 +548,7 @@ export class DotLottiePlayer extends LitElement {
     this.dispatchEvent(new CustomEvent(PlayerEvents.Stop));
   }
 
- /**
+  /**
    * Seek to a given frame.
    */
   public seek(value: number | string): void {
@@ -449,10 +564,7 @@ export class DotLottiePlayer extends LitElement {
     }
 
     // Calculate and set the frame number
-    const frame =
-      matches[2] === "%"
-        ? (this._lottie.totalFrames * Number(matches[1])) / 100
-        : Number(matches[1]);
+    const frame = matches[2] === '%' ? (this._lottie.totalFrames * Number(matches[1])) / 100 : Number(matches[1]);
 
     // Set seeker to new frame number
     this.seeker = frame;

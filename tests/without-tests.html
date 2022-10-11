@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>dotlottie player web component</title>
+  <script src="../dist/dotlottie-player.js"></script>
+</head>
+
+<body>
+
+  <div>
+    <div style="text-align: center; margin: auto; justify-content: center; align-items: center;">
+      <button id="reset-btn" onclick="nextLottie()">Next Lottie</button>
+    </div>
+    <dotlottie-player id="player" src="./exploding_pigeon_and_lighthouse.lottie" id="dotlottie-player" autoplay controls
+      loop speed="1" mode="normal" style="height: 200px;">
+    </dotlottie-player>
+  </div>
+
+  <div style="margin-top: 50px; text-align: center">
+    No asset
+    <dotlottie-player id="no-asset" src="https://assets1.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie"
+      id="dotlottie-player" autoplay controls loop speed="1" mode="normal" style="height: 200px;">
+    </dotlottie-player>
+  </div>
+
+  <div style="margin-top: 50px; text-align: center">
+    External image
+    <dotlottie-player id="external-image" src="https://assets3.lottiefiles.com/dotlotties/dlf10_wyuwp5kj.lottie"
+      id="dotlottie-player" autoplay controls loop speed="1" mode="normal" style="height: 200px;">
+    </dotlottie-player>
+  </div>
+
+  <div style="margin-top: 50px; text-align: center">
+    Internal image
+    <dotlottie-player id="player" src="https://assets9.lottiefiles.com/dotlotties/dlf10_oehbsgal.lottie"
+      id="dotlottie-player" autoplay controls loop speed="1" mode="normal" style="height: 200px;">
+    </dotlottie-player>
+  </div>
+
+</body>
+
+<script>
+  let player = document.getElementById("player");
+  let i = 0;
+
+  function nextLottie() {
+    i++;
+    if (i > player.animationCount() - 1)
+      i = 0;
+    player.setActive(i);
+    console.log("Active index : " + player.getActive());
+    console.log("Active id : " + player.getActiveId());
+    console.log("Animation count : " + player.animationCount());
+  }
+</script>
+
+</html>

@@ -1,0 +1,124 @@
+<html>
+  <head> </head>
+
+  <body>
+    <div style="display: block">
+      <!-- Check animation loads via method -->
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+        <div id="player-one"></div>
+      </div>
+
+      <!-- Check animation load with bad json -->
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+        <div id="player-two-container"></div>
+      </div>
+
+      <!-- Check animation load with invalid url -->
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+        <div id="player-three-container"></div>
+      </div>
+
+      <!-- Check playing second animation of dotlottie on load -->
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+        <dotlottie-player
+          id="player-four"
+          autoplay
+          loop
+          controls
+          src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie"
+        >
+        </dotlottie-player>
+      </div>
+
+      <!-- Check playing second animation of dotlottie on load -->
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+        <dotlottie-player
+          id="player-five"
+          autoplay
+          loop
+          controls
+          src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie"
+        >
+        </dotlottie-player>
+      </div>
+
+      <!-- Check pausing the animation -->
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+        <dotlottie-player
+          id="player-six"
+          autoplay
+          loop
+          controls
+          src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie"
+        >
+        </dotlottie-player>
+      </div>
+
+      <!-- Check stopping the animation -->
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+        <dotlottie-player
+          id="player-seven"
+          autoplay
+          loop
+          controls
+          src="https://assets2.lottiefiles.com/dotlotties/dlf10_9lwe7s7w.lottie"
+        >
+        </dotlottie-player>
+      </div>
+    </div>
+
+    <script src="./dist/dotlottie-player.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"
+      integrity="sha512-n/4gHW3atM3QqRcbCn6ewmpxcLAHGaDjpEBu4xZd47N0W2oQ+6q7oc3PXstrJYXcbNU1OHdQ1T7pAP+gi5Yu8g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script type="text/javascript">
+      $('#player-one').html(
+        '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="test-player"></lottie-player>',
+      );
+      const player = document.getElementById('test-player');
+      player.addEventListener('rendered', e => {
+        player.load('https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie');
+      });
+
+      // $("#player-two-container").html(
+      //     '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-two"></lottie-player>'
+      // );
+      // const playerTwo = document.getElementById("player-two");
+      // playerTwo.addEventListener("rendered", (e) => {
+      //     console.log("player two rendered event fired");
+      //     playerTwo.load(
+      //         "./stacks.json"
+      //     );
+      // });
+
+      // $('#player-three-container').html(
+      //   '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="player-three"></lottie-player>',
+      // );
+      // const playerThree = document.getElementById('player-three');
+      // playerThree.addEventListener('rendered', e => {
+      //   playerThree.load('https://assesssssssts8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie');
+      // });
+
+      const playerFour = document.getElementById('player-four');
+      playerFour.addEventListener(
+        'ready',
+        e => {
+          playerFour.setActive(1);
+        },
+        { once: true },
+      );
+
+      const playerFive = document.getElementById('player-five');
+      playerFive.addEventListener(
+        'ready',
+        e => {
+          playerFive.setActive('lighthouse');
+        },
+        { once: true },
+      );
+    </script>
+  </body>
+</html>

@@ -15,7 +15,7 @@
     "build-with-coverage": "CODE_COVERAGE=true pnpm run build-dotlottie",
     "build-dotlottie": "pnpm run cleanup && rollup -c",
     "build:types": "tsc --declaration",
-    "start": "pnpm run cleanup && rollup -c --watch",
+    "dev": "pnpm run cleanup && rollup -c --watch",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "cleanup": "shx rm -rf dist && shx mkdir dist",
@@ -25,7 +25,7 @@
     "postrun-tests": "kill $(lsof -t -i:8000)"
   },
   "dependencies": {
-    "jszip": "^3.5.0",
+    "fflate": "^0.7.3",
     "lit": "^2.1.2",
     "lottie-web": "^5.8.1"
   },
@@ -90,7 +90,8 @@
     "> 3%"
   ],
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://npm.pkg.github.com/@dotlottie"
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",
