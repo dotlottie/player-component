@@ -21,7 +21,7 @@
     "serve": "yarn build && cp dist/dotlottie-player.js src/ && http-server src/ -o"
   },
   "dependencies": {
-    "jszip": "^3.5.0",
+    "@reslear/dotlottie-player-core": "0.0.2",
     "lit": "^2.1.2",
     "lottie-web": "^5.9.6"
   },
@@ -35,7 +35,6 @@
     "@rollup/plugin-babel": "^5.1.0",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
-    "@types/jszip": "^3.4.1",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
     "eslint": "^6.6.0",
