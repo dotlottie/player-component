@@ -256,7 +256,7 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Configure and initialize lottie-web player instance.
    */
-  public async load(src: string | Record<string, any>): Promise<void> {
+  public async load(src: string | Record<string, any>, overrideRendererSettings?: Record<string, unknown>): Promise<void> {
     if (!this.shadowRoot) {
       return;
     }
@@ -266,12 +266,12 @@ export class DotLottiePlayer extends LitElement {
       loop: false,
       autoplay: false,
       renderer: this.renderer,
-      rendererSettings: {
+      rendererSettings: overrideRendererSettings ? overrideRendererSettings : {
         scaleMode: 'noScale',
         clearCanvas: false,
         progressiveLoad: true,
         hideOnTransparent: true,
-      },
+      }
     };
 
     // Load the resource information
