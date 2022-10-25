@@ -49,6 +49,7 @@ export type Manifest = {
   // Custom data to be made available to the player and animations
   custom?: Record<string, unknown>;
 
+  // Animation id as string or index to play on load.
   activeAnimId?: string;
 };
 
