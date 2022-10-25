@@ -47,7 +47,9 @@ export type Manifest = {
   animations?: [Animation];
 
   // Custom data to be made available to the player and animations
-  custom?: {};
+  custom?: Record<string, unknown>;
+
+  activeAnimId?: string;
 };
 
 // Define valid player states
@@ -232,6 +234,12 @@ export class DotLottiePlayer extends LitElement {
   @property()
   public intermission = 1;
 
+  /**
+   * Animation id as string or index to play on load.
+   */
+  @property({ type: String })
+  public activeAnimId?: string | null = null;
+
   private _io?: any;
   private _lottie?: any;
   private _prevState?: any;
@@ -281,6 +289,22 @@ export class DotLottiePlayer extends LitElement {
     return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
   }
 
+  private _configureDefaultLottie(id: string) {
+    const idx = Number(id);
+
+    if (isNaN(idx)) {
+      if (this._manifest && this._manifest.animations) {
+        this._manifest.animations.map((animation: Animation, index: number) => {
+          if (animation.id === id) {
+            this._active = index;
+          }
+        });
+      }
+    } else {
+      this._active = idx;
+    }
+  }
+
   /**
    * Configure and initialize lottie-web player instance.
    */
@@ -312,6 +336,13 @@ export class DotLottiePlayer extends LitElement {
         this._manifest = manifestAndAnimation.manifest;
 
         if (!this._animations) throw new Error('[dotLottie] Animations are empty');
+
+        if (this._manifest && this._manifest.activeAnimId) {
+          this._configureDefaultLottie(this._manifest.activeAnimId);
+        }
+        if (this.activeAnimId) {
+          this._configureDefaultLottie(this.activeAnimId);
+        }
 
         srcParsed = this._animations[this._active];
         if (srcParsed === undefined) throw new Error('[dotLottie] No animation to load!');
