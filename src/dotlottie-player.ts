@@ -147,6 +147,12 @@ export class DotLottiePlayer extends LitElement {
   public mode: PlayMode = PlayMode.Normal;
 
   /**
+   * Aspect ratio
+  */
+  @property({ type: String })
+  public aspectRatio?: string = 'xMidYMid meet';
+
+  /**
    * Autoplay animation on load.
    */
   @property({ type: Boolean })
@@ -267,6 +273,7 @@ export class DotLottiePlayer extends LitElement {
       autoplay: false,
       renderer: this.renderer,
       rendererSettings: overrideRendererSettings ? overrideRendererSettings : {
+        preserveAspectRatio: this.aspectRatio,
         scaleMode: 'noScale',
         clearCanvas: false,
         progressiveLoad: true,
