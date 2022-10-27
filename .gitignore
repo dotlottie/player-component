@@ -6,4 +6,7 @@
 dist/
 node_modules
 
+.DS_Store
+*.pem
+
 packages/functional-tests/app/dotlottie-player.js
