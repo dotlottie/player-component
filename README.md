@@ -173,6 +173,7 @@ export default {};
 | `mode`             | `mode`       | Play mode.                         | `PlayMode.Bounce \| PlayMode.Normal` | `PlayMode.Normal` |
 | `renderer`         | `renderer`   | Renderer to use.                   | `"svg"`                              | `'svg'`           |
 | `speed`            | `speed`      | Animation speed.                   | `number`                             | `1`               |
+| `aspectRatio`            | `preserveAspectRatio`      | Aspect ratio.                   | `string`                             | `'xMidYMid meet'`               |
 | `src` _(required)_ | `src`        | URL to .lottie file.               | `string`                             | `undefined`       |
 
 ## Methods
