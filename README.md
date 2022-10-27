@@ -1,5 +1,7 @@
 ## dotlottie-player Web Component
 
+This fork gives option to alter aspect ratio.
+
 This is a Web Component for easily embedding and playing dotLottie animations on websites.
 
 [![npm](https://img.shields.io/npm/v/@dotlottie/player-component.svg)](https://www.npmjs.com/package/@dotlottie/player-component)
