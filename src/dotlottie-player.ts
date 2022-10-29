@@ -8,7 +8,7 @@ import styles from './dotlottie-player.styles';
 
 // Define valid player states
 export enum PlayerState {
-  Destroyed = 'destroyed',
+  // Destroyed = 'destroyed',
   Error = 'error',
   Frozen = 'frozen',
   Loading = 'loading',
@@ -26,7 +26,7 @@ export enum PlayMode {
 // Define player events
 export enum PlayerEvents {
   Complete = 'complete',
-  Destroyed = 'destroyed',
+  // Destroyed = 'destroyed',
   Error = 'error',
   Frame = 'frame',
   Freeze = 'freeze',
@@ -234,11 +234,11 @@ export class DotLottiePlayer extends LitElement {
   @property({ type: String })
   public src?: string;
 
-  /**
-   * Enable web workers
-   */
-  @property({ type: Boolean })
-  public webworkers?: boolean;
+  // /**
+  //  * Enable web workers
+  //  */
+  // @property({ type: Boolean })
+  // public webworkers?: boolean;
 
   /**
    * Animation container.
@@ -247,10 +247,10 @@ export class DotLottiePlayer extends LitElement {
   protected container!: HTMLElement;
 
 
-  private _io: IntersectionObserver | undefined = undefined;
+  private _io?: any; //IntersectionObserver | undefined = undefined;
   private _lottie?: any;
   private _prevState?: any;
-  private _counter = 1;
+  private _counter = 0;
 
   private isLottie(json: Record<string, any>): boolean {
     const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
@@ -297,9 +297,9 @@ export class DotLottiePlayer extends LitElement {
         this._lottie.destroy();
       }
 
-      if (this.webworkers) {
-        lottie.useWebWorker(true)
-      }
+      // if (this.webworkers) {
+      //   lottie.useWebWorker(true)
+      // }
 
       // Initialize lottie player and load animation
       this._lottie = lottie.loadAnimation({
@@ -459,20 +459,20 @@ export class DotLottiePlayer extends LitElement {
     this.dispatchEvent(new CustomEvent(PlayerEvents.Stop));
   }
 
-  /**
-   * Destroy animation and lottie-player element.
-   */
-  public destroy(): void {
-    if (!this._lottie) {
-      return;
-    }
+  // /**
+  //  * Destroy animation and lottie-player element.
+  //  */
+  // public destroy(): void {
+  //   if (!this._lottie) {
+  //     return;
+  //   }
 
-    this._lottie.destroy();
-    this._lottie = null;
-    this.currentState = PlayerState.Destroyed;
-    this.dispatchEvent(new CustomEvent(PlayerEvents.Destroyed));
-    this.remove();
-  }
+  //   this._lottie.destroy();
+  //   this._lottie = null;
+  //   this.currentState = PlayerState.Destroyed;
+  //   this.dispatchEvent(new CustomEvent(PlayerEvents.Destroyed));
+  //   this.remove();
+  // }
 
   /**
    * Seek to a given frame.
@@ -617,7 +617,7 @@ export class DotLottiePlayer extends LitElement {
     document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
 
     // Destroy the animation instance and element
-    this.destroy();
+    // this.destroy();
   }
 
   public render(): TemplateResult | void {
