@@ -1,6 +1,6 @@
 {
   "name": "@johanaarstein/player-component",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "Fork of dotlottie animation player web component.",
   "main": "dist/dotlottie-player.js",
   "module": "dist/dotlottie-player.esm.js",
