@@ -8,7 +8,7 @@
   "homepage": "https://dotlottie.com/players",
   "repository": "https://github.com/dotlottie/player-component.git",
   "bugs": "https://github.com/dotlottie/player-component/issues",
-  "author": "Jawish Hameed <jawish@lottiefiles.com>",
+  "author": "Johan Martin Aarstein <johan@aarstein.media>",
   "license": "MIT",
   "scripts": {
     "build": "yarn build-dotlottie",
@@ -35,7 +35,6 @@
     "@rollup/plugin-babel": "^5.1.0",
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^8.4.0",
-    "@types/jszip": "^3.4.1",
     "@typescript-eslint/eslint-plugin": "^2.6.1",
     "@typescript-eslint/parser": "^2.6.1",
     "eslint": "^6.6.0",

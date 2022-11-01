@@ -1015,9 +1015,9 @@
     "@changesets/types" "^5.2.0"
 
 "@changesets/cli@^2.24.4":
-  "integrity" "sha512-Svu5KD2enurVHGEEzCRlaojrHjVYgF9srmMP9VQSy9c1TspX6C9lDPpulsSNIjYY9BuU/oiWpjBgR7RI9eQiAA=="
-  "resolved" "https://registry.npmjs.org/@changesets/cli/-/cli-2.25.0.tgz"
-  "version" "2.25.0"
+  "integrity" "sha512-e65ZJ7QKq7aERV/vAeuG0DTkkuEnTZK8eVNYqnd6wBsc9YTK+5iuuzp8aG0E80AngxeOaI4u77OIfzE9fv2T5Q=="
+  "resolved" "https://registry.npmjs.org/@changesets/cli/-/cli-2.25.1.tgz"
+  "version" "2.25.1"
   dependencies:
     "@babel/runtime" "^7.10.4"
     "@changesets/apply-release-plan" "^6.1.1"
@@ -2276,13 +2276,6 @@
   "resolved" "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
   "version" "7.0.11"
 
-"@types/jszip@^3.4.1":
-  "integrity" "sha512-TezXjmf3lj+zQ651r6hPqvSScqBLvyPI9FxdXBqpEwBijNGQ2NXpaFW/7joGzveYkKQUil7iiDHLo6LV71Pc0A=="
-  "resolved" "https://registry.npmjs.org/@types/jszip/-/jszip-3.4.1.tgz"
-  "version" "3.4.1"
-  dependencies:
-    "jszip" "*"
-
 "@types/minimatch@*", "@types/minimatch@^3.0.3":
   "integrity" "sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ=="
   "resolved" "https://registry.npmjs.org/@types/minimatch/-/minimatch-3.0.5.tgz"
@@ -3196,9 +3189,9 @@
     "lodash.uniq" "^4.5.0"
 
 "caniuse-lite@^1.0.0", "caniuse-lite@^1.0.30001400":
-  "integrity" "sha512-n7cosrHLl8AWt0wwZw/PJZgUg3lV0gk9LMI7ikGJwhyhgsd2Nb65vKvmSexCqq/J7rbH3mFG6yZZiPR5dLPW5A=="
-  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001426.tgz"
-  "version" "1.0.30001426"
+  "integrity" "sha512-lfXQ73oB9c8DP5Suxaszm+Ta2sr/4tf8+381GkIm1MLj/YdLf+rEDyDSRCzeltuyTVGm+/s18gdZ0q+Wmp8VsQ=="
+  "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001427.tgz"
+  "version" "1.0.30001427"
 
 "caseless@~0.12.0":
   "integrity" "sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw=="
@@ -4036,9 +4029,9 @@
   "version" "1.0.1"
 
 "decamelize-keys@^1.1.0":
-  "integrity" "sha512-ocLWuYzRPoS9bfiSdDd3cxvrzovVMZnRDVEzAs+hWIVXGDbHxWMECij2OBuyB/An0FFW/nLuq6Kv1i/YC5Qfzg=="
-  "resolved" "https://registry.npmjs.org/decamelize-keys/-/decamelize-keys-1.1.0.tgz"
-  "version" "1.1.0"
+  "integrity" "sha512-WiPxgEirIV0/eIOMcnFBA3/IJZAZqKnwAwWyvvdi4lsr1WCN22nhdf/3db3DoZcUjTV2SqfzIwNyp6y2xs3nmg=="
+  "resolved" "https://registry.npmjs.org/decamelize-keys/-/decamelize-keys-1.1.1.tgz"
+  "version" "1.1.1"
   dependencies:
     "decamelize" "^1.1.0"
     "map-obj" "^1.0.0"
@@ -6352,7 +6345,7 @@
     "json-schema" "0.4.0"
     "verror" "1.10.0"
 
-"jszip@*", "jszip@^3.5.0":
+"jszip@^3.5.0":
   "integrity" "sha512-xXDvecyTpGLrqFrvkrUSoxxfJI5AH7U8zxxtVclpsUtMCq4JQ290LY8AW5c7Ggnr/Y/oK+bQMbqK2qmtk3pN4g=="
   "resolved" "https://registry.npmjs.org/jszip/-/jszip-3.10.1.tgz"
   "version" "3.10.1"

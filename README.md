@@ -1,6 +1,6 @@
 ## dotlottie-player Web Component
 
-This fork gives option to alter aspect ratio.
+This fork renders dotLottie or JSON files as svg or canvas, and it provides the option to alter aspect ratio.
 
 This is a Web Component for easily embedding and playing dotLottie animations on websites.
 

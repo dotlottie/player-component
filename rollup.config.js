@@ -41,6 +41,7 @@ export default {
     babel({
       extensions: extensions,
       exclude: ['./node_modules/**'],
+      babelHelpers: 'bundled'
     }),
     !production &&
       copy({
