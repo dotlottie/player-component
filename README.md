@@ -20,17 +20,17 @@ This fork renders dotLottie files or JSON files as svg or canvas, and it provide
 
 ##### Lottie Player:
 
-<!-- - Import from CDN.
+- Import from CDN.
 
 ```html
-<script src="https://unpkg.com/@dotlottie/player-component@1.0.0/dist/dotlottie-player.js"></script>
+<script src="https://unpkg.com/@johanaarstein/dotlottie-player@1.2.9/dist/dotlottie-player.js"></script>
 ```
 
 - Import from local node_modules directory.
 
 ```html
-<script src="/node_modules/@dotlottie/player-component/dist/dotlottie-player.js"></script>
-``` -->
+<script src="/node_modules/@johanaarstein/dotlottie-player/dist/dotlottie-player.js"></script>
+```
 
 #### In Javascript or TypeScript:
 
