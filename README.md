@@ -4,7 +4,7 @@ This fork renders dotLottie or JSON files as svg or canvas, and it provides the 
 
 This is a Web Component for easily embedding and playing dotLottie animations on websites.
 
-[![npm](https://img.shields.io/npm/v/@dotlottie/player-component.svg)](https://www.npmjs.com/package/@dotlottie/player-component)
+[![npm](https://img.shields.io/npm/v/@dotlottie/player-component.svg)](https://www.npmjs.com/package/johanaarstein/dotlottie-player)
 [![webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/@dotlottie/dotlottie-player)
 
 ## Demo
@@ -21,7 +21,7 @@ This is a Web Component for easily embedding and playing dotLottie animations on
 
 ##### Lottie Player:
 
-- Import from CDN.
+<!-- - Import from CDN.
 
 ```html
 <script src="https://unpkg.com/@dotlottie/player-component@1.0.0/dist/dotlottie-player.js"></script>
@@ -31,20 +31,20 @@ This is a Web Component for easily embedding and playing dotLottie animations on
 
 ```html
 <script src="/node_modules/@dotlottie/player-component/dist/dotlottie-player.js"></script>
-```
+``` -->
 
 #### In Javascript or TypeScript:
 
 1. Install package using npm or yarn.
 
 ```shell
-npm install --save @dotlottie/player-component
+npm install --save @johanaarstein/dotlottie-player
 ```
 
 2. Import package in your code.
 
 ```javascript
-import '@dotlottie/player-component';
+import '@johanaarstein/dotlottie-player'
 ```
 
 ## Usage
@@ -81,7 +81,7 @@ player.load('http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/
 1 - import the player and use as follows
 
 ```javascript
-import '@dotlottie/player-component';
+import '@johanaarstein/dotlottie-player'
 
 function App() {
   return (
@@ -93,7 +93,7 @@ function App() {
         style={{ height: '100%', width: '100%' }}
       />
     </div>
-  );
+  )
 }
 
 export default App;
@@ -104,7 +104,7 @@ export default App;
 1 - import as follows
 
 ```javascript
-import '@dotlottie/player-component';
+import '@johanaarstein/dotlottie-player'
 
 function App() {
   return (
@@ -116,10 +116,10 @@ function App() {
         style={{ height: '100%', width: '100%' }}
       />
     </div>
-  );
+  )
 }
 
-export default App;
+export default App
 ```
 
 2 - create a global.d.ts file in your src folder and add the code below
@@ -143,7 +143,7 @@ plugins: [{ src: '~/plugins/lottie-player', mode: 'client' }];
 2 - create a folder plugins in your root if it doesnt already exist, add a file lottie-player.js with the following content
 
 ```javascript
-import * as LottiePlayer from '@dotlottie/player-component';
+import * as LottiePlayer from '@johanaarstein/dotlottie-player'
 ```
 
 3 - the component can now be used in your pages or components template tag as follows without any import necessary
@@ -153,7 +153,7 @@ import * as LottiePlayer from '@dotlottie/player-component';
   <dotlottie-player src="https://assets2.lottiefiles.com/dotlotties/dlf10_l12sw9oo.lottie" autoplay loop />
 </template>
 <script>
-export default {};
+export default {}
 </script>
 ```
 

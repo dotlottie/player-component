@@ -40,7 +40,7 @@ export enum PlayerEvents {
 }
 
 /**
- * Load a resource from a path URL.
+ * Load a resource from a path URL
  */
 export async function fetchPath(path: string): Promise<any> {
   const ext: string | undefined = path.split('.').pop()?.toLowerCase()
