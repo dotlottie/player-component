@@ -1,19 +1,18 @@
 ## dotlottie-player Web Component
 
-This fork renders dotLottie or JSON files as svg or canvas, and it provides the option to alter aspect ratio.
+This a fork of [@dotlottie/player-component.](https://github.com/dotlottie/player-component).
 
-This is a Web Component for easily embedding and playing dotLottie animations on websites.
+This fork renders dotLottie files or JSON files as svg or canvas, and it provides the option to alter aspect ratio.
 
-[![npm](https://img.shields.io/npm/v/@dotlottie/player-component.svg)](https://www.npmjs.com/package/johanaarstein/dotlottie-player)
-[![webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/@dotlottie/dotlottie-player)
+<!-- [![npm](https://img.shields.io/npm/v/@dotlottie/player-component.svg)](https://www.npmjs.com/package/johanaarstein/dotlottie-player) -->
 
-## Demo
+<!-- ## Demo
 
-- [TODO]
+- [TODO] -->
 
-## Documentation
+<!-- ## Documentation
 
-- [View documentation](https://dotlottie.github.io/player-component/)
+- [View documentation](https://dotlottie.github.io/player-component/) -->
 
 ## Installation
 
@@ -72,8 +71,8 @@ You may set and load animations programmatically as well.
 ```
 
 ```js
-const player = document.querySelector('dotlottie-player');
-player.load('http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/animation-external-image.lottie');
+const player = document.querySelector('dotlottie-player')
+player.load('http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/animation-external-image.lottie')
 ```
 
 ## Usage example in ReactJS
@@ -96,7 +95,7 @@ function App() {
   )
 }
 
-export default App;
+export default App
 ```
 
 ## Usage example in ReactJS + Typescript
@@ -127,7 +126,7 @@ export default App
 ```javascript
 declare namespace JSX {
   interface IntrinsicElements {
-    "dotlottie-player": any;
+    "dotlottie-player": any
   }
 }
 ```
@@ -137,7 +136,7 @@ declare namespace JSX {
 1 - update the plugins array in nuxt.config.js file in your root as follows
 
 ```javascript
-plugins: [{ src: '~/plugins/lottie-player', mode: 'client' }];
+plugins: [{ src: '~/plugins/lottie-player', mode: 'client' }]
 ```
 
 2 - create a folder plugins in your root if it doesnt already exist, add a file lottie-player.js with the following content
@@ -297,16 +296,17 @@ The following events are exposed and can be listened to via `addEventListener` c
 
 | Name       | Description                                                               |
 | ---------- | ------------------------------------------------------------------------- |
-| `load`     | Animation data is loaded.                                                 |
+| `complete` | Animation is complete (all loops completed).                              |
+| `destroyed`| Animation data is destroyed.                                              |
 | `error`    | An animation source cannot be parsed, fails to load or has format errors. |
-| `ready`    | Animation data is loaded and player is ready.                             |
+| `frame`    | A new frame is entered.                                                   |
+| `freeze`   | Animation is paused due to player being invisible.                        |
+| `load`     | Animation data is loaded.                                                 |
+| `loop`     | An animation loop is completed.                                           |
 | `play`     | Animation starts playing.                                                 |
 | `pause`    | Animation is paused.                                                      |
+| `ready`    | Animation data is loaded and player is ready.                             |
 | `stop`     | Animation is stopped.                                                     |
-| `freeze`   | Animation is paused due to player being invisible.                        |
-| `loop`     | An animation loop is completed.                                           |
-| `complete` | Animation is complete (all loops completed).                              |
-| `frame`    | A new frame is entered.                                                   |
 
 ## Styling
 
