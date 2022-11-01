@@ -95,8 +95,8 @@ export async function fetchPath(path: string): Promise<any> {
 @customElement('dotlottie-player')
 export class DotLottiePlayer extends LitElement {
   /**
-     * Autoplay animation on load.
-     */
+   * Autoplay animation on load.
+   */
   @property({ type: Boolean })
   public autoplay = false
 
