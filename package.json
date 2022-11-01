@@ -4,7 +4,7 @@
   "description": "Fork of dotlottie animation player web component.",
   "main": "dist/dotlottie-player.js",
   "module": "dist/dotlottie-player.esm.js",
-  "types": "dist/dotlottie-player.esm.d.ts",
+  "types": "dist/dotlottie-player.d.ts",
   "homepage": "https://dotlottie.com/players",
   "repository": "https://github.com/dotlottie/player-component.git",
   "bugs": "https://github.com/dotlottie/player-component/issues",
