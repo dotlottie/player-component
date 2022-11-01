@@ -1,6 +1,6 @@
 ## dotlottie-player Web Component
 
-This a fork of [@dotlottie/player-component.](https://github.com/dotlottie/player-component).
+This a fork of [@dotlottie/player-component](https://github.com/dotlottie/player-component).
 
 This fork renders dotLottie files or JSON files as svg or canvas, and it provides the option to alter aspect ratio.
 
