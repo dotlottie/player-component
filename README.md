@@ -58,7 +58,7 @@ Add the element `dotlottie-player` and set the `src` property to a URL pointing 
   controls
   loop
   mode="normal"
-  src="http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/animation-external-image.lottie"
+  src="https://storage.googleapis.com/aarsteinmedia/intro.lottie"
   style="width: 320px"
 >
 </dotlottie-player>
@@ -72,7 +72,7 @@ You may set and load animations programmatically as well.
 
 ```js
 const player = document.querySelector('dotlottie-player')
-player.load('http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/animation-external-image.lottie')
+player.load('https://storage.googleapis.com/aarsteinmedia/intro.lottie')
 ```
 
 ## Usage example in ReactJS
@@ -86,7 +86,7 @@ function App() {
   return (
     <div className="App">
       <dotlottie-player
-        src="https://assets2.lottiefiles.com/dotlotties/dlf10_l12sw9oo.lottie"
+        src="https://storage.googleapis.com/aarsteinmedia/intro.lottie"
         autoplay
         loop
         style={{ height: '100%', width: '100%' }}
@@ -109,7 +109,7 @@ function App() {
   return (
     <div className="App">
       <dotlottie-player
-        src="https://assets2.lottiefiles.com/dotlotties/dlf10_l12sw9oo.lottie"
+        src="https://storage.googleapis.com/aarsteinmedia/intro.lottie"
         autoplay
         loop
         style={{ height: '100%', width: '100%' }}
@@ -149,7 +149,7 @@ import * as LottiePlayer from '@johanaarstein/dotlottie-player'
 
 ```javascript
 <template>
-  <dotlottie-player src="https://assets2.lottiefiles.com/dotlotties/dlf10_l12sw9oo.lottie" autoplay loop />
+  <dotlottie-player src="https://storage.googleapis.com/aarsteinmedia/intro.lottie" autoplay loop />
 </template>
 <script>
 export default {}
