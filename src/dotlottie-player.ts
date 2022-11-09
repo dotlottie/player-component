@@ -253,10 +253,25 @@ export class DotLottiePlayer extends LitElement {
     return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
   }
 
+  private parseSrc(src: string | Record<string, unknown>): string | Record<string, unknown> {
+    if (typeof src === "object") {
+      return src;
+    }
+
+    try {
+      return JSON.parse(src);
+    } catch (e) {
+      // Try construct an absolute URL from the src URL
+      const srcUrl: URL = new URL(src, window.location.href);
+
+      return srcUrl.toString();
+    }
+  }
+
   /**
    * Configure and initialize lottie-web player instance.
    */
-  public async load(src: string | Record<string, any>, overrideRendererSettings?: Record<string, unknown>): Promise<void> {
+  public async load(src: string | Record<string, unknown>, overrideRendererSettings?: Record<string, unknown>): Promise<void> {
     if (!this.shadowRoot) {
       return;
     }
@@ -276,16 +291,14 @@ export class DotLottiePlayer extends LitElement {
 
     // Load the resource information
     try {
-      let srcParsed;
+      let srcParsed = this.parseSrc(src);
 
-      if (typeof src === 'string') {
-        srcParsed = await fetchPath(src);
+      if (typeof srcParsed === 'string') {
+       // parseSrc returned a URL
+       srcParsed = await fetchPath(srcParsed);
         if (srcParsed === undefined) throw new Error('[dotLottie] No animation to load!');
-        if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
-      } else if (typeof src === 'object') {
-        srcParsed = src;
-        if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
       }
+      if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
 
       // Clear previous animation, if any
       if (this._lottie) {
@@ -458,8 +471,12 @@ export class DotLottiePlayer extends LitElement {
       return;
     }
 
+    if (typeof value === 'number')
+      value = Math.round(value)
+
     // Extract frame number from either number or percentage value
     const matches = value.toString().match(/^([0-9]+)(%?)$/);
+
     if (!matches) {
       return;
     }
@@ -621,6 +638,11 @@ export class DotLottiePlayer extends LitElement {
       this._io = undefined;
     }
 
+    // Destroy lottie
+    if (this._lottie) {
+      this._lottie.destroy();
+    }
+
     // Remove the attached Visibility API's change event listener.
     document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
   }
@@ -679,6 +701,7 @@ export class DotLottiePlayer extends LitElement {
           }}
           @mouseup=${() => {
             this._prevState === PlayerState.Playing && this.play();
+            this.seek(this._lottie.currentFrame)
           }}
           aria-valuemin="1"
           aria-valuemax="100"
