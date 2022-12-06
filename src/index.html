@@ -8,6 +8,17 @@
   </head>
 
   <body>
+    <h3>A .lottie with renderer settings loaded via the load method</h3>
+    <dotlottie-player
+      autoplay
+      controls
+      loop
+      speed="1"
+      mode="normal"
+      style="height: 1000px; display: inline-block;"
+      id="one"
+    >
+    </dotlottie-player>
     <h3>A . json animation file</h3>
     <dotlottie-player
       autoplay
@@ -21,7 +32,7 @@
     </dotlottie-player>
 
     <br />
-    <h3>A . lottie animation file</h3>
+    <h3>A .lottie animation file from url</h3>
     <dotlottie-player
       autoplay
       controls
@@ -34,7 +45,7 @@
     </dotlottie-player>
 
     <br />
-    <h3>A . lottie animation file</h3>
+    <h3>A .lottie animation file from local</h3>
     <dotlottie-player
       autoplay
       controls
@@ -45,5 +56,17 @@
       style="height: 500px; display: inline-block;"
     >
     </dotlottie-player>
+    <script>
+      let firstPlayer = document.getElementById('one');
+
+      firstPlayer.load('https://lottie.host/cba131d3-3e01-43be-b71c-2de700a12642/c5CK9Co8WD.json', {
+        filterSize: {
+          width: '200%',
+          height: '200%',
+          x: '-30%',
+          y: '-30%',
+        },
+      });
+    </script>
   </body>
 </html>
