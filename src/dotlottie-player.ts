@@ -3,7 +3,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 import { TemplateResult } from 'lit/html.js';
 import * as lottie from 'lottie-web/build/player/lottie_svg';
 import JSZip from 'jszip/dist/jszip';
-import { DOTLOTTIE_PLAYER_VERSION, LOTTIE_WEB_VERSION } from './version';
+import { DOTLOTTIE_PLAYER_VERSION, LOTTIE_WEB_VERSION } from './versions';
 import styles from './dotlottie-player.styles';
 
 // Define valid player states

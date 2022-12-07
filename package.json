@@ -11,11 +11,11 @@
   "author": "Jawish Hameed <jawish@lottiefiles.com>",
   "license": "MIT",
   "scripts": {
-    "prebuild": "node -p \"'export const DOTLOTTIE_PLAYER_VERSION = ' + JSON.stringify(require('./package.json').version) + '; \\n' + 'export const LOTTIE_WEB_VERSION = ' + JSON.stringify(require('./package.json').dependencies['lottie-web']) + ';'\" > src/version.ts",
+    "prebuild": "node -p \"'export const DOTLOTTIE_PLAYER_VERSION = ' + JSON.stringify(require('./package.json').version) + '; \\n' + 'export const LOTTIE_WEB_VERSION = ' + JSON.stringify(require('./package.json').dependencies['lottie-web']) + ';'\" > src/versions.ts",
     "build": "yarn build-dotlottie",
     "build-dotlottie": "npm run cleanup && rollup -c",
     "build:types": "tsc --declaration",
-    "prestart": "node -p \"'export const DOTLOTTIE_PLAYER_VERSION = ' + JSON.stringify(require('./package.json').version) + '; \\n' + 'export const LOTTIE_WEB_VERSION = ' + JSON.stringify(require('./package.json').dependencies['lottie-web']) + ';'\" > src/version.ts",
+    "prestart": "node -p \"'export const DOTLOTTIE_PLAYER_VERSION = ' + JSON.stringify(require('./package.json').version) + '; \\n' + 'export const LOTTIE_WEB_VERSION = ' + JSON.stringify(require('./package.json').dependencies['lottie-web']) + ';'\" > src/versions.ts",
     "start": "npm run cleanup && rollup -c --watch",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
