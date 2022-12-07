@@ -3,7 +3,7 @@ import { customElement, property, query } from 'lit/decorators.js';
 import { TemplateResult } from 'lit/html.js';
 import * as lottie from 'lottie-web/build/player/lottie_svg';
 import JSZip from 'jszip/dist/jszip';
-
+import { DOTLOTTIE_PLAYER_VERSION, LOTTIE_WEB_VERSION } from './versions';
 import styles from './dotlottie-player.styles';
 
 // Define valid player states
@@ -34,6 +34,11 @@ export enum PlayerEvents {
   Loop = 'loop',
   Complete = 'complete',
   Frame = 'frame',
+}
+
+export type Versions = {
+  lottieWebVersion: string;
+  dotLottiePlayerVersion: string;
 }
 
 /**
@@ -418,6 +423,13 @@ export class DotLottiePlayer extends LitElement {
    */
   public getLottie(): any {
     return this._lottie;
+  }
+
+  public getVersions(): Versions {
+    return {
+      lottieWebVersion: LOTTIE_WEB_VERSION,
+      dotLottiePlayerVersion: DOTLOTTIE_PLAYER_VERSION
+    }
   }
 
   /**
