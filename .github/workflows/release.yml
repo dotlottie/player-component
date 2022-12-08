@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [master, beta]
+    branches: [master]
 
 jobs:
   build:
@@ -65,8 +65,8 @@ jobs:
         run: yarn build
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-      - run: npm publish --tag beta
-      # - run: npm publish --access public
+      # - run: npm publish --tag beta
+      - run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
