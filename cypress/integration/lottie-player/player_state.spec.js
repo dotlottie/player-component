@@ -11,11 +11,11 @@ context("Player state", () => {
     cy.get("#player-one").then(($el) => {
       const playerOne = $el.get(0);
 
-      playerOne.addEventListener("ready", () => {
+      playerOne.addEventListener("frame", () => {
         expect(playerOne.currentState).to.eq("playing");
         expect(playerOne.loop).to.eq(true);
         done();
-      });
+      }, { once: true });
     });
   });
 

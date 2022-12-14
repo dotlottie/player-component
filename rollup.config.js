@@ -53,6 +53,10 @@ export default {
           src: './node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js',
           dest: outputDir,
         },
+        {
+          src: './tests/index.html',
+          dest: outputDir,
+        },
       ],
     }),
     filesize(),

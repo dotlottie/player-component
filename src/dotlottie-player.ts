@@ -105,12 +105,16 @@ export function fetchPath(path: string): Promise<Record<string, any>> {
         const animations: any[] = [];
         const animAndManifest: Record<string, any> = {};
 
-
         if (jsonFlag) {
-          resolve(xhr.response)
+          const animAndManifest: Record<string, any> = {};
+
+          animAndManifest.manifest = {};
+          animAndManifest.animations = [(xhr.response)];
+
+          resolve (animAndManifest)
+          return ;
         }
-        // yourZipFile is a Uint8Array, e.g. from this:
-        // const yourZipFile = new Uint8Array(await (await fetch('/example.dotLottie')).arrayBuffer());
+
         const data = unzipSync(new Uint8Array(xhr.response));
         if (data['manifest.json']) {
           const str = strFromU8(data['manifest.json']);
@@ -156,7 +160,7 @@ export function fetchPath(path: string): Promise<Record<string, any>> {
         } else {
           reject('[dotLottie] No manifest found in file.');
         }
-      } else if ((xhr.readyState === 4 || xhr.status === 404) && xhr.status === 0) {
+      } else if (xhr.readyState === 4 && xhr.status === 404 || xhr.status === 0 || xhr.status === 403) {
         reject(`[dotLottie] Error finding dotLottie file at ${path}`);
       }
     };
@@ -302,6 +306,13 @@ export class DotLottiePlayer extends LitElement {
   private isLottie(json: Record<string, any>): boolean {
     const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
 
+    if (json.animations && json.animations.length) {
+      json.animations.forEach(animation => {
+        if (!this.isLottie(animation))
+        return false;
+      });
+      return true;
+    }
     return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
   }
 
@@ -323,7 +334,7 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Configure and initialize lottie-web player instance.
    */
-  public async load(src: string | AnimationItem): Promise<void> {
+  public async load(src: string | AnimationItem, overrideRendererSettings?: Record<string, unknown>): Promise<void> {
     if (!this.shadowRoot) {
       return;
     }
@@ -345,14 +356,8 @@ export class DotLottiePlayer extends LitElement {
       let srcParsed = this.parseSrc(src);
 
       if (typeof srcParsed === 'string') {
-       // parseSrc returned a URL
-       srcParsed = await fetchPath(srcParsed);
-        if (srcParsed === undefined) throw new Error('[dotLottie] No animation to load!');
-      }
-      if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
-
-      if (typeof src === 'string') {
-        const manifestAndAnimation = await fetchPath(src);
+        // parseSrc returned a URL
+        const manifestAndAnimation = await fetchPath(srcParsed);
 
         this._animations = manifestAndAnimation.animations;
         this._manifest = manifestAndAnimation.manifest;
@@ -361,14 +366,14 @@ export class DotLottiePlayer extends LitElement {
 
         srcParsed = this._animations[this._active];
         if (srcParsed === undefined) throw new Error('[dotLottie] No animation to load!');
-      } else if (typeof src === 'object') {
-        if (!this.isLottie(src)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
-        srcParsed = src;
-      }
+       }
 
-      if (this._lottie) {
-        this._lottie.destroy();
-      }
+       if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] 1 Load method failing. Object is not a valid Lottie.');
+
+       // Clear previous animation, if any
+       if (this._lottie) {
+         this._lottie.destroy();
+       }
 
       // Initialize lottie player and load animation
       this._lottie = lottie.loadAnimation({
@@ -508,7 +513,7 @@ export class DotLottiePlayer extends LitElement {
         throw `[dotLottie] No manifest has been loaded.`;
       }
       // Find desired animation and set the current animation index
-      let ret = this._manifest.animations.findIndex(element => element.id === animationId);
+      const ret = this._manifest.animations.findIndex(element => element.id === animationId);
       if (ret !== -1) {
         this._active = ret;
         if (this.src) {
