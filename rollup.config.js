@@ -56,7 +56,7 @@ export default {
           dest: outputDir,
         },
         {
-          src: 'src/index.html',
+          src: 'tests/index.html',
           dest: outputDir
         }
       ],
