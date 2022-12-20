@@ -157,7 +157,6 @@ export default css`
 
   .error {
     display: flex;
-    margin: auto;
     justify-content: center;
     margin: auto;
     height: 100%;

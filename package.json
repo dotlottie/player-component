@@ -29,7 +29,8 @@
   "dependencies": {
     "fflate": "^0.7.3",
     "lit": "^2.4.1",
-    "lottie-web": "^5.10.0"
+    "lottie-web": "^5.10.0",
+    "rollup-plugin-web-worker-loader": "^1.6.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",

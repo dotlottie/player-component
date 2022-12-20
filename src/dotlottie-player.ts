@@ -6,6 +6,7 @@ import { unzipSync, strFromU8 } from 'fflate';
 import { AnimationItem } from 'lottie-web';
 import { DOTLOTTIE_PLAYER_VERSION, LOTTIE_WEB_VERSION } from './versions';
 import styles from './dotlottie-player.styles';
+import WebWorker from 'web-worker:./worker.ts';
 
 export type Animation = {
   // Name of the Lottie animation file without .json
@@ -275,6 +276,7 @@ export class DotLottiePlayer extends LitElement {
   private _active = 0;
   private _manifest: Manifest;
   private _animations?: [AnimationItem];
+  private _worker = new WebWorker();
 
   constructor() {
     super();
@@ -285,6 +287,41 @@ export class DotLottiePlayer extends LitElement {
       revision: 0,
       author: '',
     };
+
+    // Catch the reply of the worker after its been called by load(),
+    // Grab the animations and manifest and pass the animation object to load() again
+    // To load the animation object obtained
+    this._worker.addEventListener('message', (message: any) => {
+      const manifestAndAnimation = message.data;
+
+      if (typeof message.data === 'string' && message.data.includes('[dotLottie]')) {
+        this.currentState = PlayerState.Error;
+
+        this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
+        throw new Error(message.data);
+      }
+
+      this._animations = manifestAndAnimation.animations;
+      this._manifest = manifestAndAnimation.manifest;
+
+      if (!this._animations) {
+        this.currentState = PlayerState.Error;
+
+        this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
+        throw new Error('[dotLottie] Animations are empty');
+      }
+
+      if (this._manifest && this._manifest.activeAnimId) {
+        this._configureDefaultLottie(this._manifest.activeAnimId);
+      }
+      if (this.activeAnimId) {
+        this._configureDefaultLottie(this.activeAnimId);
+      }
+
+      const srcParsed = this._animations[this._active];
+      if (srcParsed === undefined) throw new Error('[dotLottie] No animation to load!');
+      this.load(srcParsed);
+    });
   }
 
   /**
@@ -313,13 +350,14 @@ export class DotLottiePlayer extends LitElement {
 
   private isLottie(json: Record<string, any>): boolean {
     const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
+    let notLottie = false;
 
     if (json.animations && json.animations.length) {
-      json.animations.forEach(animation => {
+      json.animations.forEach((animation: Record<string, unknown>): void => {
         if (!this.isLottie(animation))
-        return false;
+          notLottie = true;
       });
-      return true;
+      return notLottie;
     }
     return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
   }
@@ -358,7 +396,7 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Configure and initialize lottie-web player instance.
    */
-  public async load(src: string | AnimationItem, overrideRendererSettings?: Record<string, unknown>): Promise<void> {
+  public load(src: string | AnimationItem, overrideRendererSettings?: Record<string, unknown>): void {
     if (!this.shadowRoot) {
       return;
     }
@@ -377,34 +415,18 @@ export class DotLottiePlayer extends LitElement {
     };
 
     try {
-      let srcParsed = this.parseSrc(src);
+      const srcParsed = this.parseSrc(src);
 
       if (typeof srcParsed === 'string') {
-        // parseSrc returned a URL
-        const manifestAndAnimation = await fetchPath(srcParsed);
+        this._worker.postMessage(srcParsed);
+        return;
+      } else if (typeof srcParsed === 'object') {
+        if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
+      }
 
-        this._animations = manifestAndAnimation.animations;
-        this._manifest = manifestAndAnimation.manifest;
-
-        if (!this._animations) throw new Error('[dotLottie] Animations are empty');
-
-        if (this._manifest && this._manifest.activeAnimId) {
-          this._configureDefaultLottie(this._manifest.activeAnimId);
-        }
-        if (this.activeAnimId) {
-          this._configureDefaultLottie(this.activeAnimId);
-        }
-
-        srcParsed = this._animations[this._active];
-        if (srcParsed === undefined) throw new Error('[dotLottie] No animation to load!');
-       }
-
-       if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] 1 Load method failing. Object is not a valid Lottie.');
-
-       // Clear previous animation, if any
-       if (this._lottie) {
-         this._lottie.destroy();
-       }
+      if (this._lottie) {
+        this._lottie.destroy();
+      }
 
       // Initialize lottie player and load animation
       this._lottie = lottie.loadAnimation({
