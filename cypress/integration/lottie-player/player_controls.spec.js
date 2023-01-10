@@ -5,10 +5,11 @@
 context("Player controls", () => {
   beforeEach(() => {
     cy.visit("http://localhost:8000/player-controls.html");
+    cy.wait(3000);
   });
 
   it("2.1 clicks on play button and verifies animation is playing", function (done) {
-    cy.get("#player-one").wait(1000).then(($el) => {
+    cy.get("#player-one").then(($el) => {
       const playerOne = $el.get(0);
       cy.get("#player-one").shadow().find("#lottie-play-button").click();
 
@@ -27,13 +28,14 @@ context("Player controls", () => {
         expect(playerTwo.currentState).to.eq("paused");
         done();
       });
+
     });
 
-    cy.wait(1000);
     cy.get("#player-two")
       .shadow()
       .find("#lottie-play-button")
       .click();
+
   });
 
   it("2.3 clicks on stop button and verififes animation is stopped and at frame 0", function (done) {
@@ -48,7 +50,6 @@ context("Player controls", () => {
       });
     });
 
-    cy.wait(1000);
     cy.get("#player-three")
       .shadow()
       .find("#lottie-stop-button")
@@ -57,7 +58,6 @@ context("Player controls", () => {
 
   it("2.4 clicks on loop button and verififes animation loops", function (done) {
     cy.get("#player-four")
-      .wait(1000)
       .shadow()
       .find("#lottie-loop-toggle")
       .click();

@@ -84,90 +84,9 @@ export enum PlayerEvents {
   Frame = 'frame',
 }
 
-export type Versions = {
+export interface Versions {
   lottieWebVersion: string;
   dotLottiePlayerVersion: string;
-}
-
-export function fetchPath(path: string): Promise<Record<string, any>> {
-  const fileFormat = path.split('.').pop()?.toLowerCase();
-  let jsonFlag = false;
-
-  if (fileFormat === 'json') jsonFlag = true;
-
-  return new Promise((resolve, reject) => {
-    const xhr = new XMLHttpRequest();
-    xhr.open('GET', path, true);
-    if (jsonFlag)
-      xhr.responseType = 'json';
-    else
-      xhr.responseType = 'arraybuffer';
-    xhr.send();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4 && xhr.status == 200) {
-        const animations: any[] = [];
-        const animAndManifest: Record<string, any> = {};
-
-        if (jsonFlag) {
-          const animAndManifest: Record<string, any> = {};
-
-          animAndManifest.manifest = {};
-          animAndManifest.animations = [(xhr.response)];
-
-          resolve (animAndManifest)
-          return ;
-        }
-
-        const data = unzipSync(new Uint8Array(xhr.response));
-        if (data['manifest.json']) {
-          const str = strFromU8(data['manifest.json']);
-          const manifest = JSON.parse(str);
-
-          if (!('animations' in manifest)) {
-            throw new Error('Manifest not found');
-          }
-
-          if (manifest.animations.length === 0) {
-            throw new Error('No animations listed in the manifest');
-          }
-
-          animAndManifest.manifest = manifest;
-
-          let lottieJson;
-          for (const animName of manifest.animations) {
-            lottieJson = JSON.parse(strFromU8(data[`animations/${animName.id}.json`]));
-
-            if ('assets' in lottieJson) {
-              lottieJson.assets.map((asset: any) => {
-                if (!asset.p) {
-                  return;
-                }
-                if (data[`images/${asset.p}`] === null) {
-                  return;
-                }
-                            const assetFileExtension = asset.p.split('.').pop();
-
-                const base64Png = btoa(strFromU8(data[`images/${asset.p}`], true));
-                  if (assetFileExtension === 'svg' || assetFileExtension === 'svg+xml')
-                  asset.p = 'data:image/svg+xml;base64,' + base64Png;
-                                else asset.p = 'data:;base64,' + base64Png;
-
-                asset.e = 1;
-              });
-            }
-            animations.push(lottieJson);
-          }
-          animAndManifest.manifest = manifest;
-          animAndManifest.animations = animations;
-          resolve(animAndManifest);
-        } else {
-          reject('[dotLottie] No manifest found in file.');
-        }
-      } else if (xhr.readyState === 4 && xhr.status === 404 || xhr.status === 0 || xhr.status === 403) {
-        reject(`[dotLottie] Error finding dotLottie file at ${path}`);
-      }
-    };
-  });
 }
 
 /**
@@ -298,7 +217,8 @@ export class DotLottiePlayer extends LitElement {
         this.currentState = PlayerState.Error;
 
         this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
-        throw new Error(message.data);
+        console.error(message.data);
+        return;
       }
 
       this._animations = manifestAndAnimation.animations;
@@ -354,8 +274,7 @@ export class DotLottiePlayer extends LitElement {
 
     if (json.animations && json.animations.length) {
       json.animations.forEach((animation: Record<string, unknown>): void => {
-        if (!this.isLottie(animation))
-          notLottie = true;
+        if (!this.isLottie(animation)) notLottie = true;
       });
       return notLottie;
     }
@@ -363,7 +282,7 @@ export class DotLottiePlayer extends LitElement {
   }
 
   private parseSrc(src: string | Record<string, unknown>): string | Record<string, unknown> {
-    if (typeof src === "object") {
+    if (typeof src === 'object') {
       return src;
     }
 
@@ -406,12 +325,14 @@ export class DotLottiePlayer extends LitElement {
       loop: false,
       autoplay: false,
       renderer: this.renderer,
-      rendererSettings: overrideRendererSettings ? overrideRendererSettings : {
-        scaleMode: 'noScale',
-        clearCanvas: false,
-        progressiveLoad: true,
-        hideOnTransparent: true,
-      }
+      rendererSettings: overrideRendererSettings
+        ? overrideRendererSettings
+        : {
+            scaleMode: 'noScale',
+            clearCanvas: false,
+            progressiveLoad: true,
+            hideOnTransparent: true,
+          },
     };
 
     try {
@@ -421,7 +342,8 @@ export class DotLottiePlayer extends LitElement {
         this._worker.postMessage(srcParsed);
         return;
       } else if (typeof srcParsed === 'object') {
-        if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
+        if (!this.isLottie(srcParsed))
+          throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
       }
 
       if (this._lottie) {
@@ -612,8 +534,8 @@ export class DotLottiePlayer extends LitElement {
   public getVersions(): Versions {
     return {
       lottieWebVersion: LOTTIE_WEB_VERSION,
-      dotLottiePlayerVersion: DOTLOTTIE_PLAYER_VERSION
-    }
+      dotLottiePlayerVersion: DOTLOTTIE_PLAYER_VERSION,
+    };
   }
 
   /**
@@ -667,8 +589,7 @@ export class DotLottiePlayer extends LitElement {
       return;
     }
 
-    if (typeof value === 'number')
-      value = Math.round(value)
+    if (typeof value === 'number') value = Math.round(value);
 
     // Extract frame number from either number or percentage value
     const matches = /^(\d+)(%?)$/.exec(value.toString());
@@ -898,8 +819,8 @@ export class DotLottiePlayer extends LitElement {
           }}
           @mouseup=${() => {
             this._prevState === PlayerState.Playing && this.play();
-                this.seek(this._lottie.currentFrame)
-      }}
+            this.seek(this._lottie.currentFrame);
+          }}
           aria-valuemin="1"
           aria-valuemax="100"
           role="slider"
@@ -942,4 +863,3 @@ export class DotLottiePlayer extends LitElement {
     `;
   }
 }
-
