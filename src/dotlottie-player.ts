@@ -39,7 +39,7 @@ export enum PlayerEvents {
 export type Versions = {
   lottieWebVersion: string;
   dotLottiePlayerVersion: string;
-}
+};
 
 /**
  * Load a resource from a path URL.
@@ -53,16 +53,13 @@ export function fetchPath(path: string): Record<string, any> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('GET', path, true);
-    if (jsonFlag)
-      xhr.responseType = 'json';
-    else
-      xhr.responseType = 'arraybuffer';
+    if (jsonFlag) xhr.responseType = 'json';
+    else xhr.responseType = 'arraybuffer';
     xhr.send();
-    xhr.onreadystatechange = function() {
+    xhr.onreadystatechange = function () {
       if (xhr.readyState == 4 && xhr.status == 200) {
-
         if (jsonFlag) {
-          resolve(xhr.response)
+          resolve(xhr.response);
         }
         JSZip.loadAsync(xhr.response)
           .then((zip: any) => {
@@ -259,7 +256,7 @@ export class DotLottiePlayer extends LitElement {
   }
 
   private parseSrc(src: string | Record<string, unknown>): string | Record<string, unknown> {
-    if (typeof src === "object") {
+    if (typeof src === 'object') {
       return src;
     }
 
@@ -276,7 +273,10 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Configure and initialize lottie-web player instance.
    */
-  public async load(src: string | Record<string, unknown>, overrideRendererSettings?: Record<string, unknown>): Promise<void> {
+  public async load(
+    src: string | Record<string, unknown>,
+    overrideRendererSettings?: Record<string, unknown>,
+  ): Promise<void> {
     if (!this.shadowRoot) {
       return;
     }
@@ -286,12 +286,14 @@ export class DotLottiePlayer extends LitElement {
       loop: false,
       autoplay: false,
       renderer: this.renderer,
-      rendererSettings: overrideRendererSettings ? overrideRendererSettings : {
-        scaleMode: 'noScale',
-        clearCanvas: false,
-        progressiveLoad: true,
-        hideOnTransparent: true,
-      }
+      rendererSettings: overrideRendererSettings
+        ? overrideRendererSettings
+        : {
+            scaleMode: 'noScale',
+            clearCanvas: false,
+            progressiveLoad: true,
+            hideOnTransparent: true,
+          },
     };
 
     // Load the resource information
@@ -299,8 +301,8 @@ export class DotLottiePlayer extends LitElement {
       let srcParsed = this.parseSrc(src);
 
       if (typeof srcParsed === 'string') {
-       // parseSrc returned a URL
-       srcParsed = await fetchPath(srcParsed);
+        // parseSrc returned a URL
+        srcParsed = await fetchPath(srcParsed);
         if (srcParsed === undefined) throw new Error('[dotLottie] No animation to load!');
       }
       if (!this.isLottie(srcParsed)) throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
@@ -346,7 +348,14 @@ export class DotLottiePlayer extends LitElement {
 
         if (!this.loop || (this.count && this._counter >= this.count)) {
           this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
-          return;
+
+          if (this.mode === PlayMode.Bounce) {
+            if (this._lottie.currentFrame === 0) {
+              return;
+            }
+          } else {
+            return;
+          }
         }
 
         if (this.mode === PlayMode.Bounce) {
@@ -371,8 +380,14 @@ export class DotLottiePlayer extends LitElement {
             this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
 
             if (this.currentState === PlayerState.Playing) {
-              this._lottie.stop();
-              this._lottie.play();
+              if (this.direction === -1) {
+                // Prevents flickering
+                this.seek('99%');
+                this.play();
+              } else {
+                this._lottie.stop();
+                this._lottie.play();
+              }
             }
           }, this.intermission);
         }
@@ -413,6 +428,7 @@ export class DotLottiePlayer extends LitElement {
 
       // Start playing if autoplay is enabled
       if (this.autoplay) {
+        if (this.direction === -1) this.seek('100%');
         this.play();
       }
     }
@@ -428,8 +444,8 @@ export class DotLottiePlayer extends LitElement {
   public getVersions(): Versions {
     return {
       lottieWebVersion: LOTTIE_WEB_VERSION,
-      dotLottiePlayerVersion: DOTLOTTIE_PLAYER_VERSION
-    }
+      dotLottiePlayerVersion: DOTLOTTIE_PLAYER_VERSION,
+    };
   }
 
   /**
@@ -483,8 +499,7 @@ export class DotLottiePlayer extends LitElement {
       return;
     }
 
-    if (typeof value === 'number')
-      value = Math.round(value)
+    if (typeof value === 'number') value = Math.round(value);
 
     // Extract frame number from either number or percentage value
     const matches = value.toString().match(/^([0-9]+)(%?)$/);
@@ -713,7 +728,7 @@ export class DotLottiePlayer extends LitElement {
           }}
           @mouseup=${() => {
             this._prevState === PlayerState.Playing && this.play();
-            this.seek(this._lottie.currentFrame)
+            this.seek(this._lottie.currentFrame);
           }}
           aria-valuemin="1"
           aria-valuemax="100"
@@ -746,11 +761,7 @@ export class DotLottiePlayer extends LitElement {
     return html`
       <div id="animation-container" class=${className} lang="en" role="img">
         <div id="animation" class=${animationClass} style="background:${this.background};">
-          ${this.currentState === PlayerState.Error
-            ? html`
-                <div class="error">⚠️</div>
-              `
-            : undefined}
+          ${this.currentState === PlayerState.Error ? html` <div class="error">⚠️</div> ` : undefined}
         </div>
         ${this.controls ? this.renderControls() : undefined}
       </div>
