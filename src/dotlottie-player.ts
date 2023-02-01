@@ -182,11 +182,17 @@ export class DotLottiePlayer extends LitElement {
   @property()
   public intermission = 1;
 
-   /**
+  /**
    * Animation id as string or index to play on load.
    */
-   @property({ type: String })
-   public activeAnimId?: string | null = null;
+  @property({ type: String })
+  public activeAnimId?: string | null = null;
+
+  /**
+   * Animation id as string or index to play on load.
+   */
+  @property({ type: String })
+  public activeAnimId?: string | null = null;
 
   private _io?: any;
   private _lottie?: any;
