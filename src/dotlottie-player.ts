@@ -1,7 +1,7 @@
 import { LitElement, html } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
 import { TemplateResult } from 'lit/html.js';
-import * as lottie from 'lottie-web/build/player/lottie_svg';
+import * as lottie from 'lottie-web';
 import JSZip from 'jszip/dist/jszip';
 import { DOTLOTTIE_PLAYER_VERSION, LOTTIE_WEB_VERSION } from './versions';
 import styles from './dotlottie-player.styles';
