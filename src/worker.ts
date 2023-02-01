@@ -19,7 +19,6 @@ self.addEventListener('message', message => {
       const animations: any[] = [];
       const filename = mess.substring(mess.lastIndexOf("/") + 1, mess.lastIndexOf("."));
 
-      console.log(data)
       const boilerplateManifest = {
         animations: [
           {
