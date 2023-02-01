@@ -1,6 +1,6 @@
 {
   "name": "@dotlottie/player-component",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "dotlottie animation player web component.",
   "main": "dist/dotlottie-player.js",
   "module": "dist/dotlottie-player.esm.js",
