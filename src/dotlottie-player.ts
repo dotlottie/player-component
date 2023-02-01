@@ -325,6 +325,9 @@ export class DotLottiePlayer extends LitElement {
     }
 
     if (this._lottie) {
+      // Because we fetch the data ourselves, fire the load event
+      this.dispatchEvent(new CustomEvent(PlayerEvents.Load));
+
       // Calculate and save the current progress of the animation
       this._lottie.addEventListener('enterFrame', () => {
         this.seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
