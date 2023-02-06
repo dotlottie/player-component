@@ -62,6 +62,10 @@
       localStorage.setItem('launchCounter', '0');
     });
 
+    let testOneComplete = false;
+    let testTwoComplete = false;
+    let testThreeComplete = false;
+
     window.addEventListener('load', () => {
       let launchCounter = localStorage.getItem('launchCounter');
       let noAssetsTime = localStorage.getItem('noAssetsTime');
@@ -85,17 +89,18 @@
         inlineImagesTime = 0;
       }
 
-      async function loadDotLottieWithoutAssets() {
+      function loadDotLottieWithoutAssets(savePerformance = true) {
         let startTime = 0;
         let endTime = 0;
         let player = document.getElementById('dotlottie-player');
 
         startTime = performance.now();
-        await player.load('https://assets1.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie');
+        player.load('https://assets1.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie');
 
         player.addEventListener(
           'ready',
           () => {
+            if (!savePerformance) return;
             endTime = performance.now();
 
             console.log(`Time to load and play dotLottie : ${endTime - startTime} millseconds.`);
@@ -104,6 +109,7 @@
             let currNoAssetsTime = parseInt(noAssetsTime);
             currNoAssetsTime += time;
             localStorage.setItem('noAssetsTime', currNoAssetsTime.toString());
+            testOneComplete = true;
           },
           { once: true },
         );
@@ -111,17 +117,19 @@
         return player;
       }
 
-      async function loadDotLottieWithExternalImage() {
+      function loadDotLottieWithExternalImage(savePerformance = true) {
         let startTime = 0;
         let endTime = 0;
         let player = document.getElementById('dotlottie-external-image');
 
         startTime = performance.now();
-        await player.load('https://assets3.lottiefiles.com/dotlotties/dlf10_wyuwp5kj.lottie');
+        player.load('https://assets3.lottiefiles.com/dotlotties/dlf10_wyuwp5kj.lottie');
 
         player.addEventListener(
           'ready',
           () => {
+            if (!savePerformance) return;
+
             endTime = performance.now();
 
             console.log(`Time to load and play external image dotLottie : ${endTime - startTime} millseconds.`);
@@ -130,6 +138,7 @@
             let currExternalImagesTime = parseInt(inlineImagesTime);
             currExternalImagesTime += time;
             localStorage.setItem('externalImagesTime', currExternalImagesTime.toString());
+            testTwoComplete = true;
           },
           { once: true },
         );
@@ -137,17 +146,19 @@
         return player;
       }
 
-      async function loadDotLottieWithInlineImage() {
+      function loadDotLottieWithInlineImage(savePerformance = true) {
         let startTime = 0;
         let endTime = 0;
         let player = document.getElementById('dotlottie-inline-image');
 
         startTime = performance.now();
-        await player.load('https://assets9.lottiefiles.com/dotlotties/dlf10_oehbsgal.lottie');
+        player.load('https://assets9.lottiefiles.com/dotlotties/dlf10_oehbsgal.lottie');
 
         player.addEventListener(
           'ready',
           () => {
+            if (!savePerformance) return;
+
             endTime = performance.now();
 
             console.log(`Time to load and play inline dotLottie : ${endTime - startTime} millseconds.`);
@@ -157,6 +168,7 @@
             currInlineImagesTime += time;
             console.log(currInlineImagesTime.toString());
             localStorage.setItem('inlineImagesTime', currInlineImagesTime.toString());
+            testThreeComplete = true;
           },
           { once: true },
         );
@@ -165,17 +177,31 @@
       }
 
       if (parseInt(launchCounter) < LAUNCH_AMOUNT) {
-        loadDotLottieWithoutAssets().then(() => {
-          loadDotLottieWithExternalImage().then(() => {
-            loadDotLottieWithInlineImage().then(() => {
-              launchCounter = parseInt(launchCounter) + 1;
-              localStorage.setItem('launchCounter', launchCounter.toString());
-              console.log('counter: ' + localStorage.getItem('launchCounter'));
-              location.reload();
-            });
-          });
-        });
+        loadDotLottieWithoutAssets();
+        loadDotLottieWithExternalImage();
+        loadDotLottieWithInlineImage();
+        launchCounter = parseInt(launchCounter) + 1;
+        localStorage.setItem('launchCounter', launchCounter.toString());
+        console.log('counter: ' + localStorage.getItem('launchCounter'));
+
+        console.log(testOneComplete, testTwoComplete, testThreeComplete);
+        setInterval(() => {
+          if (testOneComplete && testTwoComplete && testThreeComplete) location.reload();
+        }, 500);
+        // loadDotLottieWithoutAssets().then(() => {
+        //   loadDotLottieWithExternalImage().then(() => {
+        //     loadDotLottieWithInlineImage().then(() => {
+        //       launchCounter = parseInt(launchCounter) + 1;
+        //       localStorage.setItem('launchCounter', launchCounter.toString());
+        //       console.log('counter: ' + localStorage.getItem('launchCounter'));
+        //       location.reload();
+        //     });
+        //   });
+        // });
       } else {
+        loadDotLottieWithoutAssets(false);
+        loadDotLottieWithExternalImage(false);
+        loadDotLottieWithInlineImage(false);
         console.log(`AVERAGE time to load and play dotLottie : ${noAssetsTime / LAUNCH_AMOUNT} millseconds.`);
         console.log(
           `AVERAGE time to load and play external image dotLottie : ${externalImagesTime / LAUNCH_AMOUNT} millseconds.`,

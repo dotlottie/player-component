@@ -6,6 +6,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser';
 import typescript2 from 'rollup-plugin-typescript2';
+import webWorkerLoader from 'rollup-plugin-web-worker-loader';
 
 const production = !process.env.ROLLUP_WATCH;
 const extensions = ['.js', '.jsx', '.ts', '.tsx', '.mjs'];
@@ -35,6 +36,7 @@ export default {
       module: true,
     }),
     commonjs(),
+    webWorkerLoader(),
     typescript2({
       check: false,
     }),
