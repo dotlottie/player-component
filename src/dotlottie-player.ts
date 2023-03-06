@@ -45,7 +45,7 @@ export type Versions = {
  * Load a resource from a path URL.
  */
 export function fetchPath(path: string): Record<string, any> {
-  const fileFormat = path.split('.').pop()?.toLowerCase();
+  const fileFormat = path.split(/[#?]/)[0].split('.').pop()?.toLowerCase();
   let jsonFlag = false;
 
   if (fileFormat === 'json') jsonFlag = true;
