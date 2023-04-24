@@ -13,10 +13,10 @@
   "scripts": {
     "prebuild": "node -p \"'export const DOTLOTTIE_PLAYER_VERSION = ' + JSON.stringify(require('./package.json').version) + '; \\n' + 'export const LOTTIE_WEB_VERSION = ' + JSON.stringify(require('./package.json').dependencies['lottie-web']) + ';'\" > src/versions.ts",
     "build": "yarn build-dotlottie",
-    "build-dotlottie": "npm run cleanup && rollup -c",
+    "build-dotlottie": "yarn run cleanup && rollup -c",
     "build:types": "tsc --declaration",
     "prestart": "node -p \"'export const DOTLOTTIE_PLAYER_VERSION = ' + JSON.stringify(require('./package.json').version) + '; \\n' + 'export const LOTTIE_WEB_VERSION = ' + JSON.stringify(require('./package.json').dependencies['lottie-web']) + ';'\" > src/versions.ts",
-    "start": "npm run cleanup && rollup -c --watch",
+    "start": "yarn run cleanup && rollup -c --watch",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "cleanup": "shx rm -rf dist && shx mkdir dist",
@@ -25,7 +25,7 @@
   "dependencies": {
     "jszip": "^3.5.0",
     "lit": "^2.4.1",
-    "lottie-web": "^5.10.0"
+    "lottie-web": "^5.10.2"
   },
   "devDependencies": {
     "@babel/core": "^7.11.0",

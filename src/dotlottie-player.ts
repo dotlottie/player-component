@@ -194,7 +194,7 @@ export class DotLottiePlayer extends LitElement {
    * Renderer to use.
    */
   @property({ type: String })
-  public renderer: 'svg' = 'svg';
+  public renderer = 'svg';
 
   /**
    * Animation speed.
@@ -220,6 +220,9 @@ export class DotLottiePlayer extends LitElement {
   @property()
   public intermission = 1;
 
+  @property({type: Boolean})
+  public disableShadowDOM = false;
+
   private _io?: any;
   private _lottie?: any;
   private _prevState?: any;
@@ -234,6 +237,12 @@ export class DotLottiePlayer extends LitElement {
     } else if (this.currentState === PlayerState.Frozen) {
       this.play();
     }
+  }
+
+  protected createRenderRoot(): Element | ShadowRoot {
+    if (this.disableShadowDOM) this.style.display = "block";
+
+    return this.disableShadowDOM ? this : super.createRenderRoot();
   }
 
   /**
@@ -277,7 +286,7 @@ export class DotLottiePlayer extends LitElement {
     src: string | Record<string, unknown>,
     overrideRendererSettings?: Record<string, unknown>,
   ): Promise<void> {
-    if (!this.shadowRoot) {
+    if (!this.shadowRoot && !this.disableShadowDOM) {
       return;
     }
 
@@ -763,10 +772,12 @@ export class DotLottiePlayer extends LitElement {
     const animationClass: string = this.controls ? 'animation controls' : 'animation';
     return html`
       <div id="animation-container" class=${className} lang="en" role="img">
-        <div id="animation" class=${animationClass} style="background:${this.background};">
+        <div id="animation" class=${animationClass} style="background:${this.background}; ${this.disableShadowDOM ? 'width: 100%; height: 100%' : ''}">
           ${this.currentState === PlayerState.Error ? html` <div class="error">⚠️</div> ` : undefined}
         </div>
-        ${this.controls ? this.renderControls() : undefined}
+        ${this.controls && !this.disableShadowDOM
+          ? this.renderControls()
+          : undefined}
       </div>
     `;
   }
