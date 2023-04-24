@@ -1,0 +1,12 @@
+{
+  "out": "docs",
+  "mode": "modules",
+  "theme": "default",
+  "includeVersion": true,
+  "ignoreCompilerErrors": false,
+  "includeDeclarations": false,
+  "excludeExternals": true,
+  "excludePrivate": true,
+  "excludeNotExported": true,
+  "stripInternal": true
+}
