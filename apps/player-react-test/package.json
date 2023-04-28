@@ -1,0 +1,30 @@
+{
+  "name": "player-react-test",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build:prod": "tsc && vite build",
+    "dev": "vite",
+    "lint": "tsc --noEmit",
+    "preview": "vite preview",
+    "test": "concurrently \"vite\"  \"cypress run\"",
+    "test:open": "concurrently \"vite\"  \"cypress open\""
+  },
+  "dependencies": {
+    "player-react": "workspace:*",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-use": "^17.4.0",
+    "wouter": "^2.10.1"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^3.1.0",
+    "concurrently": "^8.0.1",
+    "cypress": "^12.9.0",
+    "typescript": "^4.9.3",
+    "vite": "^4.2.0"
+  }
+}
