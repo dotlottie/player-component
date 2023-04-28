@@ -44,24 +44,24 @@ importers:
       turbo: 1.3.4
       typescript: 4.7.4
 
-  apps/player-react-test:
+  apps/react-player-test:
     specifiers:
       '@types/react': ^18.0.28
       '@types/react-dom': ^18.0.11
       '@vitejs/plugin-react': ^3.1.0
       concurrently: ^8.0.1
       cypress: ^12.9.0
-      player-react: workspace:*
       react: ^18.2.0
       react-dom: ^18.2.0
+      react-player: workspace:*
       react-use: ^17.4.0
       typescript: ^4.9.3
       vite: ^4.2.0
       wouter: ^2.10.1
     dependencies:
-      player-react: link:../../packages/player-react
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
+      react-player: link:../../packages/react-player
       react-use: 17.4.0_biqbaboplfbrettd7655fr4n2y
       wouter: 2.10.1_react@18.2.0
     devDependencies:
@@ -163,7 +163,7 @@ importers:
       ts-node: 10.9.1_typescript@3.9.10
       typescript: 3.9.10
 
-  packages/player-react:
+  packages/react-player:
     specifiers:
       '@lottiefiles/dotlottie-js': ^2.1.0-beta.8
       '@lottiefiles/lottie-types': ^1.0.1
@@ -2046,13 +2046,13 @@ packages:
       '@types/node': 18.16.2
       chalk: 4.1.2
       cosmiconfig: 8.1.3
-      cosmiconfig-typescript-loader: 4.3.0_g7nhyzd5cfocyktkkzsll56xxq
+      cosmiconfig-typescript-loader: 4.3.0_yjnehtceqxzuh3ut3jwxvgajyi
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       lodash.uniq: 4.5.0
       resolve-from: 5.0.0
-      ts-node: 10.9.1_k7qbepz3bmbexnhgmuuwhdgjfa
-      typescript: 4.7.4
+      ts-node: 10.9.1_gz7niyic7zrf5bkdud2q2ufjcm
+      typescript: 4.9.5
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'
@@ -3526,6 +3526,7 @@ packages:
 
   /@lottiefiles/commitlint-config/2.0.0_@commitlint+cli@17.0.3:
     resolution: {integrity: sha512-9UYYFp/jGHXWUhT+y/Vn+KcqPwKfBUL1Yy9nu7FqQ9RUtsbZ26PpuEi2r3lgwHns1+K9oqM9bOAsS9JeZkSE0Q==, tarball: download/@LottieFiles/commitlint-config/2.0.0/7470f16f5b9786c5dd284c456b08a91c16356857}
+    engines: {node: '>= 14'}
     peerDependencies:
       '@commitlint/cli': '*'
     dependencies:
@@ -3551,11 +3552,22 @@ packages:
 
   /@lottiefiles/eslint-plugin/3.0.0_bkcyssjpcfejta2rsq6waiumk4:
     resolution: {integrity: sha512-NifgSAG/ccHfxWEKh4EKwRmVUq7fYWkL+bZdFDktopp/CLYugW/02cAfZa+Su6u+3uzlcKKgl3J7LQd+dRXO/w==, tarball: download/@LottieFiles/eslint-plugin/3.0.0/648e4d9b17378d22d876fa054ff6e3eeb7639403}
+    engines: {node: '>= 14'}
     peerDependencies:
       eslint: '*'
       graphql: '*'
+      jest: '*'
       prettier: '*'
       typescript: '*'
+    peerDependenciesMeta:
+      graphql:
+        optional: true
+      jest:
+        optional: true
+      prettier:
+        optional: true
+      typescript:
+        optional: true
     dependencies:
       '@graphql-eslint/eslint-plugin': 3.8.0_typescript@4.7.4
       '@next/eslint-plugin-next': 12.1.0
@@ -3598,7 +3610,6 @@ packages:
       - bufferutil
       - encoding
       - eslint-import-resolver-webpack
-      - jest
       - supports-color
       - utf-8-validate
     dev: true
@@ -3611,6 +3622,7 @@ packages:
 
   /@lottiefiles/prettier-config/3.0.0_prettier@2.7.1:
     resolution: {integrity: sha512-gHQ5fZ15M2z72hDZDwe8AjOyUXI4fddiB3q1aw20a+wWtCPBg5qHp0+AKZX4to3hHmiTqfFKUh8VGt5WdFLTrw==, tarball: download/@LottieFiles/prettier-config/3.0.0/afc9686569ec81268d8d51c3d3137d4d715a6094}
+    engines: {node: '>= 14'}
     peerDependencies:
       prettier: '*'
     dependencies:
@@ -3622,9 +3634,13 @@ packages:
 
   /@lottiefiles/remark-preset/1.0.0:
     resolution: {integrity: sha512-QmwWxHaCEAYKquck/yK9sjY1zgKt2iIBl7TAjY0HIArVSAQA9gmwo9/c4oaM64gwO3ihRsFarwMzoynCzBL1JA==, tarball: download/@LottieFiles/remark-preset/1.0.0/5217a245ca4b789133b5aa2441712f77e9493acc}
+    engines: {node: '>= 14'}
     peerDependencies:
       puppeteer: '*'
       remark: '*'
+    peerDependenciesMeta:
+      puppeteer:
+        optional: true
     dependencies:
       mdast: 3.0.0
       mdast-util-heading-range: 3.1.0
@@ -3657,6 +3673,7 @@ packages:
 
   /@lottiefiles/tsconfig/2.0.0_typescript@4.7.4:
     resolution: {integrity: sha512-rcDiXVc+WlDCL72IHjW/BCLp9TdEi/DGYAPrpT/GbCaKs5a3UoD8N7zyZt9gRIAjU+XmdHLFTxr8oL5IvqqR8Q==, tarball: download/@LottieFiles/tsconfig/2.0.0/f8914c6cf8d1a4955a2e1e451a4b64da656bdafa}
+    engines: {node: '>= 14'}
     peerDependencies:
       typescript: '*'
     dependencies:
@@ -4391,7 +4408,7 @@ packages:
   /@types/concat-stream/2.0.0:
     resolution: {integrity: sha512-t3YCerNM7NTVjLuICZo5gYAXYoDvpuuTceCcFQWcDQz26kxUR5uIWolxbIR5jRNIXpMqhOpW/b8imCR1LEmuJw==}
     dependencies:
-      '@types/node': 17.0.45
+      '@types/node': 18.16.2
     dev: true
 
   /@types/debug/4.1.7:
@@ -4637,7 +4654,7 @@ packages:
     resolution: {integrity: sha512-Cn6WYCm0tXv8p6k+A8PvbDG763EDpBoTzHdA+Q/MF6H3sapGjCm9NzoaJncJS9tUKSuCoDs9XHxYYsQDgxR6kw==}
     requiresBuild: true
     dependencies:
-      '@types/node': 14.18.43
+      '@types/node': 18.16.2
     dev: true
     optional: true
 
@@ -7083,7 +7100,7 @@ packages:
       '@iarna/toml': 2.2.5
     dev: true
 
-  /cosmiconfig-typescript-loader/4.3.0_g7nhyzd5cfocyktkkzsll56xxq:
+  /cosmiconfig-typescript-loader/4.3.0_yjnehtceqxzuh3ut3jwxvgajyi:
     resolution: {integrity: sha512-NTxV1MFfZDLPiBMjxbHRwSh5LaLcPMwNdCutmnHJCKoVnlvldPWlllonKwrsRJ5pYZBIBGRWWU2tfvzxgeSW5Q==}
     engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
@@ -7094,8 +7111,8 @@ packages:
     dependencies:
       '@types/node': 18.16.2
       cosmiconfig: 8.1.3
-      ts-node: 10.9.1_k7qbepz3bmbexnhgmuuwhdgjfa
-      typescript: 4.7.4
+      ts-node: 10.9.1_gz7niyic7zrf5bkdud2q2ufjcm
+      typescript: 4.9.5
     dev: true
 
   /cosmiconfig/5.2.1:
@@ -19827,7 +19844,7 @@ packages:
     resolution: {integrity: sha512-Z86EW+fFFh/IFB1fqQ3/+7Zpf9t2ebOAxNI/V6Wo7r5gqiqtxmgTlQ1qbqQcjLKYeSHPTsEmvlJUDg/EuL0uHQ==}
     dev: false
 
-  /ts-node/10.9.1_k7qbepz3bmbexnhgmuuwhdgjfa:
+  /ts-node/10.9.1_gz7niyic7zrf5bkdud2q2ufjcm:
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
@@ -19853,7 +19870,7 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.7.4
+      typescript: 4.9.5
       v8-compile-cache-lib: 3.0.1
       yn: 3.1.1
     dev: true
@@ -21192,7 +21209,7 @@ packages:
   /wide-align/1.1.5:
     resolution: {integrity: sha512-eDMORYaPNZ4sQIuuYPDHdQvf4gyCF9rEEV/yPxGfwPkRodwEgiMUUXTx/dex+Me0wxx53S+NgUHaP7y3MGlDmg==}
     dependencies:
-      string-width: 1.0.2
+      string-width: 4.2.3
     dev: true
 
   /widest-line/3.1.0:

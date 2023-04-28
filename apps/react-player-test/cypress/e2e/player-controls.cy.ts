@@ -1,4 +1,4 @@
-import { PlayerState } from 'player-react';
+import { PlayerState } from 'react-player';
 
 describe('Controls', () => {
   const testId = 'testPlayer';

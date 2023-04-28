@@ -1,5 +1,5 @@
 {
-  "name": "player-react-test",
+  "name": "react-player-test",
   "version": "0.0.0",
   "type": "module",
   "private": true,
@@ -12,7 +12,7 @@
     "test:open": "concurrently \"vite\"  \"cypress open\""
   },
   "dependencies": {
-    "player-react": "workspace:*",
+    "react-player": "workspace:*",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-use": "^17.4.0",

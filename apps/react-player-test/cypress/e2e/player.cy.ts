@@ -1,4 +1,4 @@
-import { PlayerState } from 'player-react';
+import { PlayerState } from 'react-player';
 describe('Player', () => {
   const testId = 'testPlayer';
   const dotLottieContainerSelector = `[data-testid=${testId}]`;

@@ -1,4 +1,4 @@
-import { DotLottiePlayer, PlayMode } from 'player-react';
+import { DotLottiePlayer, PlayMode } from 'react-player';
 import { useState } from 'react';
 
 const lotties = [

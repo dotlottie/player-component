@@ -1,4 +1,4 @@
-import { DotLottiePlayer, PlayerState, PlayMode } from 'player-react';
+import { DotLottiePlayer, PlayerState, PlayMode } from 'react-player';
 import { useEffect, useRef, useState } from 'react';
 
 import { useSearchParam } from 'react-use';
