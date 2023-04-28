@@ -45,7 +45,7 @@ export const DotLottiePlayer = ({
   controls = false,
   direction = 1,
   loop = false,
-  mode = PlayMode.Normal, // TODO: How do we use this option?
+  mode = PlayMode.Normal,
   playOnHover = false,
   speed = 1,
   renderer = 'svg',
@@ -176,23 +176,6 @@ export const DotLottiePlayer = ({
   }, [loop, autoplay, speed, direction, mode]);
 
   // TODO: Do canvas resize on browser resize
-  // useEffect(() => {
-  //   if (!lottie || renderer !== 'canvas') {
-  //     return;
-  //   }
-  //   console.log('doing the thing');
-
-  //   function handleResize(): void {
-  //     lottie?.resize();
-  //   }
-
-  //   // need to add a debouce
-  //   window.addEventListener('resize', handleResize, { passive: true });
-
-  //   return () => {
-  //     window.removeEventListener('resize', handleResize);
-  //   };
-  // }, [renderer, lottie]);
 
   // On playOnHover change
   useEffect(() => {
