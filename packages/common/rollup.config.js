@@ -17,8 +17,7 @@ const bundle = (config) => ({
     !/^[./]/.test(id) &&
     !/^web-worker.*/.test(id) &&
     !/^fflate/.test(id) &&
-    !/^@lottiefiles\/dotlottie-js/.test(id) &&
-    !/common/.test(id),
+    !/^@lottiefiles\/dotlottie-js/.test(id),
 });
 
 export default [

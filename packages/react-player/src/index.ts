@@ -1,3 +1,3 @@
-import { PlayMode, PlayerState } from './dotlottie-container';
+import { PlayMode, PlayerState } from 'common';
 export { PlayMode, PlayerState };
-export * from './dotlottie-player';
+export * from './react-player';

@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { DotLottieContainer, PlayerState, PlayMode, RendererSettings } from './dotlottie-container';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { PlayerState, PlayMode, RendererSettings } from 'common';
+import { useDotLottiePlayer } from './hooks/useDotLottiePlayer';
 
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   onComplete?: () => void;
@@ -24,7 +25,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   mode?: PlayMode;
   playOnHover?: boolean;
   speed?: number;
-  src: string;
+  src: Record<string, unknown> | string;
   className?: string;
   testId?: string;
 }
@@ -56,12 +57,23 @@ export const DotLottiePlayer = ({
   ...props
 }: DotLottiePlayerProps) => {
   const container = useRef(null);
-  const [seeker, setSeeker] = useState<number>(0);
   const [_prevState, setPrevState] = useState(PlayerState.Loading);
-  const [currentState, setCurrentState] = useState(PlayerState.Initial);
   const [hover, setHover] = useState(false);
-  const [lottie, setLottie] = useState<DotLottieContainer | undefined>(undefined);
   const [isLoop, setIsLoop] = useState(loop);
+
+  const { dotLottiePlayer, frame, seeker, currentState } = useDotLottiePlayer(src, container, {
+    renderer: renderer,
+    rendererSettings: {
+      clearCanvas: true,
+      progressiveLoad: false,
+      hideOnTransparent: true,
+      ...(rendererSettings || {}),
+    },
+    loop: isLoop,
+    mode: mode,
+    autoplay: playOnHover ? false : autoplay,
+    testId: testId,
+  });
 
   const isPlaying = useMemo(() => {
     return currentState === PlayerState.Playing;
@@ -81,32 +93,24 @@ export const DotLottiePlayer = ({
 
   //TODO: let _io: IntersectionObserver | undefined;
 
-  function freeze(): void {
-    if (!lottie) {
-      return;
-    }
-
-    lottie.pause();
-    setCurrentState(PlayerState.Frozen);
-
-    onFreeze?.();
-  }
   function handleSeekChange(event: React.FormEvent<HTMLInputElement>) {
-    if (!lottie || isNaN(Number(event.currentTarget.value))) {
+    if (!dotLottiePlayer || isNaN(Number(event.currentTarget.value))) {
       return;
     }
-    const frame: number = (Number(event.currentTarget.value) / 100) * lottie.totalFrames;
+    const frame: number = (Number(event.currentTarget.value) / 100) * dotLottiePlayer.totalFrames;
 
     seek(frame, currentState);
   }
 
   function togglePlay(): void {
-    if (!lottie) return;
-    return currentState === PlayerState.Playing ? lottie?.pause() : lottie?.play();
+    if (!dotLottiePlayer) return;
+    return currentState === PlayerState.Playing
+      ? dotLottiePlayer?.pause()
+      : dotLottiePlayer?.play();
   }
 
   function seek(value: number | string, nextState: PlayerState): void {
-    if (!lottie) return;
+    if (!dotLottiePlayer) return;
 
     if (typeof value === 'number') value = Math.round(value);
 
@@ -118,7 +122,8 @@ export const DotLottiePlayer = ({
     }
 
     // Calculate and set the frame number
-    const frame = matches[2] === '%' ? (lottie.totalFrames * Number(matches[1])) / 100 : matches[1];
+    const frame =
+      matches[2] === '%' ? (dotLottiePlayer.totalFrames * Number(matches[1])) / 100 : matches[1];
 
     // Set seeker to new frame number
 
@@ -126,53 +131,32 @@ export const DotLottiePlayer = ({
 
     // Send lottie player to the new frame
     if (nextState === PlayerState.Playing) {
-      lottie?.goToAndPlay(frame, true);
+      dotLottiePlayer?.goToAndPlay(frame, true);
     } else {
-      lottie?.goToAndStop(frame, true);
-      lottie?.pause();
+      dotLottiePlayer?.goToAndStop(frame, true);
+      dotLottiePlayer?.pause();
     }
   }
 
   function setLooping(value: boolean): void {
-    if (lottie) {
+    if (dotLottiePlayer) {
       setIsLoop(value);
-      lottie.loop = value;
+      dotLottiePlayer.setLoop(value);
     }
   }
 
-  const getLottie = useCallback(async () => {
-    if (!container.current) return;
-    const l = new DotLottieContainer(src, container.current, {
-      renderer: renderer,
-      rendererSettings: {
-        // scaleMode: 'noScale',
-        clearCanvas: true,
-        progressiveLoad: false,
-        hideOnTransparent: true,
-        ...(rendererSettings || {}),
-      },
-      loop: isLoop,
-      mode: mode,
-      autoplay: playOnHover ? false : autoplay,
-      testId: testId,
-    });
-    await l.load();
-
-    return l;
-  }, [container]);
-
   useEffect(() => {
-    lottie?.updateSrc(src);
+    dotLottiePlayer?.updateSrc(src);
   }, [src]);
 
   // On player props change
   useEffect(() => {
-    if (!lottie) return;
-    lottie.loop = loop;
-    lottie.autoplay = autoplay;
-    lottie.setDirection(direction);
-    lottie.setSpeed(speed);
-    lottie.setMode(mode);
+    if (!dotLottiePlayer) return;
+    dotLottiePlayer.setLoop(loop);
+    dotLottiePlayer.setAutoplay(autoplay);
+    dotLottiePlayer.setDirection(direction);
+    dotLottiePlayer.setSpeed(speed);
+    dotLottiePlayer.setMode(mode);
   }, [loop, autoplay, speed, direction, mode]);
 
   // TODO: Do canvas resize on browser resize
@@ -180,87 +164,73 @@ export const DotLottiePlayer = ({
   // On playOnHover change
   useEffect(() => {
     if (!playOnHover) {
-      if (autoplay) lottie?.play();
+      if (autoplay) dotLottiePlayer?.play();
       return;
     }
 
     if (hover && currentState !== PlayerState.Playing) {
-      lottie?.play();
+      dotLottiePlayer?.play();
     } else {
-      lottie?.pause();
+      dotLottiePlayer?.pause();
     }
   }, [playOnHover, hover]);
 
-  // On getLottie function change
+  /***
+   * Adding event listeners if dotLottiePlayer is available
+   */
   useEffect(() => {
-    (async () => {
-      const _lottie = await getLottie();
-      setLottie(_lottie);
+    if (!dotLottiePlayer) return;
 
-      // Set initial direction and speed
-      _lottie?.setSpeed(speed);
-      _lottie?.setDirection(direction);
+    dotLottiePlayer.setSpeed(speed);
+    dotLottiePlayer.setDirection(direction);
 
-      _lottie?.addEventListener('DOMLoaded', () => {
-        onPlayerReady?.();
-      });
-
-      _lottie?.addEventListener('data_ready', () => {
-        onDataReady?.();
-      });
-
-      _lottie?.addEventListener('data_failed', () => {
-        onDataFail?.();
-      });
-
-      _lottie?.addEventListener('complete', () => {
-        if (currentState !== PlayerState.Playing) {
-          onComplete?.();
-          return;
-        }
-      });
-    })();
-
-    return () => {
-      lottie?.destory();
-    };
-  }, [getLottie]);
-
-  // On lottie change
-  useEffect(() => {
-    const disposeFrame = lottie?.frame.subscribe((val) => {
-      onEnterFrame?.(val, lottie?.seeker.value);
+    dotLottiePlayer.addEventListener('DOMLoaded', () => {
+      dotLottiePlayer.setDirection(direction);
+      dotLottiePlayer.setSpeed(speed);
+      onPlayerReady?.();
     });
-    const disposeSeeker = lottie?.seeker.subscribe((seeker) => {
-      setSeeker(seeker);
+
+    dotLottiePlayer.addEventListener('data_ready', () => {
+      onDataReady?.();
     });
-    const disposePlayerState = lottie?.state.subscribe((val) => {
-      switch (val) {
-        case PlayerState.Stopped:
-          onStop?.();
-          break;
-        case PlayerState.Paused:
-          onPause?.();
-          break;
-        case PlayerState.Playing:
-          onPlay?.();
-          break;
-        case PlayerState.Frozen:
-          onFreeze?.();
-          break;
-        case PlayerState.Error:
-          onError?.();
-          break;
+
+    dotLottiePlayer.addEventListener('data_failed', () => {
+      onDataFail?.();
+    });
+
+    dotLottiePlayer.addEventListener('complete', () => {
+      if (currentState !== PlayerState.Playing) {
+        onComplete?.();
+        return;
       }
-      setCurrentState(val);
     });
 
-    return () => {
-      disposeFrame?.();
-      disposePlayerState?.();
-      disposeSeeker?.();
-    };
-  }, [lottie]);
+    return () => {};
+  }, [dotLottiePlayer]);
+
+  useEffect(() => {
+    onEnterFrame?.(frame, seeker);
+  }, [frame]);
+
+  useEffect(() => {
+    switch (currentState) {
+      case PlayerState.Stopped:
+        onStop?.();
+        break;
+      case PlayerState.Paused:
+        onPause?.();
+        break;
+      case PlayerState.Playing:
+        onPlay?.();
+        break;
+      case PlayerState.Frozen:
+        onFreeze?.();
+        break;
+      case PlayerState.Error:
+        onError?.();
+        break;
+    }
+  }, [currentState]);
 
   function renderControls(): JSX.Element {
     return (
@@ -283,7 +253,7 @@ export const DotLottiePlayer = ({
           )}
         </button>
         <button
-          onClick={() => lottie?.stop()}
+          onClick={() => dotLottiePlayer?.stop()}
           className={`${isStopped ? 'active' : ''}`}
           style={{ alignItems: 'center' }}
           aria-label="stop"
@@ -302,10 +272,10 @@ export const DotLottiePlayer = ({
           onInput={(event) => handleSeekChange(event)}
           onMouseDown={() => {
             setPrevState(currentState);
-            freeze();
+            dotLottiePlayer?.freeze();
           }}
           onMouseUp={() => {
-            seek(lottie?.frame.value || 0, _prevState);
+            seek(frame || 0, _prevState);
           }}
           aria-valuemin={1}
           aria-valuemax={100}

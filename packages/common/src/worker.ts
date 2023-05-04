@@ -1,9 +1,9 @@
 import { Animation } from '@lottiefiles/lottie-types';
-import { Manifest } from './dotlottie-container';
+import { Manifest } from './dotlottie-player';
 import { Dotlottie } from '@lottiefiles/dotlottie-js';
 
 function response<T extends 'error' | 'data' = 'data'>(
-  data: T extends 'error' ? string : { animations: Animation[]; manifest: Manifest },
+  data: T extends 'error' ? string : { animations: Animation[]; manifest: Manifest; dl?: any },
 ) {
   if (typeof data === 'string') {
     self.postMessage({
@@ -17,6 +17,7 @@ function response<T extends 'error' | 'data' = 'data'>(
     msg: '',
     animations: data.animations,
     manifest: data.manifest,
+    dl: data.dl,
   });
 }
 
@@ -84,12 +85,19 @@ self.addEventListener('message', async (message) => {
     const animations: Animation[] = [];
 
     for (const anim of lottieAnimations) {
-      animations.push(await anim.toJSON());
+      const animation = await dotLottie.getAnimation(anim.id, {
+        inlineAssets: true,
+      });
+
+      if (animation?.data) {
+        animations.push(await animation.toJSON());
+      }
     }
 
     response({
       animations,
       manifest: dotLottie.manifest as Manifest,
+      dl: dotLottie,
     });
   } catch (error) {
     console.error('[dotLottie]: worker', error);

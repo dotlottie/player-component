@@ -72,7 +72,7 @@ declare global {
   }
 }
 
-export class DotLottieContainer {
+export class DotLottiePlayer {
   protected _lottie?: AnimationItem;
   protected _src: string | Record<string, unknown>;
   protected _options: AnimationConfig<RendererType>;
@@ -84,6 +84,7 @@ export class DotLottieContainer {
   protected _animations: Animation[] = [];
   protected _manifest: Manifest | undefined = undefined;
   protected _testId?: string;
+  protected _listeners = new Map();
 
   public state = signal<PlayerState>(PlayerState.Initial);
   public frame = signal<number>(0);
@@ -104,7 +105,6 @@ export class DotLottieContainer {
 
     if (options?.testId) {
       this._testId = options.testId;
-      delete options.testId;
     }
 
     this._options = {
@@ -138,6 +138,10 @@ export class DotLottieContainer {
     };
   }
 
+  get currentState(): PlayerState {
+    return this.state.value;
+  }
+
   protected setCurrentState(state: PlayerState): void {
     this.state.value = state;
     this._updateTestData();
@@ -147,10 +151,18 @@ export class DotLottieContainer {
     return srcParsed.split('.').pop()?.toLowerCase() === 'json';
   }
 
-  public updateSrc(src: string): void {
+  get src(): Record<string, unknown> | string {
+    return this._src;
+  }
+
+  public updateSrc(src: Record<string, unknown> | string): void {
     if (this._src === src) return;
     this._src = src;
     this.load();
+  }
+
+  get mode(): PlayMode {
+    return this._mode;
   }
 
   public setMode(mode: PlayMode): void {
@@ -198,6 +210,12 @@ export class DotLottieContainer {
     this.setCurrentState(PlayerState.Paused);
   }
 
+  public freeze(): void {
+    if (!this._lottie) return;
+    this._lottie.pause();
+    this.setCurrentState(PlayerState.Frozen);
+  }
+
   public destory(): void {
     if (this._container && this._container.__lottie) {
       this._container.__lottie.destroy();
@@ -211,6 +229,7 @@ export class DotLottieContainer {
   }
 
   public addEventListener(name: AnimationEventName, cb: () => unknown): void {
+    this._listeners.set([name, cb], cb);
     try {
       this._lottie?.addEventListener(name, cb);
     } catch (error) {
@@ -222,9 +241,17 @@ export class DotLottieContainer {
     return this._lottie?.totalFrames || 0;
   }
 
+  get direction(): 1 | -1 {
+    return (this._lottie?.playDirection as 1 | -1) || 1;
+  }
+
   public setDirection(direction: 1 | -1): void {
     this._lottie?.setDirection(direction);
     this._updateTestData();
+  }
+
+  get speed(): number {
+    return this._lottie?.playSpeed || 1;
   }
 
   public setSpeed(speed: number): void {
@@ -235,23 +262,31 @@ export class DotLottieContainer {
   get autoplay(): boolean {
     return this._lottie?.autoplay ?? false;
   }
-  set autoplay(value: boolean) {
-    if (this._lottie) this._lottie.autoplay = value;
+
+  public setAutoplay(value: boolean) {
+    if (!this._lottie) return;
+    this._lottie.autoplay = value;
+    this._updateTestData();
+  }
+
+  public toggleAutoplay() {
+    if (!this._lottie) return;
+    this.setAutoplay(!this._lottie.autoplay);
   }
 
   get loop(): number | boolean {
     return this._lottie?.loop ?? false;
   }
-  set loop(value) {
-    if (this._lottie) {
-      this._lottie.loop = value;
-    }
+
+  public setLoop(value: boolean) {
+    if (!this._lottie) return;
+    this._lottie.setLoop(value);
+    this._updateTestData();
   }
 
-  public toggleLooping(): void {
-    if (this._lottie) {
-      this._lottie.loop = !this._lottie.loop;
-    }
+  public toggleLoop(): void {
+    if (!this._lottie) return;
+    this.setLoop(!this._lottie?.loop);
   }
 
   public removeEventListener(name: AnimationEventName, cb?: () => unknown): void {
@@ -261,6 +296,8 @@ export class DotLottieContainer {
       } else {
         this._lottie?.removeEventListener(name);
       }
+
+      this._listeners.delete([name, cb]);
     } catch (error) {
       console.error('[dotLottie]:removeEventListener', error);
     }
@@ -270,7 +307,8 @@ export class DotLottieContainer {
     if (!this._lottie) return;
     this._lottie.addEventListener('enterFrame', () => {
       this.frame.value = this._lottie?.currentFrame ?? 0;
-      this.seeker.value = ((this._lottie?.currentFrame ?? 0) / (this._lottie?.totalFrames ?? 0)) * 100;
+      this.seeker.value =
+        ((this._lottie?.currentFrame ?? 0) / (this._lottie?.totalFrames ?? 0)) * 100;
     });
 
     this._lottie.addEventListener('loopComplete', () => {
@@ -284,6 +322,10 @@ export class DotLottieContainer {
     this._lottie.addEventListener('complete', () => {
       this.setCurrentState(PlayerState.Stopped);
     });
+
+    for (const [[name, _], v] of this._listeners) {
+      this._lottie.addEventListener(name, v);
+    }
   }
 
   public async load(): Promise<void> {
@@ -294,12 +336,13 @@ export class DotLottieContainer {
     try {
       this.setCurrentState(PlayerState.Loading);
 
-      let srcParsed = DotLottieContainer.parseSrc(this._src);
+      let srcParsed = DotLottiePlayer.parseSrc(this._src);
 
       if (typeof srcParsed === 'string') {
         this._animation = await this.getAnimationData(srcParsed);
-      } else if (DotLottieContainer.isLottie(srcParsed)) {
+      } else if (DotLottiePlayer.isLottie(srcParsed)) {
         this._animation = srcParsed as any; // :/
+      } else {
         throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
       }
 
@@ -326,6 +369,8 @@ export class DotLottieContainer {
       if (this._options.autoplay) {
         this.play();
       }
+
+      this._updateTestData();
     } catch (err) {
       this.setCurrentState(PlayerState.Error);
       console.log('err', err);
@@ -343,12 +388,13 @@ export class DotLottieContainer {
       // Adding one-time listeners
       this._worker.addEventListener(
         'message',
-        (message) => {
+        async (message) => {
           const response = message.data as {
             error: boolean;
             msg: string;
             animations?: Animation[];
             manifest?: Manifest;
+            dl: any;
           };
 
           if (response.error) {

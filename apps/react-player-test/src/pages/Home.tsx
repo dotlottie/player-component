@@ -4,7 +4,7 @@ import { useState } from 'react';
 const lotties = [
   {
     from: '.lottie',
-    src: 'https://assets4.lottiefiles.com/dotlotties/dlf10_YwqueuLEuR.lottie',
+    src: 'https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie',
   },
   {
     from: '.json',
@@ -26,7 +26,7 @@ interface ItemProps {
 }
 
 const Item = (props: ItemProps) => {
-  const [src, setSrc] = useState(props.src);
+  const [src, setSrc] = useState<Record<string, unknown> | string>(props.src);
   const [loop, setLoop] = useState(true);
   const [autoplay, setAutoPlay] = useState(true);
   const [controls, setControls] = useState(true);

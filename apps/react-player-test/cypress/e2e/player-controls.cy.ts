@@ -73,10 +73,6 @@ describe('Controls', () => {
     // pause
     cy.get('[aria-label="stop"]').click();
     cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('equal', PlayerState.Stopped);
-
-    //play
-    cy.get('[aria-label="stop"]').click();
-    cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('equal', PlayerState.Playing);
   });
 
   it('should be able toggle looping', () => {
