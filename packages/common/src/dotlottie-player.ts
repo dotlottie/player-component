@@ -325,9 +325,9 @@ export class DotLottiePlayer {
   public addEventListeners(): void {
     if (!this._lottie) return;
     this._lottie.addEventListener('enterFrame', () => {
-      this.frame.value = this._lottie?.currentFrame ?? 0;
-      this.seeker.value =
-        ((this._lottie?.currentFrame ?? 0) / (this._lottie?.totalFrames ?? 0)) * 100;
+      if (!this._lottie) return;
+      this.frame.value = this._lottie.currentFrame;
+      this.seeker.value = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
     });
 
     this._lottie.addEventListener('loopComplete', () => {
