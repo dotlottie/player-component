@@ -1,5 +1,10 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 describe('Mode', () => {
   const testId = 'testPlayer';
+
   it('should be able to change mode to `bounce`', () => {
     cy.load({
       testId,

@@ -115,8 +115,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
 
     // Calculate and set the frame number
-    const nextFrame =
-      matches[2] === '%' ? (dotLottiePlayer.totalFrames * Number(matches[1])) / 100 : matches[1];
+    const nextFrame = matches[2] === '%' ? (dotLottiePlayer.totalFrames * Number(matches[1])) / 100 : matches[1];
 
     // Set seeker to new frame number
     if (nextFrame === undefined) return;
@@ -133,8 +132,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (!dotLottiePlayer || !Number(event.currentTarget.value)) {
       return;
     }
-    const newFrame: number =
-      (Number(event.currentTarget.value) / 100) * dotLottiePlayer.totalFrames;
+    const newFrame: number = (Number(event.currentTarget.value) / 100) * dotLottiePlayer.totalFrames;
 
     seek(newFrame, currentState);
   }

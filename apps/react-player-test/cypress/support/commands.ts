@@ -1,11 +1,24 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 // <reference types="cypress" />
+// eslint-disable-next-line @typescript-eslint/no-namespace
+declare namespace Cypress {
+  interface Chainable<Subject> {
+    getControls(): Chainable<Subject>;
+    load(config: Partial<PlayerConfig>): Chainable<Subject>;
+    updateProp<T extends keyof PlayerConfig, V extends PlayerConfig[T]>(propName: T, value: V): Chainable<Subject>;
+    whenReady(): Chainable<Subject>;
+  }
+}
 
 Cypress.Commands.add('whenReady', () => {
   return cy.get('[name="is-ready"]').should('have.value', 'yes');
 });
 
 Cypress.Commands.add('updateProp', (propName, value) => {
-  return cy.get('#test-app-root').trigger('update:prop', { detail: { prop: propName, value: value } });
+  return cy.get('#test-app-root').trigger('update:prop', { detail: { prop: propName, value } });
 });
 
 Cypress.Commands.add('load', (props) => {
@@ -14,6 +27,7 @@ Cypress.Commands.add('load', (props) => {
   }
   cy.visit('/', {
     qs: {
+      // eslint-disable-next-line no-secrets/no-secrets
       src: 'https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie',
       ...props,
     },
@@ -22,26 +36,17 @@ Cypress.Commands.add('load', (props) => {
   return cy.whenReady();
 });
 
-type PlayerConfig = {
-  src: string;
-  loop: boolean;
-  controls: boolean;
+interface PlayerConfig {
   autoplay: boolean;
-  direction: 1 | -1;
-  mode: 'bounce' | 'normal';
-  speed: number;
-  playOnHover: boolean;
   background: string;
+  controls: boolean;
+  direction: 1 | -1;
+  loop: boolean;
+  mode: 'bounce' | 'normal';
+  playOnHover: boolean;
+  speed: number;
+  src: string;
   testId: string;
-};
-
-declare namespace Cypress {
-  interface Chainable<Subject> {
-    load(config: Partial<PlayerConfig>): Chainable<Subject>;
-    whenReady(): Chainable<Subject>;
-    updateProp<T extends keyof PlayerConfig, V extends PlayerConfig[T]>(propName: T, value: V): Chainable<Subject>;
-    getControls(): Chainable<Subject>;
-  }
 }
 
 // ***********************************************

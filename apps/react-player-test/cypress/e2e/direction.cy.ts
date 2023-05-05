@@ -1,5 +1,10 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 describe('Direction', () => {
   const testId = 'testPlayer';
+
   it('should be able to change direction to 1', () => {
     cy.load({
       testId,

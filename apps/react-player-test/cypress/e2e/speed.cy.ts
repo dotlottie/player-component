@@ -1,5 +1,10 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 describe('Speed', () => {
   const testId = 'testPlayer';
+
   it('should be able to change speed to 1', () => {
     cy.load({
       testId,
