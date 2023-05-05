@@ -2,6 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
+import { Dotlottie } from '@lottiefiles/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
 import { signal } from '@preact/signals-core';
 import lottie from 'lottie-web';
@@ -14,7 +15,6 @@ import type {
   HTMLRendererConfig,
   CanvasRendererConfig,
 } from 'lottie-web';
-import WebWorker from 'web-worker:./worker.ts';
 
 export enum PlayerState {
   Error = 'error',
@@ -88,8 +88,6 @@ export class DotLottiePlayer {
   protected _name?: string;
 
   protected _mode: PlayMode = PlayMode.Normal;
-
-  protected _worker = new WebWorker();
 
   protected _animation: Animation | undefined;
 
@@ -401,60 +399,94 @@ export class DotLottiePlayer {
     console.error(msg);
   }
 
+  protected async fetchLottieJSON(src: string): Promise<{ animations: Animation[]; manifest: Manifest }> {
+    if (!src.toLowerCase().endsWith('.json')) throw new Error('[dotlottie-player]: parameter src must be .json');
+
+    try {
+      const data = await fetch(src, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          'Response-Type': 'json',
+        },
+      }).then(async (resp) => resp.json());
+
+      const animations: Animation[] = [];
+      const filename = src.substring(Number(src.lastIndexOf('/')) + 1, src.lastIndexOf('.'));
+
+      const boilerplateManifest: Manifest = {
+        animations: [
+          {
+            id: filename,
+            speed: 1,
+            loop: true,
+            direction: 1,
+          },
+        ],
+        description: '',
+        author: '',
+        keywords: '',
+        generator: 'dotLottie-player-common',
+        revision: 1,
+        version: '1.0.0',
+      };
+
+      animations.push(data);
+
+      return {
+        animations,
+        manifest: boilerplateManifest,
+      };
+    } catch (error) {
+      throw new Error(`[dotlottie-player]:fetchLottieJSON error  ${error}`);
+    }
+  }
+
   protected async getAnimationData(srcParsed: string): Promise<Animation> {
-    return new Promise((resolve, reject) => {
-      // Adding one-time listeners
-      this._worker.addEventListener(
-        'message',
-        (message) => {
-          const response = message.data as {
-            animations?: Animation[];
-            error: boolean;
-            manifest?: Manifest;
-            msg: string;
-          };
+    if (srcParsed.toLowerCase().endsWith('.json')) {
+      const { animations, manifest } = await this.fetchLottieJSON(srcParsed);
 
-          if (response.error) {
-            return reject(response.msg);
-          }
+      if (!Array.isArray(animations) || animations.length === 0 || !animations[0]) {
+        throw new Error('[dotLottie] No animation to load!');
+      }
 
-          const animations = response.animations;
-          const manifest = response.manifest;
+      this._manifest = manifest;
+      this._animations = animations;
 
-          if (!animations || !animations.length) {
-            return reject(new Error('[dotLottie] Animations are empty'));
-          }
-          if (!manifest) {
-            return reject(new Error('[dotLottie] Manifest empty'));
-          }
+      return animations[0];
+    }
 
-          this._animations = animations;
-          this._manifest = manifest;
+    try {
+      const dl = new Dotlottie();
+      const dotLottie = await dl.fromURL(srcParsed);
+      const lottieAnimations = dotLottie.animations;
 
-          // eslint-disable-next-line no-warning-comments
-          // TODO: select the acitive animation
-          const animation = animations[0];
+      if (!lottieAnimations.length) {
+        throw new Error('[dotLottie] No animation to load!');
+      }
+      const animations: Animation[] = [];
 
-          if (animation === undefined) {
-            return reject(new Error('[dotLottie] No animation to load!'));
-          }
+      for (const anim of lottieAnimations) {
+        const animation = await dotLottie.getAnimation(anim.id, {
+          inlineAssets: true,
+        });
 
-          return resolve(animation);
-        },
-        { once: true },
-      );
+        if (animation) {
+          animations.push(await animation.toJSON());
+        }
+      }
 
-      this._worker.addEventListener(
-        'error',
-        (msg) => {
-          reject(msg.error);
-        },
-        { once: true },
-      );
+      if (!animations[0]) {
+        throw new Error('[dotLottie] No animation to load!');
+      }
 
-      // Trigger
-      this._worker.postMessage(srcParsed);
-    });
+      this._animations = animations;
+      this._manifest = dotLottie.manifest as Manifest;
+
+      return animations[0];
+    } catch (error) {
+      throw new Error(`[dotLottie]:getAnimationData error ${error}`);
+    }
   }
 
   public static isLottie(json: Record<string, unknown>): boolean {

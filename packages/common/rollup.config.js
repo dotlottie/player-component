@@ -8,7 +8,6 @@ import typescript from '@rollup/plugin-typescript';
 import copy from 'rollup-plugin-copy';
 import del from 'rollup-plugin-delete';
 import dts from 'rollup-plugin-dts';
-import webWorkerLoader from 'rollup-plugin-web-worker-loader';
 
 import packageJson from './package.json' assert { type: 'json' };
 
@@ -17,11 +16,7 @@ const extensions = ['.ts', '.tsx'];
 const bundle = (config) => ({
   ...config,
   input: './src/index.ts',
-  external: (id) =>
-    !/^[./]/u.test(id) &&
-    !/^web-worker.*/u.test(id) &&
-    !/^fflate/u.test(id) &&
-    !/^@lottiefiles\/dotlottie-js/u.test(id),
+  external: (id) => !/^[./]/u.test(id),
 });
 
 const configs = [
@@ -33,7 +28,6 @@ const configs = [
         jsnext: true,
         module: true,
       }),
-      webWorkerLoader(),
       commonjs(),
       typescript({ tsconfig: './tsconfig.json' }),
       copy({
