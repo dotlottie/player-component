@@ -89,6 +89,8 @@ const Item: React.FC = () => {
       }
     });
 
+    return undefined;
+
   }, [root]);
 
   return (
