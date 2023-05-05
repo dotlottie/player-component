@@ -1,4 +1,10 @@
-import * as lottie from 'lottie-web';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
+import type { Animation } from '@lottiefiles/lottie-types';
+import { signal } from '@preact/signals-core';
+import lottie from 'lottie-web';
 import type {
   AnimationConfig,
   AnimationItem,
@@ -8,44 +14,43 @@ import type {
   HTMLRendererConfig,
   CanvasRendererConfig,
 } from 'lottie-web';
-import { signal } from '@preact/signals-core';
-import { Animation } from '@lottiefiles/lottie-types';
 import WebWorker from 'web-worker:./worker.ts';
 
 export enum PlayerState {
-  Initial = 'initial',
-  Fetching = 'fetching',
-  Loading = 'loading',
-  Ready = 'ready',
-  Playing = 'playing',
-  Paused = 'paused',
-  Stopped = 'stopped',
-  Frozen = 'frozen',
   Error = 'error',
+  Fetching = 'fetching',
+  Frozen = 'frozen',
+  Initial = 'initial',
+  Loading = 'loading',
+  Paused = 'paused',
+  Playing = 'playing',
+  Ready = 'ready',
+  Stopped = 'stopped',
 }
 
 export enum PlayMode {
-  Normal = 'normal',
   Bounce = 'bounce',
+  Normal = 'normal',
 }
 
 export interface Manifest {
-  animations: {
-    id: string;
-    direction: number;
-    loop: boolean;
-    speed: number;
-    mode?: 'normal' | 'bounce';
+  [key: string]: unknown;
+  animations: Array<{
     [key: string]: unknown;
-  }[];
+    direction: number;
+    id: string;
+    loop: boolean;
+    mode?: 'normal' | 'bounce';
+    speed: number;
+  }>;
   author: string;
   description: string;
   generator: string;
   keywords: string;
   version: string;
-  [key: string]: unknown;
 }
 export interface DotLottie {
+  [key: string]: unknown;
   animations: {
     [key: string]: string;
   };
@@ -53,11 +58,10 @@ export interface DotLottie {
     [key: string]: Uint8Array;
   };
   manifest: Manifest;
-  [key: string]: unknown;
 }
 
 export interface DotLottieElement extends Element {
-  __lottie?: any;
+  __lottie?: AnimationItem | null;
 }
 
 export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRendererConfig;
@@ -68,26 +72,39 @@ export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, '
 
 declare global {
   interface Window {
-    dotLottiePlayer: any;
+    dotLottiePlayer: Record<string, Record<string, unknown>>;
   }
 }
 
 export class DotLottiePlayer {
   protected _lottie?: AnimationItem;
+
   protected _src: string | Record<string, unknown>;
+
   protected _options: AnimationConfig<RendererType>;
+
   protected _container: DotLottieElement;
+
   protected _name?: string;
+
   protected _mode: PlayMode = PlayMode.Normal;
+
   protected _worker = new WebWorker();
+
   protected _animation: Animation | undefined;
+
   protected _animations: Animation[] = [];
+
   protected _manifest: Manifest | undefined = undefined;
+
   protected _testId?: string;
+
   protected _listeners = new Map();
 
   public state = signal<PlayerState>(PlayerState.Initial);
+
   public frame = signal<number>(0);
+
   public seeker = signal<number>(0);
 
   public constructor(
@@ -108,7 +125,7 @@ export class DotLottiePlayer {
     }
 
     this._options = {
-      container: container,
+      container,
       loop: false,
       autoplay: true,
       renderer: 'svg',
@@ -122,7 +139,7 @@ export class DotLottiePlayer {
     };
   }
 
-  protected _updateTestData() {
+  protected _updateTestData(): void {
     if (!this._testId || !this._lottie) return;
     if (!window.dotLottiePlayer) {
       window.dotLottiePlayer = {
@@ -138,7 +155,7 @@ export class DotLottiePlayer {
     };
   }
 
-  get currentState(): PlayerState {
+  public get currentState(): PlayerState {
     return this.state.value;
   }
 
@@ -151,7 +168,7 @@ export class DotLottiePlayer {
     return srcParsed.split('.').pop()?.toLowerCase() === 'json';
   }
 
-  get src(): Record<string, unknown> | string {
+  public get src(): Record<string, unknown> | string {
     return this._src;
   }
 
@@ -161,7 +178,7 @@ export class DotLottiePlayer {
     this.load();
   }
 
-  get mode(): PlayMode {
+  public get mode(): PlayMode {
     return this._mode;
   }
 
@@ -217,7 +234,7 @@ export class DotLottiePlayer {
   }
 
   public destory(): void {
-    if (this._container && this._container.__lottie) {
+    if (this._container.__lottie) {
       this._container.__lottie.destroy();
       this._container.__lottie = null;
     }
@@ -237,12 +254,14 @@ export class DotLottiePlayer {
     }
   }
 
-  get totalFrames(): number {
+  public get totalFrames(): number {
     return this._lottie?.totalFrames || 0;
   }
 
-  get direction(): 1 | -1 {
-    return (this._lottie?.playDirection as 1 | -1) || 1;
+  public get direction(): 1 | -1 {
+    if (!this._lottie) return 1;
+
+    return this._lottie.playDirection as 1 | -1;
   }
 
   public setDirection(direction: 1 | -1): void {
@@ -250,7 +269,7 @@ export class DotLottiePlayer {
     this._updateTestData();
   }
 
-  get speed(): number {
+  public get speed(): number {
     return this._lottie?.playSpeed || 1;
   }
 
@@ -259,26 +278,26 @@ export class DotLottiePlayer {
     this._updateTestData();
   }
 
-  get autoplay(): boolean {
+  public get autoplay(): boolean {
     return this._lottie?.autoplay ?? false;
   }
 
-  public setAutoplay(value: boolean) {
+  public setAutoplay(value: boolean): void {
     if (!this._lottie) return;
     this._lottie.autoplay = value;
     this._updateTestData();
   }
 
-  public toggleAutoplay() {
+  public toggleAutoplay(): void {
     if (!this._lottie) return;
     this.setAutoplay(!this._lottie.autoplay);
   }
 
-  get loop(): number | boolean {
+  public get loop(): number | boolean {
     return this._lottie?.loop ?? false;
   }
 
-  public setLoop(value: boolean) {
+  public setLoop(value: boolean): void {
     if (!this._lottie) return;
     this._lottie.setLoop(value);
     this._updateTestData();
@@ -286,7 +305,7 @@ export class DotLottiePlayer {
 
   public toggleLoop(): void {
     if (!this._lottie) return;
-    this.setLoop(!this._lottie?.loop);
+    this.setLoop(!this._lottie.loop);
   }
 
   public removeEventListener(name: AnimationEventName, cb?: () => unknown): void {
@@ -314,6 +333,7 @@ export class DotLottiePlayer {
     this._lottie.addEventListener('loopComplete', () => {
       if (this._lottie && this.loop && this._mode === PlayMode.Bounce) {
         const newDirection = (this._lottie.playDirection * -1) as 1 | -1;
+
         this.setDirection(newDirection);
         this._lottie.goToAndPlay(newDirection === -1 ? this._lottie.totalFrames - 1 : 0, true);
       }
@@ -323,25 +343,28 @@ export class DotLottiePlayer {
       this.setCurrentState(PlayerState.Stopped);
     });
 
-    for (const [[name, _], v] of this._listeners) {
-      this._lottie.addEventListener(name, v);
+    for (const [[name], cb] of this._listeners) {
+      this._lottie.addEventListener(name, cb);
     }
   }
 
   public async load(): Promise<void> {
     if (this.state.value === PlayerState.Loading) {
       console.warn('[dotLottie] Loading inprogress..');
+
       return;
     }
+
     try {
       this.setCurrentState(PlayerState.Loading);
 
-      let srcParsed = DotLottiePlayer.parseSrc(this._src);
+      const srcParsed = DotLottiePlayer.parseSrc(this._src);
 
       if (typeof srcParsed === 'string') {
         this._animation = await this.getAnimationData(srcParsed);
       } else if (DotLottiePlayer.isLottie(srcParsed)) {
-        this._animation = srcParsed as any; // :/
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        this._animation = srcParsed as any;
       } else {
         throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
       }
@@ -353,17 +376,13 @@ export class DotLottiePlayer {
       this.destory();
 
       // Initialize lottie player and load animation
-      // @ts-ignore: Function does not exist :?
       this._lottie = lottie.loadAnimation({
         ...this._options,
         animationData: this._animation,
       });
 
       this.addEventListeners();
-
-      if (this._container) {
-        this._container.__lottie = this._lottie;
-      }
+      this._container.__lottie = this._lottie;
       this.setCurrentState(PlayerState.Ready);
 
       if (this._options.autoplay) {
@@ -374,11 +393,10 @@ export class DotLottiePlayer {
     } catch (err) {
       this.setCurrentState(PlayerState.Error);
       console.log('err', err);
-      return;
     }
   }
 
-  protected setErrorState(msg: string) {
+  protected setErrorState(msg: string): void {
     this.setCurrentState(PlayerState.Error);
     console.error(msg);
   }
@@ -388,13 +406,12 @@ export class DotLottiePlayer {
       // Adding one-time listeners
       this._worker.addEventListener(
         'message',
-        async (message) => {
+        (message) => {
           const response = message.data as {
-            error: boolean;
-            msg: string;
             animations?: Animation[];
+            error: boolean;
             manifest?: Manifest;
-            dl: any;
+            msg: string;
           };
 
           if (response.error) {
@@ -405,29 +422,32 @@ export class DotLottiePlayer {
           const manifest = response.manifest;
 
           if (!animations || !animations.length) {
-            return reject('[dotLottie] Animations are empty');
+            return reject(new Error('[dotLottie] Animations are empty'));
           }
           if (!manifest) {
-            return reject('[dotLottie] Manifest empty');
+            return reject(new Error('[dotLottie] Manifest empty'));
           }
 
           this._animations = animations;
           this._manifest = manifest;
 
+          // eslint-disable-next-line no-warning-comments
           // TODO: select the acitive animation
-          const srcParsed = animations[0];
-          if (srcParsed === undefined) {
-            return reject('[dotLottie] No animation to load!');
+          const animation = animations[0];
+
+          if (animation === undefined) {
+            return reject(new Error('[dotLottie] No animation to load!'));
           }
-          return resolve(srcParsed);
+
+          return resolve(animation);
         },
         { once: true },
       );
 
       this._worker.addEventListener(
         'error',
-        (msg: any) => {
-          reject(msg.data);
+        (msg) => {
+          reject(msg.error);
         },
         { once: true },
       );
@@ -437,7 +457,7 @@ export class DotLottiePlayer {
     });
   }
 
-  public static isLottie(json: Record<string, any>): boolean {
+  public static isLottie(json: Record<string, unknown>): boolean {
     const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
 
     return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
@@ -450,7 +470,7 @@ export class DotLottiePlayer {
 
     try {
       return JSON.parse(src);
-    } catch (e) {
+    } catch (error) {
       // Try construct an absolute URL from the src URL
       const srcUrl: URL = new URL(src, window.location.href);
 

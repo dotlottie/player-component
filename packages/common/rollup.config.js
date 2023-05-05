@@ -1,10 +1,14 @@
-import dts from 'rollup-plugin-dts';
-import copy from 'rollup-plugin-copy';
-import webWorkerLoader from 'rollup-plugin-web-worker-loader';
-import del from 'rollup-plugin-delete';
-import resolve from '@rollup/plugin-node-resolve';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import commonjs from '@rollup/plugin-commonjs';
+import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
+import copy from 'rollup-plugin-copy';
+import del from 'rollup-plugin-delete';
+import dts from 'rollup-plugin-dts';
+import webWorkerLoader from 'rollup-plugin-web-worker-loader';
 
 import packageJson from './package.json' assert { type: 'json' };
 
@@ -14,13 +18,13 @@ const bundle = (config) => ({
   ...config,
   input: './src/index.ts',
   external: (id) =>
-    !/^[./]/.test(id) &&
-    !/^web-worker.*/.test(id) &&
-    !/^fflate/.test(id) &&
-    !/^@lottiefiles\/dotlottie-js/.test(id),
+    !/^[./]/u.test(id) &&
+    !/^web-worker.*/u.test(id) &&
+    !/^fflate/u.test(id) &&
+    !/^@lottiefiles\/dotlottie-js/u.test(id),
 });
 
-export default [
+const configs = [
   bundle({
     plugins: [
       del({ targets: 'dist/*' }),
@@ -54,3 +58,5 @@ export default [
     output: [{ file: 'dist/index.d.ts', format: 'esm' }],
   }),
 ];
+
+export default configs;
