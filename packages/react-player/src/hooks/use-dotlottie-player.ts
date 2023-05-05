@@ -59,7 +59,7 @@ export const useDotLottiePlayer = (
     })();
 
     return () => {
-      dotLottiePlayer?.destory();
+      dotLottiePlayer?.destroy();
     };
   }, [getDotLottiePlayer]);
 

@@ -233,7 +233,7 @@ export class DotLottiePlayer {
     this.setCurrentState(PlayerState.Frozen);
   }
 
-  public destory(): void {
+  public destroy(): void {
     if (this._container.__lottie) {
       this._container.__lottie.destroy();
       this._container.__lottie = null;
@@ -373,7 +373,7 @@ export class DotLottiePlayer {
        * Animation is ready to render. Continuue
        */
       // Clear previous animation, if any
-      this.destory();
+      this.destroy();
 
       // Initialize lottie player and load animation
       this._lottie = lottie.loadAnimation({

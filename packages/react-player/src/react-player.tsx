@@ -217,7 +217,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     });
 
     return () => {
-      dotLottiePlayer.destory();
+      dotLottiePlayer.destroy();
     };
   }, [dotLottiePlayer]);
 
