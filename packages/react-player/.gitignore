@@ -1,0 +1,10 @@
+node_modules
+dist
+
+
+# Turbo repo related
+.turbo
+tsup.config.bundled*
+
+# Cypress
+cypress/screenshots
