@@ -1,10 +1,15 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
+import React, { useState } from 'react';
 import { DotLottiePlayer, PlayMode } from 'react-player';
-import { useState } from 'react';
 
 const lotties = [
   {
     from: '.lottie',
-    src: 'https://assets4.lottiefiles.com/dotlotties/dlf10_YwqueuLEuR.lottie',
+    // eslint-disable-next-line no-secrets/no-secrets
+    src: 'https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie',
   },
   {
     from: '.json',
@@ -12,6 +17,7 @@ const lotties = [
   },
   {
     from: '.json',
+    // eslint-disable-next-line no-secrets/no-secrets
     src: 'https://lottie.host/cba131d3-3e01-43be-b71c-2de700a12642/c5CK9Co8WD.json',
   },
   {
@@ -25,8 +31,8 @@ interface ItemProps {
   src: string;
 }
 
-const Item = (props: ItemProps) => {
-  const [src, setSrc] = useState(props.src);
+const Item: React.FC<ItemProps> = (props: ItemProps) => {
+  const [src, setSrc] = useState<Record<string, unknown> | string>(props.src);
   const [loop, setLoop] = useState(true);
   const [autoplay, setAutoPlay] = useState(true);
   const [controls, setControls] = useState(true);
@@ -36,9 +42,9 @@ const Item = (props: ItemProps) => {
   const [mode, setMode] = useState(PlayMode.Normal);
   const [playOnHover, setPlayOnHover] = useState(false);
 
-  function handleClick() {
-    const otherLotties = lotties.filter((lottie) => lottie.src != src);
-    const randomLottie = otherLotties?.[Math.floor(Math.random() * otherLotties.length)];
+  function handleClick(): void {
+    const otherLotties = lotties.filter((lottie) => lottie.src !== src);
+    const randomLottie = otherLotties[Math.floor(Math.random() * otherLotties.length)];
 
     if (randomLottie) {
       setSrc(randomLottie.src);
@@ -57,39 +63,39 @@ const Item = (props: ItemProps) => {
       >
         <button onClick={handleClick}>Swap src</button>
         <label>
-          <input type="checkbox" onChange={() => setAutoPlay(!autoplay)} checked={autoplay} />
+          <input type="checkbox" onChange={(): void => setAutoPlay(!autoplay)} checked={autoplay} />
           Autoplay
         </label>
         <label>
-          <input type="checkbox" onChange={() => setLoop(!loop)} checked={loop} />
+          <input type="checkbox" onChange={(): void => setLoop(!loop)} checked={loop} />
           Loop
         </label>
         <label>
-          <input type="checkbox" onChange={() => setControls(!controls)} checked={controls} />
+          <input type="checkbox" onChange={(): void => setControls(!controls)} checked={controls} />
           Controls
         </label>
         <label>
-          <input type="number" onChange={(e) => setSpeed(parseInt(e.target.value))} value={speed} />
+          <input type="number" onChange={(evt): void => setSpeed(parseInt(evt.target.value, 10))} value={speed} />
           speed
         </label>
         <label>
-          <button onClick={() => setDirection(-1)}>-1</button>
-          <button onClick={() => setDirection(1)}>1</button>
+          <button onClick={(): void => setDirection(-1)}>-1</button>
+          <button onClick={(): void => setDirection(1)}>1</button>
           Direction
         </label>
         <label>
-          <select defaultValue={mode} onChange={(e) => setMode(e.target.value as PlayMode)}>
+          <select defaultValue={mode} onChange={(evt): void => setMode(evt.target.value as PlayMode)}>
             <option value="normal">Normal</option>
             <option value="bounce">Bounce</option>
           </select>
           Mode
         </label>
         <label>
-          <input type="color" onChange={(e) => setBackground(e.target.value)} value={background} />
+          <input type="color" onChange={(evt): void => setBackground(evt.target.value)} value={background} />
           Background
         </label>
         <label>
-          <input type="checkbox" onChange={() => setPlayOnHover(!playOnHover)} checked={playOnHover} />
+          <input type="checkbox" onChange={(): void => setPlayOnHover(!playOnHover)} checked={playOnHover} />
           playOnHover
         </label>
       </div>
@@ -104,25 +110,25 @@ const Item = (props: ItemProps) => {
         direction={direction}
         background={background}
         controls={controls}
-        onPlayerReady={() => {
+        onPlayerReady={(): void => {
           console.log('onPlayerReady');
         }}
-        onFreeze={() => {
+        onFreeze={(): void => {
           console.log('onFreeze');
         }}
-        onDataFail={() => {
+        onDataFail={(): void => {
           console.log('onDataFail');
         }}
-        onComplete={() => {
+        onComplete={(): void => {
           console.log('onComplete');
         }}
-        onPause={() => {
+        onPause={(): void => {
           console.log('onPause');
         }}
-        onStop={() => {
+        onStop={(): void => {
           console.log('onStop');
         }}
-        onPlay={() => {
+        onPlay={(): void => {
           console.log('onPlay');
         }}
       />
@@ -130,7 +136,7 @@ const Item = (props: ItemProps) => {
   );
 };
 
-function Home() {
+const Home: React.FC = () => {
   return (
     <div className="App">
       {lotties.map((props, index) => {
@@ -138,6 +144,6 @@ function Home() {
       })}
     </div>
   );
-}
+};
 
 export default Home;

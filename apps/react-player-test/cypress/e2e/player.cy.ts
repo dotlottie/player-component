@@ -1,4 +1,9 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import { PlayerState } from 'react-player';
+
 describe('Player', () => {
   const testId = 'testPlayer';
   const dotLottieContainerSelector = `[data-testid=${testId}]`;
@@ -6,6 +11,7 @@ describe('Player', () => {
   it('should mount', () => {
     cy.load({
       testId,
+      // eslint-disable-next-line no-secrets/no-secrets
       src: 'https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie',
       loop: true,
       controls: true,

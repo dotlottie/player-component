@@ -1,21 +1,20 @@
 {
-  // Extend from the org config
-  "extends": "@lottiefiles/tsconfig",
   "compilerOptions": {
-    // Default
     "target": "ESNext",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
     "skipLibCheck": true,
-    // Added
-    "jsx": "react",
-    "module": "ESNext",
-    "sourceMap": true,
-    "outDir": "dist",
-    "moduleResolution": "node",
+    "esModuleInterop": false,
     "allowSyntheticDefaultImports": true,
-    "emitDeclarationOnly": true
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx"
   },
   "include": ["src/**/*.ts", "types/*.ts"],
   "exclude": ["node_modules", "dist"]

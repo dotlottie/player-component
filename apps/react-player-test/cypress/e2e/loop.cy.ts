@@ -1,5 +1,10 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 describe('Loop', () => {
   const testId = 'testPlayer';
+
   it('should not loop if `loop` = `false`', () => {
     cy.load({
       testId,
@@ -37,7 +42,8 @@ describe('Loop', () => {
     });
     cy.window().its(`dotLottiePlayer.${testId}.loop`).should('equal', true);
 
-    cy.updateProp('loop', false); // set loop to false
+    // set loop to false
+    cy.updateProp('loop', false);
     cy.window().its(`dotLottiePlayer.${testId}.loop`).should('equal', false);
   });
 });

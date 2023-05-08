@@ -1,3 +1,7 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 describe('[dolottie-player]: Background', () => {
   it('should able set background color', () => {
     cy.load({

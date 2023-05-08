@@ -16,8 +16,7 @@ const extensions = ['.ts', '.tsx'];
 const bundle = (config) => ({
   ...config,
   input: './src/index.ts',
-  external: (id) =>
-    !/^[./]/u.test(id) && !/^fflate/u.test(id) && !/^@lottiefiles\/dotlottie-js/u.test(id) && !/common/u.test(id),
+  external: (id) => !/^[./]/u.test(id),
 });
 
 const configs = [

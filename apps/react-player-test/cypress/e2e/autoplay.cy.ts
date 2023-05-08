@@ -1,3 +1,7 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import { PlayerState } from 'react-player';
 
 describe('Autoplay', () => {

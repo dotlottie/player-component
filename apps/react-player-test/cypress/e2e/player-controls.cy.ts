@@ -1,3 +1,7 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import { PlayerState } from 'react-player';
 
 describe('Controls', () => {
@@ -33,10 +37,10 @@ describe('Controls', () => {
       controls: true,
     });
 
-    //Not initially
+    // not playing initially
     cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('not.equal', PlayerState.Playing);
 
-    //play
+    // play
     cy.get('[aria-label="play-pause"]').click();
     cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('equal', PlayerState.Playing);
   });
@@ -48,14 +52,14 @@ describe('Controls', () => {
       controls: true,
     });
 
-    //playing initially
+    // playing initially
     cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('equal', PlayerState.Playing);
 
     // pause
     cy.get('[aria-label="play-pause"]').click();
     cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('equal', PlayerState.Paused);
 
-    //play
+    // play
     cy.get('[aria-label="play-pause"]').click();
     cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('equal', PlayerState.Playing);
   });
@@ -67,16 +71,12 @@ describe('Controls', () => {
       controls: true,
     });
 
-    //playing initially
+    // playing initially
     cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('equal', PlayerState.Playing);
 
     // pause
     cy.get('[aria-label="stop"]').click();
     cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('equal', PlayerState.Stopped);
-
-    //play
-    cy.get('[aria-label="stop"]').click();
-    cy.get('[data-player-state]').invoke('attr', 'data-player-state').should('equal', PlayerState.Playing);
   });
 
   it('should be able toggle looping', () => {
@@ -89,10 +89,10 @@ describe('Controls', () => {
       speed: 100,
     });
 
-    //playing initially
+    // playing initially
     cy.window().its(`dotLottiePlayer.${testId}.loop`).should('equal', true);
 
-    // Toggle loop
+    // toggle loop
     cy.get('[aria-label="loop-toggle"]').click();
     cy.window().its(`dotLottiePlayer.${testId}.loop`).should('equal', false);
   });

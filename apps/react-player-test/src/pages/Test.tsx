@@ -1,6 +1,9 @@
-import { DotLottiePlayer, PlayerState, PlayMode } from 'react-player';
-import { useEffect, useRef, useState } from 'react';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
 
+import React, { useEffect, useRef, useState } from 'react';
+import { DotLottiePlayer, PlayerState, PlayMode } from 'react-player';
 import { useSearchParam } from 'react-use';
 
 const lotties = [
@@ -10,13 +13,9 @@ const lotties = [
   },
 ];
 
-interface ItemProps {
-  from: string;
-  src: string;
-}
-
-const Item = (props: ItemProps) => {
+const Item: React.FC = () => {
   const qSrc = useSearchParam('src');
+
   if (!qSrc) return <div>Param `src` is required</div>;
 
   // Query Parameters
@@ -29,8 +28,9 @@ const Item = (props: ItemProps) => {
   const qMode = useSearchParam('mode') === 'bounce' ? PlayMode.Bounce : PlayMode.Normal;
   const qPlayOnHover = useSearchParam('playOnHover') === 'true';
   let qBackground = useSearchParam('background');
-  if (qBackground && !/^(#|hsl|cmyk|rgb)./.test(qBackground)) {
-    qBackground = '#' + qBackground;
+
+  if (qBackground && !/^(#|hsl|cmyk|rgb)./u.test(qBackground)) {
+    qBackground = `#${qBackground}`;
   }
 
   const [src, setSrc] = useState(qSrc);
@@ -49,40 +49,47 @@ const Item = (props: ItemProps) => {
   const root = useRef<any>(null);
 
   useEffect(() => {
-    if (!root.current) return;
+    if (!root.current) return undefined;
     root.current.addEventListener('update:prop', (event: CustomEvent<{ prop: string; value: unknown }>) => {
-      console.log('details', event.detail);
       switch (event.detail.prop) {
         case 'loop':
           setLoop(event.detail.value as boolean);
           break;
+
         case 'autoplay':
           setAutoPlay(event.detail.value as boolean);
           break;
+
         case 'controls':
           setControls(event.detail.value as boolean);
           break;
+
         case 'direction':
           setDirection(event.detail.value as 1 | -1);
           break;
+
         case 'background':
           setBackground(event.detail.value as string);
           break;
+
         case 'speed':
           setSpeed(event.detail.value as number);
           break;
+
         case 'mode':
           setMode(event.detail.value as PlayMode);
           break;
+
         case 'playOnHover':
           setPlayOnHover(event.detail.value as boolean);
+          break;
+
+        default:
           break;
       }
     });
 
-    return () => {
-      // root.current.removeEventListener('update:prop');
-    };
+    return undefined;
   }, [root]);
 
   return (
@@ -96,50 +103,60 @@ const Item = (props: ItemProps) => {
         }}
       >
         <label>
-          <input name="src" type="text" onChange={(e) => setSrc(e.target.value)} value={src} />
+          <input name="src" type="text" onChange={(evt): void => setSrc(evt.target.value)} value={src} />
           Src
         </label>
         <label>
-          <input name="autoplay" type="checkbox" onChange={() => setAutoPlay(!autoplay)} checked={autoplay} />
+          <input name="autoplay" type="checkbox" onChange={(): void => setAutoPlay(!autoplay)} checked={autoplay} />
           Autoplay
         </label>
         <label>
-          <input name="loop" type="checkbox" onChange={() => setLoop(!loop)} checked={loop} />
+          <input name="loop" type="checkbox" onChange={(): void => setLoop(!loop)} checked={loop} />
           Loop
         </label>
         <label>
-          <input name="controls" type="checkbox" onChange={() => setControls(!controls)} checked={controls} />
+          <input name="controls" type="checkbox" onChange={(): void => setControls(!controls)} checked={controls} />
           Controls
         </label>
         <label>
-          <input name="speed" type="number" onChange={(e) => setSpeed(parseInt(e.target.value))} value={speed} />
+          <input
+            name="speed"
+            type="number"
+            onChange={(evt): void => setSpeed(parseInt(evt.target.value, 10))}
+            value={speed}
+          />
           speed
         </label>
         <label>
-          <button id="direction-reverse" onClick={() => setDirection(-1)}>
+          <button id="direction-reverse" onClick={(): void => setDirection(-1)}>
             -1
           </button>
-          <button id="direction-forward" onClick={() => setDirection(1)}>
+          <button id="direction-forward" onClick={(): void => setDirection(1)}>
             1
           </button>
           Direction
         </label>
         <label>
-          <select name="mode" defaultValue={mode} onChange={(e) => setMode(e.target.value as PlayMode)}>
+          <select name="mode" defaultValue={mode} onChange={(evt): void => setMode(evt.target.value as PlayMode)}>
             <option value="normal">Normal</option>
             <option value="bounce">Bounce</option>
           </select>
           Mode
         </label>
         <label>
-          <input name="background" type="color" onChange={(e) => setBackground(e.target.value)} value={background} />
+          <input
+            name="background"
+            type="color"
+            onChange={(evt): void => setBackground(evt.target.value)}
+            value={background}
+          />
           Background
         </label>
         <label>
           <input
             name="playOnHover"
             type="checkbox"
-            onChange={() => setPlayOnHover(!playOnHover)}
+            onChange={(): void => setPlayOnHover(!playOnHover)}
             checked={playOnHover}
           />
           playOnHover
@@ -164,33 +181,33 @@ const Item = (props: ItemProps) => {
         direction={direction}
         background={background}
         controls={controls}
-        onPlayerReady={() => {
+        onPlayerReady={(): void => {
           console.log('onPlayerReady');
           setIsReady('yes');
           setCurrentState(PlayerState.Ready);
         }}
-        onFreeze={() => {
+        onFreeze={(): void => {
           console.log('onFreeze');
           setCurrentState(PlayerState.Frozen);
         }}
-        onDataFail={() => {
+        onDataFail={(): void => {
           console.log('onDataFail');
           setCurrentState(PlayerState.Error);
         }}
-        onComplete={() => {
+        onComplete={(): void => {
           console.log('onComplete');
           setCurrentState(PlayerState.Stopped);
         }}
-        onPause={() => {
+        onPause={(): void => {
           console.log('onPause');
 
           setCurrentState(PlayerState.Paused);
         }}
-        onStop={() => {
+        onStop={(): void => {
           console.log('onStop');
           setCurrentState(PlayerState.Stopped);
         }}
-        onPlay={() => {
+        onPlay={(): void => {
           console.log('onPlay');
           setCurrentState(PlayerState.Playing);
         }}
@@ -200,7 +217,7 @@ const Item = (props: ItemProps) => {
   );
 };
 
-export default () => {
+const Test: React.FC = () => {
   return (
     <div className="App">
       {lotties.map((props, index) => {
@@ -209,3 +226,5 @@ export default () => {
     </div>
   );
 };
+
+export default Test;
