@@ -8,6 +8,7 @@ import { signal } from '@preact/signals-core';
 import lottie from 'lottie-web';
 import type {
   AnimationConfig,
+  AnimationDirection,
   AnimationItem,
   AnimationEventName,
   RendererType,
@@ -64,15 +65,22 @@ export interface DotLottieElement extends Element {
   __lottie?: AnimationItem | null;
 }
 
-export const EXTRA_OPTIONS = {
+export interface ExtraOptions {
+  count: number;
+  direction: AnimationDirection;
+  intermission: number;
+  mode: PlayMode;
+  speed: number;
+}
+
+export const EXTRA_OPTIONS: ExtraOptions = {
   count: 1,
-  direction: 1 as 1 | -1,
+  direction: 1,
   speed: 1,
   intermission: 1,
   mode: PlayMode.Normal,
 };
 
-export type ExtraOptions = typeof EXTRA_OPTIONS;
 export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRendererConfig;
 export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> &
   ExtraOptions & {
@@ -100,7 +108,7 @@ export class DotLottiePlayer {
 
   protected _intermission: number = 0;
 
-  protected _counterInterv: number | null = null;
+  protected _counterInterval: number | null = null;
 
   protected _container: DotLottieElement;
 
@@ -160,14 +168,48 @@ export class DotLottiePlayer {
   }
 
   protected _extractExtraOptions(config: DotLottieConfig<RendererType>): ExtraOptions {
-    return Object.entries(config).reduce((newConfig, [key, value]) => {
-      if (!Object.hasOwn(EXTRA_OPTIONS, key)) return newConfig;
+    const extraOptions: ExtraOptions = EXTRA_OPTIONS;
 
-      return {
-        ...newConfig,
-        [key]: value,
-      };
-    }, EXTRA_OPTIONS);
+    for (const [key, value] of Object.entries(config)) {
+      if (!Object.hasOwn(EXTRA_OPTIONS, key)) continue;
+
+      switch (key as keyof ExtraOptions) {
+        case 'mode':
+          if (['bounce', 'normal'].includes(value)) {
+            extraOptions.mode = value;
+          }
+          break;
+
+        case 'count':
+          if (typeof value === 'number') {
+            extraOptions.count = value;
+          }
+          break;
+
+        case 'speed':
+          if (typeof value === 'number') {
+            extraOptions.speed = value;
+          }
+          break;
+
+        case 'direction':
+          if ([-1, 1].includes(value)) {
+            extraOptions.direction = value;
+          }
+          break;
+
+        case 'intermission':
+          if (typeof value === 'number') {
+            extraOptions.intermission = value;
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    return extraOptions;
   }
 
   protected _updateTestData(): void {
@@ -191,8 +233,8 @@ export class DotLottiePlayer {
   }
 
   protected clearCountTimer(): void {
-    if (this._counterInterv) {
-      clearInterval(this._counterInterv);
+    if (this._counterInterval) {
+      clearInterval(this._counterInterval);
     }
   }
 
@@ -411,12 +453,12 @@ export class DotLottiePlayer {
           return;
         }
 
-        this._counterInterv = setTimeout(() => {
+        this._counterInterval = setTimeout(() => {
           if (!this._lottie) return;
 
           let newDirection = this._lottie.playDirection;
 
-          if (this._mode === PlayMode.Bounce) {
+          if (this._mode === PlayMode.Bounce && typeof newDirection === 'number') {
             newDirection = Number(newDirection) * -1;
           }
 
