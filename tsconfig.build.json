@@ -1,0 +1,95 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+
+    "module": "ESNext",
+
+    "moduleResolution": "node",
+
+    "lib": ["esnext.array", "esnext", "es2017", "dom"],
+
+    "declaration": true,
+
+    "declarationMap": true,
+
+    "sourceMap": true,
+
+    "inlineSources": true,
+
+    "strict": true,
+
+    "noUnusedLocals": true,
+
+    "noUnusedParameters": true,
+
+    "noImplicitReturns": true,
+
+    "noFallthroughCasesInSwitch": true,
+
+    "noImplicitAny": true,
+
+    "noImplicitThis": true,
+
+    "experimentalDecorators": true,
+
+    "resolveJsonModule": true,
+
+    "allowSyntheticDefaultImports": true,
+  },
+  "include": ["src/**/*.ts", "types/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
+
+
+// {
+//   // Extend from the org config
+//   // "extends": "@lottiefiles/tsconfig",
+
+//   // Compiler options taken from the reccomended settings from LitElement
+//   "compilerOptions": {
+//     // Compiled output JS and source maps output directory
+//     "outDir": "./dist",
+
+//     // Source root directory
+//     "rootDir": ".",
+
+//     // Target ES version
+//     "target": "es2017",
+
+//     // Target module system
+//     "module": "es2015",
+
+//     "moduleResolution": "node",
+
+//     "lib": ["es2017", "dom"],
+
+//     "experimentalDecorators": true,
+
+//     "resolveJsonModule": true,
+
+//     "allowSyntheticDefaultImports": true,
+//   },
+// // Files included in compilation
+//   "include": [
+//     "./src/**/*"
+//    ],
+
+//   "exclude": [
+//     // Exclude node_modules
+//     "**/node_modules",
+
+//     // Exclude tests and snapshots
+//     "**/test",
+//     "**/*.test.ts",
+//     "**/__fixtures__",
+//     "**/__mocks__",
+//     "**/__snapshots__",
+//     "**/__tests__",
+//     "**/coverage",
+
+//     // Exclude builds
+//     "**/build",
+//     "**/dist",
+//     "**/artifacts"
+//   ]
+// }
