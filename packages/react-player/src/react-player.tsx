@@ -15,6 +15,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   controls?: boolean;
   count?: number;
   direction?: 1 | -1;
+  intermission?: number;
   loop?: boolean;
   mode?: PlayMode;
   onComplete?: () => void;
@@ -50,6 +51,8 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   background = 'transparent',
   controls = false,
   direction = 1,
+  count = 1,
+  intermission = 0,
   loop = false,
   mode = PlayMode.Normal,
   playOnHover = false,
@@ -75,6 +78,10 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
       ...rendererSettings,
     },
     loop: isLoop,
+    direction,
+    speed,
+    count,
+    intermission,
     mode,
     autoplay: playOnHover ? false : autoplay,
     testId,
@@ -173,8 +180,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   // On playOnHover change
   useEffect(() => {
     if (!playOnHover) {
-      if (autoplay) dotLottiePlayer?.play();
-
       return;
     }
 
@@ -191,12 +196,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   useEffect(() => {
     if (!dotLottiePlayer) return undefined;
 
-    dotLottiePlayer.setSpeed(speed);
-    dotLottiePlayer.setDirection(direction);
-
     dotLottiePlayer.addEventListener('DOMLoaded', () => {
-      dotLottiePlayer.setDirection(direction);
-      dotLottiePlayer.setSpeed(speed);
       onPlayerReady?.();
     });
 

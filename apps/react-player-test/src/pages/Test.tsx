@@ -27,6 +27,8 @@ const Item: React.FC = () => {
   const qSpeed = Number(useSearchParam('speed')) || 1;
   const qMode = useSearchParam('mode') === 'bounce' ? PlayMode.Bounce : PlayMode.Normal;
   const qPlayOnHover = useSearchParam('playOnHover') === 'true';
+  const qCount = useSearchParam('count');
+  const qIntermission = useSearchParam('intermission');
   let qBackground = useSearchParam('background');
 
   if (qBackground && !/^(#|hsl|cmyk|rgb)./u.test(qBackground)) {
@@ -40,8 +42,10 @@ const Item: React.FC = () => {
   const [direction, setDirection] = useState<1 | -1>(qDirection);
   const [background, setBackground] = useState(qBackground || 'transparent');
   const [speed, setSpeed] = useState(qSpeed);
+  const [count, setCount] = useState(qCount || 1);
   const [mode, setMode] = useState(qMode);
   const [playOnHover, setPlayOnHover] = useState(qPlayOnHover);
+  const [intermission, setIntermission] = useState(qIntermission);
 
   const [currentState, setCurrentState] = useState<PlayerState>(PlayerState.Initial);
   const [isReady, setIsReady] = useState('no');
@@ -80,6 +84,10 @@ const Item: React.FC = () => {
           setMode(event.detail.value as PlayMode);
           break;
 
+        case 'count':
+          setCount(event.detail.value as number);
+          break;
+
         case 'playOnHover':
           setPlayOnHover(event.detail.value as boolean);
           break;
@@ -113,6 +121,10 @@ const Item: React.FC = () => {
         <label>
           <input name="loop" type="checkbox" onChange={(): void => setLoop(!loop)} checked={loop} />
           Loop
+        </label>
+        <label>
+          <input name="count" type="number" onChange={(event): void => setCount(event.target.value)} value={count} />
+          Count
         </label>
         <label>
           <input name="controls" type="checkbox" onChange={(): void => setControls(!controls)} checked={controls} />
@@ -179,8 +191,10 @@ const Item: React.FC = () => {
         mode={mode}
         speed={speed}
         direction={direction}
+        intermission={intermission}
         background={background}
         controls={controls}
+        count={count}
         onPlayerReady={(): void => {
           console.log('onPlayerReady');
           setIsReady('yes');
