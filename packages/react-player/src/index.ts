@@ -4,5 +4,7 @@
 
 import { PlayMode, PlayerState } from 'common';
 
-export { PlayMode, PlayerState };
+import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
+
+export { PlayMode, PlayerState, DotLottieRefProps as LottieRefProps };
 export * from './react-player';

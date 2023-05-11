@@ -5,8 +5,10 @@
 import type { RendererSettings } from 'common';
 import { PlayerState, PlayMode } from 'common';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import type { MutableRefObject } from 'react';
 
 import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
+import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   autoplay?: boolean;
@@ -17,6 +19,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   direction?: 1 | -1;
   intermission?: number;
   loop?: boolean;
+  lottieRef: MutableRefObject<DotLottieRefProps>;
   mode?: PlayMode;
   onComplete?: () => void;
   onDataFail?: () => void;
@@ -59,6 +62,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   speed = 1,
   renderer = 'svg',
   rendererSettings = {},
+  lottieRef,
   src,
   className,
   testId,
@@ -70,6 +74,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   const [isLoop, setIsLoop] = useState(loop);
 
   const { currentState, dotLottiePlayer, frame, seeker } = useDotLottiePlayer(src, container, {
+    lottieRef,
     renderer,
     rendererSettings: {
       clearCanvas: true,

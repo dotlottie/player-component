@@ -34,22 +34,32 @@ export enum PlayMode {
   Normal = 'normal',
 }
 
-export interface Manifest {
-  [key: string]: unknown;
-  animations: Array<{
-    [key: string]: unknown;
-    direction: number;
-    id: string;
-    loop: boolean;
-    mode?: 'normal' | 'bounce';
-    speed: number;
-  }>;
-  author: string;
-  description: string;
-  generator: string;
-  keywords: string;
-  version: string;
+export interface ManifestAnimation {
+  autoplay?: boolean;
+  direction?: AnimationDirection;
+  hover?: boolean;
+  id: string;
+  intermission?: number;
+  loop?: boolean;
+  playMode?: PlayMode;
+  speed?: number;
+  themeColor?: string;
 }
+
+export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
+
+export interface Manifest {
+  activeAnimationId?: string;
+  animations: ManifestAnimation[];
+  author?: string;
+  custom?: Record<string, unknown>;
+  description?: string;
+  generator?: string;
+  keywords?: string;
+  revision?: number;
+  version?: string;
+}
+
 export interface DotLottie {
   [key: string]: unknown;
   animations: {
@@ -118,9 +128,11 @@ export class DotLottiePlayer {
 
   protected _animation: Animation | undefined;
 
-  protected _animations: Animation[] = [];
+  protected _animations: Map<string, Animation> = new Map();
 
   protected _manifest: Manifest | undefined = undefined;
+
+  protected _activeAnimationId?: string | undefined;
 
   protected _testId?: string;
 
@@ -294,15 +306,169 @@ export class DotLottiePlayer {
     this.setCurrentState(PlayerState.Stopped);
   }
 
-  public play(): void {
+  protected _validatePlaybackOptions(options?: PlaybackOptions): Partial<PlaybackOptions> {
+    if (!options) return {};
+    const validatedOptions: Partial<PlaybackOptions> = {};
+
+    for (const [key, value] of Object.entries(options)) {
+      switch (key as keyof PlaybackOptions) {
+        case 'autoplay':
+          if (typeof value === 'boolean') {
+            validatedOptions.autoplay = value;
+          }
+          break;
+
+        case 'direction':
+          if (typeof value === 'number' && [1, -1].includes(value)) {
+            validatedOptions.direction = value as AnimationDirection;
+          }
+          break;
+
+        case 'loop':
+          if (typeof value === 'boolean') {
+            validatedOptions.loop = value;
+          }
+          break;
+
+        case 'playMode':
+          if (typeof value === 'string' && ['normal', 'bounce'].includes(value)) {
+            validatedOptions.playMode = value as PlayMode;
+          }
+          break;
+
+        case 'speed':
+          if (typeof value === 'number') {
+            validatedOptions.speed = value;
+          }
+          break;
+
+        case 'themeColor':
+          if (typeof value === 'string') {
+            validatedOptions.themeColor = value;
+          }
+          break;
+
+        case 'hover':
+          if (typeof value === 'boolean') {
+            validatedOptions.hover = value;
+          }
+          break;
+
+        case 'intermission':
+          if (typeof value === 'number') {
+            validatedOptions.intermission = value;
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    return validatedOptions;
+  }
+
+  public play(activeAnimation?: string | number, options?: PlaybackOptions): void {
     if (!this._lottie) return;
 
-    if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
-      this._lottie.goToAndPlay(this._lottie.totalFrames, true);
-    } else {
-      this._lottie.play();
+    if (!activeAnimation) {
+      if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
+        this._lottie.goToAndPlay(this._lottie.totalFrames, true);
+      } else {
+        this._lottie.play();
+      }
+      this.setCurrentState(PlayerState.Playing);
+
+      return;
     }
-    this.setCurrentState(PlayerState.Playing);
+
+    if (typeof activeAnimation === 'number') {
+      const anim = this._manifest?.animations[activeAnimation];
+
+      if (!anim) return;
+      this.render(anim);
+    }
+
+    if (typeof activeAnimation === 'string') {
+      const anim = this._manifest?.animations.find((animation) => animation.id === activeAnimation);
+
+      if (!anim) return;
+      this.render({
+        ...anim,
+        ...this._validatePlaybackOptions(options),
+      });
+    }
+  }
+
+  public get activeAnimationId(): string | undefined {
+    return this._activeAnimationId;
+  }
+
+  public reset(): void {
+    const activeId = this._manifest?.activeAnimationId;
+
+    if (!activeId) {
+      const anim = this._manifest?.animations[0];
+
+      if (!anim || !anim.id) return;
+
+      this.render(anim);
+    }
+
+    const anim = this._manifest?.animations.find((animation) => animation.id === activeId);
+
+    if (!anim) return;
+
+    this.render(anim);
+  }
+
+  public prev(options?: PlaybackOptions): void {
+    if (!this._manifest || !this._manifest.animations.length) {
+      throw new Error('[dotlottie]: manifest not found.');
+    }
+
+    const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._activeAnimationId);
+
+    if (currentIndex === -1) {
+      throw new Error('[dotlottie]: animation not found.');
+    }
+
+    const nextAnim =
+      this._manifest.animations[
+        (currentIndex - 1 + this._manifest.animations.length) % this._manifest.animations.length
+      ];
+
+    if (!nextAnim || !nextAnim.id) {
+      throw new Error('[dotlottie]: animation not found.');
+    }
+
+    this.render({
+      ...nextAnim,
+      ...this._validatePlaybackOptions(options),
+    });
+  }
+
+  public next(options?: PlaybackOptions): void {
+    if (!this._manifest || !this._manifest.animations.length) {
+      throw new Error('[dotlottie]: manifest not found.');
+    }
+
+    const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._activeAnimationId);
+
+    if (currentIndex === -1) {
+      throw new Error('[dotlottie]: animation not found.');
+    }
+
+    const nextAnim = this._manifest.animations[(currentIndex + 1) % this._manifest.animations.length];
+
+    if (!nextAnim || !nextAnim.id) {
+      throw new Error('[dotlottie]: animation not found.');
+    }
+
+    this.render({
+      ...nextAnim,
+      ...this._validatePlaybackOptions(options),
+    });
   }
 
   public resize(): void {
@@ -478,6 +644,48 @@ export class DotLottiePlayer {
     }
   }
 
+  protected render(activeAnimation?: Partial<ManifestAnimation>): void {
+    if (activeAnimation?.id) {
+      const anim = this._animations.get(activeAnimation.id);
+
+      if (!anim) {
+        throw new Error('[dotlottie]: animation not found.');
+      }
+      this._activeAnimationId = activeAnimation.id;
+      this._animation = anim;
+    }
+
+    this.destroy();
+
+    const options = {
+      ...this._options,
+      autoplay: activeAnimation?.autoplay ?? this._options.autoplay ?? true,
+      loop: activeAnimation?.loop ?? this._options.loop ?? true,
+    };
+
+    this.setMode(activeAnimation?.playMode || this._mode);
+
+    this._lottie = lottie.loadAnimation({
+      ...options,
+      animationData: this._animation,
+    });
+
+    this.addEventListeners();
+    this._container.__lottie = this._lottie;
+    this.setCurrentState(PlayerState.Ready);
+
+    this.setDirection(activeAnimation?.direction ?? this._extraOptions.direction);
+    this.setSpeed(activeAnimation?.speed ?? this._extraOptions.speed);
+
+    const shouldAutoPlay = activeAnimation?.autoplay ?? this._options.autoplay;
+
+    if (shouldAutoPlay) {
+      this.play();
+    }
+
+    this._updateTestData();
+  }
+
   public async load(): Promise<void> {
     if (this.state.value === PlayerState.Loading) {
       console.warn('[dotLottie] Loading inprogress..');
@@ -491,38 +699,22 @@ export class DotLottiePlayer {
       const srcParsed = DotLottiePlayer.parseSrc(this._src);
 
       if (typeof srcParsed === 'string') {
-        this._animation = await this.getAnimationData(srcParsed);
+        const { activeAnimationId, animations, manifest } = await this.getAnimationData(srcParsed);
+
+        this._activeAnimationId = activeAnimationId;
+        this._animations = animations;
+        this._manifest = manifest;
+
+        this._animation = this._animations.get(this._activeAnimationId);
+
+        this.render();
       } else if (DotLottiePlayer.isLottie(srcParsed)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this._animation = srcParsed as any;
+        this.render();
       } else {
         throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
       }
-
-      /**
-       * Animation is ready to render. Continuue
-       */
-      // Clear previous animation, if any
-      this.destroy();
-
-      // Initialize lottie player and load animation
-      this._lottie = lottie.loadAnimation({
-        ...this._options,
-        animationData: this._animation,
-      });
-
-      this.addEventListeners();
-      this._container.__lottie = this._lottie;
-      this.setCurrentState(PlayerState.Ready);
-
-      this.setDirection(this._extraOptions.direction);
-      this.setSpeed(this._extraOptions.speed);
-
-      if (this._options.autoplay) {
-        this.play();
-      }
-
-      this._updateTestData();
     } catch (err) {
       this.setCurrentState(PlayerState.Error);
       console.log('err', err);
@@ -534,7 +726,7 @@ export class DotLottiePlayer {
     console.error(msg);
   }
 
-  protected async fetchLottieJSON(src: string): Promise<{ animations: Animation[]; manifest: Manifest }> {
+  protected async fetchLottieJSON(src: string): Promise<{ animations: Map<string, Animation>; manifest: Manifest }> {
     if (!src.toLowerCase().endsWith('.json')) throw new Error('[dotlottie-player]: parameter src must be .json');
 
     try {
@@ -546,7 +738,7 @@ export class DotLottiePlayer {
         },
       }).then(async (resp) => resp.json());
 
-      const animations: Animation[] = [];
+      const animations: Map<string, Animation> = new Map();
       const filename = src.substring(Number(src.lastIndexOf('/')) + 1, src.lastIndexOf('.'));
 
       const boilerplateManifest: Manifest = {
@@ -566,7 +758,7 @@ export class DotLottiePlayer {
         version: '1.0.0',
       };
 
-      animations.push(data);
+      animations.set(filename, data);
 
       return {
         animations,
@@ -577,18 +769,33 @@ export class DotLottiePlayer {
     }
   }
 
-  protected async getAnimationData(srcParsed: string): Promise<Animation> {
+  protected async getAnimationData(srcParsed: string): Promise<{
+    activeAnimationId: string;
+    animations: Map<string, Animation>;
+    manifest: Manifest;
+  }> {
     if (srcParsed.toLowerCase().endsWith('.json')) {
       const { animations, manifest } = await this.fetchLottieJSON(srcParsed);
 
-      if (!Array.isArray(animations) || animations.length === 0 || !animations[0]) {
+      if (!animations.size || manifest.animations.length === 0 || !manifest.animations[0]) {
         throw new Error('[dotLottie] No animation to load!');
       }
 
-      this._manifest = manifest;
-      this._animations = animations;
+      let activeAnimationId: string;
 
-      return animations[0];
+      if (manifest.activeAnimationId) {
+        this._activeAnimationId = manifest.activeAnimationId;
+        activeAnimationId = manifest.activeAnimationId;
+      } else {
+        this._activeAnimationId = manifest.animations[0].id;
+        activeAnimationId = manifest.animations[0].id;
+      }
+
+      return {
+        activeAnimationId,
+        animations,
+        manifest,
+      };
     }
 
     try {
@@ -596,10 +803,11 @@ export class DotLottiePlayer {
       const dotLottie = await dl.fromURL(srcParsed);
       const lottieAnimations = dotLottie.animations;
 
-      if (!lottieAnimations.length) {
+      if (!lottieAnimations.length || !dotLottie.manifest.animations.length || !dotLottie.manifest.animations[0]) {
         throw new Error('[dotLottie] No animation to load!');
       }
-      const animations: Animation[] = [];
+
+      const animations: Map<string, Animation> = new Map();
 
       for (const anim of lottieAnimations) {
         const animation = await dotLottie.getAnimation(anim.id, {
@@ -607,18 +815,27 @@ export class DotLottiePlayer {
         });
 
         if (animation) {
-          animations.push(await animation.toJSON());
+          animations.set(anim.id, await animation.toJSON());
         }
       }
 
-      if (!animations[0]) {
+      let activeAnimationId: string;
+
+      if (dotLottie.manifest.activeAnimationId) {
+        activeAnimationId = dotLottie.manifest.activeAnimationId;
+      } else {
+        activeAnimationId = dotLottie.manifest.animations[0].id;
+      }
+
+      if (!animations.size) {
         throw new Error('[dotLottie] No animation to load!');
       }
 
-      this._animations = animations;
-      this._manifest = dotLottie.manifest as Manifest;
-
-      return animations[0];
+      return {
+        activeAnimationId,
+        animations,
+        manifest: dotLottie.manifest as Manifest,
+      };
     } catch (error) {
       throw new Error(`[dotLottie]:getAnimationData error ${error}`);
     }

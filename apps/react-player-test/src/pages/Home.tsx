@@ -2,10 +2,15 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { DotLottiePlayer, PlayMode } from 'react-player';
+import type { DotLottieRefProps } from 'react-player';
 
 const lotties = [
+  {
+    from: 'Multiple lottie (.lottie)',
+    src: './amazing.lottie',
+  },
   {
     from: '.lottie',
     // eslint-disable-next-line no-secrets/no-secrets
@@ -51,6 +56,8 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
     }
   }
 
+  const lottie = useRef<DotLottieRefProps>(null);
+
   return (
     <>
       <h1>{props.from}</h1>
@@ -61,6 +68,38 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           alignItems: 'flex-start',
         }}
       >
+        <button
+          onClick={(): void => {
+            lottie.current?.prev();
+          }}
+        >
+          Prev
+        </button>
+        <button
+          onClick={(): void => {
+            lottie.current?.next({
+              autoplay: true,
+              speed: 2,
+              loop: true,
+            });
+          }}
+        >
+          Next
+        </button>
+        <button
+          onClick={(): void => {
+            lottie.current?.play('rocket.json1683821243430');
+          }}
+        >
+          Play
+        </button>
+        <button
+          onClick={(): void => {
+            lottie.current?.reset();
+          }}
+        >
+          Reset
+        </button>
         <button onClick={handleClick}>Swap src</button>
         <label>
           <input type="checkbox" onChange={(): void => setAutoPlay(!autoplay)} checked={autoplay} />
@@ -100,6 +139,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
         </label>
       </div>
       <DotLottiePlayer
+        lottieRef={lottie}
         src={src}
         style={{ height: '400px', display: 'inline-block' }}
         playOnHover={playOnHover}
