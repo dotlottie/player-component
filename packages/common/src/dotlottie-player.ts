@@ -8,6 +8,7 @@ import { signal } from '@preact/signals-core';
 import lottie from 'lottie-web';
 import type {
   AnimationConfig,
+  AnimationDirection,
   AnimationItem,
   AnimationEventName,
   RendererType,
@@ -64,11 +65,27 @@ export interface DotLottieElement extends Element {
   __lottie?: AnimationItem | null;
 }
 
-export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRendererConfig;
-export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> & {
-  mode?: PlayMode;
-  testId?: string | undefined;
+export interface ExtraOptions {
+  count: number;
+  direction: AnimationDirection;
+  intermission: number;
+  mode: PlayMode;
+  speed: number;
+}
+
+export const EXTRA_OPTIONS: ExtraOptions = {
+  count: 1,
+  direction: 1,
+  speed: 1,
+  intermission: 1,
+  mode: PlayMode.Normal,
 };
+
+export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRendererConfig;
+export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> &
+  ExtraOptions & {
+    testId?: string | undefined;
+  };
 
 declare global {
   interface Window {
@@ -82,6 +99,16 @@ export class DotLottiePlayer {
   protected _src: string | Record<string, unknown>;
 
   protected _options: AnimationConfig<RendererType>;
+
+  protected _extraOptions: ExtraOptions;
+
+  protected _count: number = 0;
+
+  protected _counter: number = 0;
+
+  protected _intermission: number = 0;
+
+  protected _counterInterval: number | null = null;
 
   protected _container: DotLottieElement;
 
@@ -116,11 +143,15 @@ export class DotLottiePlayer {
     this._src = src;
     this._container = container;
 
-    this.setMode(options?.mode || PlayMode.Normal);
-
     if (options?.testId) {
       this._testId = options.testId;
     }
+
+    this._extraOptions = this._extractExtraOptions(options || ({} as DotLottieConfig<RendererType>));
+
+    this.setCount(this._extraOptions.count);
+    this.setIntermission(this._extraOptions.intermission);
+    this.setMode(this._extraOptions.mode);
 
     this._options = {
       container,
@@ -128,13 +159,57 @@ export class DotLottiePlayer {
       autoplay: true,
       renderer: 'svg',
       rendererSettings: {
-        // scaleMode: 'noScale',
         clearCanvas: false,
         progressiveLoad: true,
         hideOnTransparent: true,
       },
       ...(options || {}),
     };
+  }
+
+  protected _extractExtraOptions(config: DotLottieConfig<RendererType>): ExtraOptions {
+    const extraOptions: ExtraOptions = EXTRA_OPTIONS;
+
+    for (const [key, value] of Object.entries(config)) {
+      if (!Object.hasOwn(EXTRA_OPTIONS, key)) continue;
+
+      switch (key as keyof ExtraOptions) {
+        case 'mode':
+          if (['bounce', 'normal'].includes(value)) {
+            extraOptions.mode = value;
+          }
+          break;
+
+        case 'count':
+          if (typeof value === 'number') {
+            extraOptions.count = value;
+          }
+          break;
+
+        case 'speed':
+          if (typeof value === 'number') {
+            extraOptions.speed = value;
+          }
+          break;
+
+        case 'direction':
+          if ([-1, 1].includes(value)) {
+            extraOptions.direction = value;
+          }
+          break;
+
+        case 'intermission':
+          if (typeof value === 'number') {
+            extraOptions.intermission = value;
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    return extraOptions;
   }
 
   protected _updateTestData(): void {
@@ -157,6 +232,12 @@ export class DotLottiePlayer {
     return this.state.value;
   }
 
+  protected clearCountTimer(): void {
+    if (this._counterInterval) {
+      clearInterval(this._counterInterval);
+    }
+  }
+
   protected setCurrentState(state: PlayerState): void {
     this.state.value = state;
     this._updateTestData();
@@ -174,6 +255,22 @@ export class DotLottiePlayer {
     if (this._src === src) return;
     this._src = src;
     this.load();
+  }
+
+  public get count(): number {
+    return this._count;
+  }
+
+  public setCount(count: number): void {
+    this._count = count;
+  }
+
+  public get intermission(): number {
+    return this._intermission;
+  }
+
+  public setIntermission(intermission: number): void {
+    this._intermission = intermission;
   }
 
   public get mode(): PlayMode {
@@ -200,7 +297,7 @@ export class DotLottiePlayer {
   public play(): void {
     if (!this._lottie) return;
 
-    if (this._lottie.currentFrame === 0 && !this.loop) {
+    if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
       this._lottie.goToAndPlay(this._lottie.totalFrames, true);
     } else {
       this._lottie.play();
@@ -215,18 +312,24 @@ export class DotLottiePlayer {
 
   public stop(): void {
     if (!this._lottie) return;
+    this._counter = 0;
+
+    this.setDirection(this._extraOptions.direction);
     this._lottie.stop();
     this.setCurrentState(PlayerState.Stopped);
   }
 
   public pause(): void {
     if (!this._lottie) return;
+
+    this.clearCountTimer();
     this._lottie.pause();
     this.setCurrentState(PlayerState.Paused);
   }
 
   public freeze(): void {
     if (!this._lottie) return;
+
     this._lottie.pause();
     this.setCurrentState(PlayerState.Frozen);
   }
@@ -236,6 +339,8 @@ export class DotLottiePlayer {
       this._container.__lottie.destroy();
       this._container.__lottie = null;
     }
+
+    this.clearCountTimer();
     this._lottie?.destroy();
   }
 
@@ -264,6 +369,7 @@ export class DotLottiePlayer {
 
   public setDirection(direction: 1 | -1): void {
     this._lottie?.setDirection(direction);
+    this._extraOptions.direction = direction;
     this._updateTestData();
   }
 
@@ -273,6 +379,7 @@ export class DotLottiePlayer {
 
   public setSpeed(speed: number): void {
     this._lottie?.setSpeed(speed);
+    this._extraOptions.speed = speed;
     this._updateTestData();
   }
 
@@ -332,13 +439,38 @@ export class DotLottiePlayer {
       if (this._lottie && this.loop && this._mode === PlayMode.Bounce) {
         const newDirection = (this._lottie.playDirection * -1) as 1 | -1;
 
-        this.setDirection(newDirection);
+        this._lottie.setDirection(newDirection);
         this._lottie.goToAndPlay(newDirection === -1 ? this._lottie.totalFrames - 1 : 0, true);
       }
     });
 
     this._lottie.addEventListener('complete', () => {
-      this.setCurrentState(PlayerState.Stopped);
+      if (this._lottie && !this.loop && this._count > 0) {
+        this._counter += this._mode === PlayMode.Bounce ? 0.5 : 1;
+        if (this._counter >= this._count) {
+          this.stop();
+
+          return;
+        }
+
+        this._counterInterval = setTimeout(() => {
+          if (!this._lottie) return;
+
+          let newDirection = this._lottie.playDirection;
+
+          if (this._mode === PlayMode.Bounce && typeof newDirection === 'number') {
+            newDirection = Number(newDirection) * -1;
+          }
+
+          const startFrame = newDirection === -1 ? this._lottie.totalFrames - 1 : 0;
+
+          this._lottie.setDirection(newDirection as 1 | -1);
+          this._lottie.goToAndPlay(startFrame, true);
+        }, this._intermission);
+      } else {
+        this.stop();
+        this.setCurrentState(PlayerState.Stopped);
+      }
     });
 
     for (const [[name], cb] of this._listeners) {
@@ -382,6 +514,9 @@ export class DotLottiePlayer {
       this.addEventListeners();
       this._container.__lottie = this._lottie;
       this.setCurrentState(PlayerState.Ready);
+
+      this.setDirection(this._extraOptions.direction);
+      this.setSpeed(this._extraOptions.speed);
 
       if (this._options.autoplay) {
         this.play();
