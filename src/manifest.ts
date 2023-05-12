@@ -42,23 +42,23 @@ export interface Manifest {
   animations: ManifestAnimation[];
 
   // Name of the author
-  author?: string | undefined;
+  author?: string;
 
   // Custom data to be made available to the player and animations
   custom?: Record<string, unknown>;
 
   // Description of the animation
-  description?: string | undefined;
+  description?: string;
 
   // Name and version of the software that created the dotLottie
-  generator?: string | undefined;
+  generator?: string;
 
   // Description of the animation
-  keywords?: string | undefined;
+  keywords?: string;
 
   // Revision version number of the dotLottie
-  revision?: number | undefined;
+  revision?: number;
 
   // Target dotLottie version
-  version?: string | undefined;
+  version?: string;
 }

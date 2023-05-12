@@ -3,19 +3,19 @@
  */
 
 export const createError = (message: string): Error => {
-  const error = new Error(`[dotLottie] ${message}`);
+  const error = new Error(`[dotLottie-player-component] ${message}`);
 
   return error;
 };
 
-export const logError = (message: string): void => {
-  const error = `[dotLottie] ${message}`;
+export const error = (message: string): void => {
+  const error = `[dotLottie-player-component] ${message}`;
 
   console.error(error);
 };
 
-export const logWarning = (message: string): void => {
-  const warning = `[dotLottie] ${message}`;
+export const warn = (message: string): void => {
+  const warning = `[dotLottie-player-component] ${message}`;
 
   console.warn(warning);
 };

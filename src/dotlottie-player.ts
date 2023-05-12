@@ -7,8 +7,8 @@ import styles from './dotlottie-player.styles';
 import { unzipSync, strFromU8 } from 'fflate';
 
 import pkg from '../package.json';
+import { createError, error, warn } from './utils';
 import { Manifest, ManifestAnimation } from './manifest';
-import { createError, logError, logWarning } from './utils';
 
 // Define valid player states
 export enum PlayerState {
@@ -387,7 +387,7 @@ export class DotLottiePlayer extends LitElement {
       const animationIndex = this._manifest.animations.findIndex((element) => element.id === this.activeAnimationId);
 
       if (animationIndex !== -1) this._activeAnimationIndex = animationIndex;
-      else logWarning('Active animation not found in manifest');
+      else warn('Active animation not found in manifest');
     } else if (this._manifest && this._manifest['activeAnimationId']) {
       //If present in manifest, play the default active animation
       const animationIndex = this._manifest.animations.findIndex(
@@ -395,7 +395,7 @@ export class DotLottiePlayer extends LitElement {
       );
 
       if (animationIndex !== -1) this._activeAnimationIndex = animationIndex;
-      else logWarning('Active animation not found in manifest');
+      else warn('Active animation not found in manifest');
     }
 
     const srcParsed = this._animations[this._activeAnimationIndex];
@@ -638,12 +638,6 @@ export class DotLottiePlayer extends LitElement {
             else (this as any)[propName] = propValue;
           }
         }
-
-        console.warn(
-          `The following properties were not defined on the custom element, but were specified in the configuration file: ${undefinedProps.join(
-            ', ',
-          )}`,
-        );
       } else {
         this._loadManifestOptions(this._activeAnimationIndex);
       }
@@ -740,14 +734,8 @@ export class DotLottiePlayer extends LitElement {
    * Play the previous animation. The order is taken from the manifest.
    */
   public previous(playbackOptions?: PlaybackOptions): void {
-    this._requireAnimationsInTheManifest();
-    this._requireAnimationsToBeLoaded();
-
-    if (this._activeAnimationIndex === 0) {
-      this._activeAnimationIndex = this._manifest.animations.length - 1;
-    } else {
-      this._activeAnimationIndex -= 1;
-    }
+    this._activeAnimationIndex =
+      (this._activeAnimationIndex - 1 + this._manifest.animations.length) % this._manifest.animations.length;
     this.play(this._activeAnimationIndex, playbackOptions);
   }
 
@@ -755,14 +743,7 @@ export class DotLottiePlayer extends LitElement {
    * Play the next animation. The order is taken from the manifest.
    */
   public next(playbackOptions?: PlaybackOptions): void {
-    this._requireAnimationsInTheManifest();
-    this._requireAnimationsToBeLoaded();
-
-    if (this._activeAnimationIndex === this._manifest.animations.length - 1) {
-      this._activeAnimationIndex = 0;
-    } else {
-      this._activeAnimationIndex += 1;
-    }
+    this._activeAnimationIndex = (this._activeAnimationIndex + 1) % this._manifest.animations.length;
     this.play(this._activeAnimationIndex, playbackOptions);
   }
 
@@ -770,9 +751,6 @@ export class DotLottiePlayer extends LitElement {
    * Reset to the initial state defined in the manifest.
    */
   public reset(): void {
-    this._requireAnimationsInTheManifest();
-    this._requireAnimationsToBeLoaded();
-
     if (this._manifest && this._manifest['activeAnimationId']) {
       this.play(this._manifest['activeAnimationId']);
     } else if (this.activeAnimationId) {
@@ -790,6 +768,8 @@ export class DotLottiePlayer extends LitElement {
     if (!this._lottie) {
       return;
     }
+    this._requireAnimationsInTheManifest();
+    this._requireAnimationsToBeLoaded();
 
     // If no animation is specified, play the current animation
     if (targetAnimation === undefined) {
@@ -819,7 +799,7 @@ export class DotLottiePlayer extends LitElement {
             this.load(this._animations[this._activeAnimationIndex], { playbackOptions });
           }
         } else {
-          logError(`No animation with the id '${targetAnimation}' was found.`);
+          error(`No animation with the id '${targetAnimation}' was found.`);
         }
       } else if (typeof targetAnimation === 'number') {
         if (this.src && this._manifest.animations && this._manifest.animations[targetAnimation]) {
@@ -827,7 +807,7 @@ export class DotLottiePlayer extends LitElement {
 
           this.load(this._animations[this._activeAnimationIndex], { playbackOptions });
         } else {
-          logError(`Animation not found at index: ${targetAnimation}`);
+          error(`Animation not found at index: ${targetAnimation}`);
         }
       }
     }
