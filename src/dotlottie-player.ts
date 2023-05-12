@@ -761,6 +761,12 @@ export class DotLottiePlayer extends LitElement {
     }
   }
 
+  private _validateAnimationIndex(animationIndex: number): void {
+    if (isNaN(animationIndex) || animationIndex < 0 || animationIndex >= this._manifest.animations.length) {
+      throw createError(`Animation index ${animationIndex} is out of bounds.`);
+    }
+  }
+
   /**
    * Start playing animation.
    */
@@ -802,6 +808,8 @@ export class DotLottiePlayer extends LitElement {
           error(`No animation with the id '${targetAnimation}' was found.`);
         }
       } else if (typeof targetAnimation === 'number') {
+        this._validateAnimationIndex(targetAnimation);
+
         if (this.src && this._manifest.animations && this._manifest.animations[targetAnimation]) {
           this._activeAnimationIndex = targetAnimation;
 
