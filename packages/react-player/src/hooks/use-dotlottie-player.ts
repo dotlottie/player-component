@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DotLottieConfig, PlaybackOptions } from 'common';
+import type { DotLottieConfig, PlaybackOptions, Manifest } from 'common';
 import { DotLottiePlayer, PlayerState } from 'common';
 import type { RendererType } from 'lottie-web';
 import type { MutableRefObject } from 'react';
@@ -16,6 +16,7 @@ interface UseDotLottiePlayerReturn {
 }
 
 export interface DotLottieRefProps {
+  getManifest: () => Manifest | undefined;
   next: (options?: PlaybackOptions) => void;
   play: (indexOrId?: string | number, options?: PlaybackOptions) => void;
   prev: (options?: PlaybackOptions) => void;
@@ -25,7 +26,7 @@ export interface DotLottieRefProps {
 export const useDotLottiePlayer = (
   src: Record<string, unknown> | string,
   container?: MutableRefObject<HTMLDivElement | null>,
-  config?: DotLottieConfig<RendererType> & { lottieRef: MutableRefObject<DotLottieRefProps> },
+  config?: DotLottieConfig<RendererType> & { lottieRef: MutableRefObject<DotLottieRefProps | undefined> },
 ): UseDotLottiePlayerReturn => {
   const [dotLottiePlayer, setDotLottiePlayer] = useState<DotLottiePlayer | undefined>();
   const [frame, setFrame] = useState(0);
@@ -55,6 +56,9 @@ export const useDotLottiePlayer = (
         },
         reset: (): void => {
           dotLottiePlayer?.reset();
+        },
+        getManifest: (): Manifest | undefined => {
+          return dotLottiePlayer?.getManifest();
         },
       } as DotLottieRefProps;
     }, [config.lottieRef.current]);

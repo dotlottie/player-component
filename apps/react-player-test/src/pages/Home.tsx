@@ -2,9 +2,9 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { DotLottiePlayer, PlayMode } from 'react-player';
-import type { DotLottieRefProps } from 'react-player';
+import type { DotLottieRefProps, ManifestAnimation } from 'react-player';
 
 const lotties = [
   {
@@ -46,6 +46,9 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
   const [speed, setSpeed] = useState(1);
   const [mode, setMode] = useState(PlayMode.Normal);
   const [playOnHover, setPlayOnHover] = useState(false);
+  const [activeAnimationId, setActiveAnimationId] = useState<string | undefined>();
+  const [animations, setAnimations] = useState<ManifestAnimation[]>();
+  const lottieRef = useRef<DotLottieRefProps>();
 
   function handleClick(): void {
     const otherLotties = lotties.filter((lottie) => lottie.src !== src);
@@ -56,7 +59,15 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
     }
   }
 
-  const lottie = useRef<DotLottieRefProps>(null);
+  useEffect(() => {
+    if (!animations) return;
+
+    const firstItem = animations[0];
+
+    if (firstItem) {
+      setActiveAnimationId(firstItem.id);
+    }
+  }, [animations]);
 
   return (
     <>
@@ -65,113 +76,136 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
         style={{
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'flex-start',
         }}
       >
-        <button
-          onClick={(): void => {
-            lottie.current?.prev();
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
           }}
         >
-          Prev
-        </button>
-        <button
-          onClick={(): void => {
-            lottie.current?.next({
-              autoplay: true,
-              speed: 2,
-              loop: true,
-            });
+          {Array.isArray(animations) && (
+            <select
+              defaultValue={activeAnimationId}
+              onChange={(event): void => setActiveAnimationId(event.target.value)}
+            >
+              {animations.map((anim) => {
+                return (
+                  <option key={anim.id} value={anim.id}>
+                    Render {anim.id}
+                  </option>
+                );
+              })}
+            </select>
+          )}
+          <button
+            onClick={(): void => {
+              lottieRef.current?.prev();
+            }}
+          >
+            Prev
+          </button>
+          <button
+            onClick={(): void => {
+              lottieRef.current?.next({
+                autoplay: true,
+                speed: 2,
+                loop: true,
+              });
+            }}
+          >
+            Next
+          </button>
+          <button
+            onClick={(): void => {
+              lottieRef.current?.play();
+            }}
+          >
+            Play
+          </button>
+          <button
+            onClick={(): void => {
+              lottieRef.current?.reset();
+            }}
+          >
+            Reset
+          </button>
+          <button onClick={handleClick}>Swap src</button>
+          <label>
+            <input type="checkbox" onChange={(): void => setAutoPlay(!autoplay)} checked={autoplay} />
+            Autoplay
+          </label>
+          <label>
+            <input type="checkbox" onChange={(): void => setLoop(!loop)} checked={loop} />
+            Loop
+          </label>
+          <label>
+            <input type="checkbox" onChange={(): void => setControls(!controls)} checked={controls} />
+            Controls
+          </label>
+          <label>
+            <input type="number" onChange={(evt): void => setSpeed(parseInt(evt.target.value, 10))} value={speed} />
+            speed
+          </label>
+          <label>
+            <button onClick={(): void => setDirection(-1)}>-1</button>
+            <button onClick={(): void => setDirection(1)}>1</button>
+            Direction
+          </label>
+          <label>
+            <select defaultValue={mode} onChange={(evt): void => setMode(evt.target.value as PlayMode)}>
+              <option value="normal">Normal</option>
+              <option value="bounce">Bounce</option>
+            </select>
+            Mode
+          </label>
+          <label>
+            <input type="color" onChange={(evt): void => setBackground(evt.target.value)} value={background} />
+            Background
+          </label>
+          <label>
+            <input type="checkbox" onChange={(): void => setPlayOnHover(!playOnHover)} checked={playOnHover} />
+            playOnHover
+          </label>
+        </div>
+        <DotLottiePlayer
+          lottieRef={lottieRef}
+          src={src}
+          style={{ height: '400px', display: 'inline-block' }}
+          playOnHover={playOnHover}
+          autoplay={autoplay}
+          loop={loop}
+          mode={mode}
+          speed={speed}
+          direction={direction}
+          background={background}
+          controls={controls}
+          activeAnimationId={activeAnimationId}
+          onPlayerReady={(): void => {
+            console.log('onPlayerReady', lottieRef.current?.getManifest()?.animations);
+            setAnimations(lottieRef.current?.getManifest()?.animations);
           }}
-        >
-          Next
-        </button>
-        <button
-          onClick={(): void => {
-            lottie.current?.play('rocket.json1683821243430');
+          onFreeze={(): void => {
+            console.log('onFreeze');
           }}
-        >
-          Play
-        </button>
-        <button
-          onClick={(): void => {
-            lottie.current?.reset();
+          onDataFail={(): void => {
+            console.log('onDataFail');
           }}
-        >
-          Reset
-        </button>
-        <button onClick={handleClick}>Swap src</button>
-        <label>
-          <input type="checkbox" onChange={(): void => setAutoPlay(!autoplay)} checked={autoplay} />
-          Autoplay
-        </label>
-        <label>
-          <input type="checkbox" onChange={(): void => setLoop(!loop)} checked={loop} />
-          Loop
-        </label>
-        <label>
-          <input type="checkbox" onChange={(): void => setControls(!controls)} checked={controls} />
-          Controls
-        </label>
-        <label>
-          <input type="number" onChange={(evt): void => setSpeed(parseInt(evt.target.value, 10))} value={speed} />
-          speed
-        </label>
-        <label>
-          <button onClick={(): void => setDirection(-1)}>-1</button>
-          <button onClick={(): void => setDirection(1)}>1</button>
-          Direction
-        </label>
-        <label>
-          <select defaultValue={mode} onChange={(evt): void => setMode(evt.target.value as PlayMode)}>
-            <option value="normal">Normal</option>
-            <option value="bounce">Bounce</option>
-          </select>
-          Mode
-        </label>
-        <label>
-          <input type="color" onChange={(evt): void => setBackground(evt.target.value)} value={background} />
-          Background
-        </label>
-        <label>
-          <input type="checkbox" onChange={(): void => setPlayOnHover(!playOnHover)} checked={playOnHover} />
-          playOnHover
-        </label>
+          onComplete={(): void => {
+            console.log('onComplete');
+          }}
+          onPause={(): void => {
+            console.log('onPause');
+          }}
+          onStop={(): void => {
+            console.log('onStop');
+          }}
+          onPlay={(): void => {
+            console.log('onPlay');
+          }}
+        />
       </div>
-      <DotLottiePlayer
-        lottieRef={lottie}
-        src={src}
-        style={{ height: '400px', display: 'inline-block' }}
-        playOnHover={playOnHover}
-        autoplay={autoplay}
-        loop={loop}
-        mode={mode}
-        speed={speed}
-        direction={direction}
-        background={background}
-        controls={controls}
-        onPlayerReady={(): void => {
-          console.log('onPlayerReady');
-        }}
-        onFreeze={(): void => {
-          console.log('onFreeze');
-        }}
-        onDataFail={(): void => {
-          console.log('onDataFail');
-        }}
-        onComplete={(): void => {
-          console.log('onComplete');
-        }}
-        onPause={(): void => {
-          console.log('onPause');
-        }}
-        onStop={(): void => {
-          console.log('onStop');
-        }}
-        onPlay={(): void => {
-          console.log('onPlay');
-        }}
-      />
     </>
   );
 };

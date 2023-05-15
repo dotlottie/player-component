@@ -17,6 +17,8 @@ import type {
   CanvasRendererConfig,
 } from 'lottie-web';
 
+import { createError, logError, logWarning } from './utils';
+
 export enum PlayerState {
   Error = 'error',
   Fetching = 'fetching',
@@ -76,19 +78,23 @@ export interface DotLottieElement extends Element {
 }
 
 export interface ExtraOptions {
+  activeAnimationId?: string | null;
   count: number;
   direction: AnimationDirection;
+  hover: boolean;
   intermission: number;
   mode: PlayMode;
   speed: number;
 }
 
 export const EXTRA_OPTIONS: ExtraOptions = {
+  activeAnimationId: null,
   count: 1,
   direction: 1,
   speed: 1,
   intermission: 1,
   mode: PlayMode.Normal,
+  hover: false,
 };
 
 export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRendererConfig;
@@ -111,6 +117,8 @@ export class DotLottiePlayer {
   protected _options: AnimationConfig<RendererType>;
 
   protected _extraOptions: ExtraOptions;
+
+  protected _hover: boolean = false;
 
   protected _count: number = 0;
 
@@ -164,6 +172,12 @@ export class DotLottiePlayer {
     this.setCount(this._extraOptions.count);
     this.setIntermission(this._extraOptions.intermission);
     this.setMode(this._extraOptions.mode);
+    this.setHover(this._extraOptions.hover);
+
+    if (this._extraOptions.activeAnimationId) {
+      this._activeAnimationId = this._extraOptions.activeAnimationId;
+      // this.setActiveAnimationId(this._extraOptions.activeAnimationId);
+    }
 
     this._options = {
       container,
@@ -177,6 +191,27 @@ export class DotLottiePlayer {
       },
       ...(options || {}),
     };
+
+    this._listenToHover();
+  }
+
+  protected _listenToHover(): void {
+    const onEnter = (): void => {
+      if (this._hover && this.currentState !== PlayerState.Playing) {
+        this.play();
+      }
+    };
+    const onLeave = (): void => {
+      if (this._hover && this.currentState === PlayerState.Playing) {
+        this.pause();
+      }
+    };
+
+    this._container.removeEventListener('mouseenter', onEnter);
+    this._container.removeEventListener('mouseleave', onLeave);
+
+    this._container.addEventListener('mouseenter', onEnter);
+    this._container.addEventListener('mouseleave', onLeave);
   }
 
   protected _extractExtraOptions(config: DotLottieConfig<RendererType>): ExtraOptions {
@@ -213,6 +248,18 @@ export class DotLottiePlayer {
         case 'intermission':
           if (typeof value === 'number') {
             extraOptions.intermission = value;
+          }
+          break;
+
+        case 'activeAnimationId':
+          if (typeof value === 'string') {
+            extraOptions.activeAnimationId = value;
+          }
+          break;
+
+        case 'hover':
+          if (typeof value === 'boolean') {
+            extraOptions.hover = value;
           }
           break;
 
@@ -279,6 +326,16 @@ export class DotLottiePlayer {
 
   public get intermission(): number {
     return this._intermission;
+  }
+
+  public get hover(): boolean {
+    return this.hover;
+  }
+
+  public setHover(hover: boolean): void {
+    if (typeof hover === 'boolean') {
+      this._hover = hover;
+    }
   }
 
   public setIntermission(intermission: number): void {
@@ -385,14 +442,19 @@ export class DotLottiePlayer {
     if (typeof activeAnimation === 'number') {
       const anim = this._manifest?.animations[activeAnimation];
 
-      if (!anim) return;
+      if (!anim) {
+        throw createError('animation not found.');
+      }
       this.render(anim);
     }
 
     if (typeof activeAnimation === 'string') {
       const anim = this._manifest?.animations.find((animation) => animation.id === activeAnimation);
 
-      if (!anim) return;
+      if (!anim) {
+        throw createError('animation not found.');
+      }
+
       this.render({
         ...anim,
         ...this._validatePlaybackOptions(options),
@@ -403,6 +465,13 @@ export class DotLottiePlayer {
   public get activeAnimationId(): string | undefined {
     return this._activeAnimationId;
   }
+
+  // public setActiveAnimationId(id: string): void {
+  //   if (this._activeAnimationId !== id) {
+  //     shouldRender = true;
+  //     this.render(this.)
+  //   }
+  // }
 
   public reset(): void {
     const activeId = this._manifest?.activeAnimationId;
@@ -424,13 +493,13 @@ export class DotLottiePlayer {
 
   public prev(options?: PlaybackOptions): void {
     if (!this._manifest || !this._manifest.animations.length) {
-      throw new Error('[dotlottie]: manifest not found.');
+      throw createError('manifest not found.');
     }
 
     const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._activeAnimationId);
 
     if (currentIndex === -1) {
-      throw new Error('[dotlottie]: animation not found.');
+      throw createError('animation not found.');
     }
 
     const nextAnim =
@@ -439,7 +508,7 @@ export class DotLottiePlayer {
       ];
 
     if (!nextAnim || !nextAnim.id) {
-      throw new Error('[dotlottie]: animation not found.');
+      throw createError('animation not found.');
     }
 
     this.render({
@@ -450,25 +519,29 @@ export class DotLottiePlayer {
 
   public next(options?: PlaybackOptions): void {
     if (!this._manifest || !this._manifest.animations.length) {
-      throw new Error('[dotlottie]: manifest not found.');
+      throw createError('manifest not found.');
     }
 
     const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._activeAnimationId);
 
     if (currentIndex === -1) {
-      throw new Error('[dotlottie]: animation not found.');
+      throw createError('animation not found.');
     }
 
     const nextAnim = this._manifest.animations[(currentIndex + 1) % this._manifest.animations.length];
 
     if (!nextAnim || !nextAnim.id) {
-      throw new Error('[dotlottie]: animation not found.');
+      throw createError('animation not found.');
     }
 
     this.render({
       ...nextAnim,
       ...this._validatePlaybackOptions(options),
     });
+  }
+
+  public getManifest(): Manifest | undefined {
+    return this._manifest;
   }
 
   public resize(): void {
@@ -519,7 +592,7 @@ export class DotLottiePlayer {
     try {
       this._lottie?.addEventListener(name, cb);
     } catch (error) {
-      console.error('[dotLottie]:addEventListener', error);
+      logError('[dotLottie]:addEventListener', error);
     }
   }
 
@@ -589,7 +662,7 @@ export class DotLottiePlayer {
 
       this._listeners.delete([name, cb]);
     } catch (error) {
-      console.error('[dotLottie]:removeEventListener', error);
+      logError('removeEventListener', error as string);
     }
   }
 
@@ -649,10 +722,12 @@ export class DotLottiePlayer {
       const anim = this._animations.get(activeAnimation.id);
 
       if (!anim) {
-        throw new Error('[dotlottie]: animation not found.');
+        throw createError('animation not found.');
       }
       this._activeAnimationId = activeAnimation.id;
       this._animation = anim;
+    } else if (!this._animation) {
+      throw createError('no animations selected.');
     }
 
     this.destroy();
@@ -688,7 +763,7 @@ export class DotLottiePlayer {
 
   public async load(): Promise<void> {
     if (this.state.value === PlayerState.Loading) {
-      console.warn('[dotLottie] Loading inprogress..');
+      logWarning('Loading inprogress..');
 
       return;
     }
@@ -701,11 +776,20 @@ export class DotLottiePlayer {
       if (typeof srcParsed === 'string') {
         const { activeAnimationId, animations, manifest } = await this.getAnimationData(srcParsed);
 
-        this._activeAnimationId = activeAnimationId;
+        if (!this._activeAnimationId) {
+          this._activeAnimationId = activeAnimationId;
+        }
+
         this._animations = animations;
         this._manifest = manifest;
 
-        this._animation = this._animations.get(this._activeAnimationId);
+        const animation = this._animations.get(this._activeAnimationId);
+
+        if (!animation) {
+          throw createError(`invalid animation id ${this._activeAnimationId}`);
+        }
+
+        this._animation = animation;
 
         this.render();
       } else if (DotLottiePlayer.isLottie(srcParsed)) {
@@ -713,21 +797,21 @@ export class DotLottiePlayer {
         this._animation = srcParsed as any;
         this.render();
       } else {
-        throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
+        throw createError('Load method failing. Object is not a valid Lottie.');
       }
     } catch (err) {
       this.setCurrentState(PlayerState.Error);
-      console.log('err', err);
+      logError('err', err);
     }
   }
 
   protected setErrorState(msg: string): void {
     this.setCurrentState(PlayerState.Error);
-    console.error(msg);
+    logError(msg);
   }
 
   protected async fetchLottieJSON(src: string): Promise<{ animations: Map<string, Animation>; manifest: Manifest }> {
-    if (!src.toLowerCase().endsWith('.json')) throw new Error('[dotlottie-player]: parameter src must be .json');
+    if (!src.toLowerCase().endsWith('.json')) throw createError('parameter src must be .json');
 
     try {
       const data = await fetch(src, {
@@ -765,7 +849,7 @@ export class DotLottiePlayer {
         manifest: boilerplateManifest,
       };
     } catch (error) {
-      throw new Error(`[dotlottie-player]:fetchLottieJSON error  ${error}`);
+      throw createError(`fetchLottieJSON error  ${error}`);
     }
   }
 
@@ -778,7 +862,7 @@ export class DotLottiePlayer {
       const { animations, manifest } = await this.fetchLottieJSON(srcParsed);
 
       if (!animations.size || manifest.animations.length === 0 || !manifest.animations[0]) {
-        throw new Error('[dotLottie] No animation to load!');
+        throw createError('No animation to load!');
       }
 
       let activeAnimationId: string;
@@ -804,7 +888,7 @@ export class DotLottiePlayer {
       const lottieAnimations = dotLottie.animations;
 
       if (!lottieAnimations.length || !dotLottie.manifest.animations.length || !dotLottie.manifest.animations[0]) {
-        throw new Error('[dotLottie] No animation to load!');
+        throw createError('no animation to load!');
       }
 
       const animations: Map<string, Animation> = new Map();
@@ -828,7 +912,7 @@ export class DotLottiePlayer {
       }
 
       if (!animations.size) {
-        throw new Error('[dotLottie] No animation to load!');
+        throw createError('no animation to load!');
       }
 
       return {
@@ -837,7 +921,7 @@ export class DotLottiePlayer {
         manifest: dotLottie.manifest as Manifest,
       };
     } catch (error) {
-      throw new Error(`[dotLottie]:getAnimationData error ${error}`);
+      throw createError(`getAnimationData error ${error}`);
     }
   }
 

@@ -11,6 +11,7 @@ import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
 import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
+  activeAnimationId?: string;
   autoplay?: boolean;
   background?: string;
   className?: string;
@@ -19,7 +20,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   direction?: 1 | -1;
   intermission?: number;
   loop?: boolean;
-  lottieRef: MutableRefObject<DotLottieRefProps>;
+  lottieRef: MutableRefObject<DotLottieRefProps | undefined>;
   mode?: PlayMode;
   onComplete?: () => void;
   onDataFail?: () => void;
@@ -50,6 +51,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   onPlay,
   onPause,
   onFreeze,
+  activeAnimationId,
   autoplay = false,
   background = 'transparent',
   controls = false,
@@ -70,18 +72,19 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
 }) => {
   const container = useRef(null);
   const [_prevState, setPrevState] = useState(PlayerState.Loading);
-  const [hover, setHover] = useState(false);
   const [isLoop, setIsLoop] = useState(loop);
 
   const { currentState, dotLottiePlayer, frame, seeker } = useDotLottiePlayer(src, container, {
     lottieRef,
     renderer,
+    activeAnimationId,
     rendererSettings: {
       clearCanvas: true,
       progressiveLoad: false,
       hideOnTransparent: true,
       ...rendererSettings,
     },
+    hover: playOnHover,
     loop: isLoop,
     direction,
     speed,
@@ -177,23 +180,12 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     dotLottiePlayer.setDirection(direction);
     dotLottiePlayer.setSpeed(speed);
     dotLottiePlayer.setMode(mode);
-  }, [loop, autoplay, speed, direction, mode]);
+    dotLottiePlayer.play(activeAnimationId);
+    dotLottiePlayer.setHover(playOnHover);
+  }, [loop, autoplay, speed, direction, mode, activeAnimationId, playOnHover]);
 
   // eslint-disable-next-line no-warning-comments
   // TODO: Do canvas resize on browser resize
-
-  // On playOnHover change
-  useEffect(() => {
-    if (!playOnHover) {
-      return;
-    }
-
-    if (hover && currentState !== PlayerState.Playing) {
-      dotLottiePlayer?.play();
-    } else {
-      dotLottiePlayer?.pause();
-    }
-  }, [playOnHover, hover]);
 
   /**
    * Adding event listeners if dotLottiePlayer is available
@@ -335,8 +327,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
       {...props}
     >
       <div
-        onMouseEnter={(): void => setHover(true)}
-        onMouseLeave={(): void => setHover(false)}
         ref={container}
         data-name="my-anim"
         className={`animation ${controls ? 'controls' : ''}`}
