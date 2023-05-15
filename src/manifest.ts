@@ -16,7 +16,7 @@ export interface ManifestAnimation {
   id: string;
 
   // If loop is a number, it defines the number of times the animation will loop
-  loop?: boolean;
+  loop?: string;
 
   // Choice between 'bounce' and 'normal'
   playMode?: PlayMode;

@@ -15,7 +15,14 @@
         <button id="reset-btn" onclick="resetLottie()">Reset Lottie</button>
         'activeAnimId' set via the manifest -> should be texting animation
       </div>
-      <dotlottie-player id="player" src="./your_amazing.lottie" id="dotlottie-player" controls style="height: 200px;">
+      <dotlottie-player
+        id="player"
+        src="./your_amazing.lottie"
+        id="dotlottie-player"
+        loop
+        controls
+        style="height: 200px;"
+      >
       </dotlottie-player>
       <div style="text-align: center; margin: auto; justify-content: center; align-items: center;">
         This player has 'activeAnimId' prop set to 1 so will play the lighthouse first.
@@ -27,7 +34,7 @@
         autoplay
         controls
         loop
-        speed="1"
+        speed="5"
         mode="normal"
         style="height: 200px;"
       >

@@ -4,7 +4,8 @@ import { TemplateResult } from 'lit/html.js';
 import lottie from 'lottie-web';
 import type { AnimationItem } from 'lottie-web';
 import styles from './dotlottie-player.styles';
-import { unzipSync, strFromU8 } from 'fflate';
+import { unzip, strFromU8 } from 'fflate';
+import type { Zippable } from 'fflate';
 
 import pkg from '../package.json';
 import { createError, error, warn } from './utils';
@@ -102,8 +103,8 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Whether to loop animation.
    */
-  @property({ type: Boolean })
-  public loop = false;
+  @property({ type: String })
+  public loop?: string;
 
   /**
    * Renderer to use.
@@ -150,7 +151,7 @@ export class DotLottiePlayer extends LitElement {
       controls: { type: Boolean },
       direction: { type: Number },
       hover: { type: Boolean },
-      loop: { type: Boolean },
+      loop: { type: String },
       renderer: { type: String },
       speed: { type: Number },
       src: { type: String },
@@ -162,9 +163,10 @@ export class DotLottiePlayer extends LitElement {
   }
 
   private _io?: any;
+  private _loop?: boolean;
   private _lottie?: any;
   private _prevState?: any;
-  private _counter = 0;
+  private _counter = 1;
   private _activeAnimationIndex = 0;
   private _manifest: Manifest;
   private _animations?: AnimationItem[];
@@ -177,6 +179,30 @@ export class DotLottiePlayer extends LitElement {
     this._manifest = {
       animations: [],
     };
+  }
+
+  /**
+   *
+   * @param loop - either a string representing a boolean or a number of loops to play
+   * @returns boolean - if loop was activated or not
+   */
+  private _parseLoop(loop: string): boolean {
+    const loopNb = parseInt(loop, 10);
+
+    if (Number.isInteger(loopNb) && loopNb > 0) {
+      this._count = loopNb;
+      this._loop = true;
+
+      return true;
+    } else if (typeof loop === 'string' && ['true', 'false'].includes(loop)) {
+      this._loop = loop === 'true';
+
+      return this._loop;
+    } else {
+      warn('loop must be a positive integer or a boolean');
+    }
+
+    return false;
   }
 
   /**
@@ -242,18 +268,27 @@ export class DotLottiePlayer extends LitElement {
       .then((buffer) => {
         return buffer.arrayBuffer();
       })
-      .then((buffer) => {
+      .then(async (buffer) => {
         const animations: AnimationItem[] = [];
         const animAndManifest: { animations: AnimationItem[]; manifest: Manifest | undefined } = {
           animations: [],
           manifest: undefined,
         };
 
-        const data = unzipSync(new Uint8Array(buffer));
+        const data = await new Promise<Zippable>((resolve, reject) => {
+          unzip(new Uint8Array(buffer), (error: any, data: any) => {
+            if (error) {
+              reject(error);
+            }
+
+            resolve(data);
+          });
+        });
+
         let lottieJson;
 
         if (data['manifest.json']) {
-          const str = strFromU8(data['manifest.json']);
+          const str = strFromU8(data['manifest.json'] as Uint8Array);
           const manifest = JSON.parse(str);
 
           if (!('animations' in manifest)) {
@@ -267,7 +302,7 @@ export class DotLottiePlayer extends LitElement {
           animAndManifest.manifest = manifest;
 
           for (const animName of manifest.animations) {
-            lottieJson = JSON.parse(strFromU8(data[`animations/${animName.id}.json`]));
+            lottieJson = JSON.parse(strFromU8(data[`animations/${animName.id}.json`] as Uint8Array));
 
             if ('assets' in lottieJson) {
               lottieJson.assets.map((asset: any) => {
@@ -277,7 +312,7 @@ export class DotLottiePlayer extends LitElement {
                 if (data[`images/${asset.p}`] === null) {
                   return;
                 }
-                const base64Png = btoa(strFromU8(data[`images/${asset.p}`], true));
+                const base64Png = btoa(strFromU8(data[`images/${asset.p}`] as Uint8Array, true));
                 asset.p = 'data:;base64,' + base64Png;
                 asset.e = 1;
               });
@@ -321,7 +356,7 @@ export class DotLottiePlayer extends LitElement {
             {
               id: filename,
               speed: 1,
-              loop: true,
+              loop: 'true',
               direction: 1,
             },
           ],
@@ -471,7 +506,7 @@ export class DotLottiePlayer extends LitElement {
         this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
         return;
       }
-      if (!this.loop || (this._count && this._counter >= this._count)) {
+      if (!this._loop || (this._count && this._counter >= this._count)) {
         this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
 
         if (this.mode === PlayMode.Bounce) {
@@ -845,6 +880,9 @@ export class DotLottiePlayer extends LitElement {
 
     this._counter = 0;
     this._lottie.stop();
+    if (this.direction === -1) {
+      this._lottie.goToAndStop(this._lottie.totalFrames, true);
+    }
     this.currentState = PlayerState.Stopped;
 
     this.dispatchEvent(new CustomEvent(PlayerEvents.Stop));
@@ -956,10 +994,9 @@ export class DotLottiePlayer extends LitElement {
    *
    * @param value Whether to enable looping. Boolean true enables looping.
    */
-  public setLooping(value: boolean): void {
+  public setLooping(value: string): void {
     if (this._lottie) {
-      this.loop = value;
-      this._lottie.loop = value;
+      this._lottie.loop = this._parseLoop(value);
     }
   }
 
@@ -974,7 +1011,9 @@ export class DotLottiePlayer extends LitElement {
    * Toggles animation looping.
    */
   public toggleLooping(): void {
-    this.setLooping(!this.loop);
+    const newLoop = !this._loop;
+
+    this.setLooping(newLoop.toString());
   }
 
   /**
@@ -1006,6 +1045,16 @@ export class DotLottiePlayer extends LitElement {
     // Add listener for Visibility API's change event.
     if (typeof document.hidden !== 'undefined') {
       document.addEventListener('visibilitychange', () => this._onVisibilityChange());
+    }
+
+    console.log(this.src, this.loop, this.getAttributeNames());
+
+    // Parse loop attribute if present as a number or string-boolean
+    // Also check if plain 'loop' prop is present
+    if (this.loop) {
+      this._parseLoop(this.loop);
+    } else if (this.hasAttribute('loop')) {
+      this._parseLoop('true');
     }
 
     // Setup lottie player
@@ -1100,7 +1149,7 @@ export class DotLottiePlayer extends LitElement {
         <button
           id="lottie-loop-toggle"
           @click=${this.toggleLooping}
-          class=${this.loop ? 'active' : ''}
+          class=${this._loop ? 'active' : ''}
           style="align-items:center;"
           tabindex="0"
           aria-label="loop-toggle"
