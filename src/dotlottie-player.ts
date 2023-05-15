@@ -1047,8 +1047,6 @@ export class DotLottiePlayer extends LitElement {
       document.addEventListener('visibilitychange', () => this._onVisibilityChange());
     }
 
-    console.log(this.src, this.loop, this.getAttributeNames());
-
     // Parse loop attribute if present as a number or string-boolean
     // Also check if plain 'loop' prop is present
     if (this.loop) {
