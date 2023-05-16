@@ -75,7 +75,7 @@ importers:
 
   packages/common:
     specifiers:
-      '@lottiefiles/dotlottie-js': ^2.1.0-beta.9
+      '@dotlottie/dotlottie-js': 0.1.3
       '@lottiefiles/lottie-types': ^1.0.1
       '@preact/signals-core': ^1.2.3
       '@rollup/plugin-commonjs': ^24.1.0
@@ -90,7 +90,7 @@ importers:
       rollup-plugin-dts: ^5.3.0
       typescript: ^4.7.4
     dependencies:
-      '@lottiefiles/dotlottie-js': 2.1.0-beta.9
+      '@dotlottie/dotlottie-js': 0.1.3
       '@preact/signals-core': 1.3.0
       lottie-web: 5.11.0
       react: 18.2.0
@@ -2234,6 +2234,17 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
+
+  /@dotlottie/dotlottie-js/0.1.3:
+    resolution: {integrity: sha512-m4YFfRHS9TB2eQkQZ5A1XrzS2wwwTzmaeEn4grBH5ss1FGjtVsgdhPIbsQQLI//81vpy2M5xgMQOLrsH22pNpQ==}
+    engines: {node: '>=18.0.0'}
+    dependencies:
+      browser-image-hash: 0.0.5
+      fflate: 0.7.4
+      filenamify: 6.0.0
+      sharp: 0.32.0
+      sharp-phash: 2.1.0_sharp@0.32.0
+    dev: false
 
   /@endemolshinegroup/cosmiconfig-typescript-loader/3.0.2_zmjss6mecb4soo3dpdlecld3xa:
     resolution: {integrity: sha512-QRVtqJuS1mcT56oHpVegkKBlgtWjXw/gHNWO3eL9oyB5Sc7HBoc2OLG/nYpVfT/Jejvo3NUrD0Udk7XgoyDKkA==}

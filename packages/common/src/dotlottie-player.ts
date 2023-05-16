@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { Dotlottie } from '@lottiefiles/dotlottie-js';
+import { DotLottie } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
 import { signal } from '@preact/signals-core';
 import lottie from 'lottie-web';
@@ -60,17 +60,6 @@ export interface Manifest {
   keywords?: string;
   revision?: number;
   version?: string;
-}
-
-export interface DotLottie {
-  [key: string]: unknown;
-  animations: {
-    [key: string]: string;
-  };
-  images: {
-    [key: string]: Uint8Array;
-  };
-  manifest: Manifest;
 }
 
 export interface DotLottieElement extends Element {
@@ -883,7 +872,7 @@ export class DotLottiePlayer {
     }
 
     try {
-      const dl = new Dotlottie();
+      const dl = new DotLottie();
       const dotLottie = await dl.fromURL(srcParsed);
       const lottieAnimations = dotLottie.animations;
 
@@ -894,12 +883,15 @@ export class DotLottiePlayer {
       const animations: Map<string, Animation> = new Map();
 
       for (const anim of lottieAnimations) {
-        const animation = await dotLottie.getAnimation(anim.id, {
-          inlineAssets: true,
-        });
+        const animation = await dotLottie.getAnimation(anim.id);
 
         if (animation) {
-          animations.set(anim.id, await animation.toJSON());
+          animations.set(
+            anim.id,
+            await animation.toJSON({
+              inlineAssets: true,
+            }),
+          );
         }
       }
 
