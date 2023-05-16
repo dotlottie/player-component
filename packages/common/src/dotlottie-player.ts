@@ -417,7 +417,7 @@ export class DotLottiePlayer {
   public play(activeAnimation?: string | number, options?: PlaybackOptions): void {
     if (!this._lottie) return;
 
-    if (!activeAnimation || typeof activeAnimation === 'string' && activeAnimation === this._activeAnimationId) {
+    if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._activeAnimationId)) {
       if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
         this._lottie.goToAndPlay(this._lottie.totalFrames, true);
       } else {
@@ -480,7 +480,7 @@ export class DotLottiePlayer {
     this.render(anim);
   }
 
-  public prev(options?: PlaybackOptions): void {
+  public previous(options?: PlaybackOptions): void {
     if (!this._manifest || !this._manifest.animations.length) {
       throw createError('manifest not found.');
     }

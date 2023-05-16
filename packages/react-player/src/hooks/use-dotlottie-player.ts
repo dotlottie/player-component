@@ -19,7 +19,7 @@ export interface DotLottieRefProps {
   getManifest: () => Manifest | undefined;
   next: (options?: PlaybackOptions) => void;
   play: (indexOrId?: string | number, options?: PlaybackOptions) => void;
-  prev: (options?: PlaybackOptions) => void;
+  previous: (options?: PlaybackOptions) => void;
   reset: () => void;
 }
 
@@ -48,8 +48,8 @@ export const useDotLottiePlayer = (
         play: (indexOrId?: string | number, options?: PlaybackOptions): void => {
           dotLottiePlayer?.play(indexOrId, options);
         },
-        prev: (options?: PlaybackOptions): void => {
-          dotLottiePlayer?.prev(options);
+        previous: (options?: PlaybackOptions): void => {
+          dotLottiePlayer?.previous(options);
         },
         next: (options?: PlaybackOptions): void => {
           dotLottiePlayer?.next(options);

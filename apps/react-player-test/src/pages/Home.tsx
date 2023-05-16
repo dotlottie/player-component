@@ -101,7 +101,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           )}
           <button
             onClick={(): void => {
-              lottieRef.current?.prev();
+              lottieRef.current?.previous();
             }}
           >
             Prev
