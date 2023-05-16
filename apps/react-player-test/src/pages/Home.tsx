@@ -108,11 +108,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           </button>
           <button
             onClick={(): void => {
-              lottieRef.current?.next({
-                autoplay: true,
-                speed: 2,
-                loop: true,
-              });
+              lottieRef.current?.next();
             }}
           >
             Next
