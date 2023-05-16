@@ -468,7 +468,9 @@ export class DotLottiePlayer {
     if (!activeId) {
       const anim = this._manifest?.animations[0];
 
-      if (!anim || !anim.id) return;
+      if (!anim || !anim.id) {
+        throw createError('animation not found.')
+      };
 
       this.render(anim);
     }
