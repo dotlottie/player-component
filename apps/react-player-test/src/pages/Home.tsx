@@ -178,27 +178,40 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           background={background}
           controls={controls}
           activeAnimationId={activeAnimationId}
-          onPlayerReady={(): void => {
-            console.log('onPlayerReady', lottieRef.current?.getManifest()?.animations);
-            setAnimations(lottieRef.current?.getManifest()?.animations);
-          }}
-          onFreeze={(): void => {
-            console.log('onFreeze');
-          }}
-          onDataFail={(): void => {
-            console.log('onDataFail');
-          }}
-          onComplete={(): void => {
-            console.log('onComplete');
-          }}
-          onPause={(): void => {
-            console.log('onPause');
-          }}
-          onStop={(): void => {
-            console.log('onStop');
-          }}
-          onPlay={(): void => {
-            console.log('onPlay');
+          onEvent={(name): void => {
+            switch (name) {
+              case 'ready':
+                console.log('onPlayerReady', lottieRef.current?.getManifest()?.animations);
+                setAnimations(lottieRef.current?.getManifest()?.animations);
+                break;
+
+              case 'freeze':
+                console.log('freeze');
+                break;
+
+              case 'data_fail':
+                console.log('data_fail');
+                break;
+
+              case 'complete':
+                console.log('complete');
+                break;
+
+              case 'pause':
+                console.log('pause');
+                break;
+
+              case 'stop':
+                console.log('stop');
+                break;
+
+              case 'play':
+                console.log('play');
+                break;
+
+              default:
+                break;
+            }
           }}
         />
       </div>

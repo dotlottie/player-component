@@ -10,6 +10,20 @@ import type { MutableRefObject } from 'react';
 import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
 import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 
+export enum PlayerEvents {
+  Complete = 'complete',
+  DataFail = 'data_fail',
+  DataReady = 'data_ready',
+  Error = 'error',
+  Frame = 'frame',
+  Freeze = 'freeze',
+  LoopComplete = 'loopComplete',
+  Pause = 'pause',
+  Play = 'play',
+  Ready = 'ready',
+  Stop = 'stop',
+}
+
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   activeAnimationId?: string;
   autoplay?: boolean;
@@ -21,16 +35,8 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   loop?: number | boolean;
   lottieRef?: MutableRefObject<DotLottieRefProps | undefined>;
   mode?: PlayMode;
-  onComplete?: () => void;
-  onDataFail?: () => void;
-  onDataReady?: () => void;
-  onEnterFrame?: (currentFrame: number, seeker: number) => void;
-  onError?: () => void;
-  onFreeze?: () => void;
-  onPause?: () => void;
-  onPlay?: () => void;
-  onPlayerReady?: () => void;
-  onStop?: () => void;
+  // TODO: properly handle unknown.
+  onEvent?: (name: PlayerEvents, params?: unknown) => void;
   playOnHover?: boolean;
   renderer?: 'svg' | 'canvas' | 'html';
   rendererSettings?: RendererSettings;
@@ -40,16 +46,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
 }
 
 export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
-  onError,
-  onEnterFrame,
-  onComplete,
-  onPlayerReady,
-  onDataReady,
-  onDataFail,
-  onStop,
-  onPlay,
-  onPause,
-  onFreeze,
+  onEvent,
   activeAnimationId,
   autoplay,
   background = 'transparent',
@@ -210,21 +207,25 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (!dotLottiePlayer) return undefined;
 
     dotLottiePlayer.addEventListener('DOMLoaded', () => {
-      onPlayerReady?.();
+      onEvent?.(PlayerEvents.Ready);
     });
 
     dotLottiePlayer.addEventListener('data_ready', () => {
-      onDataReady?.();
+      onEvent?.(PlayerEvents.DataReady);
     });
 
     dotLottiePlayer.addEventListener('data_failed', () => {
-      onDataFail?.();
+      onEvent?.(PlayerEvents.DataFail);
     });
 
     dotLottiePlayer.addEventListener('complete', () => {
       if (currentState !== PlayerState.Playing) {
-        onComplete?.();
+        onEvent?.(PlayerEvents.Complete);
       }
+    });
+
+    dotLottiePlayer.addEventListener('loopComplete', () => {
+      onEvent?.(PlayerEvents.LoopComplete);
     });
 
     return () => {
@@ -233,29 +234,29 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   }, [dotLottiePlayer]);
 
   useEffect(() => {
-    onEnterFrame?.(frame, seeker);
+    onEvent?.(PlayerEvents.LoopComplete, { frame, seeker });
   }, [frame]);
 
   useEffect(() => {
     switch (currentState) {
       case PlayerState.Stopped:
-        onStop?.();
+        onEvent?.(PlayerEvents.Stop);
         break;
 
       case PlayerState.Paused:
-        onPause?.();
+        onEvent?.(PlayerEvents.Pause);
         break;
 
       case PlayerState.Playing:
-        onPlay?.();
+        onEvent?.(PlayerEvents.Play);
         break;
 
       case PlayerState.Frozen:
-        onFreeze?.();
+        onEvent?.(PlayerEvents.Freeze);
         break;
 
       case PlayerState.Error:
-        onError?.();
+        onEvent?.(PlayerEvents.Error);
         break;
 
       default:
