@@ -42,7 +42,7 @@ export interface ManifestAnimation {
   hover?: boolean;
   id: string;
   intermission?: number;
-  loop?: boolean;
+  loop?: boolean | number;
   playMode?: PlayMode;
   speed?: number;
   themeColor?: string;
@@ -66,29 +66,20 @@ export interface DotLottieElement extends Element {
   __lottie?: AnimationItem | null;
 }
 
-export interface ExtraOptions {
-  activeAnimationId?: string | null;
-  count: number;
-  direction: AnimationDirection;
-  hover: boolean;
-  intermission: number;
-  mode: PlayMode;
-  speed: number;
-}
-
-export const EXTRA_OPTIONS: ExtraOptions = {
-  activeAnimationId: null,
-  count: 1,
+export const DEFAULT_OPTIONS: PlaybackOptions = {
+  autoplay: false,
   direction: 1,
-  speed: 1,
-  intermission: 1,
-  mode: PlayMode.Normal,
   hover: false,
+  intermission: 0,
+  loop: false,
+  playMode: PlayMode.Normal,
+  speed: 1,
 };
 
 export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRendererConfig;
 export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> &
-  ExtraOptions & {
+  PlaybackOptions & {
+    activeAnimationId?: string | null;
     testId?: string | undefined;
   };
 
@@ -105,7 +96,7 @@ export class DotLottiePlayer {
 
   protected _options: AnimationConfig<RendererType>;
 
-  protected _extraOptions: ExtraOptions;
+  protected _playbackOptions: PlaybackOptions;
 
   protected _hover: boolean = false;
 
@@ -156,16 +147,10 @@ export class DotLottiePlayer {
       this._testId = options.testId;
     }
 
-    this._extraOptions = this._extractExtraOptions(options || ({} as DotLottieConfig<RendererType>));
+    this._playbackOptions = this._validatePlaybackOptions(options || {});
 
-    this.setCount(this._extraOptions.count);
-    this.setIntermission(this._extraOptions.intermission);
-    this.setMode(this._extraOptions.mode);
-    this.setHover(this._extraOptions.hover);
-
-    if (this._extraOptions.activeAnimationId) {
-      this._activeAnimationId = this._extraOptions.activeAnimationId;
-      // this.setActiveAnimationId(this._extraOptions.activeAnimationId);
+    if (typeof options?.activeAnimationId === 'string') {
+      this._activeAnimationId = options.activeAnimationId;
     }
 
     this._options = {
@@ -203,65 +188,28 @@ export class DotLottiePlayer {
     this._container.addEventListener('mouseleave', onLeave);
   }
 
-  protected _extractExtraOptions(config: DotLottieConfig<RendererType>): ExtraOptions {
-    const extraOptions: ExtraOptions = EXTRA_OPTIONS;
+  protected _getOption<T extends keyof Required<PlaybackOptions>, V extends Required<PlaybackOptions>[T]>(
+    option: T,
+  ): V {
+    if (typeof this._playbackOptions[option] === 'undefined') {
+      // Option from manifest
+      const activeAnim = this._manifest?.animations.find((animation) => animation.id === this._activeAnimationId);
 
-    for (const [key, value] of Object.entries(config)) {
-      if (!Object.hasOwn(EXTRA_OPTIONS, key)) continue;
-
-      switch (key as keyof ExtraOptions) {
-        case 'mode':
-          if (['bounce', 'normal'].includes(value)) {
-            extraOptions.mode = value;
-          }
-          break;
-
-        case 'count':
-          if (typeof value === 'number') {
-            extraOptions.count = value;
-          }
-          break;
-
-        case 'speed':
-          if (typeof value === 'number') {
-            extraOptions.speed = value;
-          }
-          break;
-
-        case 'direction':
-          if ([-1, 1].includes(value)) {
-            extraOptions.direction = value;
-          }
-          break;
-
-        case 'intermission':
-          if (typeof value === 'number') {
-            extraOptions.intermission = value;
-          }
-          break;
-
-        case 'activeAnimationId':
-          if (typeof value === 'string') {
-            extraOptions.activeAnimationId = value;
-          }
-          break;
-
-        case 'hover':
-          if (typeof value === 'boolean') {
-            extraOptions.hover = value;
-          }
-          break;
-
-        default:
-          break;
+      if (activeAnim && activeAnim[option]) {
+        return activeAnim[option] as unknown as V;
       }
+
+      // Option from defaults
+      return DEFAULT_OPTIONS[option] as V;
     }
 
-    return extraOptions;
+    // Option from player props
+    return this._playbackOptions[option] as V;
   }
 
   protected _updateTestData(): void {
     if (!this._testId || !this._lottie) return;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!window.dotLottiePlayer) {
       window.dotLottiePlayer = {
         [this._testId]: {},
@@ -302,6 +250,7 @@ export class DotLottiePlayer {
   public updateSrc(src: Record<string, unknown> | string): void {
     if (this._src === src) return;
     this._src = src;
+    this._activeAnimationId = undefined;
     this.load();
   }
 
@@ -322,9 +271,8 @@ export class DotLottiePlayer {
   }
 
   public setHover(hover: boolean): void {
-    if (typeof hover === 'boolean') {
-      this._hover = hover;
-    }
+    if (typeof hover !== 'boolean') return;
+    this._hover = hover;
   }
 
   public setIntermission(intermission: number): void {
@@ -336,6 +284,7 @@ export class DotLottiePlayer {
   }
 
   public setMode(mode: PlayMode): void {
+    if (typeof mode !== 'string') return;
     this._mode = mode;
     this._updateTestData();
   }
@@ -352,7 +301,7 @@ export class DotLottiePlayer {
     this.setCurrentState(PlayerState.Stopped);
   }
 
-  protected _validatePlaybackOptions(options?: PlaybackOptions): Partial<PlaybackOptions> {
+  protected _validatePlaybackOptions(options?: Record<string, unknown>): Partial<PlaybackOptions> {
     if (!options) return {};
     const validatedOptions: Partial<PlaybackOptions> = {};
 
@@ -455,13 +404,6 @@ export class DotLottiePlayer {
     return this._activeAnimationId;
   }
 
-  // public setActiveAnimationId(id: string): void {
-  //   if (this._activeAnimationId !== id) {
-  //     shouldRender = true;
-  //     this.render(this.)
-  //   }
-  // }
-
   public reset(): void {
     const activeId = this._manifest?.activeAnimationId;
 
@@ -469,8 +411,8 @@ export class DotLottiePlayer {
       const anim = this._manifest?.animations[0];
 
       if (!anim || !anim.id) {
-        throw createError('animation not found.')
-      };
+        throw createError('animation not found.');
+      }
 
       this.render(anim);
     }
@@ -544,7 +486,7 @@ export class DotLottiePlayer {
     if (!this._lottie) return;
     this._counter = 0;
 
-    this.setDirection(this._extraOptions.direction);
+    this.setDirection(this._getOption('direction'));
     this._lottie.stop();
     this.setCurrentState(PlayerState.Stopped);
   }
@@ -598,8 +540,9 @@ export class DotLottiePlayer {
   }
 
   public setDirection(direction: 1 | -1): void {
+    if (typeof direction !== 'number') return;
     this._lottie?.setDirection(direction);
-    this._extraOptions.direction = direction;
+    this._playbackOptions.direction = direction;
     this._updateTestData();
   }
 
@@ -608,8 +551,9 @@ export class DotLottiePlayer {
   }
 
   public setSpeed(speed: number): void {
+    if (typeof speed !== 'number') return;
     this._lottie?.setSpeed(speed);
-    this._extraOptions.speed = speed;
+    this._playbackOptions.speed = speed;
     this._updateTestData();
   }
 
@@ -618,6 +562,7 @@ export class DotLottiePlayer {
   }
 
   public setAutoplay(value: boolean): void {
+    if (typeof value !== 'boolean') return;
     if (!this._lottie) return;
     this._lottie.autoplay = value;
     this._updateTestData();
@@ -632,9 +577,15 @@ export class DotLottiePlayer {
     return this._lottie?.loop ?? false;
   }
 
-  public setLoop(value: boolean): void {
+  public setLoop(value: boolean | number): void {
+    if (typeof value !== 'boolean' && typeof value !== 'number') return;
     if (!this._lottie) return;
-    this._lottie.setLoop(value);
+
+    if (typeof value === 'number') {
+      this._count = value;
+    }
+
+    this._lottie.setLoop(Boolean(value));
     this._updateTestData();
   }
 
@@ -725,11 +676,13 @@ export class DotLottiePlayer {
 
     const options = {
       ...this._options,
-      autoplay: activeAnimation?.autoplay ?? this._options.autoplay ?? true,
-      loop: activeAnimation?.loop ?? this._options.loop ?? true,
+      autoplay: activeAnimation?.autoplay ?? this._getOption('autoplay'),
+      loop: activeAnimation?.loop ?? Boolean(this._getOption('loop')),
     };
 
-    this.setMode(activeAnimation?.playMode || this._mode);
+    this.setMode(activeAnimation?.playMode || this._getOption('playMode'));
+    this.setIntermission(this._getOption('intermission'));
+    this.setHover(this._getOption('hover'));
 
     this._lottie = lottie.loadAnimation({
       ...options,
@@ -740,8 +693,8 @@ export class DotLottiePlayer {
     this._container.__lottie = this._lottie;
     this.setCurrentState(PlayerState.Ready);
 
-    this.setDirection(activeAnimation?.direction ?? this._extraOptions.direction);
-    this.setSpeed(activeAnimation?.speed ?? this._extraOptions.speed);
+    this.setDirection(activeAnimation?.direction ?? this._getOption('direction'));
+    this.setSpeed(activeAnimation?.speed ?? this._getOption('speed'));
 
     const shouldAutoPlay = activeAnimation?.autoplay ?? this._options.autoplay;
 

@@ -19,7 +19,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   count?: number;
   direction?: 1 | -1;
   intermission?: number;
-  loop?: boolean;
+  loop?: number | boolean;
   lottieRef: MutableRefObject<DotLottieRefProps | undefined>;
   mode?: PlayMode;
   onComplete?: () => void;
@@ -52,16 +52,16 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   onPause,
   onFreeze,
   activeAnimationId,
-  autoplay = false,
+  autoplay,
   background = 'transparent',
   controls = false,
-  direction = 1,
-  count = 1,
-  intermission = 0,
-  loop = false,
-  mode = PlayMode.Normal,
-  playOnHover = false,
-  speed = 1,
+  direction,
+  count,
+  intermission,
+  loop,
+  mode,
+  playOnHover,
+  speed,
   renderer = 'svg',
   rendererSettings = {},
   lottieRef,
@@ -180,9 +180,14 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     dotLottiePlayer.setDirection(direction);
     dotLottiePlayer.setSpeed(speed);
     dotLottiePlayer.setMode(mode);
-    dotLottiePlayer.play(activeAnimationId);
     dotLottiePlayer.setHover(playOnHover);
-  }, [loop, autoplay, speed, direction, mode, activeAnimationId, playOnHover]);
+  }, [loop, autoplay, speed, direction, mode, playOnHover]);
+
+  useEffect(() => {
+    if (activeAnimationId) {
+      dotLottiePlayer.play(activeAnimationId);
+    }
+  }, [activeAnimationId]);
 
   // eslint-disable-next-line no-warning-comments
   // TODO: Do canvas resize on browser resize
