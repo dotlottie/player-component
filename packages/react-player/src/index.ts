@@ -10,3 +10,4 @@ import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 export { PlayMode, PlayerState, DotLottieRefProps };
 export type { Manifest, ManifestAnimation };
 export * from './react-player';
+export * from './controls';

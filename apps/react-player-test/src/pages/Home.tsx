@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { DotLottiePlayer, PlayMode } from 'react-player';
+import { DotLottiePlayer, PlayMode, Controls } from 'react-player';
 import type { DotLottieRefProps, ManifestAnimation } from 'react-player';
 
 const lotties = [
@@ -213,7 +213,9 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
                 break;
             }
           }}
-        />
+        >
+          {controls && <Controls buttons={['loop', 'stop', 'play']} />}
+        </DotLottiePlayer>
       </div>
     </>
   );

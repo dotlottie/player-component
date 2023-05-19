@@ -8,7 +8,7 @@ import type { RendererType } from 'lottie-web';
 import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 
-interface UseDotLottiePlayerReturn {
+export interface UseDotLottiePlayerReturn {
   currentState: PlayerState;
   dotLottiePlayer?: DotLottiePlayer;
   frame: number;
