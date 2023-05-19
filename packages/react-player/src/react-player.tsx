@@ -2,8 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { RendererSettings } from 'common';
-import { PlayerState, PlayMode } from 'common';
+import type { RendererSettings, PlayMode } from 'common';
+import { PlayerState } from 'common';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import type { MutableRefObject } from 'react';
 
@@ -16,7 +16,6 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   background?: string;
   className?: string;
   controls?: boolean;
-  count?: number;
   direction?: 1 | -1;
   intermission?: number;
   loop?: number | boolean;
@@ -56,7 +55,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   background = 'transparent',
   controls = false,
   direction,
-  count,
   intermission,
   loop,
   mode,
@@ -88,9 +86,8 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     loop: isLoop,
     direction,
     speed,
-    count,
     intermission,
-    mode,
+    playMode: mode,
     autoplay: playOnHover ? false : autoplay,
     testId,
   });
@@ -175,15 +172,29 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   // On player props change
   useEffect(() => {
     if (!dotLottiePlayer) return;
-    dotLottiePlayer.setLoop(loop);
-    dotLottiePlayer.setAutoplay(autoplay);
-    dotLottiePlayer.setDirection(direction);
-    dotLottiePlayer.setSpeed(speed);
-    dotLottiePlayer.setMode(mode);
-    dotLottiePlayer.setHover(playOnHover);
+    if (typeof loop !== 'undefined') {
+      dotLottiePlayer.setLoop(loop);
+    }
+    if (typeof autoplay !== 'undefined') {
+      dotLottiePlayer.setAutoplay(autoplay);
+    }
+
+    if (typeof direction !== 'undefined') {
+      dotLottiePlayer.setDirection(direction);
+    }
+    if (typeof speed !== 'undefined') {
+      dotLottiePlayer.setSpeed(speed);
+    }
+    if (typeof mode !== 'undefined') {
+      dotLottiePlayer.setMode(mode);
+    }
+    if (typeof playOnHover !== 'undefined') {
+      dotLottiePlayer.setHover(playOnHover);
+    }
   }, [loop, autoplay, speed, direction, mode, playOnHover]);
 
   useEffect(() => {
+    if (!dotLottiePlayer) return;
     if (activeAnimationId) {
       dotLottiePlayer.play(activeAnimationId);
     }

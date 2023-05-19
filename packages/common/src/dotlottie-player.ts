@@ -320,7 +320,7 @@ export class DotLottiePlayer {
           break;
 
         case 'loop':
-          if (typeof value === 'boolean') {
+          if (typeof value === 'boolean' || typeof value === 'number') {
             validatedOptions.loop = value;
           }
           break;
@@ -484,6 +484,7 @@ export class DotLottiePlayer {
 
   public stop(): void {
     if (!this._lottie) return;
+    this.clearCountTimer();
     this._counter = 0;
 
     this.setDirection(this._getOption('direction'));
@@ -513,6 +514,7 @@ export class DotLottiePlayer {
     }
 
     this.clearCountTimer();
+    this._counter = 0;
     this._lottie?.destroy();
   }
 
@@ -580,6 +582,8 @@ export class DotLottiePlayer {
   public setLoop(value: boolean | number): void {
     if (typeof value !== 'boolean' && typeof value !== 'number') return;
     if (!this._lottie) return;
+
+    this.clearCountTimer();
 
     if (typeof value === 'number') {
       this._count = value;
@@ -674,15 +678,25 @@ export class DotLottiePlayer {
 
     this.destroy();
 
+    let shouldLoop = Boolean(this._getOption('loop'));
+
+    // Number loops are handled within on `complete` event. not by lottie-web
+    if (typeof activeAnimation?.loop === 'number') {
+      shouldLoop = false;
+    } else if (typeof activeAnimation?.loop === 'boolean') {
+      shouldLoop = true;
+    }
+
     const options = {
       ...this._options,
       autoplay: activeAnimation?.autoplay ?? this._getOption('autoplay'),
-      loop: activeAnimation?.loop ?? Boolean(this._getOption('loop')),
+      loop: shouldLoop,
     };
 
-    this.setMode(activeAnimation?.playMode || this._getOption('playMode'));
-    this.setIntermission(this._getOption('intermission'));
-    this.setHover(this._getOption('hover'));
+    this.setMode(activeAnimation?.playMode ?? this._getOption('playMode'));
+    this.setIntermission(activeAnimation?.intermission ?? this._getOption('intermission'));
+    this.setHover(activeAnimation?.hover ?? this._getOption('hover'));
+    this.setLoop(activeAnimation?.loop ?? this._getOption('loop'));
 
     this._lottie = lottie.loadAnimation({
       ...options,
