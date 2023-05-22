@@ -396,8 +396,9 @@ export class DotLottiePlayer extends LitElement {
 
     if (fileFormat === 'json') {
       manifestAndAnimation = await this._fetchJsonFile(url);
+    } else {
+      manifestAndAnimation = await this._fetchDotLottie(url);
     }
-    manifestAndAnimation = await this._fetchDotLottie(url);
 
     if (
       !manifestAndAnimation['animations'] ||
@@ -588,10 +589,8 @@ export class DotLottiePlayer extends LitElement {
    */
   public async load(
     src: string | AnimationItem,
-    options?: {
-      overrideRendererSettings?: Record<string, unknown>;
-      playbackOptions?: PlaybackOptions;
-    },
+    overrideRendererSettings?: Record<string, unknown>,
+    playbackOptions?: PlaybackOptions,
   ): Promise<void> {
     if (!this.shadowRoot) {
       return;
@@ -604,8 +603,8 @@ export class DotLottiePlayer extends LitElement {
       // Leave autoplay false as we call our own play method
       autoplay: false,
       renderer: this.renderer,
-      rendererSettings: options?.overrideRendererSettings
-        ? options?.overrideRendererSettings
+      rendererSettings: overrideRendererSettings
+        ? overrideRendererSettings
         : {
             scaleMode: 'noScale',
             clearCanvas: false,
@@ -630,8 +629,8 @@ export class DotLottiePlayer extends LitElement {
       }
 
       // If there are playback options they override everything else
-      if (options?.playbackOptions !== undefined) {
-        for (const [key, value] of Object.entries(options?.playbackOptions)) {
+      if (playbackOptions !== undefined) {
+        for (const [key, value] of Object.entries(playbackOptions)) {
           if (key === 'playMode') {
             value === 'normal' ? (this.mode = PlayMode.Normal) : (this.mode = PlayMode.Bounce);
           } else if (value !== undefined) {
@@ -836,16 +835,14 @@ export class DotLottiePlayer extends LitElement {
         if (animationIndex !== -1) {
           this._activeAnimationIndex = animationIndex;
 
-          if (this.src) {
-            this.load(this._animations[this._activeAnimationIndex], { playbackOptions });
-          }
+          this.load(this._animations[this._activeAnimationIndex], { playbackOptions });
         } else {
           error(`No animation with the id '${targetAnimation}' was found.`);
         }
       } else if (typeof targetAnimation === 'number') {
         this._validateAnimationIndex(targetAnimation);
 
-        if (this.src && this._manifest.animations && this._manifest.animations[targetAnimation]) {
+        if (this._manifest.animations && this._manifest.animations[targetAnimation]) {
           this._activeAnimationIndex = targetAnimation;
 
           this.load(this._animations[this._activeAnimationIndex], { playbackOptions });
