@@ -719,6 +719,13 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
+   * Get current animation's index
+   */
+  public getActiveAnimationIndex(): number {
+    return this._activeAnimationIndex;
+  }
+
+  /**
    * @returns The current number of animations
    */
   public animationCount(): number {
@@ -995,6 +1002,11 @@ export class DotLottiePlayer extends LitElement {
     if (this._lottie) {
       this._lottie.loop = this._parseLoop(value);
     }
+  }
+
+  public isLooping(): boolean {
+    if (this._loop) return this._loop;
+    return false;
   }
 
   /**

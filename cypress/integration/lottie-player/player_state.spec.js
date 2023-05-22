@@ -13,7 +13,7 @@ context("Player state", () => {
 
       playerOne.addEventListener("frame", () => {
         expect(playerOne.currentState).to.eq("playing");
-        expect(playerOne.loop).to.eq(true);
+        expect(playerOne.isLooping()).to.eq(true);
         done();
       }, { once: true });
     });
@@ -109,7 +109,7 @@ context("Player state", () => {
       const playerNine = $el.get(0);
 
       playerNine.addEventListener("play", () => {
-        expect(playerNine.getActive()).to.eq(1);
+        expect(playerNine.getActiveAnimationIndex()).to.eq(1);
         done();
       });
     });

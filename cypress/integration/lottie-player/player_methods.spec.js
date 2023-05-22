@@ -16,7 +16,7 @@ context("Player modifiers tests", () => {
       playerFour.addEventListener(
         "ready",
         () => {
-          expect(playerFour.getActive()).to.eq(1);
+          expect(playerFour.getActiveAnimationIndex()).to.eq(1);
           done();
         },
         {
@@ -33,7 +33,7 @@ context("Player modifiers tests", () => {
       playerFive.addEventListener(
         "ready",
         () => {
-          expect(playerFive.getActive()).to.eq(1);
+          expect(playerFive.getActiveAnimationIndex()).to.eq(1);
         }
       );
     });
