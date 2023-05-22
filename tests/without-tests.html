@@ -16,21 +16,20 @@
         'activeAnimId' set via the manifest -> should be texting animation
       </div>
       <dotlottie-player
-        id="player"
-        src="./your_amazing.lottie"
         id="dotlottie-player"
         loop
         controls
+        renderer="svg"
         style="height: 200px;"
+        src="./your_amazing.lottie"
       >
       </dotlottie-player>
       <div style="text-align: center; margin: auto; justify-content: center; align-items: center;">
         This player has 'activeAnimId' prop set to 1 so will play the lighthouse first.
       </div>
       <dotlottie-player
-        id="player"
+        id="player-2"
         src="./exploding_pigeon_and_lighthouse.lottie"
-        id="dotlottie-player"
         autoplay
         controls
         loop
@@ -46,7 +45,6 @@
       <dotlottie-player
         id="no-asset"
         src="https://assets1.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie"
-        id="dotlottie-player"
         autoplay
         controls
         loop
@@ -62,7 +60,6 @@
       <dotlottie-player
         id="external-image"
         src="https://assets3.lottiefiles.com/dotlotties/dlf10_wyuwp5kj.lottie"
-        id="dotlottie-player"
         autoplay
         controls
         loop
@@ -76,9 +73,8 @@
     <div style="margin-top: 50px; text-align: center">
       Internal image
       <dotlottie-player
-        id="player"
+        id="last-player"
         src="https://assets9.lottiefiles.com/dotlotties/dlf10_oehbsgal.lottie"
-        id="dotlottie-player"
         autoplay
         controls
         loop
@@ -91,8 +87,9 @@
   </body>
 
   <script>
-    let player = document.getElementById('player');
+    let player = document.getElementById('dotlottie-player');
     let i = 0;
+
 
     console.log(player.getVersions());
 
