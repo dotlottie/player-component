@@ -2,7 +2,7 @@ name: Release
 
 on:
   push:
-    branches: [master]
+    branches: [main]
 
 jobs:
   build:
@@ -59,10 +59,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org/
-      - run: yarn install --frozen-lockfile
+      - run: pnpm i
       - name: Build project
         continue-on-error: false
-        run: yarn build
+        run: pnpm run build
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # - run: npm publish --tag beta
