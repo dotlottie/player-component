@@ -59,10 +59,10 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org/
-      - run: pnpm i
+      - run: yarn
       - name: Build project
         continue-on-error: false
-        run: pnpm run build
+        run: yarn build
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       # - run: npm publish --tag beta
