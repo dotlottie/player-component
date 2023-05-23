@@ -11,18 +11,18 @@
   "author": "Jawish Hameed <jawish@lottiefiles.com>",
   "license": "MIT",
   "scripts": {
-    "build": "pnpm run build-dotlottie",
+    "build": "yarn build-dotlottie",
     "buildtsup": "tsup",
-    "build-with-coverage": "CODE_COVERAGE=true pnpm run build-dotlottie",
-    "build-dotlottie": "pnpm run cleanup && rollup -c",
+    "build-with-coverage": "CODE_COVERAGE=true yarn build-dotlottie",
+    "build-dotlottie": "yarn cleanup && rollup -c",
     "build:types": "tsc --declaration",
-    "dev": "pnpm run cleanup && rollup -c --watch",
+    "dev": "yarn cleanup && rollup -c --watch",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
     "cleanup": "shx rm -rf dist && shx mkdir dist",
     "serve": "node ./cypress/pages/server.js -p 8000 &",
     "start-cypress": "npx cypress run && npx nyc report --reporter=text-summary",
-    "run-tests": "pnpm run build-with-coverage && pnpm run serve && pnpm run start-cypress",
+    "run-tests": "yarn build-with-coverage && yarn serve && yarn start-cypress",
     "postrun-tests": "kill $(lsof -t -i:8000)"
   },
   "dependencies": {
