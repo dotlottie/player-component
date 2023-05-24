@@ -19,7 +19,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   direction?: 1 | -1;
   intermission?: number;
   loop?: number | boolean;
-  lottieRef: MutableRefObject<DotLottieRefProps | undefined>;
+  lottieRef?: MutableRefObject<DotLottieRefProps | undefined>;
   mode?: PlayMode;
   onComplete?: () => void;
   onDataFail?: () => void;

@@ -26,7 +26,7 @@ export interface DotLottieRefProps {
 export const useDotLottiePlayer = (
   src: Record<string, unknown> | string,
   container?: MutableRefObject<HTMLDivElement | null>,
-  config?: DotLottieConfig<RendererType> & { lottieRef: MutableRefObject<DotLottieRefProps | undefined> },
+  config?: DotLottieConfig<RendererType> & { lottieRef?: MutableRefObject<DotLottieRefProps | undefined> },
 ): UseDotLottiePlayerReturn => {
   const [dotLottiePlayer, setDotLottiePlayer] = useState<DotLottiePlayer | undefined>();
   const [frame, setFrame] = useState(0);
@@ -44,6 +44,7 @@ export const useDotLottiePlayer = (
 
   if (config?.lottieRef) {
     useEffect(() => {
+      if (!config.lottieRef) return;
       config.lottieRef.current = {
         play: (indexOrId?: string | number, options?: PlaybackOptions): void => {
           dotLottiePlayer?.play(indexOrId, options);
