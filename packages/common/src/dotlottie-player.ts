@@ -4,7 +4,6 @@
 
 import { DotLottie } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
-import { signal } from '@preact/signals-core';
 import lottie from 'lottie-web';
 import type {
   AnimationConfig,
@@ -17,6 +16,7 @@ import type {
   CanvasRendererConfig,
 } from 'lottie-web';
 
+import { Store } from './store';
 import { createError, logError, logWarning } from './utils';
 
 export enum PlayerState {
@@ -62,7 +62,7 @@ export interface Manifest {
   version?: string;
 }
 
-export interface DotLottieElement extends Element {
+export interface DotLottieElement extends HTMLDivElement {
   __lottie?: AnimationItem | null;
 }
 
@@ -76,10 +76,12 @@ export const DEFAULT_OPTIONS: PlaybackOptions = {
   speed: 1,
 };
 
+export type { RendererType };
 export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRendererConfig;
 export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> &
   PlaybackOptions & {
     activeAnimationId?: string | null;
+    background?: string;
     testId?: string | undefined;
   };
 
@@ -88,6 +90,28 @@ declare global {
     dotLottiePlayer: Record<string, Record<string, unknown>>;
   }
 }
+
+export interface DotLottiePlayerState extends PlaybackOptions {
+  background: string;
+  currentState: PlayerState;
+  frame: number;
+  intermission: number;
+  seeker: number;
+}
+
+export const DEFAULT_STATE: DotLottiePlayerState = {
+  autoplay: false,
+  currentState: PlayerState.Initial,
+  frame: 0,
+  seeker: 0,
+  direction: 1,
+  hover: false,
+  loop: false,
+  playMode: PlayMode.Normal,
+  speed: 1,
+  background: 'transparent',
+  intermission: 0,
+};
 
 export class DotLottiePlayer {
   protected _lottie?: AnimationItem;
@@ -114,6 +138,8 @@ export class DotLottiePlayer {
 
   protected _mode: PlayMode = PlayMode.Normal;
 
+  protected _background: string = 'transparent';
+
   protected _animation: Animation | undefined;
 
   protected _animations: Map<string, Animation> = new Map();
@@ -126,11 +152,13 @@ export class DotLottiePlayer {
 
   protected _listeners = new Map();
 
-  public state = signal<PlayerState>(PlayerState.Initial);
+  public _currentState = PlayerState.Initial;
 
-  public frame = signal<number>(0);
+  public state = new Store<DotLottiePlayerState>(DEFAULT_STATE);
 
-  public seeker = signal<number>(0);
+  protected _frame: number = 0;
+
+  protected _seeker: number = 0;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -151,6 +179,10 @@ export class DotLottiePlayer {
 
     if (typeof options?.activeAnimationId === 'string') {
       this._activeAnimationId = options.activeAnimationId;
+    }
+
+    if (typeof options?.background === 'string') {
+      this.setBackground(options.background);
     }
 
     this._options = {
@@ -217,7 +249,7 @@ export class DotLottiePlayer {
     }
     window.dotLottiePlayer[this._testId] = {
       direction: this._lottie.playDirection,
-      currentState: this.state.value,
+      currentState: this._currentState,
       loop: this.loop,
       mode: this._mode,
       speed: this._lottie.playSpeed,
@@ -225,7 +257,7 @@ export class DotLottiePlayer {
   }
 
   public get currentState(): PlayerState {
-    return this.state.value;
+    return this._currentState;
   }
 
   protected clearCountTimer(): void {
@@ -235,7 +267,8 @@ export class DotLottiePlayer {
   }
 
   protected setCurrentState(state: PlayerState): void {
-    this.state.value = state;
+    this._currentState = state;
+    this._notify();
     this._updateTestData();
   }
 
@@ -273,10 +306,12 @@ export class DotLottiePlayer {
   public setHover(hover: boolean): void {
     if (typeof hover !== 'boolean') return;
     this._hover = hover;
+    this._notify();
   }
 
   public setIntermission(intermission: number): void {
     this._intermission = intermission;
+    this._notify();
   }
 
   public get mode(): PlayMode {
@@ -286,6 +321,7 @@ export class DotLottiePlayer {
   public setMode(mode: PlayMode): void {
     if (typeof mode !== 'string') return;
     this._mode = mode;
+    this._notify();
     this._updateTestData();
   }
 
@@ -397,6 +433,14 @@ export class DotLottiePlayer {
         ...anim,
         ...this._validatePlaybackOptions(options),
       });
+    }
+  }
+
+  public togglePlay(): void {
+    if (this.currentState === PlayerState.Playing) {
+      this.pause();
+    } else {
+      this.play();
     }
   }
 
@@ -531,6 +575,36 @@ export class DotLottiePlayer {
     }
   }
 
+  public getState(): DotLottiePlayerState {
+    return {
+      autoplay: this._lottie?.autoplay ?? false,
+      currentState: this._currentState,
+      frame: this._frame,
+      seeker: this._seeker,
+      direction: (this._lottie?.playDirection ?? 1) as AnimationDirection,
+      hover: this._hover,
+      loop: this._lottie?.loop ?? false,
+      playMode: this._mode,
+      speed: this._lottie?.playSpeed ?? 1,
+      background: this._background,
+      intermission: this._intermission,
+    };
+  }
+
+  protected subscriptions = new Set<(state: DotLottiePlayerState) => void>();
+
+  public subscribe(selector: (state: DotLottiePlayerState) => void): () => void {
+    this.subscriptions.add(selector);
+
+    return () => {
+      this.subscriptions.delete(selector);
+    };
+  }
+
+  protected _notify(): void {
+    this.state.setState(this.getState());
+  }
+
   public get totalFrames(): number {
     return this._lottie?.totalFrames || 0;
   }
@@ -545,6 +619,7 @@ export class DotLottiePlayer {
     if (typeof direction !== 'number') return;
     this._lottie?.setDirection(direction);
     this._playbackOptions.direction = direction;
+    this._notify();
     this._updateTestData();
   }
 
@@ -556,6 +631,7 @@ export class DotLottiePlayer {
     if (typeof speed !== 'number') return;
     this._lottie?.setSpeed(speed);
     this._playbackOptions.speed = speed;
+    this._notify();
     this._updateTestData();
   }
 
@@ -567,6 +643,7 @@ export class DotLottiePlayer {
     if (typeof value !== 'boolean') return;
     if (!this._lottie) return;
     this._lottie.autoplay = value;
+    this._notify();
     this._updateTestData();
   }
 
@@ -590,12 +667,22 @@ export class DotLottiePlayer {
     }
 
     this._lottie.setLoop(Boolean(value));
+    this._notify();
     this._updateTestData();
   }
 
   public toggleLoop(): void {
     if (!this._lottie) return;
     this.setLoop(!this._lottie.loop);
+  }
+
+  public get background(): string {
+    return this._background;
+  }
+
+  public setBackground(color: string): void {
+    this._background = color;
+    this._container.style.backgroundColor = color;
   }
 
   public removeEventListener(name: AnimationEventName, cb?: () => unknown): void {
@@ -616,8 +703,9 @@ export class DotLottiePlayer {
     if (!this._lottie) return;
     this._lottie.addEventListener('enterFrame', () => {
       if (!this._lottie) return;
-      this.frame.value = this._lottie.currentFrame;
-      this.seeker.value = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
+      this._frame = this._lottie.currentFrame;
+      this._seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
+      this._notify();
     });
 
     this._lottie.addEventListener('loopComplete', () => {
@@ -720,7 +808,7 @@ export class DotLottiePlayer {
   }
 
   public async load(): Promise<void> {
-    if (this.state.value === PlayerState.Loading) {
+    if (this._currentState === PlayerState.Loading) {
       logWarning('Loading inprogress..');
 
       return;

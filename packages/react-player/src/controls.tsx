@@ -3,9 +3,10 @@
  */
 
 import { PlayerState } from 'common';
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 
-import { DotLottieContext } from './react-player';
+import { useDotLottieContext } from './dotlottie-context';
+import { useDotLottieState } from './hooks/use-dotlottie-state';
 
 const AVAILABLE_BUTTONS = ['play', 'stop', 'loop'] as const;
 
@@ -15,10 +16,15 @@ interface ControlsProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS, ...props }) => {
-  const { currentState, dotLottiePlayer, frame, loop, seeker } = useContext(DotLottieContext);
+  const dotLottiePlayer = useDotLottieContext();
 
-  const [isLoop, setIsLoop] = useState(loop);
-  const [_prevState, setPrevState] = useState(PlayerState.Loading);
+  const isLoop = useDotLottieState((state) => state.loop);
+  const currentState = useDotLottieState((state) => state.currentState);
+  const seeker = useDotLottieState((state) => state.seeker);
+  const frame = useDotLottieState((state) => state.frame);
+
+  const [_stateBeforeSeek, setStateBeforeSeek] = useState(PlayerState.Paused);
+
   const isPlaying = useMemo(() => {
     return currentState === PlayerState.Playing;
   }, [currentState]);
@@ -55,7 +61,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
     if (nextState === PlayerState.Playing) {
       dotLottiePlayer.goToAndPlay(nextFrame, true);
     } else {
-      dotLottiePlayer.goToAndStop(nextFrame, true);
+      dotLottiePlayer.goToAndPlay(nextFrame, true);
       dotLottiePlayer.pause();
     }
   }
@@ -69,27 +75,11 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
     seek(newFrame, currentState);
   }
 
-  function togglePlay(): void {
-    if (!dotLottiePlayer) return;
-    if (currentState === PlayerState.Playing) {
-      dotLottiePlayer.pause();
-    } else {
-      dotLottiePlayer.play();
-    }
-  }
-
-  function setLooping(value: boolean): void {
-    if (dotLottiePlayer) {
-      setIsLoop(value);
-      dotLottiePlayer.setLoop(value);
-    }
-  }
-
   return (
     <div aria-label="lottie-animation-controls" className="toolbar" {...props}>
       {buttons.includes('play') && (
         <button
-          onClick={togglePlay}
+          onClick={(): void => dotLottiePlayer?.togglePlay()}
           className={`${isPlaying || isPaused ? 'active' : ''}`}
           style={{ alignItems: 'center' }}
           // tabindex={0}
@@ -127,11 +117,11 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
         value={seeker || 0}
         onInput={(event): void => handleSeekChange(event)}
         onMouseDown={(): void => {
-          setPrevState(currentState);
+          setStateBeforeSeek(currentState);
           dotLottiePlayer?.freeze();
         }}
         onMouseUp={(): void => {
-          seek(frame || 0, _prevState);
+          seek(frame || 0, _stateBeforeSeek);
         }}
         aria-valuemin={1}
         aria-valuemax={100}
@@ -143,7 +133,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       {buttons.includes('loop') && (
         <button
           onClick={(): void => {
-            setLooping(!isLoop);
+            dotLottiePlayer?.toggleLoop();
           }}
           className={isLoop ? 'active' : ''}
           style={{ alignItems: 'center' }}
