@@ -106,7 +106,7 @@
       playerFour.addEventListener(
         'ready',
         e => {
-          playerFour.setActive(1);
+          playerFour.play(1);
         },
         { once: true },
       );
@@ -115,7 +115,7 @@
       playerFive.addEventListener(
         'ready',
         e => {
-          playerFive.setActive('lighthouse');
+          playerFive.play('lighthouse');
         },
         { once: true },
       );
