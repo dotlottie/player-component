@@ -152,7 +152,9 @@ export class DotLottiePlayer {
 
   protected _listeners = new Map();
 
-  public _currentState = PlayerState.Initial;
+  protected _currentState = PlayerState.Initial;
+
+  protected _stateBeforeFreeze = PlayerState.Initial;
 
   public state = new Store<DotLottiePlayerState>(DEFAULT_STATE);
 
@@ -335,6 +337,38 @@ export class DotLottiePlayer {
     if (!this._lottie) return;
     this._lottie.goToAndStop(value, isFrame, name);
     this.setCurrentState(PlayerState.Stopped);
+  }
+
+  public seek(value: number | string): void {
+    if (!this._lottie) return;
+
+    let frameValue = value;
+
+    if (typeof frameValue === 'number') {
+      frameValue = Math.round(frameValue);
+    }
+
+    // Extract frame number from either number or percentage value
+    const matches = /^(\d+)(%?)$/u.exec(frameValue.toString());
+
+    if (!matches) {
+      return;
+    }
+
+    // Calculate and set the frame number
+    const nextFrame = matches[2] === '%' ? (this.totalFrames * Number(matches[1])) / 100 : matches[1];
+
+    // Set seeker to new frame number
+    if (nextFrame === undefined) return;
+    // Send lottie player to the new frame
+    this._lottie.goToAndPlay(nextFrame, true);
+    if (this.currentState === PlayerState.Playing) {
+      this.play();
+    } else if (this.currentState === PlayerState.Frozen) {
+      this.freeze();
+    } else {
+      this.pause();
+    }
   }
 
   protected _validatePlaybackOptions(options?: Record<string, unknown>): Partial<PlaybackOptions> {
@@ -547,8 +581,21 @@ export class DotLottiePlayer {
   public freeze(): void {
     if (!this._lottie) return;
 
+    if (this.currentState !== PlayerState.Frozen) {
+      this._stateBeforeFreeze = this.currentState;
+    }
     this._lottie.pause();
     this.setCurrentState(PlayerState.Frozen);
+  }
+
+  public unfreeze(): void {
+    if (!this._lottie) return;
+
+    if (this._stateBeforeFreeze === PlayerState.Playing) {
+      this.play();
+    } else {
+      this.pause();
+    }
   }
 
   public destroy(): void {

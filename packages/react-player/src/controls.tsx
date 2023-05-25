@@ -3,7 +3,7 @@
  */
 
 import { PlayerState } from 'common';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
 import { useDotLottieContext } from './dotlottie-context';
 import { useDotLottieState } from './hooks/use-dotlottie-state';
@@ -18,12 +18,9 @@ interface ControlsProps extends React.HTMLAttributes<HTMLDivElement> {
 export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS, ...props }) => {
   const dotLottiePlayer = useDotLottieContext();
 
-  const isLoop = useDotLottieState((state) => state.loop);
+  const loop = useDotLottieState((state) => state.loop);
   const currentState = useDotLottieState((state) => state.currentState);
   const seeker = useDotLottieState((state) => state.seeker);
-  const frame = useDotLottieState((state) => state.frame);
-
-  const [_stateBeforeSeek, setStateBeforeSeek] = useState(PlayerState.Paused);
 
   const isPlaying = useMemo(() => {
     return currentState === PlayerState.Playing;
@@ -36,44 +33,6 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   const isStopped = useMemo(() => {
     return currentState === PlayerState.Stopped;
   }, [currentState]);
-
-  function seek(value: number | string, nextState: PlayerState): void {
-    if (!dotLottiePlayer) return;
-    let frameValue = value;
-
-    if (typeof frameValue === 'number') {
-      frameValue = Math.round(frameValue);
-    }
-
-    // Extract frame number from either number or percentage value
-    const matches = /^(\d+)(%?)$/u.exec(frameValue.toString());
-
-    if (!matches) {
-      return;
-    }
-
-    // Calculate and set the frame number
-    const nextFrame = matches[2] === '%' ? (dotLottiePlayer.totalFrames * Number(matches[1])) / 100 : matches[1];
-
-    // Set seeker to new frame number
-    if (nextFrame === undefined) return;
-    // Send lottie player to the new frame
-    if (nextState === PlayerState.Playing) {
-      dotLottiePlayer.goToAndPlay(nextFrame, true);
-    } else {
-      dotLottiePlayer.goToAndPlay(nextFrame, true);
-      dotLottiePlayer.pause();
-    }
-  }
-
-  function handleSeekChange(event: React.FormEvent<HTMLInputElement>): void {
-    if (!dotLottiePlayer || !Number(event.currentTarget.value)) {
-      return;
-    }
-    const newFrame: number = (Number(event.currentTarget.value) / 100) * dotLottiePlayer.totalFrames;
-
-    seek(newFrame, currentState);
-  }
 
   return (
     <div aria-label="lottie-animation-controls" className="toolbar" {...props}>
@@ -115,13 +74,12 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
         step={0}
         max={100}
         value={seeker || 0}
-        onInput={(event): void => handleSeekChange(event)}
+        onInput={(event): void => dotLottiePlayer?.seek(String(event.currentTarget.value).concat('%'))}
         onMouseDown={(): void => {
-          setStateBeforeSeek(currentState);
           dotLottiePlayer?.freeze();
         }}
         onMouseUp={(): void => {
-          seek(frame || 0, _stateBeforeSeek);
+          dotLottiePlayer?.unfreeze();
         }}
         aria-valuemin={1}
         aria-valuemax={100}
@@ -135,7 +93,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
           onClick={(): void => {
             dotLottiePlayer?.toggleLoop();
           }}
-          className={isLoop ? 'active' : ''}
+          className={loop ? 'active' : ''}
           style={{ alignItems: 'center' }}
           aria-label="loop-toggle"
         >
