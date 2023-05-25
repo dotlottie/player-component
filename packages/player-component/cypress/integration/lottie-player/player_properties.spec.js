@@ -87,7 +87,7 @@ context("Player properties", () => {
       const playerSeven = $el.get(0);
 
       playerSeven.addEventListener("ready", () => {
-        expect(playerSeven.loop).to.eq(true);
+        expect(playerSeven.isLooping()).to.eq(true);
         done();
       });
     });
