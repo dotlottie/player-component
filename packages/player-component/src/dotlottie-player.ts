@@ -49,8 +49,6 @@ export interface Versions {
 
 export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
 
-const ELEMENT_NAME = 'dotlottie-player';
-
 /**
  * DotLottiePlayer web component class
  *
@@ -144,7 +142,7 @@ export class DotLottiePlayer extends LitElement {
   public activeAnimationId?: string | null = null;
 
   // static get properties
-  public static get properties() {
+  public static getProperties() {
     return {
       mode: { type: String },
       autoplay: { type: Boolean },
@@ -234,8 +232,8 @@ export class DotLottiePlayer extends LitElement {
     const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
     let notLottie = false;
 
-    if (json.animations && json.animations.length) {
-      json.animations.forEach((animation: Record<string, unknown>): void => {
+    if (json['animations'] && json['animations'].length) {
+      json['animations'].forEach((animation: Record<string, unknown>): void => {
         if (!this.isLottie(animation)) notLottie = true;
       });
       return notLottie;
@@ -310,7 +308,7 @@ export class DotLottiePlayer extends LitElement {
                 if (!asset.p) {
                   return;
                 }
-                if (!data[`images/${asset.p}`]) {
+                if (data[`images/${asset.p}`] === null) {
                   return;
                 }
                 const base64Png = btoa(strFromU8(data[`images/${asset.p}`] as Uint8Array, true));
@@ -389,13 +387,20 @@ export class DotLottiePlayer extends LitElement {
   }
 
   private async _fetchFileAndLoad(url: string): Promise<AnimationItem> {
-    const fileFormat = url.split(/[#?]/)[0].split('.').pop()?.toLowerCase();
+    let fragments = url.split(/\#|\?/)[0]?.split('.');
+
+    if (fragments?.length === 0) {
+      throw createError('Invalid url!');
+    }
+
+    const fileExtension = fragments?.pop()?.toLowerCase();
+
     let manifestAndAnimation: { animations: AnimationItem[]; manifest: Manifest | undefined } = {
       animations: [],
       manifest: undefined,
     };
 
-    if (fileFormat === 'json') {
+    if (fileExtension === 'json') {
       manifestAndAnimation = await this._fetchJsonFile(url);
     } else {
       manifestAndAnimation = await this._fetchDotLottie(url);
@@ -452,35 +457,38 @@ export class DotLottiePlayer extends LitElement {
       throw createError('Animation not found in manifest');
     }
 
-    const { autoplay, direction, loop, playMode, speed, hover, intermission } =
-      this._manifest.animations[animationIndex];
+    const animation = this._manifest.animations[animationIndex];
 
-    if (autoplay !== undefined) {
-      this.autoplay = autoplay;
-    }
+    if (animation) {
+      const { autoplay, direction, loop, playMode, speed, hover, intermission } = animation;
 
-    if (direction !== undefined) {
-      this.direction = direction;
-    }
+      if (autoplay !== undefined) {
+        this.autoplay = autoplay;
+      }
 
-    if (loop !== undefined) {
-      this.loop = loop;
-    }
+      if (direction !== undefined) {
+        this.direction = direction;
+      }
 
-    if (playMode !== undefined) {
-      this.mode = playMode;
-    }
+      if (loop !== undefined) {
+        this.loop = loop;
+      }
 
-    if (speed !== undefined) {
-      this.speed = speed;
-    }
+      if (playMode !== undefined) {
+        this.mode = playMode;
+      }
 
-    if (hover !== undefined) {
-      this.hover = hover;
-    }
+      if (speed !== undefined) {
+        this.speed = speed;
+      }
 
-    if (intermission !== undefined) {
-      this.intermission = intermission;
+      if (hover !== undefined) {
+        this.hover = hover;
+      }
+
+      if (intermission !== undefined) {
+        this.intermission = intermission;
+      }
     }
   }
 
@@ -640,12 +648,12 @@ export class DotLottiePlayer extends LitElement {
         }
       } else if (
         this._activeAnimationIndex === 0 ||
-        this._manifest.animations[this._activeAnimationIndex].id === this.activeAnimationId ||
-        this._manifest.animations[this._activeAnimationIndex].id === this._manifest.activeAnimationId
+        this._manifest.animations[this._activeAnimationIndex]?.id === this.activeAnimationId ||
+        this._manifest.animations[this._activeAnimationIndex]?.id === this._manifest.activeAnimationId
       ) {
         // Check which props were defined by the user and use those, otherwise use what was defined for the animation on the manifest
         const animation = this._manifest.animations[this._activeAnimationIndex];
-        const propNames = Object.keys(DotLottiePlayer.properties);
+        const propNames = Object.keys(DotLottiePlayer.getProperties());
         const attrNames = Array.from(this.getAttributeNames());
 
         // We need to reset settings to the prop values first
@@ -661,7 +669,7 @@ export class DotLottiePlayer extends LitElement {
         const undefinedProps = propNames.filter(
           (propName) =>
             !attrNames.includes(propName.toLowerCase()) &&
-            this._manifest.animations[this._activeAnimationIndex].hasOwnProperty(propName),
+            this._manifest.animations[this._activeAnimationIndex]?.hasOwnProperty(propName),
         );
 
         for (const propName of undefinedProps) {
@@ -716,7 +724,11 @@ export class DotLottiePlayer extends LitElement {
   public getActiveId(): string | null {
     if (!this._manifest.animations) return null;
 
-    return this._manifest.animations[this._activeAnimationIndex].id;
+    const animation = this._manifest.animations[this._activeAnimationIndex];
+
+    if (!animation) return null;
+
+    return animation.id;
   }
 
   /**
@@ -839,21 +851,23 @@ export class DotLottiePlayer extends LitElement {
 
       if (typeof targetAnimation === 'string') {
         const animationIndex = this._manifest.animations.findIndex((element) => element.id === targetAnimation);
+        const animation = this._animations[animationIndex];
 
-        if (animationIndex !== -1) {
+        if (animationIndex !== -1 && animation !== undefined) {
           this._activeAnimationIndex = animationIndex;
 
-          this.load(this._animations[this._activeAnimationIndex], { playbackOptions });
+          this.load(animation, { playbackOptions });
         } else {
           error(`No animation with the id '${targetAnimation}' was found.`);
         }
       } else if (typeof targetAnimation === 'number') {
         this._validateAnimationIndex(targetAnimation);
+        const animation = this._animations[targetAnimation];
 
-        if (this._manifest.animations && this._manifest.animations[targetAnimation]) {
+        if (this._manifest.animations && this._manifest.animations[targetAnimation] && animation !== undefined) {
           this._activeAnimationIndex = targetAnimation;
 
-          this.load(this._animations[this._activeAnimationIndex], { playbackOptions });
+          this.load(animation, { playbackOptions });
         } else {
           error(`Animation not found at index: ${targetAnimation}`);
         }
@@ -1027,8 +1041,9 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
-   * Returns the styles for the component.
+   * Returns the styles for the component. Overriding causes styles to not be applied.
    */
+  // @ts-ignore
   static get styles() {
     return styles;
   }
@@ -1036,11 +1051,11 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Initialize everything on component first render.
    */
-  protected async firstUpdated(): Promise<void> {
+  protected override async firstUpdated(): Promise<void> {
     // Add intersection observer for detecting component being out-of-view.
     if ('IntersectionObserver' in window) {
       this._io = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
-        if (entries[0].isIntersecting) {
+        if (entries[0] !== undefined && entries[0].isIntersecting) {
           if (this.currentState === PlayerState.Frozen) {
             this.play();
           }
@@ -1075,7 +1090,7 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Cleanup on component destroy.
    */
-  public disconnectedCallback(): void {
+  public override disconnectedCallback(): void {
     // Remove intersection observer for detecting component being out-of-view.
     if (this._io) {
       this._io.disconnect();
@@ -1172,7 +1187,7 @@ export class DotLottiePlayer extends LitElement {
     `;
   }
 
-  render(): TemplateResult | void {
+  override render(): TemplateResult | void {
     const className: string = this.controls ? 'main controls' : 'main';
     const animationClass: string = this.controls ? 'animation controls' : 'animation';
     return html`

@@ -1,50 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <title>dotlottie player web component</title>
-    <script src="./dotlottie-player.js"></script>
-    <script src="./dotlottie-player.js"></script>
-  </head>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+        <title>dotlottie player web component</title>
+        <script src="./dotlottie-player.js"></script>
+    </head>
 
-  <body>
-    <button id="reset-btn">Reset test counter to 0</button>
+    <body>
+        <button id="reset-btn">Reset test counter to 0</button>
 
-    <dotlottie-player
-      id="dotlottie-player"
-      autoplay
-      controls
-      loop
-      speed="1"
-      mode="normal"
-      style="height: 500px; display: block;"
-    >
-    </dotlottie-player>
+        <dotlottie-player
+            id="dotlottie-player"
+            autoplay
+            controls
+            loop
+            speed="1"
+            mode="normal"
+            style="height: 500px; display: block"
+        >
+        </dotlottie-player>
 
-    <dotlottie-player
-      id="dotlottie-external-image"
-      autoplay
-      controls
-      loop
-      speed="1"
-      mode="normal"
-      style="height: 500px; display: block;"
-    >
-    </dotlottie-player>
+        <dotlottie-player
+            id="dotlottie-external-image"
+            autoplay
+            controls
+            loop
+            speed="1"
+            mode="normal"
+            style="height: 500px; display: block"
+        >
+        </dotlottie-player>
 
-    <dotlottie-player
-      id="dotlottie-inline-image"
-      autoplay
-      controls
-      loop
-      speed="1"
-      mode="normal"
-      style="height: 500px; display: block;"
-    >
-    </dotlottie-player>
+        <dotlottie-player
+            id="dotlottie-inline-image"
+            autoplay
+            controls
+            loop
+            speed="1"
+            mode="normal"
+            style="height: 500px; display: block"
+        >
+        </dotlottie-player>
 
-    <!-- <dotlottie-player autoplay controls loop src="./sample_dotlottie.lottie" speed="1" mode="normal"
+        <!-- <dotlottie-player autoplay controls loop src="./sample_dotlottie.lottie" speed="1" mode="normal"
     style="height: 500px; display: inline-block;">
   </dotlottie-player>
   <dotlottie-player autoplay controls loop src="https://assets7.lottiefiles.com/dotlotties/dlf10_mhlsv27t.lottie"
@@ -53,171 +52,175 @@
   <dotlottie-player autoplay controls loop src="https://assets5.lottiefiles.com/dotlotties/dlf10_ltbtv9x1.lottie"
     speed="1" mode="normal" style="height: 500px; display: block;">
   </dotlottie-player> -->
-  </body>
+    </body>
 
-  <script>
-    let LAUNCH_AMOUNT = 10;
+    <script>
+        let LAUNCH_AMOUNT = 10;
 
-    let resetBtn = document.getElementById('reset-btn');
-    resetBtn.addEventListener('click', () => {
-      localStorage.setItem('launchCounter', '0');
-    });
+        let resetBtn = document.getElementById('reset-btn');
+        resetBtn.addEventListener('click', () => {
+            localStorage.setItem('launchCounter', '0');
+        });
 
-    let testOneComplete = false;
-    let testTwoComplete = false;
-    let testThreeComplete = false;
+        let testOneComplete = false;
+        let testTwoComplete = false;
+        let testThreeComplete = false;
 
-    window.addEventListener('load', () => {
-      let launchCounter = localStorage.getItem('launchCounter');
-      let noAssetsTime = localStorage.getItem('noAssetsTime');
-      let externalImagesTime = localStorage.getItem('externalImagesTime');
-      let inlineImagesTime = localStorage.getItem('inlineImagesTime');
+        window.addEventListener('load', () => {
+            let launchCounter = localStorage.getItem('launchCounter');
+            let noAssetsTime = localStorage.getItem('noAssetsTime');
+            let externalImagesTime = localStorage.getItem('externalImagesTime');
+            let inlineImagesTime = localStorage.getItem('inlineImagesTime');
 
-      if (launchCounter === null) {
-        localStorage.setItem('launchCounter', '0');
-        launchCounter = 0;
-      }
-      if (noAssetsTime === null) {
-        localStorage.setItem('noAssetsTime', '0');
-        noAssetsTime = 0;
-      }
-      if (externalImagesTime === null) {
-        localStorage.setItem('externalImagesTime', '0');
-        externalImagesTime = 0;
-      }
-      if (inlineImagesTime === null) {
-        localStorage.setItem('inlineImagesTime', '0');
-        inlineImagesTime = 0;
-      }
+            if (launchCounter === null) {
+                localStorage.setItem('launchCounter', '0');
+                launchCounter = 0;
+            }
+            if (noAssetsTime === null) {
+                localStorage.setItem('noAssetsTime', '0');
+                noAssetsTime = 0;
+            }
+            if (externalImagesTime === null) {
+                localStorage.setItem('externalImagesTime', '0');
+                externalImagesTime = 0;
+            }
+            if (inlineImagesTime === null) {
+                localStorage.setItem('inlineImagesTime', '0');
+                inlineImagesTime = 0;
+            }
 
-      function loadDotLottieWithoutAssets(savePerformance = true) {
-        let startTime = 0;
-        let endTime = 0;
-        let player = document.getElementById('dotlottie-player');
+            function loadDotLottieWithoutAssets(savePerformance = true) {
+                let startTime = 0;
+                let endTime = 0;
+                let player = document.getElementById('dotlottie-player');
 
-        startTime = performance.now();
-        player.load('https://assets1.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie');
+                startTime = performance.now();
+                player.load('https://assets1.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie');
 
-        player.addEventListener(
-          'ready',
-          () => {
-            if (!savePerformance) return;
-            endTime = performance.now();
+                player.addEventListener(
+                    'ready',
+                    () => {
+                        if (!savePerformance) return;
+                        endTime = performance.now();
 
-            console.log(`Time to load and play dotLottie : ${endTime - startTime} millseconds.`);
+                        console.log(`Time to load and play dotLottie : ${endTime - startTime} millseconds.`);
 
-            let time = endTime - startTime;
-            let currNoAssetsTime = parseInt(noAssetsTime);
-            currNoAssetsTime += time;
-            localStorage.setItem('noAssetsTime', currNoAssetsTime.toString());
-            testOneComplete = true;
-          },
-          { once: true },
-        );
+                        let time = endTime - startTime;
+                        let currNoAssetsTime = parseInt(noAssetsTime);
+                        currNoAssetsTime += time;
+                        localStorage.setItem('noAssetsTime', currNoAssetsTime.toString());
+                        testOneComplete = true;
+                    },
+                    { once: true },
+                );
 
-        return player;
-      }
+                return player;
+            }
 
-      function loadDotLottieWithExternalImage(savePerformance = true) {
-        let startTime = 0;
-        let endTime = 0;
-        let player = document.getElementById('dotlottie-external-image');
+            function loadDotLottieWithExternalImage(savePerformance = true) {
+                let startTime = 0;
+                let endTime = 0;
+                let player = document.getElementById('dotlottie-external-image');
 
-        startTime = performance.now();
-        player.load('https://assets3.lottiefiles.com/dotlotties/dlf10_wyuwp5kj.lottie');
+                startTime = performance.now();
+                player.load('https://assets3.lottiefiles.com/dotlotties/dlf10_wyuwp5kj.lottie');
 
-        player.addEventListener(
-          'ready',
-          () => {
-            if (!savePerformance) return;
+                player.addEventListener(
+                    'ready',
+                    () => {
+                        if (!savePerformance) return;
 
-            endTime = performance.now();
+                        endTime = performance.now();
 
-            console.log(`Time to load and play external image dotLottie : ${endTime - startTime} millseconds.`);
+                        console.log(
+                            `Time to load and play external image dotLottie : ${endTime - startTime} millseconds.`,
+                        );
 
-            let time = endTime - startTime;
-            let currExternalImagesTime = parseInt(inlineImagesTime);
-            currExternalImagesTime += time;
-            localStorage.setItem('externalImagesTime', currExternalImagesTime.toString());
-            testTwoComplete = true;
-          },
-          { once: true },
-        );
+                        let time = endTime - startTime;
+                        let currExternalImagesTime = parseInt(inlineImagesTime);
+                        currExternalImagesTime += time;
+                        localStorage.setItem('externalImagesTime', currExternalImagesTime.toString());
+                        testTwoComplete = true;
+                    },
+                    { once: true },
+                );
 
-        return player;
-      }
+                return player;
+            }
 
-      function loadDotLottieWithInlineImage(savePerformance = true) {
-        let startTime = 0;
-        let endTime = 0;
-        let player = document.getElementById('dotlottie-inline-image');
+            function loadDotLottieWithInlineImage(savePerformance = true) {
+                let startTime = 0;
+                let endTime = 0;
+                let player = document.getElementById('dotlottie-inline-image');
 
-        startTime = performance.now();
-        player.load('https://assets9.lottiefiles.com/dotlotties/dlf10_oehbsgal.lottie');
+                startTime = performance.now();
+                player.load('https://assets9.lottiefiles.com/dotlotties/dlf10_oehbsgal.lottie');
 
-        player.addEventListener(
-          'ready',
-          () => {
-            if (!savePerformance) return;
+                player.addEventListener(
+                    'ready',
+                    () => {
+                        if (!savePerformance) return;
 
-            endTime = performance.now();
+                        endTime = performance.now();
 
-            console.log(`Time to load and play inline dotLottie : ${endTime - startTime} millseconds.`);
+                        console.log(`Time to load and play inline dotLottie : ${endTime - startTime} millseconds.`);
 
-            let time = endTime - startTime;
-            let currInlineImagesTime = parseInt(inlineImagesTime);
-            currInlineImagesTime += time;
-            console.log(currInlineImagesTime.toString());
-            localStorage.setItem('inlineImagesTime', currInlineImagesTime.toString());
-            testThreeComplete = true;
-          },
-          { once: true },
-        );
+                        let time = endTime - startTime;
+                        let currInlineImagesTime = parseInt(inlineImagesTime);
+                        currInlineImagesTime += time;
+                        console.log(currInlineImagesTime.toString());
+                        localStorage.setItem('inlineImagesTime', currInlineImagesTime.toString());
+                        testThreeComplete = true;
+                    },
+                    { once: true },
+                );
 
-        return player;
-      }
+                return player;
+            }
 
-      if (parseInt(launchCounter) < LAUNCH_AMOUNT) {
-        loadDotLottieWithoutAssets();
-        loadDotLottieWithExternalImage();
-        loadDotLottieWithInlineImage();
-        launchCounter = parseInt(launchCounter) + 1;
-        localStorage.setItem('launchCounter', launchCounter.toString());
-        console.log('counter: ' + localStorage.getItem('launchCounter'));
+            if (parseInt(launchCounter) < LAUNCH_AMOUNT) {
+                loadDotLottieWithoutAssets();
+                loadDotLottieWithExternalImage();
+                loadDotLottieWithInlineImage();
+                launchCounter = parseInt(launchCounter) + 1;
+                localStorage.setItem('launchCounter', launchCounter.toString());
+                console.log('counter: ' + localStorage.getItem('launchCounter'));
 
-        console.log(testOneComplete, testTwoComplete, testThreeComplete);
-        setInterval(() => {
-          if (testOneComplete && testTwoComplete && testThreeComplete) location.reload();
-        }, 500);
-        // loadDotLottieWithoutAssets().then(() => {
-        //   loadDotLottieWithExternalImage().then(() => {
-        //     loadDotLottieWithInlineImage().then(() => {
-        //       launchCounter = parseInt(launchCounter) + 1;
-        //       localStorage.setItem('launchCounter', launchCounter.toString());
-        //       console.log('counter: ' + localStorage.getItem('launchCounter'));
-        //       location.reload();
-        //     });
-        //   });
-        // });
-      } else {
-        loadDotLottieWithoutAssets(false);
-        loadDotLottieWithExternalImage(false);
-        loadDotLottieWithInlineImage(false);
-        console.log(`AVERAGE time to load and play dotLottie : ${noAssetsTime / LAUNCH_AMOUNT} millseconds.`);
-        console.log(
-          `AVERAGE time to load and play external image dotLottie : ${externalImagesTime / LAUNCH_AMOUNT} millseconds.`,
-        );
-        console.log(
-          `AVERAGE time to load and play inline dotLottie : ${inlineImagesTime / LAUNCH_AMOUNT} millseconds.`,
-        );
-        console.log(`THE TEST RAN ${parseInt(launchCounter)} TIMES`);
+                console.log(testOneComplete, testTwoComplete, testThreeComplete);
+                setInterval(() => {
+                    if (testOneComplete && testTwoComplete && testThreeComplete) location.reload();
+                }, 500);
+                // loadDotLottieWithoutAssets().then(() => {
+                //   loadDotLottieWithExternalImage().then(() => {
+                //     loadDotLottieWithInlineImage().then(() => {
+                //       launchCounter = parseInt(launchCounter) + 1;
+                //       localStorage.setItem('launchCounter', launchCounter.toString());
+                //       console.log('counter: ' + localStorage.getItem('launchCounter'));
+                //       location.reload();
+                //     });
+                //   });
+                // });
+            } else {
+                loadDotLottieWithoutAssets(false);
+                loadDotLottieWithExternalImage(false);
+                loadDotLottieWithInlineImage(false);
+                console.log(`AVERAGE time to load and play dotLottie : ${noAssetsTime / LAUNCH_AMOUNT} millseconds.`);
+                console.log(
+                    `AVERAGE time to load and play external image dotLottie : ${
+                        externalImagesTime / LAUNCH_AMOUNT
+                    } millseconds.`,
+                );
+                console.log(
+                    `AVERAGE time to load and play inline dotLottie : ${inlineImagesTime / LAUNCH_AMOUNT} millseconds.`,
+                );
+                console.log(`THE TEST RAN ${parseInt(launchCounter)} TIMES`);
 
-        //Reset all stat counters
-        localStorage.setItem('launchCounter', '0');
-        localStorage.setItem('noAssetsTime', '0');
-        localStorage.setItem('externalImagesTime', '0');
-        localStorage.setItem('inlineImagesTime', '0');
-      }
-    });
-  </script>
+                //Reset all stat counters
+                localStorage.setItem('launchCounter', '0');
+                localStorage.setItem('noAssetsTime', '0');
+                localStorage.setItem('externalImagesTime', '0');
+                localStorage.setItem('inlineImagesTime', '0');
+            }
+        });
+    </script>
 </html>
