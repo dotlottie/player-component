@@ -168,7 +168,6 @@ export class DotLottiePlayer {
     options?: DotLottieConfig<RendererType>,
   ) {
     this._src = src;
-    this._container = container || document.createElement('div');
 
     if (options?.testId) {
       this._testId = options.testId;
@@ -180,12 +179,17 @@ export class DotLottiePlayer {
       this._activeAnimationId = options.activeAnimationId;
     }
 
+
+    if (!container) return;
+
+    this._container = container;
+
     if (typeof options?.background === 'string') {
       this.setBackground(options.background);
     }
 
     this._options = {
-      container: this._container,
+      container,
       loop: false,
       autoplay: true,
       renderer: 'svg',

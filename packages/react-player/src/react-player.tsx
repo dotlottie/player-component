@@ -92,10 +92,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   const frame = useSelectDotLottieState(dotLottiePlayer, (state) => state.frame);
   const seeker = useSelectDotLottieState(dotLottiePlayer, (state) => state.seeker);
 
-  const isError = useMemo(() => {
-    return currentState === PlayerState.Error;
-  }, [currentState]);
-
   // On player props change
   useEffect(() => {
     if (typeof loop !== 'undefined') {
@@ -211,7 +207,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
             'data-testid': `animation`,
           })}
         >
-          {isError && (
+          {currentState === PlayerState.Error && (
             <div
               {...(testId && {
                 'data-testid': `error`,
