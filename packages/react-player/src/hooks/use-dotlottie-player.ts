@@ -17,13 +17,14 @@ export interface DotLottieRefProps {
 
 export const useDotLottiePlayer = (
   src: Record<string, unknown> | string,
-  container?: MutableRefObject<HTMLDivElement | null>,
+  container: MutableRefObject<HTMLDivElement | null>,
   config?: DotLottieConfig<RendererType> & { lottieRef?: MutableRefObject<DotLottieRefProps | undefined> },
-): DotLottiePlayer | undefined => {
-  const [dotLottiePlayer, setDotLottiePlayer] = useState<DotLottiePlayer | undefined>();
+): DotLottiePlayer => {
+  const [dotLottiePlayer, setDotLottiePlayer] = useState<DotLottiePlayer>(() => {
+    return new DotLottiePlayer(src, container.current, config);
+  });
 
   const getDotLottiePlayer = useCallback(async () => {
-    if (!container?.current) return undefined;
     const dl = new DotLottiePlayer(src, container.current, config);
 
     dl.load();
@@ -36,22 +37,22 @@ export const useDotLottiePlayer = (
       if (!config.lottieRef) return;
       config.lottieRef.current = {
         play: (indexOrId?: string | number, options?: PlaybackOptions): void => {
-          dotLottiePlayer?.play(indexOrId, options);
+          dotLottiePlayer.play(indexOrId, options);
         },
         previous: (options?: PlaybackOptions): void => {
-          dotLottiePlayer?.previous(options);
+          dotLottiePlayer.previous(options);
         },
         next: (options?: PlaybackOptions): void => {
-          dotLottiePlayer?.next(options);
+          dotLottiePlayer.next(options);
         },
         reset: (): void => {
-          dotLottiePlayer?.reset();
+          dotLottiePlayer.reset();
         },
         getManifest: (): Manifest | undefined => {
-          return dotLottiePlayer?.getManifest();
+          return dotLottiePlayer.getManifest();
         },
       } as DotLottieRefProps;
-    }, [config.lottieRef.current]);
+    }, [config.lottieRef.current, dotLottiePlayer]);
   }
 
   useEffect(() => {
@@ -60,7 +61,7 @@ export const useDotLottiePlayer = (
     })();
 
     return () => {
-      dotLottiePlayer?.destroy();
+      dotLottiePlayer.destroy();
     };
   }, [getDotLottiePlayer]);
 

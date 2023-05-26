@@ -4,12 +4,13 @@
 
 import type { RendererSettings, PlayMode } from 'common';
 import { PlayerState } from 'common';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import type { MutableRefObject } from 'react';
 
 import { DotLottieContext } from './dotlottie-context';
 import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
+import { useSelectDotLottieState } from './hooks/use-select-dotlottie-state';
 
 export enum PlayerEvents {
   Complete = 'complete',
@@ -87,15 +88,16 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     testId,
   });
 
-  const [isError, setIsError] = useState(false);
+  const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);
+  const frame = useSelectDotLottieState(dotLottiePlayer, (state) => state.frame);
+  const seeker = useSelectDotLottieState(dotLottiePlayer, (state) => state.seeker);
 
-  useEffect(() => {
-    dotLottiePlayer?.updateSrc(src);
-  }, [src]);
+  const isError = useMemo(() => {
+    return currentState === PlayerState.Error;
+  }, [currentState]);
 
   // On player props change
   useEffect(() => {
-    if (!dotLottiePlayer) return;
     if (typeof loop !== 'undefined') {
       dotLottiePlayer.setLoop(loop);
     }
@@ -122,7 +124,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   }, [loop, autoplay, speed, direction, mode, playOnHover, background]);
 
   useEffect(() => {
-    if (!dotLottiePlayer) return;
     if (activeAnimationId) {
       dotLottiePlayer.play(activeAnimationId);
     }
@@ -132,8 +133,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
    * Adding event listeners if dotLottiePlayer is available
    */
   useEffect(() => {
-    if (!dotLottiePlayer) return undefined;
-
     dotLottiePlayer.addEventListener('DOMLoaded', () => {
       onEvent?.(PlayerEvents.Ready);
     });
@@ -161,7 +160,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     };
   }, [dotLottiePlayer]);
 
-  function notifyStateChange(currentState: PlayerState): void {
+  useEffect(() => {
     switch (currentState) {
       case PlayerState.Stopped:
         onEvent?.(PlayerEvents.Stop);
@@ -180,31 +179,17 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
         break;
 
       case PlayerState.Error:
-        setIsError(true);
         onEvent?.(PlayerEvents.Error);
         break;
 
       default:
         break;
     }
-  }
+  }, [currentState]);
 
   useEffect(() => {
-    if (!dotLottiePlayer) return undefined;
-
-    const unsubscribe = dotLottiePlayer.state.subscribe((state, prev) => {
-      if (state.frame !== prev.frame) {
-        onEvent?.(PlayerEvents.Frame, { frame: state.frame, seeker: state.seeker });
-      }
-      if (state.currentState !== prev.currentState) {
-        notifyStateChange(state.currentState);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [dotLottiePlayer]);
+    onEvent?.(PlayerEvents.Frame, { frame, seeker });
+  }, [frame]);
 
   return (
     <DotLottieContext.Provider value={dotLottiePlayer}>

@@ -2,12 +2,12 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DotLottiePlayer } from 'common';
+import { DotLottiePlayer } from 'common';
 import { createContext, useContext } from 'react';
 
-export const DotLottieContext = createContext<DotLottiePlayer | undefined>(undefined);
+export const DotLottieContext = createContext<DotLottiePlayer>(new DotLottiePlayer(''));
 
-export const useDotLottieContext = (): DotLottiePlayer | undefined => {
+export const useDotLottieContext = (): DotLottiePlayer => {
   const dotLottiePlayer = useContext(DotLottieContext);
 
   return dotLottiePlayer;

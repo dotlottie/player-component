@@ -132,7 +132,7 @@ export class DotLottiePlayer {
 
   protected _counterInterval: number | null = null;
 
-  protected _container: DotLottieElement;
+  protected _container: DotLottieElement | null;
 
   protected _name?: string;
 
@@ -164,14 +164,11 @@ export class DotLottiePlayer {
 
   public constructor(
     src: string | Record<string, unknown>,
-    container: DotLottieElement,
+    container?: DotLottieElement | null,
     options?: DotLottieConfig<RendererType>,
   ) {
-    if (!(container instanceof Element)) {
-      throw Error('Second parameter `container` expected to be an Element');
-    }
     this._src = src;
-    this._container = container;
+    this._container = container || document.createElement('div');
 
     if (options?.testId) {
       this._testId = options.testId;
@@ -188,7 +185,7 @@ export class DotLottiePlayer {
     }
 
     this._options = {
-      container,
+      container: this._container,
       loop: false,
       autoplay: true,
       renderer: 'svg',
@@ -215,11 +212,11 @@ export class DotLottiePlayer {
       }
     };
 
-    this._container.removeEventListener('mouseenter', onEnter);
-    this._container.removeEventListener('mouseleave', onLeave);
+    this._container?.removeEventListener('mouseenter', onEnter);
+    this._container?.removeEventListener('mouseleave', onLeave);
 
-    this._container.addEventListener('mouseenter', onEnter);
-    this._container.addEventListener('mouseleave', onLeave);
+    this._container?.addEventListener('mouseleave', onLeave);
+    this._container?.addEventListener('mouseenter', onEnter);
   }
 
   protected _getOption<T extends keyof Required<PlaybackOptions>, V extends Required<PlaybackOptions>[T]>(
@@ -599,7 +596,7 @@ export class DotLottiePlayer {
   }
 
   public destroy(): void {
-    if (this._container.__lottie) {
+    if (this._container?.__lottie) {
       this._container.__lottie.destroy();
       this._container.__lottie = null;
     }
@@ -635,16 +632,6 @@ export class DotLottiePlayer {
       speed: this._lottie?.playSpeed ?? 1,
       background: this._background,
       intermission: this._intermission,
-    };
-  }
-
-  protected subscriptions = new Set<(state: DotLottiePlayerState) => void>();
-
-  public subscribe(selector: (state: DotLottiePlayerState) => void): () => void {
-    this.subscriptions.add(selector);
-
-    return () => {
-      this.subscriptions.delete(selector);
     };
   }
 
@@ -728,8 +715,10 @@ export class DotLottiePlayer {
   }
 
   public setBackground(color: string): void {
-    this._background = color;
-    this._container.style.backgroundColor = color;
+    if (this._container) {
+      this._background = color;
+      this._container.style.backgroundColor = color;
+    }
   }
 
   public removeEventListener(name: AnimationEventName, cb?: () => unknown): void {
@@ -839,7 +828,9 @@ export class DotLottiePlayer {
     });
 
     this.addEventListeners();
-    this._container.__lottie = this._lottie;
+    if (this._container) {
+      this._container.__lottie = this._lottie;
+    }
     this.setCurrentState(PlayerState.Ready);
 
     this.setDirection(activeAnimation?.direction ?? this._getOption('direction'));
