@@ -118,7 +118,7 @@ export class DotLottiePlayer {
 
   protected _src: string | Record<string, unknown>;
 
-  protected _options: AnimationConfig<RendererType>;
+  protected _options: Omit<AnimationConfig<RendererType>, 'container'>;
 
   protected _playbackOptions: PlaybackOptions;
 
@@ -132,7 +132,7 @@ export class DotLottiePlayer {
 
   protected _counterInterval: number | null = null;
 
-  protected _container: DotLottieElement | null;
+  protected _container: DotLottieElement | null = null;
 
   protected _name?: string;
 
@@ -179,17 +179,13 @@ export class DotLottiePlayer {
       this._activeAnimationId = options.activeAnimationId;
     }
 
-
-    if (!container) return;
-
-    this._container = container;
+    this._container = container || null;
 
     if (typeof options?.background === 'string') {
       this.setBackground(options.background);
     }
 
     this._options = {
-      container,
       loop: false,
       autoplay: true,
       renderer: 'svg',
@@ -828,6 +824,7 @@ export class DotLottiePlayer {
 
     this._lottie = lottie.loadAnimation({
       ...options,
+      container: this._container as Element,
       animationData: this._animation,
     });
 

@@ -4,7 +4,7 @@
 
 import type { DotLottieConfig, PlaybackOptions, Manifest, RendererType } from 'common';
 import { DotLottiePlayer } from 'common';
-import type { MutableRefObject } from 'react';
+import { MutableRefObject, useImperativeHandle } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 
 export interface DotLottieRefProps {
@@ -33,26 +33,29 @@ export const useDotLottiePlayer = (
   }, [container]);
 
   if (config?.lottieRef) {
-    useEffect(() => {
-      if (!config.lottieRef) return;
-      config.lottieRef.current = {
-        play: (indexOrId?: string | number, options?: PlaybackOptions): void => {
-          dotLottiePlayer.play(indexOrId, options);
-        },
-        previous: (options?: PlaybackOptions): void => {
-          dotLottiePlayer.previous(options);
-        },
-        next: (options?: PlaybackOptions): void => {
-          dotLottiePlayer.next(options);
-        },
-        reset: (): void => {
-          dotLottiePlayer.reset();
-        },
-        getManifest: (): Manifest | undefined => {
-          return dotLottiePlayer.getManifest();
-        },
-      } as DotLottieRefProps;
-    }, [config.lottieRef.current, dotLottiePlayer]);
+    useImperativeHandle(
+      config.lottieRef,
+      () => {
+        return {
+          play: (indexOrId?: string | number, options?: PlaybackOptions): void => {
+            dotLottiePlayer.play(indexOrId, options);
+          },
+          previous: (options?: PlaybackOptions): void => {
+            dotLottiePlayer.previous(options);
+          },
+          next: (options?: PlaybackOptions): void => {
+            dotLottiePlayer.next(options);
+          },
+          reset: (): void => {
+            dotLottiePlayer.reset();
+          },
+          getManifest: (): Manifest | undefined => {
+            return dotLottiePlayer.getManifest();
+          },
+        } as DotLottieRefProps;
+      },
+      [config.lottieRef.current, dotLottiePlayer],
+    );
   }
 
   useEffect(() => {
