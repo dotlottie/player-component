@@ -2,32 +2,41 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { RendererSettings } from 'common';
-import { PlayerState, PlayMode } from 'common';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import type { RendererSettings, PlayMode } from 'common';
+import { PlayerState } from 'common';
+import React, { useEffect, useMemo, useRef } from 'react';
+import type { MutableRefObject } from 'react';
 
+import { DotLottieContext } from './dotlottie-context';
+import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
+import { useSelectDotLottieState } from './hooks/use-select-dotlottie-state';
+
+export enum PlayerEvents {
+  Complete = 'complete',
+  DataFail = 'data_fail',
+  DataReady = 'data_ready',
+  Error = 'error',
+  Frame = 'frame',
+  Freeze = 'freeze',
+  LoopComplete = 'loopComplete',
+  Pause = 'pause',
+  Play = 'play',
+  Ready = 'ready',
+  Stop = 'stop',
+}
 
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
+  activeAnimationId?: string;
   autoplay?: boolean;
   background?: string;
   className?: string;
-  controls?: boolean;
-  count?: number;
   direction?: 1 | -1;
   intermission?: number;
-  loop?: boolean;
+  loop?: number | boolean;
+  lottieRef?: MutableRefObject<DotLottieRefProps | undefined>;
   mode?: PlayMode;
-  onComplete?: () => void;
-  onDataFail?: () => void;
-  onDataReady?: () => void;
-  onEnterFrame?: (currentFrame: number, seeker: number) => void;
-  onError?: () => void;
-  onFreeze?: () => void;
-  onPause?: () => void;
-  onPlay?: () => void;
-  onPlayerReady?: () => void;
-  onStop?: () => void;
+  onEvent?: <T extends PlayerEvents>(name: T, params?: unknown) => void;
   playOnHover?: boolean;
   renderer?: 'svg' | 'canvas' | 'html';
   rendererSettings?: RendererSettings;
@@ -37,181 +46,109 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
 }
 
 export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
-  onError,
-  onEnterFrame,
-  onComplete,
-  onPlayerReady,
-  onDataReady,
-  onDataFail,
-  onStop,
-  onPlay,
-  onPause,
-  onFreeze,
-  autoplay = false,
+  onEvent,
+  activeAnimationId,
+  autoplay,
   background = 'transparent',
-  controls = false,
-  direction = 1,
-  count = 1,
-  intermission = 0,
-  loop = false,
-  mode = PlayMode.Normal,
-  playOnHover = false,
-  speed = 1,
+  direction,
+  intermission,
+  loop,
+  mode,
+  playOnHover,
+  speed,
   renderer = 'svg',
   rendererSettings = {},
+  lottieRef,
   src,
   className,
   testId,
+  children,
   ...props
 }) => {
   const container = useRef(null);
-  const [_prevState, setPrevState] = useState(PlayerState.Loading);
-  const [hover, setHover] = useState(false);
-  const [isLoop, setIsLoop] = useState(loop);
 
-  const { currentState, dotLottiePlayer, frame, seeker } = useDotLottiePlayer(src, container, {
+  const dotLottiePlayer = useDotLottiePlayer(src, container, {
+    lottieRef,
     renderer,
+    activeAnimationId,
     rendererSettings: {
       clearCanvas: true,
       progressiveLoad: false,
       hideOnTransparent: true,
       ...rendererSettings,
     },
-    loop: isLoop,
+    hover: playOnHover,
+    loop,
     direction,
     speed,
-    count,
     intermission,
-    mode,
+    background,
+    playMode: mode,
     autoplay: playOnHover ? false : autoplay,
     testId,
   });
 
-  const isPlaying = useMemo(() => {
-    return currentState === PlayerState.Playing;
-  }, [currentState]);
-
-  const isPaused = useMemo(() => {
-    return currentState === PlayerState.Paused;
-  }, [currentState]);
-
-  const isStopped = useMemo(() => {
-    return currentState === PlayerState.Stopped;
-  }, [currentState]);
-
-  const isError = useMemo(() => {
-    return currentState === PlayerState.Error;
-  }, [currentState]);
-
-  // eslint-disable-next-line no-warning-comments
-  // TODO: let _io: IntersectionObserver | undefined;
-
-  function seek(value: number | string, nextState: PlayerState): void {
-    if (!dotLottiePlayer) return;
-    let frameValue = value;
-
-    if (typeof frameValue === 'number') {
-      frameValue = Math.round(frameValue);
-    }
-
-    // Extract frame number from either number or percentage value
-    const matches = /^(\d+)(%?)$/u.exec(frameValue.toString());
-
-    if (!matches) {
-      return;
-    }
-
-    // Calculate and set the frame number
-    const nextFrame = matches[2] === '%' ? (dotLottiePlayer.totalFrames * Number(matches[1])) / 100 : matches[1];
-
-    // Set seeker to new frame number
-    if (nextFrame === undefined) return;
-    // Send lottie player to the new frame
-    if (nextState === PlayerState.Playing) {
-      dotLottiePlayer.goToAndPlay(nextFrame, true);
-    } else {
-      dotLottiePlayer.goToAndStop(nextFrame, true);
-      dotLottiePlayer.pause();
-    }
-  }
-
-  function handleSeekChange(event: React.FormEvent<HTMLInputElement>): void {
-    if (!dotLottiePlayer || !Number(event.currentTarget.value)) {
-      return;
-    }
-    const newFrame: number = (Number(event.currentTarget.value) / 100) * dotLottiePlayer.totalFrames;
-
-    seek(newFrame, currentState);
-  }
-
-  function togglePlay(): void {
-    if (!dotLottiePlayer) return;
-    if (currentState === PlayerState.Playing) {
-      dotLottiePlayer.pause();
-    } else {
-      dotLottiePlayer.play();
-    }
-  }
-
-  function setLooping(value: boolean): void {
-    if (dotLottiePlayer) {
-      setIsLoop(value);
-      dotLottiePlayer.setLoop(value);
-    }
-  }
-
-  useEffect(() => {
-    dotLottiePlayer?.updateSrc(src);
-  }, [src]);
+  const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);
+  const frame = useSelectDotLottieState(dotLottiePlayer, (state) => state.frame);
+  const seeker = useSelectDotLottieState(dotLottiePlayer, (state) => state.seeker);
 
   // On player props change
   useEffect(() => {
-    if (!dotLottiePlayer) return;
-    dotLottiePlayer.setLoop(loop);
-    dotLottiePlayer.setAutoplay(autoplay);
-    dotLottiePlayer.setDirection(direction);
-    dotLottiePlayer.setSpeed(speed);
-    dotLottiePlayer.setMode(mode);
-  }, [loop, autoplay, speed, direction, mode]);
+    if (typeof loop !== 'undefined') {
+      dotLottiePlayer.setLoop(loop);
+    }
+    if (typeof autoplay !== 'undefined') {
+      dotLottiePlayer.setAutoplay(autoplay);
+    }
 
-  // eslint-disable-next-line no-warning-comments
-  // TODO: Do canvas resize on browser resize
+    if (typeof direction !== 'undefined') {
+      dotLottiePlayer.setDirection(direction);
+    }
+    if (typeof speed !== 'undefined') {
+      dotLottiePlayer.setSpeed(speed);
+    }
+    if (typeof mode !== 'undefined') {
+      dotLottiePlayer.setMode(mode);
+    }
+    if (typeof playOnHover !== 'undefined') {
+      dotLottiePlayer.setHover(playOnHover);
+    }
 
-  // On playOnHover change
+    if (typeof background !== 'undefined') {
+      dotLottiePlayer.setBackground(background);
+    }
+  }, [loop, autoplay, speed, direction, mode, playOnHover, background]);
+
   useEffect(() => {
-    if (!playOnHover) {
-      return;
+    if (activeAnimationId) {
+      dotLottiePlayer.play(activeAnimationId);
     }
-
-    if (hover && currentState !== PlayerState.Playing) {
-      dotLottiePlayer?.play();
-    } else {
-      dotLottiePlayer?.pause();
-    }
-  }, [playOnHover, hover]);
+  }, [activeAnimationId]);
 
   /**
    * Adding event listeners if dotLottiePlayer is available
    */
   useEffect(() => {
-    if (!dotLottiePlayer) return undefined;
-
     dotLottiePlayer.addEventListener('DOMLoaded', () => {
-      onPlayerReady?.();
+      onEvent?.(PlayerEvents.Ready);
     });
 
     dotLottiePlayer.addEventListener('data_ready', () => {
-      onDataReady?.();
+      onEvent?.(PlayerEvents.DataReady);
     });
 
     dotLottiePlayer.addEventListener('data_failed', () => {
-      onDataFail?.();
+      onEvent?.(PlayerEvents.DataFail);
     });
 
     dotLottiePlayer.addEventListener('complete', () => {
-      if (currentState !== PlayerState.Playing) {
-        onComplete?.();
+      if (dotLottiePlayer.currentState !== PlayerState.Playing) {
+        onEvent?.(PlayerEvents.Complete);
       }
+    });
+
+    dotLottiePlayer.addEventListener('loopComplete', () => {
+      onEvent?.(PlayerEvents.LoopComplete);
     });
 
     return () => {
@@ -220,29 +157,25 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   }, [dotLottiePlayer]);
 
   useEffect(() => {
-    onEnterFrame?.(frame, seeker);
-  }, [frame]);
-
-  useEffect(() => {
     switch (currentState) {
       case PlayerState.Stopped:
-        onStop?.();
+        onEvent?.(PlayerEvents.Stop);
         break;
 
       case PlayerState.Paused:
-        onPause?.();
+        onEvent?.(PlayerEvents.Pause);
         break;
 
       case PlayerState.Playing:
-        onPlay?.();
+        onEvent?.(PlayerEvents.Play);
         break;
 
       case PlayerState.Frozen:
-        onFreeze?.();
+        onEvent?.(PlayerEvents.Freeze);
         break;
 
       case PlayerState.Error:
-        onError?.();
+        onEvent?.(PlayerEvents.Error);
         break;
 
       default:
@@ -250,108 +183,43 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [currentState]);
 
-  function renderControls(): JSX.Element {
-    return (
-      <div aria-label="lottie-animation-controls" className="toolbar">
-        <button
-          onClick={togglePlay}
-          className={`${isPlaying || isPaused ? 'active' : ''}`}
-          style={{ alignItems: 'center' }}
-          // tabindex={0}
-          aria-label="play-pause"
-        >
-          {isPlaying ? (
-            <svg width="24" height="24" aria-hidden="true" focusable="false">
-              <path d="M14.016 5.016H18v13.969h-3.984V5.016zM6 18.984V5.015h3.984v13.969H6z" />
-            </svg>
-          ) : (
-            <svg width="24" height="24" aria-hidden="true" focusable="false">
-              <path d="M8.016 5.016L18.985 12 8.016 18.984V5.015z" />
-            </svg>
-          )}
-        </button>
-        <button
-          onClick={(): void => dotLottiePlayer?.stop()}
-          className={`${isStopped ? 'active' : ''}`}
-          style={{ alignItems: 'center' }}
-          aria-label="stop"
-        >
-          <svg width="24" height="24" aria-hidden="true" focusable="false">
-            <path d="M6 6h12v12H6V6z" />
-          </svg>
-        </button>
-        <input
-          className="seeker"
-          type="range"
-          min={0}
-          step={0}
-          max={100}
-          value={seeker || 0}
-          onInput={(event): void => handleSeekChange(event)}
-          onMouseDown={(): void => {
-            setPrevState(currentState);
-            dotLottiePlayer?.freeze();
-          }}
-          onMouseUp={(): void => {
-            seek(frame || 0, _prevState);
-          }}
-          aria-valuemin={1}
-          aria-valuemax={100}
-          role="slider"
-          aria-valuenow={seeker}
-          aria-label="lottie-seek-input"
-        />
-        <button
-          onClick={(): void => {
-            setLooping(!isLoop);
-          }}
-          className={isLoop ? 'active' : ''}
-          style={{ alignItems: 'center' }}
-          aria-label="loop-toggle"
-        >
-          <svg width="24" height="24" aria-hidden="true" focusable="false">
-            <path d="M17.016 17.016v-4.031h1.969v6h-12v3l-3.984-3.984 3.984-3.984v3h10.031zM6.984 6.984v4.031H5.015v-6h12v-3l3.984 3.984-3.984 3.984v-3H6.984z" />
-          </svg>
-        </button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    onEvent?.(PlayerEvents.Frame, { frame, seeker });
+  }, [frame]);
 
   return (
-    <div
-      className={`dotlottie-container main ${controls ? 'controls' : ''} ${className}`}
-      lang="en"
-      role="img"
-      {...(testId && {
-        'data-testid': testId,
-        'data-player-state': currentState,
-        'data-player-seeker': seeker || 0,
-      })}
-      {...props}
-    >
+    <DotLottieContext.Provider value={dotLottiePlayer}>
       <div
-        onMouseEnter={(): void => setHover(true)}
-        onMouseLeave={(): void => setHover(false)}
-        ref={container}
-        data-name="my-anim"
-        className={`animation ${controls ? 'controls' : ''}`}
-        style={{ background, position: 'relative' }}
+        className={`dotlottie-container main ${children ? 'controls' : ''} ${className}`}
+        lang="en"
+        role="img"
         {...(testId && {
-          'data-testid': `animation`,
+          'data-testid': testId,
         })}
+        {...props}
       >
-        {isError && (
-          <div
-            {...(testId && {
-              'data-testid': `error`,
-            })}
-            className="error"
-          >
-            ⚠️
-          </div>
-        )}
+        <div
+          ref={container}
+          data-name="my-anim"
+          className={`animation ${children ? 'controls' : ''}`}
+          style={{ position: 'relative' }}
+          {...(testId && {
+            'data-testid': `animation`,
+          })}
+        >
+          {currentState === PlayerState.Error && (
+            <div
+              {...(testId && {
+                'data-testid': `error`,
+              })}
+              className="error"
+            >
+              ⚠️
+            </div>
+          )}
+        </div>
+        {children}
       </div>
-      {controls && renderControls()}
-    </div>
+    </DotLottieContext.Provider>
   );
 };

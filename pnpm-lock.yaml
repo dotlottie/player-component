@@ -1,96 +1,5 @@
 lockfileVersion: 5.4
 
-<<<<<<< HEAD
-specifiers:
-  '@babel/core': ^7.11.0
-  '@babel/plugin-proposal-class-properties': ^7.10.4
-  '@babel/plugin-proposal-decorators': ^7.10.5
-  '@babel/preset-env': ^7.11.0
-  '@babel/preset-typescript': ^7.10.4
-  '@changesets/cli': ^2.24.4
-  '@cypress/code-coverage': ^3.9.12
-  '@istanbuljs/nyc-config-typescript': ^1.0.2
-  '@rollup/plugin-babel': ^5.1.0
-  '@rollup/plugin-commonjs': ^14.0.0
-  '@rollup/plugin-json': ^6.0.0
-  '@rollup/plugin-node-resolve': ^8.4.0
-  '@typescript-eslint/eslint-plugin': ^2.6.1
-  '@typescript-eslint/parser': ^2.6.1
-  babel-plugin-istanbul: ^6.1.1
-  changesets: ^1.0.2
-  cypress: ^9.4.1
-  eslint: ^6.6.0
-  eslint-config-prettier: ^6.5.0
-  eslint-plugin-prettier: ^3.1.1
-  fastify: ^3.27.1
-  fastify-static: ^4.5.0
-  fflate: ^0.7.3
-  lerna: ^4.0.0
-  lit: ^2.4.1
-  lottie-web: ^5.10.0
-  parcel-bundler: ^1.12.4
-  prettier: 1.18.2
-  rollup: ^2.23.0
-  rollup-plugin-alias: ^2.2.0
-  rollup-plugin-copy: ^3.3.0
-  rollup-plugin-filesize: ^9.0.2
-  rollup-plugin-node-globals: ^1.4.0
-  rollup-plugin-serve: ^1.0.3
-  rollup-plugin-terser: ^6.1.0
-  rollup-plugin-typescript2: ^0.27.1
-  rollup-plugin-visualizer: ^4.0.4
-  shx: ^0.3.3
-  source-map-support: ^0.5.21
-  ts-node: ^10.5.0
-  tsup: ^6.1.3
-  typescript: ^3.7.5
-
-dependencies:
-  '@rollup/plugin-json': 6.0.0_rollup@2.79.1
-  fflate: 0.7.4
-  lit: 2.5.0
-  lottie-web: 5.10.0
-  tsup: 6.7.0_kn4vkjfp56f7ppqb7bb4dqmgia
-
-devDependencies:
-  '@babel/core': 7.20.5
-  '@babel/plugin-proposal-class-properties': 7.18.6_@babel+core@7.20.5
-  '@babel/plugin-proposal-decorators': 7.20.5_@babel+core@7.20.5
-  '@babel/preset-env': 7.20.2_@babel+core@7.20.5
-  '@babel/preset-typescript': 7.18.6_@babel+core@7.20.5
-  '@changesets/cli': 2.25.2
-  '@cypress/code-coverage': 3.10.0_w2detxysjjnwza5kg6waqtg7wi
-  '@istanbuljs/nyc-config-typescript': 1.0.2
-  '@rollup/plugin-babel': 5.3.1_opjstonlpkhafnz76jsxdwq25a
-  '@rollup/plugin-commonjs': 14.0.0_rollup@2.79.1
-  '@rollup/plugin-node-resolve': 8.4.0_rollup@2.79.1
-  '@typescript-eslint/eslint-plugin': 2.34.0_fmavwhclprfd5wnbs7ocgoy2gu
-  '@typescript-eslint/parser': 2.34.0_z6m2zvrkqxyghb4a2ijhravsdi
-  babel-plugin-istanbul: 6.1.1
-  changesets: 1.0.2
-  cypress: 9.7.0
-  eslint: 6.8.0
-  eslint-config-prettier: 6.15.0_eslint@6.8.0
-  eslint-plugin-prettier: 3.4.1_oqdjcvqt7x26ht342kc5b4z6oi
-  fastify: 3.29.4
-  fastify-static: 4.7.0
-  lerna: 4.0.0
-  parcel-bundler: 1.12.5
-  prettier: 1.18.2
-  rollup: 2.79.1
-  rollup-plugin-alias: 2.2.0
-  rollup-plugin-copy: 3.4.0
-  rollup-plugin-filesize: 9.1.2
-  rollup-plugin-node-globals: 1.4.0
-  rollup-plugin-serve: 1.1.0
-  rollup-plugin-terser: 6.1.0_rollup@2.79.1
-  rollup-plugin-typescript2: 0.27.3_6gd2y3vqcxk6lounvan455yu24
-  rollup-plugin-visualizer: 4.2.2_rollup@2.79.1
-  shx: 0.3.4
-  source-map-support: 0.5.21
-  ts-node: 10.9.1_typescript@3.9.10
-  typescript: 3.9.10
-=======
 importers:
 
   .:
@@ -166,7 +75,7 @@ importers:
 
   packages/common:
     specifiers:
-      '@lottiefiles/dotlottie-js': ^2.1.0-beta.9
+      '@dotlottie/dotlottie-js': 0.1.3
       '@lottiefiles/lottie-types': ^1.0.1
       '@preact/signals-core': ^1.2.3
       '@rollup/plugin-commonjs': ^24.1.0
@@ -181,7 +90,7 @@ importers:
       rollup-plugin-dts: ^5.3.0
       typescript: ^4.7.4
     dependencies:
-      '@lottiefiles/dotlottie-js': 2.1.0-beta.9
+      '@dotlottie/dotlottie-js': 0.1.3
       '@preact/signals-core': 1.3.0
       lottie-web: 5.11.0
       react: 18.2.0
@@ -283,11 +192,9 @@ importers:
       source-map-support: 0.5.21
       ts-node: 10.9.1_typescript@3.9.10
       typescript: 3.9.10
->>>>>>> bf8f865 (feat: v2 init)
 
   packages/react-player:
     specifiers:
-      '@lottiefiles/dotlottie-js': ^2.1.0-beta.9
       '@lottiefiles/lottie-types': ^1.0.1
       '@preact/signals-core': ^1.2.3
       '@rollup/plugin-commonjs': ^24.1.0
@@ -307,7 +214,6 @@ importers:
       typescript: ^4.7.4
       vite: ^4.2.1
     dependencies:
-      '@lottiefiles/dotlottie-js': 2.1.0-beta.9
       '@preact/signals-core': 1.3.0
       common: link:../common
       lottie-web: 5.11.0
@@ -2253,21 +2159,12 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-<<<<<<< HEAD
-  /@cypress/code-coverage/3.10.0_w2detxysjjnwza5kg6waqtg7wi:
-    resolution: {integrity: sha512-K5pW2KPpK4vKMXqxd6vuzo6m9BNgpAv1LcrrtmqAtOJ1RGoEILXYZVost0L6Q+V01NyY7n7jXIIfS7LR3nP6YA==}
-    peerDependencies:
-      cypress: '*'
-    dependencies:
-      '@cypress/webpack-preprocessor': 5.15.7_y2f44dcjnz5yowcdjatz7idfzu
-=======
   /@cypress/code-coverage/3.10.4_3irmzwcgyvndmm5bh42kcso2my:
     resolution: {integrity: sha512-FTB6ftXjO87KlqXiR/55UaniXwPia6+CcaO7I6aZDbB9u7Zz2InBx5iakpKB28CJoqmk1sywblOP57QHd6weLQ==}
     peerDependencies:
       cypress: '*'
     dependencies:
       '@cypress/webpack-preprocessor': 5.17.0_o6grriwfl5z2nbzmbrdmv7jn3u
->>>>>>> bf8f865 (feat: v2 init)
       chalk: 4.1.2
       cypress: 9.7.0
       dayjs: 1.10.7
@@ -2309,13 +2206,8 @@ packages:
       uuid: 8.3.2
     dev: true
 
-<<<<<<< HEAD
-  /@cypress/webpack-preprocessor/5.15.7_y2f44dcjnz5yowcdjatz7idfzu:
-    resolution: {integrity: sha512-fXlwoD6XrgKYgOCQuj8EJm4yekV2mba3yz7WwlYnlt4BRSUqD03kUkxZxkChRm1YqdS8IB89x9EycU9Ew5kLYA==}
-=======
   /@cypress/webpack-preprocessor/5.17.0_o6grriwfl5z2nbzmbrdmv7jn3u:
     resolution: {integrity: sha512-HyFqHkrOrIIYOt4G+r3VK0kVYTcev1tEcqBI/0DJ4AzEuEgW/TB+cX56txy4Cgn60XXdJoul2utclZwUqOsPZA==}
->>>>>>> bf8f865 (feat: v2 init)
     peerDependencies:
       '@babel/core': ^7.0.1
       '@babel/preset-env': ^7.0.0
@@ -2340,6 +2232,7 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
 <<<<<<< HEAD
   /@esbuild/android-arm/0.17.18:
     resolution: {integrity: sha512-EmwL+vUBZJ7mhFCs5lA4ZimpUH3WMAoqvOIYhVQwdIgSpHC8ImHdsRyhHAVxpDYUSm0lWvd63z0XH1IlImS2Qw==}
@@ -2539,6 +2432,19 @@ packages:
     dev: false
     optional: true
 =======
+=======
+  /@dotlottie/dotlottie-js/0.1.3:
+    resolution: {integrity: sha512-m4YFfRHS9TB2eQkQZ5A1XrzS2wwwTzmaeEn4grBH5ss1FGjtVsgdhPIbsQQLI//81vpy2M5xgMQOLrsH22pNpQ==}
+    engines: {node: '>=18.0.0'}
+    dependencies:
+      browser-image-hash: 0.0.5
+      fflate: 0.7.4
+      filenamify: 6.0.0
+      sharp: 0.32.0
+      sharp-phash: 2.1.0_sharp@0.32.0
+    dev: false
+
+>>>>>>> daff889 (feat(common): added multiple animation support. (#94))
   /@endemolshinegroup/cosmiconfig-typescript-loader/3.0.2_zmjss6mecb4soo3dpdlecld3xa:
     resolution: {integrity: sha512-QRVtqJuS1mcT56oHpVegkKBlgtWjXw/gHNWO3eL9oyB5Sc7HBoc2OLG/nYpVfT/Jejvo3NUrD0Udk7XgoyDKkA==}
     engines: {node: '>=10.0.0'}
@@ -3882,17 +3788,6 @@ packages:
       '@commitlint/cli': 17.0.3
       '@commitlint/config-conventional': 16.2.1
     dev: true
-
-  /@lottiefiles/dotlottie-js/2.1.0-beta.9:
-    resolution: {integrity: sha512-S5wqZ4v7tRRyKBsmh/TMLC0MimrPCriYb0wWF3ZqvaBtSeTLJFZ35VL0FBV3Ld3AYebbmfVARMJEK+dbGCQvrg==, tarball: download/@LottieFiles/dotlottie-js/2.1.0-beta.9/d4c90067babe4b60d1f32d036963ae4b93173e74}
-    engines: {node: '>=18.0.0'}
-    dependencies:
-      browser-image-hash: 0.0.5
-      fflate: 0.7.4
-      filenamify: 6.0.0
-      sharp: 0.32.0
-      sharp-phash: 2.1.0_sharp@0.32.0
-    dev: false
 
   /@lottiefiles/eslint-plugin/3.0.0_bkcyssjpcfejta2rsq6waiumk4:
     resolution: {integrity: sha512-NifgSAG/ccHfxWEKh4EKwRmVUq7fYWkL+bZdFDktopp/CLYugW/02cAfZa+Su6u+3uzlcKKgl3J7LQd+dRXO/w==, tarball: download/@LottieFiles/eslint-plugin/3.0.0/648e4d9b17378d22d876fa054ff6e3eeb7639403}

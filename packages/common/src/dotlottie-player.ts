@@ -2,9 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { Dotlottie } from '@lottiefiles/dotlottie-js';
+import { DotLottie } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
-import { signal } from '@preact/signals-core';
 import lottie from 'lottie-web';
 import type {
   AnimationConfig,
@@ -16,6 +15,9 @@ import type {
   HTMLRendererConfig,
   CanvasRendererConfig,
 } from 'lottie-web';
+
+import { Store } from './store';
+import { createError, logError, logWarning } from './utils';
 
 export enum PlayerState {
   Error = 'error',
@@ -34,56 +36,52 @@ export enum PlayMode {
   Normal = 'normal',
 }
 
-export interface Manifest {
-  [key: string]: unknown;
-  animations: Array<{
-    [key: string]: unknown;
-    direction: number;
-    id: string;
-    loop: boolean;
-    mode?: 'normal' | 'bounce';
-    speed: number;
-  }>;
-  author: string;
-  description: string;
-  generator: string;
-  keywords: string;
-  version: string;
-}
-export interface DotLottie {
-  [key: string]: unknown;
-  animations: {
-    [key: string]: string;
-  };
-  images: {
-    [key: string]: Uint8Array;
-  };
-  manifest: Manifest;
+export interface ManifestAnimation {
+  autoplay?: boolean;
+  direction?: AnimationDirection;
+  hover?: boolean;
+  id: string;
+  intermission?: number;
+  loop?: boolean | number;
+  playMode?: PlayMode;
+  speed?: number;
+  themeColor?: string;
 }
 
-export interface DotLottieElement extends Element {
+export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
+
+export interface Manifest {
+  activeAnimationId?: string;
+  animations: ManifestAnimation[];
+  author?: string;
+  custom?: Record<string, unknown>;
+  description?: string;
+  generator?: string;
+  keywords?: string;
+  revision?: number;
+  version?: string;
+}
+
+export interface DotLottieElement extends HTMLDivElement {
   __lottie?: AnimationItem | null;
 }
 
-export interface ExtraOptions {
-  count: number;
-  direction: AnimationDirection;
-  intermission: number;
-  mode: PlayMode;
-  speed: number;
-}
-
-export const EXTRA_OPTIONS: ExtraOptions = {
-  count: 1,
+export const DEFAULT_OPTIONS: PlaybackOptions = {
+  autoplay: false,
   direction: 1,
+  hover: false,
+  intermission: 0,
+  loop: false,
+  playMode: PlayMode.Normal,
   speed: 1,
-  intermission: 1,
-  mode: PlayMode.Normal,
 };
 
+export type { RendererType };
 export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRendererConfig;
 export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> &
-  ExtraOptions & {
+  PlaybackOptions & {
+    activeAnimationId?: string | null;
+    background?: string;
     testId?: string | undefined;
   };
 
@@ -93,14 +91,38 @@ declare global {
   }
 }
 
+export interface DotLottiePlayerState extends PlaybackOptions {
+  background: string;
+  currentState: PlayerState;
+  frame: number;
+  intermission: number;
+  seeker: number;
+}
+
+export const DEFAULT_STATE: DotLottiePlayerState = {
+  autoplay: false,
+  currentState: PlayerState.Initial,
+  frame: 0,
+  seeker: 0,
+  direction: 1,
+  hover: false,
+  loop: false,
+  playMode: PlayMode.Normal,
+  speed: 1,
+  background: 'transparent',
+  intermission: 0,
+};
+
 export class DotLottiePlayer {
   protected _lottie?: AnimationItem;
 
   protected _src: string | Record<string, unknown>;
 
-  protected _options: AnimationConfig<RendererType>;
+  protected _options: Omit<AnimationConfig<RendererType>, 'container'>;
 
-  protected _extraOptions: ExtraOptions;
+  protected _playbackOptions: PlaybackOptions;
+
+  protected _hover: boolean = false;
 
   protected _count: number = 0;
 
@@ -110,51 +132,60 @@ export class DotLottiePlayer {
 
   protected _counterInterval: number | null = null;
 
-  protected _container: DotLottieElement;
+  protected _container: DotLottieElement | null = null;
 
   protected _name?: string;
 
   protected _mode: PlayMode = PlayMode.Normal;
 
+  protected _background: string = 'transparent';
+
   protected _animation: Animation | undefined;
 
-  protected _animations: Animation[] = [];
+  protected _animations: Map<string, Animation> = new Map();
 
   protected _manifest: Manifest | undefined = undefined;
+
+  protected _activeAnimationId?: string | undefined;
 
   protected _testId?: string;
 
   protected _listeners = new Map();
 
-  public state = signal<PlayerState>(PlayerState.Initial);
+  protected _currentState = PlayerState.Initial;
 
-  public frame = signal<number>(0);
+  protected _stateBeforeFreeze = PlayerState.Initial;
 
-  public seeker = signal<number>(0);
+  public state = new Store<DotLottiePlayerState>(DEFAULT_STATE);
+
+  protected _frame: number = 0;
+
+  protected _seeker: number = 0;
 
   public constructor(
     src: string | Record<string, unknown>,
-    container: DotLottieElement,
+    container?: DotLottieElement | null,
     options?: DotLottieConfig<RendererType>,
   ) {
-    if (!(container instanceof Element)) {
-      throw Error('Second parameter `container` expected to be an Element');
-    }
     this._src = src;
-    this._container = container;
 
     if (options?.testId) {
       this._testId = options.testId;
     }
 
-    this._extraOptions = this._extractExtraOptions(options || ({} as DotLottieConfig<RendererType>));
+    this._playbackOptions = this._validatePlaybackOptions(options || {});
 
-    this.setCount(this._extraOptions.count);
-    this.setIntermission(this._extraOptions.intermission);
-    this.setMode(this._extraOptions.mode);
+    if (typeof options?.activeAnimationId === 'string') {
+      this._activeAnimationId = options.activeAnimationId;
+    }
+
+    this._container = container || null;
+
+    if (typeof options?.background === 'string') {
+      this.setBackground(options.background);
+    }
 
     this._options = {
-      container,
       loop: false,
       autoplay: true,
       renderer: 'svg',
@@ -165,55 +196,51 @@ export class DotLottiePlayer {
       },
       ...(options || {}),
     };
+
+    this._listenToHover();
   }
 
-  protected _extractExtraOptions(config: DotLottieConfig<RendererType>): ExtraOptions {
-    const extraOptions: ExtraOptions = EXTRA_OPTIONS;
-
-    for (const [key, value] of Object.entries(config)) {
-      if (!Object.hasOwn(EXTRA_OPTIONS, key)) continue;
-
-      switch (key as keyof ExtraOptions) {
-        case 'mode':
-          if (['bounce', 'normal'].includes(value)) {
-            extraOptions.mode = value;
-          }
-          break;
-
-        case 'count':
-          if (typeof value === 'number') {
-            extraOptions.count = value;
-          }
-          break;
-
-        case 'speed':
-          if (typeof value === 'number') {
-            extraOptions.speed = value;
-          }
-          break;
-
-        case 'direction':
-          if ([-1, 1].includes(value)) {
-            extraOptions.direction = value;
-          }
-          break;
-
-        case 'intermission':
-          if (typeof value === 'number') {
-            extraOptions.intermission = value;
-          }
-          break;
-
-        default:
-          break;
+  protected _listenToHover(): void {
+    const onEnter = (): void => {
+      if (this._hover && this.currentState !== PlayerState.Playing) {
+        this.play();
       }
+    };
+    const onLeave = (): void => {
+      if (this._hover && this.currentState === PlayerState.Playing) {
+        this.pause();
+      }
+    };
+
+    this._container?.removeEventListener('mouseenter', onEnter);
+    this._container?.removeEventListener('mouseleave', onLeave);
+
+    this._container?.addEventListener('mouseleave', onLeave);
+    this._container?.addEventListener('mouseenter', onEnter);
+  }
+
+  protected _getOption<T extends keyof Required<PlaybackOptions>, V extends Required<PlaybackOptions>[T]>(
+    option: T,
+  ): V {
+    if (typeof this._playbackOptions[option] === 'undefined') {
+      // Option from manifest
+      const activeAnim = this._manifest?.animations.find((animation) => animation.id === this._activeAnimationId);
+
+      if (activeAnim && activeAnim[option]) {
+        return activeAnim[option] as unknown as V;
+      }
+
+      // Option from defaults
+      return DEFAULT_OPTIONS[option] as V;
     }
 
-    return extraOptions;
+    // Option from player props
+    return this._playbackOptions[option] as V;
   }
 
   protected _updateTestData(): void {
     if (!this._testId || !this._lottie) return;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!window.dotLottiePlayer) {
       window.dotLottiePlayer = {
         [this._testId]: {},
@@ -221,7 +248,7 @@ export class DotLottiePlayer {
     }
     window.dotLottiePlayer[this._testId] = {
       direction: this._lottie.playDirection,
-      currentState: this.state.value,
+      currentState: this._currentState,
       loop: this.loop,
       mode: this._mode,
       speed: this._lottie.playSpeed,
@@ -229,7 +256,7 @@ export class DotLottiePlayer {
   }
 
   public get currentState(): PlayerState {
-    return this.state.value;
+    return this._currentState;
   }
 
   protected clearCountTimer(): void {
@@ -239,7 +266,8 @@ export class DotLottiePlayer {
   }
 
   protected setCurrentState(state: PlayerState): void {
-    this.state.value = state;
+    this._currentState = state;
+    this._notify();
     this._updateTestData();
   }
 
@@ -254,6 +282,7 @@ export class DotLottiePlayer {
   public updateSrc(src: Record<string, unknown> | string): void {
     if (this._src === src) return;
     this._src = src;
+    this._activeAnimationId = undefined;
     this.load();
   }
 
@@ -269,8 +298,19 @@ export class DotLottiePlayer {
     return this._intermission;
   }
 
+  public get hover(): boolean {
+    return this.hover;
+  }
+
+  public setHover(hover: boolean): void {
+    if (typeof hover !== 'boolean') return;
+    this._hover = hover;
+    this._notify();
+  }
+
   public setIntermission(intermission: number): void {
     this._intermission = intermission;
+    this._notify();
   }
 
   public get mode(): PlayMode {
@@ -278,7 +318,9 @@ export class DotLottiePlayer {
   }
 
   public setMode(mode: PlayMode): void {
+    if (typeof mode !== 'string') return;
     this._mode = mode;
+    this._notify();
     this._updateTestData();
   }
 
@@ -294,15 +336,220 @@ export class DotLottiePlayer {
     this.setCurrentState(PlayerState.Stopped);
   }
 
-  public play(): void {
+  public seek(value: number | string): void {
     if (!this._lottie) return;
 
-    if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
-      this._lottie.goToAndPlay(this._lottie.totalFrames, true);
-    } else {
-      this._lottie.play();
+    let frameValue = value;
+
+    if (typeof frameValue === 'number') {
+      frameValue = Math.round(frameValue);
     }
-    this.setCurrentState(PlayerState.Playing);
+
+    // Extract frame number from either number or percentage value
+    const matches = /^(\d+)(%?)$/u.exec(frameValue.toString());
+
+    if (!matches) {
+      return;
+    }
+
+    // Calculate and set the frame number
+    const nextFrame = matches[2] === '%' ? (this.totalFrames * Number(matches[1])) / 100 : matches[1];
+
+    // Set seeker to new frame number
+    if (nextFrame === undefined) return;
+    // Send lottie player to the new frame
+    this._lottie.goToAndPlay(nextFrame, true);
+    if (this.currentState === PlayerState.Playing) {
+      this.play();
+    } else if (this.currentState === PlayerState.Frozen) {
+      this.freeze();
+    } else {
+      this.pause();
+    }
+  }
+
+  protected _validatePlaybackOptions(options?: Record<string, unknown>): Partial<PlaybackOptions> {
+    if (!options) return {};
+    const validatedOptions: Partial<PlaybackOptions> = {};
+
+    for (const [key, value] of Object.entries(options)) {
+      switch (key as keyof PlaybackOptions) {
+        case 'autoplay':
+          if (typeof value === 'boolean') {
+            validatedOptions.autoplay = value;
+          }
+          break;
+
+        case 'direction':
+          if (typeof value === 'number' && [1, -1].includes(value)) {
+            validatedOptions.direction = value as AnimationDirection;
+          }
+          break;
+
+        case 'loop':
+          if (typeof value === 'boolean' || typeof value === 'number') {
+            validatedOptions.loop = value;
+          }
+          break;
+
+        case 'playMode':
+          if (typeof value === 'string' && ['normal', 'bounce'].includes(value)) {
+            validatedOptions.playMode = value as PlayMode;
+          }
+          break;
+
+        case 'speed':
+          if (typeof value === 'number') {
+            validatedOptions.speed = value;
+          }
+          break;
+
+        case 'themeColor':
+          if (typeof value === 'string') {
+            validatedOptions.themeColor = value;
+          }
+          break;
+
+        case 'hover':
+          if (typeof value === 'boolean') {
+            validatedOptions.hover = value;
+          }
+          break;
+
+        case 'intermission':
+          if (typeof value === 'number') {
+            validatedOptions.intermission = value;
+          }
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    return validatedOptions;
+  }
+
+  public play(activeAnimation?: string | number, options?: PlaybackOptions): void {
+    if (!this._lottie) return;
+
+    if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._activeAnimationId)) {
+      if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
+        this._lottie.goToAndPlay(this._lottie.totalFrames, true);
+      } else {
+        this._lottie.play();
+      }
+      this.setCurrentState(PlayerState.Playing);
+
+      return;
+    }
+
+    if (typeof activeAnimation === 'number') {
+      const anim = this._manifest?.animations[activeAnimation];
+
+      if (!anim) {
+        throw createError('animation not found.');
+      }
+      this.render(anim);
+    }
+
+    if (typeof activeAnimation === 'string') {
+      const anim = this._manifest?.animations.find((animation) => animation.id === activeAnimation);
+
+      if (!anim) {
+        throw createError('animation not found.');
+      }
+
+      this.render({
+        ...anim,
+        ...this._validatePlaybackOptions(options),
+      });
+    }
+  }
+
+  public togglePlay(): void {
+    if (this.currentState === PlayerState.Playing) {
+      this.pause();
+    } else {
+      this.play();
+    }
+  }
+
+  public get activeAnimationId(): string | undefined {
+    return this._activeAnimationId;
+  }
+
+  public reset(): void {
+    const activeId = this._manifest?.activeAnimationId;
+
+    if (!activeId) {
+      const anim = this._manifest?.animations[0];
+
+      if (!anim || !anim.id) {
+        throw createError('animation not found.');
+      }
+
+      this.render(anim);
+    }
+
+    const anim = this._manifest?.animations.find((animation) => animation.id === activeId);
+
+    if (!anim) return;
+
+    this.render(anim);
+  }
+
+  public previous(options?: PlaybackOptions): void {
+    if (!this._manifest || !this._manifest.animations.length) {
+      throw createError('manifest not found.');
+    }
+
+    const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._activeAnimationId);
+
+    if (currentIndex === -1) {
+      throw createError('animation not found.');
+    }
+
+    const nextAnim =
+      this._manifest.animations[
+        (currentIndex - 1 + this._manifest.animations.length) % this._manifest.animations.length
+      ];
+
+    if (!nextAnim || !nextAnim.id) {
+      throw createError('animation not found.');
+    }
+
+    this.render({
+      ...nextAnim,
+      ...this._validatePlaybackOptions(options),
+    });
+  }
+
+  public next(options?: PlaybackOptions): void {
+    if (!this._manifest || !this._manifest.animations.length) {
+      throw createError('manifest not found.');
+    }
+
+    const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._activeAnimationId);
+
+    if (currentIndex === -1) {
+      throw createError('animation not found.');
+    }
+
+    const nextAnim = this._manifest.animations[(currentIndex + 1) % this._manifest.animations.length];
+
+    if (!nextAnim || !nextAnim.id) {
+      throw createError('animation not found.');
+    }
+
+    this.render({
+      ...nextAnim,
+      ...this._validatePlaybackOptions(options),
+    });
+  }
+
+  public getManifest(): Manifest | undefined {
+    return this._manifest;
   }
 
   public resize(): void {
@@ -312,9 +559,10 @@ export class DotLottiePlayer {
 
   public stop(): void {
     if (!this._lottie) return;
+    this.clearCountTimer();
     this._counter = 0;
 
-    this.setDirection(this._extraOptions.direction);
+    this.setDirection(this._getOption('direction'));
     this._lottie.stop();
     this.setCurrentState(PlayerState.Stopped);
   }
@@ -330,17 +578,31 @@ export class DotLottiePlayer {
   public freeze(): void {
     if (!this._lottie) return;
 
+    if (this.currentState !== PlayerState.Frozen) {
+      this._stateBeforeFreeze = this.currentState;
+    }
     this._lottie.pause();
     this.setCurrentState(PlayerState.Frozen);
   }
 
+  public unfreeze(): void {
+    if (!this._lottie) return;
+
+    if (this._stateBeforeFreeze === PlayerState.Playing) {
+      this.play();
+    } else {
+      this.pause();
+    }
+  }
+
   public destroy(): void {
-    if (this._container.__lottie) {
+    if (this._container?.__lottie) {
       this._container.__lottie.destroy();
       this._container.__lottie = null;
     }
 
     this.clearCountTimer();
+    this._counter = 0;
     this._lottie?.destroy();
   }
 
@@ -353,8 +615,28 @@ export class DotLottiePlayer {
     try {
       this._lottie?.addEventListener(name, cb);
     } catch (error) {
-      console.error('[dotLottie]:addEventListener', error);
+      logError('[dotLottie]:addEventListener', error);
     }
+  }
+
+  public getState(): DotLottiePlayerState {
+    return {
+      autoplay: this._lottie?.autoplay ?? false,
+      currentState: this._currentState,
+      frame: this._frame,
+      seeker: this._seeker,
+      direction: (this._lottie?.playDirection ?? 1) as AnimationDirection,
+      hover: this._hover,
+      loop: this._lottie?.loop ?? false,
+      playMode: this._mode,
+      speed: this._lottie?.playSpeed ?? 1,
+      background: this._background,
+      intermission: this._intermission,
+    };
+  }
+
+  protected _notify(): void {
+    this.state.setState(this.getState());
   }
 
   public get totalFrames(): number {
@@ -368,8 +650,10 @@ export class DotLottiePlayer {
   }
 
   public setDirection(direction: 1 | -1): void {
+    if (typeof direction !== 'number') return;
     this._lottie?.setDirection(direction);
-    this._extraOptions.direction = direction;
+    this._playbackOptions.direction = direction;
+    this._notify();
     this._updateTestData();
   }
 
@@ -378,8 +662,10 @@ export class DotLottiePlayer {
   }
 
   public setSpeed(speed: number): void {
+    if (typeof speed !== 'number') return;
     this._lottie?.setSpeed(speed);
-    this._extraOptions.speed = speed;
+    this._playbackOptions.speed = speed;
+    this._notify();
     this._updateTestData();
   }
 
@@ -388,8 +674,10 @@ export class DotLottiePlayer {
   }
 
   public setAutoplay(value: boolean): void {
+    if (typeof value !== 'boolean') return;
     if (!this._lottie) return;
     this._lottie.autoplay = value;
+    this._notify();
     this._updateTestData();
   }
 
@@ -402,15 +690,35 @@ export class DotLottiePlayer {
     return this._lottie?.loop ?? false;
   }
 
-  public setLoop(value: boolean): void {
+  public setLoop(value: boolean | number): void {
+    if (typeof value !== 'boolean' && typeof value !== 'number') return;
     if (!this._lottie) return;
-    this._lottie.setLoop(value);
+
+    this.clearCountTimer();
+
+    if (typeof value === 'number') {
+      this._count = value;
+    }
+
+    this._lottie.setLoop(Boolean(value));
+    this._notify();
     this._updateTestData();
   }
 
   public toggleLoop(): void {
     if (!this._lottie) return;
     this.setLoop(!this._lottie.loop);
+  }
+
+  public get background(): string {
+    return this._background;
+  }
+
+  public setBackground(color: string): void {
+    if (this._container) {
+      this._background = color;
+      this._container.style.backgroundColor = color;
+    }
   }
 
   public removeEventListener(name: AnimationEventName, cb?: () => unknown): void {
@@ -423,7 +731,7 @@ export class DotLottiePlayer {
 
       this._listeners.delete([name, cb]);
     } catch (error) {
-      console.error('[dotLottie]:removeEventListener', error);
+      logError('removeEventListener', error as string);
     }
   }
 
@@ -431,8 +739,9 @@ export class DotLottiePlayer {
     if (!this._lottie) return;
     this._lottie.addEventListener('enterFrame', () => {
       if (!this._lottie) return;
-      this.frame.value = this._lottie.currentFrame;
-      this.seeker.value = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
+      this._frame = this._lottie.currentFrame;
+      this._seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
+      this._notify();
     });
 
     this._lottie.addEventListener('loopComplete', () => {
@@ -478,9 +787,68 @@ export class DotLottiePlayer {
     }
   }
 
+  protected render(activeAnimation?: Partial<ManifestAnimation>): void {
+    if (activeAnimation?.id) {
+      const anim = this._animations.get(activeAnimation.id);
+
+      if (!anim) {
+        throw createError('animation not found.');
+      }
+      this._activeAnimationId = activeAnimation.id;
+      this._animation = anim;
+    } else if (!this._animation) {
+      throw createError('no animations selected.');
+    }
+
+    this.destroy();
+
+    let shouldLoop = Boolean(this._getOption('loop'));
+
+    // Number loops are handled within on `complete` event. not by lottie-web
+    if (typeof activeAnimation?.loop === 'number') {
+      shouldLoop = false;
+    } else if (typeof activeAnimation?.loop === 'boolean') {
+      shouldLoop = true;
+    }
+
+    const options = {
+      ...this._options,
+      autoplay: activeAnimation?.autoplay ?? this._getOption('autoplay'),
+      loop: shouldLoop,
+    };
+
+    this.setMode(activeAnimation?.playMode ?? this._getOption('playMode'));
+    this.setIntermission(activeAnimation?.intermission ?? this._getOption('intermission'));
+    this.setHover(activeAnimation?.hover ?? this._getOption('hover'));
+    this.setLoop(activeAnimation?.loop ?? this._getOption('loop'));
+
+    this._lottie = lottie.loadAnimation({
+      ...options,
+      container: this._container as Element,
+      animationData: this._animation,
+    });
+
+    this.addEventListeners();
+    if (this._container) {
+      this._container.__lottie = this._lottie;
+    }
+    this.setCurrentState(PlayerState.Ready);
+
+    this.setDirection(activeAnimation?.direction ?? this._getOption('direction'));
+    this.setSpeed(activeAnimation?.speed ?? this._getOption('speed'));
+
+    const shouldAutoPlay = activeAnimation?.autoplay ?? this._options.autoplay;
+
+    if (shouldAutoPlay) {
+      this.play();
+    }
+
+    this._updateTestData();
+  }
+
   public async load(): Promise<void> {
-    if (this.state.value === PlayerState.Loading) {
-      console.warn('[dotLottie] Loading inprogress..');
+    if (this._currentState === PlayerState.Loading) {
+      logWarning('Loading inprogress..');
 
       return;
     }
@@ -491,51 +859,44 @@ export class DotLottiePlayer {
       const srcParsed = DotLottiePlayer.parseSrc(this._src);
 
       if (typeof srcParsed === 'string') {
-        this._animation = await this.getAnimationData(srcParsed);
+        const { activeAnimationId, animations, manifest } = await this.getAnimationData(srcParsed);
+
+        if (!this._activeAnimationId) {
+          this._activeAnimationId = activeAnimationId;
+        }
+
+        this._animations = animations;
+        this._manifest = manifest;
+
+        const animation = this._animations.get(this._activeAnimationId);
+
+        if (!animation) {
+          throw createError(`invalid animation id ${this._activeAnimationId}`);
+        }
+
+        this._animation = animation;
+
+        this.render();
       } else if (DotLottiePlayer.isLottie(srcParsed)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this._animation = srcParsed as any;
+        this.render();
       } else {
-        throw new Error('[dotLottie] Load method failing. Object is not a valid Lottie.');
+        throw createError('Load method failing. Object is not a valid Lottie.');
       }
-
-      /**
-       * Animation is ready to render. Continuue
-       */
-      // Clear previous animation, if any
-      this.destroy();
-
-      // Initialize lottie player and load animation
-      this._lottie = lottie.loadAnimation({
-        ...this._options,
-        animationData: this._animation,
-      });
-
-      this.addEventListeners();
-      this._container.__lottie = this._lottie;
-      this.setCurrentState(PlayerState.Ready);
-
-      this.setDirection(this._extraOptions.direction);
-      this.setSpeed(this._extraOptions.speed);
-
-      if (this._options.autoplay) {
-        this.play();
-      }
-
-      this._updateTestData();
     } catch (err) {
       this.setCurrentState(PlayerState.Error);
-      console.log('err', err);
+      logError('err', err);
     }
   }
 
   protected setErrorState(msg: string): void {
     this.setCurrentState(PlayerState.Error);
-    console.error(msg);
+    logError(msg);
   }
 
-  protected async fetchLottieJSON(src: string): Promise<{ animations: Animation[]; manifest: Manifest }> {
-    if (!src.toLowerCase().endsWith('.json')) throw new Error('[dotlottie-player]: parameter src must be .json');
+  protected async fetchLottieJSON(src: string): Promise<{ animations: Map<string, Animation>; manifest: Manifest }> {
+    if (!src.toLowerCase().endsWith('.json')) throw createError('parameter src must be .json');
 
     try {
       const data = await fetch(src, {
@@ -546,7 +907,7 @@ export class DotLottiePlayer {
         },
       }).then(async (resp) => resp.json());
 
-      const animations: Animation[] = [];
+      const animations: Map<string, Animation> = new Map();
       const filename = src.substring(Number(src.lastIndexOf('/')) + 1, src.lastIndexOf('.'));
 
       const boilerplateManifest: Manifest = {
@@ -566,61 +927,89 @@ export class DotLottiePlayer {
         version: '1.0.0',
       };
 
-      animations.push(data);
+      animations.set(filename, data);
 
       return {
         animations,
         manifest: boilerplateManifest,
       };
     } catch (error) {
-      throw new Error(`[dotlottie-player]:fetchLottieJSON error  ${error}`);
+      throw createError(`fetchLottieJSON error  ${error}`);
     }
   }
 
-  protected async getAnimationData(srcParsed: string): Promise<Animation> {
+  protected async getAnimationData(srcParsed: string): Promise<{
+    activeAnimationId: string;
+    animations: Map<string, Animation>;
+    manifest: Manifest;
+  }> {
     if (srcParsed.toLowerCase().endsWith('.json')) {
       const { animations, manifest } = await this.fetchLottieJSON(srcParsed);
 
-      if (!Array.isArray(animations) || animations.length === 0 || !animations[0]) {
-        throw new Error('[dotLottie] No animation to load!');
+      if (!animations.size || manifest.animations.length === 0 || !manifest.animations[0]) {
+        throw createError('No animation to load!');
       }
 
-      this._manifest = manifest;
-      this._animations = animations;
+      let activeAnimationId: string;
 
-      return animations[0];
+      if (manifest.activeAnimationId) {
+        this._activeAnimationId = manifest.activeAnimationId;
+        activeAnimationId = manifest.activeAnimationId;
+      } else {
+        this._activeAnimationId = manifest.animations[0].id;
+        activeAnimationId = manifest.animations[0].id;
+      }
+
+      return {
+        activeAnimationId,
+        animations,
+        manifest,
+      };
     }
 
     try {
-      const dl = new Dotlottie();
+      const dl = new DotLottie();
       const dotLottie = await dl.fromURL(srcParsed);
       const lottieAnimations = dotLottie.animations;
 
-      if (!lottieAnimations.length) {
-        throw new Error('[dotLottie] No animation to load!');
+      if (!lottieAnimations.length || !dotLottie.manifest.animations.length || !dotLottie.manifest.animations[0]) {
+        throw createError('no animation to load!');
       }
-      const animations: Animation[] = [];
+
+      const animations: Map<string, Animation> = new Map();
 
       for (const anim of lottieAnimations) {
-        const animation = await dotLottie.getAnimation(anim.id, {
-          inlineAssets: true,
-        });
+        const animation = await dotLottie.getAnimation(anim.id);
 
         if (animation) {
-          animations.push(await animation.toJSON());
+          animations.set(
+            anim.id,
+            await animation.toJSON({
+              inlineAssets: true,
+            }),
+          );
         }
       }
 
-      if (!animations[0]) {
-        throw new Error('[dotLottie] No animation to load!');
+      let activeAnimationId: string;
+
+      if (dotLottie.manifest.activeAnimationId) {
+        activeAnimationId = dotLottie.manifest.activeAnimationId;
+      } else {
+        activeAnimationId = dotLottie.manifest.animations[0].id;
       }
 
-      this._animations = animations;
-      this._manifest = dotLottie.manifest as Manifest;
+      if (!animations.size) {
+        throw createError('no animation to load!');
+      }
 
-      return animations[0];
+      return {
+        activeAnimationId,
+        animations,
+        manifest: dotLottie.manifest as Manifest,
+      };
     } catch (error) {
-      throw new Error(`[dotLottie]:getAnimationData error ${error}`);
+      throw createError(`getAnimationData error ${error}`);
     }
   }
 
