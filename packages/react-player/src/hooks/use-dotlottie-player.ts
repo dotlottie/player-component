@@ -4,8 +4,8 @@
 
 import type { DotLottieConfig, PlaybackOptions, Manifest, RendererType } from 'common';
 import { DotLottiePlayer } from 'common';
-import { MutableRefObject, useImperativeHandle } from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import type { MutableRefObject } from 'react';
+import { useCallback, useEffect, useState, useImperativeHandle } from 'react';
 
 export interface DotLottieRefProps {
   getManifest: () => Manifest | undefined;

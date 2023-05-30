@@ -38,7 +38,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
     <div aria-label="lottie-animation-controls" className="toolbar" {...props}>
       {buttons.includes('play') && (
         <button
-          onClick={(): void => dotLottiePlayer?.togglePlay()}
+          onClick={(): void => dotLottiePlayer.togglePlay()}
           className={`${isPlaying || isPaused ? 'active' : ''}`}
           style={{ alignItems: 'center' }}
           // tabindex={0}
@@ -57,7 +57,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       )}
       {buttons.includes('stop') && (
         <button
-          onClick={(): void => dotLottiePlayer?.stop()}
+          onClick={(): void => dotLottiePlayer.stop()}
           className={`${isStopped ? 'active' : ''}`}
           style={{ alignItems: 'center' }}
           aria-label="stop"
@@ -74,12 +74,12 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
         step={0}
         max={100}
         value={seeker || 0}
-        onInput={(event): void => dotLottiePlayer?.seek(String(event.currentTarget.value).concat('%'))}
+        onInput={(event): void => dotLottiePlayer.seek(String(event.currentTarget.value).concat('%'))}
         onMouseDown={(): void => {
-          dotLottiePlayer?.freeze();
+          dotLottiePlayer.freeze();
         }}
         onMouseUp={(): void => {
-          dotLottiePlayer?.unfreeze();
+          dotLottiePlayer.unfreeze();
         }}
         aria-valuemin={1}
         aria-valuemax={100}
@@ -91,7 +91,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       {buttons.includes('loop') && (
         <button
           onClick={(): void => {
-            dotLottiePlayer?.toggleLoop();
+            dotLottiePlayer.toggleLoop();
           }}
           className={loop ? 'active' : ''}
           style={{ alignItems: 'center' }}
