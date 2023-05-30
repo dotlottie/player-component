@@ -26,6 +26,7 @@
     "postrun-tests": "kill $(lsof -t -i:8000)"
   },
   "dependencies": {
+    "common": "workspace:^",
     "@rollup/plugin-json": "^6.0.0",
     "fflate": "^0.7.3",
     "lit": "^2.4.1",

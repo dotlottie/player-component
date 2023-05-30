@@ -5,12 +5,15 @@
 import type { RendererSettings, PlayMode } from 'common';
 import { PlayerState, PlayerEvents } from 'common';
 import React, { useEffect, useRef } from 'react';
+import { PlayerState, PlayerEvents } from 'common';
+import React, { useEffect, useRef } from 'react';
 import type { MutableRefObject } from 'react';
 
 import { DotLottieContext } from './dotlottie-context';
 import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
 import { useSelectDotLottieState } from './hooks/use-select-dotlottie-state';
+
 
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   activeAnimationId?: string;

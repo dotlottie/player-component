@@ -50,6 +50,20 @@ export enum PlayMode {
   Normal = 'normal',
 }
 
+export enum PlayerEvents {
+  Complete = 'complete',
+  DataFail = 'data_fail',
+  DataReady = 'data_ready',
+  Error = 'error',
+  Frame = 'frame',
+  Freeze = 'freeze',
+  LoopComplete = 'loopComplete',
+  Pause = 'pause',
+  Play = 'play',
+  Ready = 'ready',
+  Stop = 'stop',
+}
+
 export interface ManifestAnimation {
   autoplay?: boolean;
   direction?: AnimationDirection;
@@ -325,6 +339,10 @@ export class DotLottiePlayer {
     return this._mode;
   }
 
+  public get animations(): Map<string, Animation> {
+    return this._animations;
+  }
+
   public setMode(mode: PlayMode): void {
     if (typeof mode !== 'string') return;
     this._mode = mode;
@@ -439,8 +457,23 @@ export class DotLottiePlayer {
     return validatedOptions;
   }
 
+  private _requireAnimationsInTheManifest(): void {
+    if (!this._manifest?.animations.length) {
+      throw createError(`No animations found in manifest.`);
+    }
+  }
+
+  private _requireAnimationsToBeLoaded(): void {
+    if (this._animations.size === 0) {
+      throw createError(`No animations have been loaded.`);
+    }
+  }
+
   public play(activeAnimation?: string | number, options?: PlaybackOptions): void {
     if (!this._lottie) return;
+
+    this._requireAnimationsInTheManifest();
+    this._requireAnimationsToBeLoaded();
 
     if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._activeAnimationId)) {
       if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
@@ -846,7 +879,7 @@ export class DotLottiePlayer {
     this._updateTestData();
   }
 
-  public async load(): Promise<void> {
+  public async load(playbackOptions?: PlaybackOptions): Promise<void> {
     if (this._currentState === PlayerState.Loading) {
       logWarning('Loading inprogress..');
 
@@ -876,11 +909,11 @@ export class DotLottiePlayer {
 
         this._animation = animation;
 
-        this.render();
+        this.render({ ...playbackOptions });
       } else if (DotLottiePlayer.isLottie(srcParsed)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this._animation = srcParsed as any;
-        this.render();
+        this.render({ ...playbackOptions });
       } else {
         throw createError('Load method failing. Object is not a valid Lottie.');
       }

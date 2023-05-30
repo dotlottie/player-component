@@ -14,6 +14,8 @@ const outputDir = './dist/';
 
 export default {
   input: './src/dotlottie-player.ts',
+  // external: (id) =>
+  //   !/^[./]/u.test(id) && !/^fflate/u.test(id) && !/^@lottiefiles\/dotlottie-js/u.test(id) && !/common/u.test(id),
   treeshake: false,
   output: [
     {
