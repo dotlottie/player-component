@@ -19,6 +19,20 @@ import type {
 import { Store } from './store';
 import { createError, logError, logWarning } from './utils';
 
+export enum PlayerEvents {
+  Complete = 'complete',
+  DataFail = 'data_fail',
+  DataReady = 'data_ready',
+  Error = 'error',
+  Frame = 'frame',
+  Freeze = 'freeze',
+  LoopComplete = 'loopComplete',
+  Pause = 'pause',
+  Play = 'play',
+  Ready = 'ready',
+  Stop = 'stop',
+}
+
 export enum PlayerState {
   Error = 'error',
   Fetching = 'fetching',
