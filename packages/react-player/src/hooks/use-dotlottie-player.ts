@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DotLottieConfig, PlaybackOptions, Manifest, RendererType } from 'common';
+import type { DotLottieConfig, PlaybackOptions, Manifest, RendererType, DotLottiePlayerState } from 'common';
 import { DotLottiePlayer } from 'common';
 import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useState, useImperativeHandle } from 'react';
@@ -52,6 +52,9 @@ export const useDotLottiePlayer = (
           getManifest: (): Manifest | undefined => {
             return dotLottiePlayer.getManifest();
           },
+          getState: (): DotLottiePlayerState => {
+            return dotLottiePlayer.getState();
+          }
         } as DotLottieRefProps;
       },
       [config.lottieRef.current, dotLottiePlayer],
