@@ -17,10 +17,10 @@
  */
 // eslint-disable-next-line no-unused-vars
 module.exports = (on, config) => {
-  require('@cypress/code-coverage/task')(on, config)
+  require('@cypress/code-coverage/task')(on, config);
   // include any other plugin code...
 
   // It's IMPORTANT to return the config object
   // with any changed environment variables
-  return config
-}
+  return config;
+};
