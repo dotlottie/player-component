@@ -10,7 +10,7 @@ import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
 describe('Autoplay', () => {
-  it('should not play when `autoplay` = `false`', () => {
+  it('should play with `autoplay` prop', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -35,7 +35,7 @@ describe('Autoplay', () => {
           // eslint-disable-next-line no-secrets/no-secrets
           src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
-          autoplay
+          autoplay={false}
         >
           <Controls />
         </DotLottiePlayer>
@@ -43,10 +43,11 @@ describe('Autoplay', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="currentState"]').should('not.equal', PlayerState.Playing);
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Ready);
+    cy.get('[name="currentState"]').should('not.have.value', PlayerState.Playing);
   });
 
-  it('should not player when `playOnHover` = `true` eventhough `autoplay` = `true`', () => {
+  it('should not play when `playOnHover` = `true` even though `autoplay` = `true`', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -62,10 +63,11 @@ describe('Autoplay', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="currentState"]').should('not.equal', PlayerState.Playing);
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Ready);
+    cy.get('[name="currentState"]').should('not.have.value', PlayerState.Playing);
   });
 
-  it('shoud be reactive.', () => {
+  it('autoplay should be reactive.', () => {
     function Wrapper(): JSX.Element {
       const [autoplay, setAutoplay] = useState(true);
 

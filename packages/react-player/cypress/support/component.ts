@@ -4,9 +4,6 @@
 
 // <reference types="cypress" />
 
-// eslint-disable-next-line import/no-unassigned-import
-import './commands';
-
 import { mount } from 'cypress/react18';
 
 import '../../src/dotlottie-player-styles.css';

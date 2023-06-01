@@ -8,8 +8,8 @@ import { Controls } from '../../src/controls';
 import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
-describe('Loop', () => {
-  it('default should be 0', () => {
+describe('Intermission', () => {
+  it('intermission should default to `0`', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -47,7 +47,7 @@ describe('Loop', () => {
     cy.get('[name="intermission"]').should('have.value', 1000);
   });
 
-  it('shoud be reactive.', () => {
+  it('intermission should be reactive.', () => {
     function Wrapper(): JSX.Element {
       const [intermission, setIntermission] = useState(1000);
 

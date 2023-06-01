@@ -9,7 +9,7 @@ import { Controls } from '../../src/controls';
 import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
-describe('react-player', () => {
+describe('Player', () => {
   it('should mount', () => {
     cy.mount(
       <PlayerStateWrapper>

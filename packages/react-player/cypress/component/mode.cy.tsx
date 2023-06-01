@@ -10,7 +10,7 @@ import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
 describe('Mode', () => {
-  it('defaults to `normal`', () => {
+  it('mode should default to `normal`', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -68,7 +68,7 @@ describe('Mode', () => {
     cy.get('[name="playMode"]').should('have.value', PlayMode.Normal);
   });
 
-  it('shoud be reactive.', () => {
+  it('mode should be reactive.', () => {
     function Wrapper(): JSX.Element {
       const [mode, setMode] = useState(PlayMode.Normal);
 

@@ -9,7 +9,7 @@ import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
 describe('Direction', () => {
-  it('default should be 1', () => {
+  it('direction should default to 1', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -66,7 +66,7 @@ describe('Direction', () => {
     cy.get('[name="direction"]').should('have.value', -1);
   });
 
-  it('shoud be reactive.', () => {
+  it('direction should be reactive.', () => {
     function Wrapper(): JSX.Element {
       const [direction, setDirection] = useState<1 | -1>(1);
 

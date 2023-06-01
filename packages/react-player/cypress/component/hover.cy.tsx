@@ -9,8 +9,8 @@ import { Controls } from '../../src/controls';
 import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
-describe('Loop', () => {
-  it('default should be false', () => {
+describe('Hover', () => {
+  it('hover should default to `false`', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -27,26 +27,6 @@ describe('Loop', () => {
     );
 
     cy.get('[name="hover"]').should('have.value', 'false');
-  });
-
-  it('should be able to set hover', () => {
-    cy.mount(
-      <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          loop
-          playOnHover={true}
-          autoplay
-        >
-          <Controls />
-        </DotLottiePlayer>
-        ,
-      </PlayerStateWrapper>,
-    );
-
-    cy.get('[name="hover"]').should('have.value', 'true');
   });
 
   it('should not play when `hover` = `true`', () => {
@@ -66,10 +46,12 @@ describe('Loop', () => {
       </PlayerStateWrapper>,
     );
 
+    cy.get('[name="hover"]').should('have.value', 'true');
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Ready);
     cy.get('[name="currentState"]').should('not.have.value', PlayerState.Playing);
   });
 
-  it('should play on hover when hover enabled', () => {
+  it('should play on hover when `hover` is enabled', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -96,7 +78,7 @@ describe('Loop', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Paused);
   });
 
-  it('shoud be reactive.', () => {
+  it('hover should be reactive.', () => {
     function Wrapper(): JSX.Element {
       const [hover, setHover] = useState(false);
 

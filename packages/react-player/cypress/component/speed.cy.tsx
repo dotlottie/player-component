@@ -46,7 +46,7 @@ describe('Speed', () => {
     cy.get('[name="speed"]').should('have.value', 2);
   });
 
-  it('shoud be reactive.', () => {
+  it('speed should be reactive.', () => {
     function Wrapper(): JSX.Element {
       const [speed, setSpeed] = useState(1);
 

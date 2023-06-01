@@ -27,24 +27,7 @@ describe('Controls', () => {
     cy.get('[aria-label="lottie-animation-controls"]').should('exist');
   });
 
-  it('should not render controls without `controls` prop', () => {
-    cy.mount(
-      <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
-          <Controls />
-        </DotLottiePlayer>
-        ,
-      </PlayerStateWrapper>,
-    );
-    cy.get('[aria-label="lottie-animation-controls"]').should('exist');
-  });
-
-  it('should dispaly all buttons by default', () => {
+  it('should display all buttons by default', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -64,7 +47,7 @@ describe('Controls', () => {
     cy.get('[aria-label="lottie-seek-input"]').should('exist');
   });
 
-  it('should dispaly buttons specifiied. [`loop`]', () => {
+  it('should display specified buttons. [`loop`]', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -85,7 +68,7 @@ describe('Controls', () => {
     cy.get('[aria-label="lottie-seek-input"]').should('exist');
   });
 
-  it('only display seek when buttons props empty', () => {
+  it('only display seek when buttons props are empty', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer

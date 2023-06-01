@@ -28,7 +28,7 @@ describe('Loop', () => {
     cy.get('[name="loop"]').should('have.value', 'false');
   });
 
-  it('should not without `loop` prop', () => {
+  it('should not loop without `loop` prop', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -84,7 +84,7 @@ describe('Loop', () => {
     cy.get('[name="loop"]').should('have.value', 3);
   });
 
-  it('shoud be reactive.', () => {
+  it('loop should be reactive.', () => {
     function Wrapper(): JSX.Element {
       const [loop, setLoop] = useState(true);
 

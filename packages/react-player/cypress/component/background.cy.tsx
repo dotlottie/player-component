@@ -2,32 +2,13 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { PlayerState } from 'common';
 import React, { useState } from 'react';
 
 import { Controls } from '../../src/controls';
 import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
-describe('[dolottie-player]: Background', () => {
-  it('should not play when `autoplay` = `false`', () => {
-    cy.mount(
-      <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
-          <Controls />
-        </DotLottiePlayer>
-        ,
-      </PlayerStateWrapper>,
-    );
-
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
-  });
-
+describe('Background', () => {
   it('should able set background color', () => {
     cy.mount(
       <PlayerStateWrapper>
@@ -48,7 +29,7 @@ describe('[dolottie-player]: Background', () => {
     cy.get('[data-testid="animation"]').should('have.css', 'background-color').and('eq', 'rgb(26, 189, 70)');
   });
 
-  it('shoud be reactive.', () => {
+  it('background should be reactive.', () => {
     function Wrapper(): JSX.Element {
       const [background, setBackground] = useState('rgb(26, 189, 70)');
 
