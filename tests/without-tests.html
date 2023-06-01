@@ -83,13 +83,25 @@
         style="height: 200px;"
       >
       </dotlottie-player>
+
+      <div style="margin-top: 50px; text-align: center">
+        <dotlottie-player
+          id="last-player"
+          src="./xss-bull.json"
+          autoplay
+          controls
+          loop
+          speed="1"
+          mode="normal"
+          style="height: 200px;"
+        >
+        </dotlottie-player>
     </div>
   </body>
 
   <script>
     let player = document.getElementById('dotlottie-player');
     let i = 0;
-
 
     console.log(player.getVersions());
 
@@ -104,7 +116,7 @@
     function nextLottie() {
       player.next();
       // player.next({direction: 1, autoplay: true, loop: true, speed: 0.5, mode: 'normal'});
-      return ;
+      return;
     }
   </script>
 </html>

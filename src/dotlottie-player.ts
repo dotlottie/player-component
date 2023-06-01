@@ -101,6 +101,12 @@ export class DotLottiePlayer extends LitElement {
   public hover = false;
 
   /**
+   * Enable web workers
+   */
+  @property({ type: Boolean })
+  public webworkers?: boolean;
+
+  /**
    * Whether to loop animation.
    */
   @property({ type: String })
@@ -674,6 +680,10 @@ export class DotLottiePlayer extends LitElement {
         }
       } else {
         this._loadManifestOptions(this._activeAnimationIndex);
+      }
+
+      if (this.webworkers) {
+        lottie.useWebWorker(true);
       }
 
       // Initialize lottie player and load animation
