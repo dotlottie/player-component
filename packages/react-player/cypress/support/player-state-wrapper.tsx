@@ -2,11 +2,11 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DotLottiePlayerState} from 'common';
+import type { DotLottiePlayerState } from 'common';
 import React, { useRef, useState } from 'react';
-import type { ReactNode } from 'react'
+import type { ReactNode } from 'react';
 
-export const PlayerStateWrapper: React.FC<{children: ReactNode}> = ({ children }) => {
+export const PlayerStateWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
   const lottieRef = useRef<any>();
   const [state, setState] = useState<DotLottiePlayerState>();
 
@@ -56,13 +56,13 @@ export const PlayerStateWrapper: React.FC<{children: ReactNode}> = ({ children }
           })}
       </div>
       {React.Children.map(children, (child) => {
-          if (!React.isValidElement(child)) return child;
+        if (!React.isValidElement(child)) return child;
 
-          return React.cloneElement<any>(child, {
-            onEvent,
-            lottieRef,
-          });
-        })}
+        return React.cloneElement<any>(child, {
+          onEvent,
+          lottieRef,
+        });
+      })}
     </div>
   );
 };

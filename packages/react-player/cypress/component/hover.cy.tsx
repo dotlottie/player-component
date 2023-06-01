@@ -2,6 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
+import { PlayerState } from 'common';
 import React, { useState } from 'react';
 
 import { Controls } from '../../src/controls';
@@ -9,44 +10,7 @@ import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
 describe('Loop', () => {
-  it('should not loop if `loop` = `false`', () => {
-    cy.mount(
-      <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          loop={false}
-          autoplay
-        >
-          <Controls />
-        </DotLottiePlayer>
-        ,
-      </PlayerStateWrapper>,
-    );
-
-    cy.get('[name="loop"]').should('have.value', 'false');
-  });
-
-  it('should not without `loop` prop', () => {
-    cy.mount(
-      <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
-          <Controls />
-        </DotLottiePlayer>
-        ,
-      </PlayerStateWrapper>,
-    );
-
-    cy.get('[name="loop"]').should('have.value', 'false');
-  });
-
-  it('should loop if `loop` = `true`', () => {
+  it('default should be false', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -62,17 +26,18 @@ describe('Loop', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="hover"]').should('have.value', 'false');
   });
 
-  it('should be able to set number loops', () => {
+  it('should be able to set hover', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
           // eslint-disable-next-line no-secrets/no-secrets
           src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
-          loop={3}
+          loop
+          playOnHover={true}
           autoplay
         >
           <Controls />
@@ -81,19 +46,66 @@ describe('Loop', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="loop"]').should('have.value', 3);
+    cy.get('[name="hover"]').should('have.value', 'true');
+  });
+
+  it('should not play when `hover` = `true`', () => {
+    cy.mount(
+      <PlayerStateWrapper>
+        <DotLottiePlayer
+          // eslint-disable-next-line no-secrets/no-secrets
+          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+          style={{ height: '400px', display: 'inline-block' }}
+          loop
+          playOnHover={true}
+          autoplay
+        >
+          <Controls />
+        </DotLottiePlayer>
+        ,
+      </PlayerStateWrapper>,
+    );
+
+    cy.get('[name="currentState"]').should('not.have.value', PlayerState.Playing);
+  });
+
+  it('should play on hover when hover enabled', () => {
+    cy.mount(
+      <PlayerStateWrapper>
+        <DotLottiePlayer
+          // eslint-disable-next-line no-secrets/no-secrets
+          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+          style={{ height: '400px', display: 'inline-block' }}
+          loop
+          playOnHover={true}
+          autoplay
+          testId="testPlayer"
+        >
+          <Controls />
+        </DotLottiePlayer>
+        ,
+      </PlayerStateWrapper>,
+    );
+
+    cy.get('[name="currentState"]').should('not.have.value', PlayerState.Playing);
+
+    cy.get('[data-testid="animation"] > *').trigger('mouseenter');
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+
+    cy.get('[data-testid="animation"] > *').trigger('mouseleave');
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Paused);
   });
 
   it('shoud be reactive.', () => {
     function Wrapper(): JSX.Element {
-      const [loop, setLoop] = useState(true);
+      const [hover, setHover] = useState(false);
 
       return (
         <>
           <button
             data-testid="update"
             onClick={(): void => {
-              setLoop(false);
+              setHover(true);
             }}
           >
             Update
@@ -104,7 +116,7 @@ describe('Loop', () => {
               src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
               style={{ height: '400px', display: 'inline-block' }}
               autoplay
-              loop={loop}
+              playOnHover={hover}
             >
               <Controls />
             </DotLottiePlayer>
@@ -115,9 +127,9 @@ describe('Loop', () => {
 
     cy.mount(<Wrapper />);
 
-    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="hover"]').should('have.value', 'false');
 
     cy.get('[data-testid="update"]').click();
-    cy.get('[name="loop"]').should('have.value', 'false');
+    cy.get('[name="hover"]').should('have.value', 'true');
   });
 });

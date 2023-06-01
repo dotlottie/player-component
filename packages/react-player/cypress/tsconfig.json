@@ -1,4 +1,4 @@
 {
   "extends": "../tsconfig.json",
-  "include": ["cypress.d.ts"],
+  "include": ["cypress.d.ts"]
 }

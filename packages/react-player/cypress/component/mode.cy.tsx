@@ -3,7 +3,7 @@
  */
 
 import { PlayMode } from 'common';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Controls } from '../../src/controls';
 import { DotLottiePlayer } from '../../src/react-player';
@@ -25,7 +25,7 @@ describe('Mode', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="playMode"]').should('have.value', PlayMode.Normal)
+    cy.get('[name="playMode"]').should('have.value', PlayMode.Normal);
   });
 
   it('should be able to change mode to `bounce`', () => {
@@ -45,7 +45,7 @@ describe('Mode', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="playMode"]').should('have.value', PlayMode.Bounce)
+    cy.get('[name="playMode"]').should('have.value', PlayMode.Bounce);
   });
 
   it('should be able to change mode to `normal`', () => {
@@ -65,7 +65,44 @@ describe('Mode', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="playMode"]').should('have.value', PlayMode.Normal)
+    cy.get('[name="playMode"]').should('have.value', PlayMode.Normal);
   });
 
+  it('shoud be reactive.', () => {
+    function Wrapper(): JSX.Element {
+      const [mode, setMode] = useState(PlayMode.Normal);
+
+      return (
+        <>
+          <button
+            data-testid="update"
+            onClick={(): void => {
+              setMode(PlayMode.Bounce);
+            }}
+          >
+            Update
+          </button>
+          <PlayerStateWrapper>
+            <DotLottiePlayer
+              // eslint-disable-next-line no-secrets/no-secrets
+              src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+              style={{ height: '400px', display: 'inline-block' }}
+              mode={mode}
+              loop
+              autoplay
+            >
+              <Controls />
+            </DotLottiePlayer>
+          </PlayerStateWrapper>
+        </>
+      );
+    }
+
+    cy.mount(<Wrapper />);
+
+    cy.get('[name="playMode"]').should('have.value', PlayMode.Normal);
+
+    cy.get('[data-testid="update"]').click().click();
+    cy.get('[name="playMode"]').should('have.value', PlayMode.Bounce);
+  });
 });

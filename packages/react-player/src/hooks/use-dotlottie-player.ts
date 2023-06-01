@@ -54,7 +54,7 @@ export const useDotLottiePlayer = (
           },
           getState: (): DotLottiePlayerState => {
             return dotLottiePlayer.getState();
-          }
+          },
         } as DotLottieRefProps;
       },
       [config.lottieRef.current, dotLottiePlayer],

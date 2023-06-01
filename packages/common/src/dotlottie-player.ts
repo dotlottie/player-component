@@ -138,7 +138,7 @@ export class DotLottiePlayer {
 
   protected _hover: boolean = false;
 
-  protected _count: number = 0;
+  protected _loop: boolean | number = false;
 
   protected _counter: number = 0;
 
@@ -300,14 +300,6 @@ export class DotLottiePlayer {
     this.load();
   }
 
-  public get count(): number {
-    return this._count;
-  }
-
-  public setCount(count: number): void {
-    this._count = count;
-  }
-
   public get intermission(): number {
     return this._intermission;
   }
@@ -319,11 +311,13 @@ export class DotLottiePlayer {
   public setHover(hover: boolean): void {
     if (typeof hover !== 'boolean') return;
     this._hover = hover;
+    this._playbackOptions.hover = hover;
     this._notify();
   }
 
   public setIntermission(intermission: number): void {
     this._intermission = intermission;
+    this._playbackOptions.intermission = intermission;
     this._notify();
   }
 
@@ -334,6 +328,7 @@ export class DotLottiePlayer {
   public setMode(mode: PlayMode): void {
     if (typeof mode !== 'string') return;
     this._mode = mode;
+    this._playbackOptions.playMode = mode;
     this._notify();
     this._updateTestData();
   }
@@ -641,7 +636,7 @@ export class DotLottiePlayer {
       seeker: this._seeker,
       direction: (this._lottie?.playDirection ?? 1) as AnimationDirection,
       hover: this._hover,
-      loop: this._lottie?.loop ?? false,
+      loop: this._loop || false,
       playMode: this._mode,
       speed: this._lottie?.playSpeed ?? 1,
       background: this._background,
@@ -691,6 +686,7 @@ export class DotLottiePlayer {
     if (typeof value !== 'boolean') return;
     if (!this._lottie) return;
     this._lottie.autoplay = value;
+    this._playbackOptions.autoplay = value;
     this._notify();
     this._updateTestData();
   }
@@ -701,27 +697,24 @@ export class DotLottiePlayer {
   }
 
   public get loop(): number | boolean {
-    return this._lottie?.loop ?? false;
+    return this._loop;
   }
 
   public setLoop(value: boolean | number): void {
     if (typeof value !== 'boolean' && typeof value !== 'number') return;
-    if (!this._lottie) return;
 
     this.clearCountTimer();
 
-    if (typeof value === 'number') {
-      this._count = value;
-    }
-
-    this._lottie.setLoop(Boolean(value));
+    this._loop = value;
+    this._lottie?.setLoop(Boolean(value));
+    this._playbackOptions.loop = value;
     this._notify();
     this._updateTestData();
   }
 
   public toggleLoop(): void {
     if (!this._lottie) return;
-    this.setLoop(!this._lottie.loop);
+    this.setLoop(!this._loop);
   }
 
   public get background(): string {
@@ -768,9 +761,9 @@ export class DotLottiePlayer {
     });
 
     this._lottie.addEventListener('complete', () => {
-      if (this._lottie && !this.loop && this._count > 0) {
+      if (this._lottie && typeof this._loop === 'number' && this._loop > 0) {
         this._counter += this._mode === PlayMode.Bounce ? 0.5 : 1;
-        if (this._counter >= this._count) {
+        if (this._counter >= this._loop) {
           this.stop();
 
           return;
@@ -816,25 +809,18 @@ export class DotLottiePlayer {
 
     this.destroy();
 
-    let shouldLoop = Boolean(this._getOption('loop'));
-
-    // Number loops are handled within on `complete` event. not by lottie-web
-    if (typeof activeAnimation?.loop === 'number') {
-      shouldLoop = false;
-    } else if (typeof activeAnimation?.loop === 'boolean') {
-      shouldLoop = true;
-    }
+    const loop = activeAnimation?.loop ?? this._getOption('loop');
 
     const options = {
       ...this._options,
       autoplay: activeAnimation?.autoplay ?? this._getOption('autoplay'),
-      loop: shouldLoop,
+      loop: typeof loop === 'number' ? false : loop,
     };
 
     this.setMode(activeAnimation?.playMode ?? this._getOption('playMode'));
     this.setIntermission(activeAnimation?.intermission ?? this._getOption('intermission'));
     this.setHover(activeAnimation?.hover ?? this._getOption('hover'));
-    this.setLoop(activeAnimation?.loop ?? this._getOption('loop'));
+    this.setLoop(loop);
 
     this._lottie = lottie.loadAnimation({
       ...options,

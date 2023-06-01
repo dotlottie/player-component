@@ -9,44 +9,7 @@ import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
 describe('Loop', () => {
-  it('should not loop if `loop` = `false`', () => {
-    cy.mount(
-      <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          loop={false}
-          autoplay
-        >
-          <Controls />
-        </DotLottiePlayer>
-        ,
-      </PlayerStateWrapper>,
-    );
-
-    cy.get('[name="loop"]').should('have.value', 'false');
-  });
-
-  it('should not without `loop` prop', () => {
-    cy.mount(
-      <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
-          <Controls />
-        </DotLottiePlayer>
-        ,
-      </PlayerStateWrapper>,
-    );
-
-    cy.get('[name="loop"]').should('have.value', 'false');
-  });
-
-  it('should loop if `loop` = `true`', () => {
+  it('default should be 0', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -62,17 +25,17 @@ describe('Loop', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="intermission"]').should('have.value', 0);
   });
-
-  it('should be able to set number loops', () => {
+  it('should be able to set intermission', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
           // eslint-disable-next-line no-secrets/no-secrets
           src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
-          loop={3}
+          loop
+          intermission={1000}
           autoplay
         >
           <Controls />
@@ -81,19 +44,19 @@ describe('Loop', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="loop"]').should('have.value', 3);
+    cy.get('[name="intermission"]').should('have.value', 1000);
   });
 
   it('shoud be reactive.', () => {
     function Wrapper(): JSX.Element {
-      const [loop, setLoop] = useState(true);
+      const [intermission, setIntermission] = useState(1000);
 
       return (
         <>
           <button
             data-testid="update"
             onClick={(): void => {
-              setLoop(false);
+              setIntermission(2000);
             }}
           >
             Update
@@ -104,7 +67,7 @@ describe('Loop', () => {
               src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
               style={{ height: '400px', display: 'inline-block' }}
               autoplay
-              loop={loop}
+              intermission={intermission}
             >
               <Controls />
             </DotLottiePlayer>
@@ -115,9 +78,9 @@ describe('Loop', () => {
 
     cy.mount(<Wrapper />);
 
-    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="intermission"]').should('have.value', 1000);
 
     cy.get('[data-testid="update"]').click();
-    cy.get('[name="loop"]').should('have.value', 'false');
+    cy.get('[name="intermission"]').should('have.value', 2000);
   });
 });

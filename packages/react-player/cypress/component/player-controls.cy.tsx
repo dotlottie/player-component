@@ -42,7 +42,6 @@ describe('Controls', () => {
       </PlayerStateWrapper>,
     );
     cy.get('[aria-label="lottie-animation-controls"]').should('exist');
-
   });
 
   it('should dispaly all buttons by default', () => {
@@ -125,10 +124,10 @@ describe('Controls', () => {
     );
 
     // Not playing initially
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Ready)
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Ready);
 
-    cy.get('[aria-label="play-pause"]').click()
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing)
+    cy.get('[aria-label="play-pause"]').click();
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
   });
 
   it('should be able to pause', () => {
@@ -147,10 +146,10 @@ describe('Controls', () => {
     );
 
     // Playing initially
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing)
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
     cy.get('[aria-label="play-pause"]').click();
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Paused)
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Paused);
   });
 
   it('should be able to stop', () => {
@@ -169,10 +168,10 @@ describe('Controls', () => {
     );
 
     // Playing initially
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing)
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
     cy.get('[aria-label="stop"]').click();
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Stopped)
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Stopped);
   });
 
   it('should be able toggle looping', () => {
@@ -191,10 +190,14 @@ describe('Controls', () => {
       </PlayerStateWrapper>,
     );
 
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+
     // Loop is true initially
-    cy.get('[name="loop"]').should('have.value', 'true')
+    cy.get('[aria-label="loop-toggle"]').should('have.class', 'active');
+    cy.get('[name="loop"]').should('have.value', 'true');
 
     cy.get('[aria-label="loop-toggle"]').click();
-    cy.get('[name="loop"]').should('have.value', 'false')
+    cy.get('[name="loop"]').should('have.value', 'false');
+    cy.get('[aria-label="loop-toggle"]').should('not.have.class', 'active');
   });
 });

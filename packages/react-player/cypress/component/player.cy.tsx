@@ -9,7 +9,6 @@ import { Controls } from '../../src/controls';
 import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
 
-
 describe('react-player', () => {
   it('should mount', () => {
     cy.mount(
@@ -26,7 +25,7 @@ describe('react-player', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[data-testid="testPlayer"]').should('not.be.empty')
+    cy.get('[data-testid="testPlayer"]').should('not.be.empty');
   });
 
   it('should be able to play lottie.json', () => {

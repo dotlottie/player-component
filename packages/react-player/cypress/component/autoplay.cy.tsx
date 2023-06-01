@@ -3,7 +3,7 @@
  */
 
 import { PlayerState } from 'common';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Controls } from '../../src/controls';
 import { DotLottiePlayer } from '../../src/react-player';
@@ -25,7 +25,7 @@ describe('Autoplay', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing)
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
   });
 
   it('should not play when `autoplay` = `false`', () => {
@@ -43,7 +43,7 @@ describe('Autoplay', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="currentState"]').should('not.equal', PlayerState.Playing)
+    cy.get('[name="currentState"]').should('not.equal', PlayerState.Playing);
   });
 
   it('should not player when `playOnHover` = `true` eventhough `autoplay` = `true`', () => {
@@ -62,6 +62,42 @@ describe('Autoplay', () => {
       </PlayerStateWrapper>,
     );
 
-    cy.get('[name="currentState"]').should('not.equal', PlayerState.Playing)
+    cy.get('[name="currentState"]').should('not.equal', PlayerState.Playing);
+  });
+
+  it('shoud be reactive.', () => {
+    function Wrapper(): JSX.Element {
+      const [autoplay, setAutoplay] = useState(true);
+
+      return (
+        <>
+          <button
+            data-testid="update"
+            onClick={(): void => {
+              setAutoplay(false);
+            }}
+          >
+            Update
+          </button>
+          <PlayerStateWrapper>
+            <DotLottiePlayer
+              // eslint-disable-next-line no-secrets/no-secrets
+              src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+              style={{ height: '400px', display: 'inline-block' }}
+              autoplay={autoplay}
+            >
+              <Controls />
+            </DotLottiePlayer>
+          </PlayerStateWrapper>
+        </>
+      );
+    }
+
+    cy.mount(<Wrapper />);
+
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+
+    cy.get('[data-testid="update"]').click();
+    cy.get('[name="autoplay"]').should('have.value', 'false');
   });
 });
