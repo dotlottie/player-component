@@ -66,27 +66,59 @@ export enum PlayerEvents {
 
 export interface ManifestAnimation {
   autoplay?: boolean;
+
+  // Define playback direction 1 forward, -1 backward
   direction?: AnimationDirection;
+
+  // Play on hover
   hover?: boolean;
+
   id: string;
+
+  // Time to wait between playback loops
   intermission?: number;
+
+  // If loop is a number, it defines the number of times the animation will loop
   loop?: boolean | number;
+
+  // Choice between 'bounce' and 'normal'
   playMode?: PlayMode;
+
+  // Desired playback speed, default 1.0
   speed?: number;
+
+  // Theme color
   themeColor?: string;
 }
 
 export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
 
 export interface Manifest {
+  // Default animation to play
   activeAnimationId?: string;
+
+  // List of animations
   animations: ManifestAnimation[];
+
+  // Name of the author
   author?: string;
+
+  // Custom data to be made available to the player and animations
   custom?: Record<string, unknown>;
+
+  // Description of the animation
   description?: string;
+
+  // Name and version of the software that created the dotLottie
   generator?: string;
+
+  // Description of the animation
   keywords?: string;
+
+  // Revision version number of the dotLottie
   revision?: number;
+
+  // Target dotLottie version
   version?: string;
 }
 
@@ -881,7 +913,7 @@ export class DotLottiePlayer {
 
   public async load(playbackOptions?: PlaybackOptions): Promise<void> {
     if (this._currentState === PlayerState.Loading) {
-      logWarning('Loading inprogress..');
+      logWarning('Loading in progress..');
 
       return;
     }

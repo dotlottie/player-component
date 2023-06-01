@@ -7,48 +7,16 @@ import { DotLottiePlayer as DotLottieCommonPlayer } from 'common';
 import { PlayerState, PlayMode } from 'common';
 
 import pkg from '../package.json';
-import { createError, error, warn } from './utils';
-import { Manifest, ManifestAnimation } from './manifest';
+import { createError, warn } from './utils';
 import { DotLottiePlayerState } from 'common';
 import { PlayerEvents } from 'common';
-
-// Define valid player states
-// export enum PlayerState {
-//   Loading = 'loading',
-//   Playing = 'playing',
-//   Paused = 'paused',
-//   Stopped = 'stopped',
-//   Frozen = 'frozen',
-//   Error = 'error',
-// }
-
-// Define play modes
-// export enum PlayMode {
-//   Normal = 'normal',
-//   Bounce = 'bounce',
-// }
-
-// Define player events
-// export enum PlayerEvents {
-//   Complete = 'complete',
-//   DataFail = 'data_fail',
-//   DataReady = 'data_ready',
-//   Error = 'error',
-//   Frame = 'frame',
-//   Freeze = 'freeze',
-//   LoopComplete = 'loopComplete',
-//   Pause = 'pause',
-//   Play = 'play',
-//   Ready = 'ready',
-//   Stop = 'stop',
-// }
+import { PlaybackOptions } from 'common';
+import { Manifest } from 'common';
 
 export interface Versions {
   lottieWebVersion: string;
   dotLottiePlayerVersion: string;
 }
-
-export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
 
 /**
  * DotLottiePlayer web component class
@@ -166,12 +134,6 @@ export class DotLottiePlayer extends LitElement {
   private _dotLottieCommonPlayer: DotLottieCommonPlayer | undefined;
   private _io?: any;
   private _loop?: boolean;
-  // private _lottie?: any;
-  private _prevState?: any;
-  private _counter = 1;
-  // private _activeAnimationIndex = 0;
-  // private _animations?: AnimationItem[];
-  // Number of times to loop animation.
   private _count?: number;
 
   constructor() {
@@ -179,7 +141,6 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
-   *
    * @param loop - either a string representing a boolean or a number of loops to play
    * @returns boolean - if loop was activated or not
    */
@@ -229,283 +190,18 @@ export class DotLottiePlayer extends LitElement {
     this.seek(frame);
   }
 
-  // private isLottie(json: Record<string, any>): boolean {
-  //   const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
-  //   let notLottie = false;
-
-  //   if (json['animations'] && json['animations'].length) {
-  //     json['animations'].forEach((animation: Record<string, unknown>): void => {
-  //       if (!this.isLottie(animation)) notLottie = true;
-  //     });
-  //     return notLottie;
-  //   }
-  //   return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
-  // }
-
-  // private parseSrc(src: string | Record<string, unknown>): string | Record<string, unknown> {
-  //   if (typeof src === 'object') {
-  //     return src;
-  //   }
-
-  //   try {
-  //     return JSON.parse(src);
-  //   } catch (e) {
-  //     // Try construct an absolute URL from the src URL
-  //     const srcUrl: URL = new URL(src, window.location.href);
-
-  //     return srcUrl.toString();
-  //   }
-  // }
-
-  // private async _fetchDotLottie(url: string): Promise<{ animations: AnimationItem[]; manifest: Manifest | undefined }> {
-  //   const data = await fetch(url, {
-  //     method: 'GET',
-  //     mode: 'cors',
-  //     headers: {
-  //       'Response-Type': 'arraybuffer',
-  //     },
-  //   })
-  //     .then((buffer) => {
-  //       return buffer.arrayBuffer();
-  //     })
-  //     .then(async (buffer) => {
-  //       const animations: AnimationItem[] = [];
-  //       const animAndManifest: { animations: AnimationItem[]; manifest: Manifest | undefined } = {
-  //         animations: [],
-  //         manifest: undefined,
-  //       };
-
-  //       const data = await new Promise<Zippable>((resolve, reject) => {
-  //         unzip(new Uint8Array(buffer), (error: any, data: any) => {
-  //           if (error) {
-  //             reject(error);
-  //           }
-
-  //           resolve(data);
-  //         });
-  //       });
-
-  //       let lottieJson;
-
-  //       if (data['manifest.json']) {
-  //         const str = strFromU8(data['manifest.json'] as Uint8Array);
-  //         const manifest = JSON.parse(str);
-
-  //         if (!('animations' in manifest)) {
-  //           throw createError('Manifest not found');
-  //         }
-
-  //         if (manifest.animations.length === 0) {
-  //           throw createError('No animations listed in the manifest');
-  //         }
-
-  //         animAndManifest.manifest = manifest;
-
-  //         for (const animName of manifest.animations) {
-  //           lottieJson = JSON.parse(strFromU8(data[`animations/${animName.id}.json`] as Uint8Array));
-
-  //           if ('assets' in lottieJson) {
-  //             lottieJson.assets.map((asset: any) => {
-  //               if (!asset.p) {
-  //                 return;
-  //               }
-  //               if (data[`images/${asset.p}`] === null) {
-  //                 return;
-  //               }
-  //               const base64Png = btoa(strFromU8(data[`images/${asset.p}`] as Uint8Array, true));
-  //               asset.p = 'data:;base64,' + base64Png;
-  //               asset.e = 1;
-  //             });
-  //           }
-  //           animations.push(lottieJson);
-  //         }
-
-  //         animAndManifest.manifest = manifest;
-  //         animAndManifest.animations = animations;
-
-  //         return animAndManifest;
-  //       } else {
-  //         throw createError('No manifest found in file.');
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       throw createError(error);
-  //     });
-
-  //   // return { animations: [], manifest: undefined };
-  //   return data;
-  // }
-
-  // private async _fetchJsonFile(url: string): Promise<{ animations: AnimationItem[]; manifest: Manifest | undefined }> {
-  //   // If we have a json file, fetch it and return it
-  //   const data = await fetch(url, {
-  //     method: 'GET',
-  //     mode: 'cors',
-  //     headers: {
-  //       'Response-Type': 'json',
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => {
-  //       const animations: AnimationItem[] = [];
-  //       const filename = url.substring(url.lastIndexOf('/') + 1, url.lastIndexOf('.'));
-
-  //       // Because we have a json file, we need to create a manifest
-  //       const boilerplateManifest = {
-  //         animations: [
-  //           {
-  //             id: filename,
-  //             speed: 1,
-  //             loop: 'true',
-  //             direction: 1,
-  //           },
-  //         ],
-  //         description: '',
-  //         author: '',
-  //         generator: 'dotLottie-player-component',
-  //         revision: 1,
-  //         version: '1.0.0',
-  //       };
-  //       const animAndManifest: {
-  //         animations: AnimationItem[];
-  //         manifest: Manifest | undefined;
-  //       } = {
-  //         animations: [],
-  //         manifest: undefined,
-  //       };
-
-  //       animations.push(data);
-
-  //       animAndManifest.animations = animations;
-  //       animAndManifest.manifest = boilerplateManifest;
-
-  //       return animAndManifest;
-  //     })
-  //     .catch((error) => {
-  //       throw createError(error);
-  //     });
-  //   return data;
-  // }
-
-  // private async _fetchFileAndLoad(url: string): Promise<AnimationItem> {
-  //   let fragments = url.split(/\#|\?/)[0]?.split('.');
-
-  //   if (fragments?.length === 0) {
-  //     throw createError('Invalid url!');
-  //   }
-
-  //   const fileExtension = fragments?.pop()?.toLowerCase();
-
-  //   let manifestAndAnimation: { animations: AnimationItem[]; manifest: Manifest | undefined } = {
-  //     animations: [],
-  //     manifest: undefined,
-  //   };
-
-  //   if (fileExtension === 'json') {
-  //     manifestAndAnimation = await this._fetchJsonFile(url);
-  //   } else {
-  //     manifestAndAnimation = await this._fetchDotLottie(url);
-  //   }
-
-  //   if (
-  //     !manifestAndAnimation['animations'] ||
-  //     !manifestAndAnimation['manifest'] ||
-  //     manifestAndAnimation['animations'].length === 0
-  //   ) {
-  //     this.currentState = PlayerState.Error;
-
-  //     this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
-
-  //     throw createError(
-  //       !manifestAndAnimation['animations'] || !manifestAndAnimation['animations'].length
-  //         ? 'Animations are empty'
-  //         : 'Manifest not found',
-  //     );
-  //   }
-  //   this._animations = manifestAndAnimation['animations'];
-  //   this._manifest = manifestAndAnimation['manifest'];
-
-  //   // If passed as a prop, will override manifest
-  //   if (this.activeAnimationId) {
-  //     const animationIndex = this._manifest.animations.findIndex((element) => element.id === this.activeAnimationId);
-
-  //     if (animationIndex !== -1) this._activeAnimationIndex = animationIndex;
-  //     else warn('Active animation not found in manifest');
-  //   } else if (this._manifest && this._manifest['activeAnimationId']) {
-  //     //If present in manifest, play the default active animation
-  //     const animationIndex = this._manifest.animations.findIndex(
-  //       (element) => element.id === this._manifest['activeAnimationId'],
-  //     );
-
-  //     if (animationIndex !== -1) this._activeAnimationIndex = animationIndex;
-  //     else warn('Active animation not found in manifest');
-  //   }
-
-  //   const srcParsed = this._animations[this._activeAnimationIndex];
-  //   if (srcParsed === undefined) throw createError('No animation to load!');
-
-  //   return srcParsed;
-  // }
-
-  /**
-   * Loads playback options from the manifest file for the active animation.
-   */
-  // private _loadManifestOptions(animationIndex: number): void {
-  //   this._requireAnimationsInTheManifest();
-
-  //   //check that the animation exists in the manifest
-  //   if (this._manifest.animations[animationIndex] === undefined) {
-  //     throw createError('Animation not found in manifest');
-  //   }
-
-  //   const animation = this._manifest.animations[animationIndex];
-
-  //   if (animation) {
-  //     const { autoplay, direction, loop, playMode, speed, hover, intermission } = animation;
-
-  //     if (autoplay !== undefined) {
-  //       this.autoplay = autoplay;
-  //     }
-  
-  //     if (direction !== undefined) {
-  //       this.direction = direction;
-  //     }
-  
-  //     if (loop !== undefined) {
-  //       this.loop = loop;
-  //     }
-  
-  //     if (playMode !== undefined) {
-  //       this.mode = playMode;
-  //     }
-  
-  //     if (speed !== undefined) {
-  //       this.speed = speed;
-  //     }
-  
-  //     if (hover !== undefined) {
-  //       this.hover = hover;
-  //     }
-  
-  //     if (intermission !== undefined) {
-  //       this.intermission = intermission;
-  //     }
-  //   }
-  // }
-
   private _initListeners(): void {
     // Because we fetch the data ourselves, fire the load event
-    this.dispatchEvent(new CustomEvent(PlayerEvents.Load));
+    this.dispatchEvent(new CustomEvent(PlayerEvents.DataReady));
 
-    if (!this._dotLottieCommonPlayer) {
-      console.warn('dotLottie player not initialized - cannot add event listeners');
+    if (this._dotLottieCommonPlayer === undefined) {
+      warn('dotLottie-player-component not initialized - cannot add event listeners');
       
       return ;
     }
 
     // Calculate and save the current progress of the animation
     this._dotLottieCommonPlayer.state.subscribe( (state: DotLottiePlayerState) => {
-      console.log("SUBSCRIBE")
       this.seeker = (state.frame / this._dotLottieCommonPlayer.totalFrames) * 100;
         
       this.dispatchEvent(
@@ -517,30 +213,6 @@ export class DotLottiePlayer extends LitElement {
         }),
       );
     })
-
-    // const disposeSeeker = this._dotLottieCommonPlayer.state.subscribe((value) => {
-      // console.log("SEEKER")
-      // setSeeker(value);
-    // });
-    // const disposePlayerState = this._dotLottieCommonPlayer.state.subscribe((value) => {
-      // console.log("STATE")
-      // setCurrentState(value);
-    // });
-
-    // this._lottie.addEventListener('enterFrame', () => {
-    //   this.seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
-
-    //   console.log(this.seeker);
-
-    //   this.dispatchEvent(
-    //     new CustomEvent(PlayerEvents.Frame, {
-    //       detail: {
-    //         frame: this._lottie.currentFrame,
-    //         seeker: this.seeker,
-    //       },
-    //     }),
-    //   );
-    // });
 
     // Handle animation play complete
     this._dotLottieCommonPlayer.addEventListener('complete', () => {
@@ -564,100 +236,6 @@ export class DotLottiePlayer extends LitElement {
 
       this.dispatchEvent(new CustomEvent(PlayerEvents.DataFail));
     });
-
-    // Set handlers to auto play animation on hover if enabled
-    // this.container.addEventListener('mouseenter', () => {
-    //   if (this.hover && this.currentState !== PlayerState.Playing) {
-    //     this.play();
-    //   }
-    // });
-    // this.container.addEventListener('mouseleave', () => {
-    //   if (this.hover && this.currentState === PlayerState.Playing) {
-    //     this.stop();
-    //   }
-    // });
-
-
-    // this._lottie.addEventListener('complete', () => {
-    //   if (this.currentState !== PlayerState.Playing) {
-    //     this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
-    //     return;
-    //   }
-    //   if (!this._loop || (this._count && this._counter >= this._count)) {
-    //     this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
-
-    //     if (this.mode === PlayMode.Bounce) {
-    //       if (this._lottie.currentFrame === 0) {
-    //         return;
-    //       }
-    //     } else {
-    //       return;
-    //     }
-    //   }
-
-    //   if (this.mode === PlayMode.Bounce) {
-    //     if (this._count) {
-    //       this._counter += 0.5;
-    //     }
-
-    //     setTimeout(() => {
-    //       this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
-
-    //       if (this.currentState === PlayerState.Playing) {
-    //         this._lottie.setDirection(this._lottie.playDirection * -1);
-    //         this._lottie.play();
-    //       }
-    //     }, this.intermission);
-    //   } else {
-    //     if (this._count) {
-    //       this._counter += 1;
-    //     }
-
-    //     window.setTimeout(() => {
-    //       this.dispatchEvent(new CustomEvent(PlayerEvents.Loop));
-
-    //       if (this.currentState === PlayerState.Playing) {
-    //         if (this.direction === -1) {
-    //           // Prevents flickering
-    //           this.seek('99%');
-    //           this.play();
-    //         } else {
-    //           this._lottie.stop();
-    //           this.play();
-    //         }
-    //       }
-    //     }, this.intermission);
-    //   }
-    // });
-
-    // Handle lottie-web ready event
-    // this._lottie.addEventListener('DOMLoaded', () => {
-    //   this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
-    // });
-
-    // Handle animation data load complete
-    // this._lottie.addEventListener('data_ready', () => {
-    //   this.dispatchEvent(new CustomEvent(PlayerEvents.Load));
-    // });
-
-    // Set error state when animation load fail event triggers
-    // this._lottie.addEventListener('data_failed', () => {
-    //   this.currentState = PlayerState.Error;
-
-    //   this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
-    // });
-
-    // Set handlers to auto play animation on hover if enabled
-    // this.container.addEventListener('mouseenter', () => {
-    //   if (this.hover && this.currentState !== PlayerState.Playing) {
-    //     this.play();
-    //   }
-    // });
-    // this.container.addEventListener('mouseleave', () => {
-    //   if (this.hover && this.currentState === PlayerState.Playing) {
-    //     this.stop();
-    //   }
-    // });
   }
 
   /**
@@ -673,7 +251,7 @@ export class DotLottiePlayer extends LitElement {
     }
 
     this._dotLottieCommonPlayer = new DotLottieCommonPlayer(src, this.container, {
-      renderer: 'svg',
+      renderer: this.renderer,
       rendererSettings: overrideRendererSettings ? overrideRendererSettings : 
       { 
             scaleMode: 'noScale',
@@ -681,27 +259,26 @@ export class DotLottiePlayer extends LitElement {
             progressiveLoad: true,
             hideOnTransparent: true,
       },
-      loop: true,
+      hover: this.hover,
+      loop: this._loop,
       direction: this.direction === 1 ? 1 : -1,
       speed: this.speed,
-      count: this._count ? this._count : 1,
       intermission: this.intermission,
-      mode: this.mode,
-      autoplay: this.hover ? true : this.autoplay
+      playMode: this.mode,
+      autoplay: this.hover ? false : this.autoplay,
+      count: this._count ? this._count : 1,
     })
 
     await this._dotLottieCommonPlayer.load(playbackOptions);
 
-    if (!this._dotLottieCommonPlayer) {
-      console.log("INIT LISTENERS")
+    if (this._dotLottieCommonPlayer) {
       this._initListeners();
     } else {
-      console.log(this._dotLottieCommonPlayer)
-      // this.currentState = PlayerState.Error;
+      this._dotLottieCommonPlayer.s = PlayerState.Error;
       this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
 
       throw createError('Player failed to initialize.');
-    }
+    }    
 
     // // turn this in to lottie-web options
     // const lottieOptions: any = {
@@ -819,10 +396,10 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Get current animation's id
    */
-  public getActiveId(): string | null {
-    if (!this._dotLottieCommonPlayer) return null;
+  public getActiveId(): string | undefined {
+    if (this._dotLottieCommonPlayer === undefined) return ;
 
-    return this._dotLottieCommonPlayer.getActiveId();
+    return this._dotLottieCommonPlayer.activeAnimationId;
   }
 
   /**
@@ -839,7 +416,7 @@ export class DotLottiePlayer extends LitElement {
     // if (this._animations) return this._animations.length;
     if (!this._dotLottieCommonPlayer) return 0;
 
-    return this._dotLottieCommonPlayer.animations.length;
+    return this._dotLottieCommonPlayer.animations.size;
   }
 
   /**
@@ -856,7 +433,7 @@ export class DotLottiePlayer extends LitElement {
    * @returns The current lottie-web instance.
    */
   public getLottie(): AnimationItem | undefined {
-    return this._dotLottieCommonPlayer.getAnimationInstance();
+    return this._dotLottieCommonPlayer?.getAnimationInstance();
   }
 
   /**
@@ -868,45 +445,27 @@ export class DotLottiePlayer extends LitElement {
       dotLottiePlayerVersion: `${pkg.version}`,
     };
   }
-
-  // private _requireAnimationsInTheManifest(): void {
-  //   if (!this._dotLottieCommonPlayer?.getManifest().animations.length) {
-  //     throw createError(`No animations found in manifest.`);
-  //   }
-  // }
-
-  // private _requireAnimationsToBeLoaded(): void {
-  //   if (!this._dotLottieCommonPlayer?.animations.length) {
-  //     throw createError(`No animations have been loaded.`);
-  //   }
-  // }
-
   /**
    * Play the previous animation. The order is taken from the manifest.
    */
   public previous(playbackOptions?: PlaybackOptions): void {
-    this._dotLottieCommonPlayer.previous(playbackOptions);
+    this._dotLottieCommonPlayer?.previous(playbackOptions);
   }
 
   /**
    * Play the next animation. The order is taken from the manifest.
    */
   public next(playbackOptions?: PlaybackOptions): void {
-    this._dotLottieCommonPlayer.next(playbackOptions);
+    this._dotLottieCommonPlayer?.next(playbackOptions);
   }
 
   /**
    * Reset to the initial state defined in the manifest.
    */
   public reset(): void {
-    this._dotLottieCommonPlayer.reset();
+    this._dotLottieCommonPlayer?.reset();
   }
 
-  // private _validateAnimationIndex(animationIndex: number): void {
-  //   if (isNaN(animationIndex) || animationIndex < 0 || animationIndex >= this._manifest.animations.length) {
-  //     throw createError(`Animation index ${animationIndex} is out of bounds.`);
-  //   }
-  // }
 
   /**
    * todo
@@ -992,18 +551,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.stop();
-
-    // if (!this._lottie) {
-    //   return;
-    // }
-
-    // this._counter = 0;
-    // this._lottie.stop();
-    // if (this.direction === -1) {
-    //   this._lottie.goToAndStop(this._lottie.totalFrames, true);
-    // }
-    // this.currentState = PlayerState.Stopped;
-
     this.dispatchEvent(new CustomEvent(PlayerEvents.Stop));
   }
 
@@ -1016,33 +563,6 @@ export class DotLottiePlayer extends LitElement {
     this._dotLottieCommonPlayer.seek(value);
 
     return ;
-
-    // if (!this._lottie) {
-    //   return;
-    // }
-
-    // if (typeof value === 'number') value = Math.round(value);
-
-    // // Extract frame number from either number or percentage value
-    // const matches = /^(\d+)(%?)$/.exec(value.toString());
-
-    // if (!matches) {
-    //   return;
-    // }
-
-    // // Calculate and set the frame number
-    // const frame = matches[2] === '%' ? (this._lottie.totalFrames * Number(matches[1])) / 100 : Number(matches[1]);
-
-    // // Set seeker to new frame number
-    // this.seeker = frame;
-
-    // // Send lottie player to the new frame
-    // if (this.currentState === PlayerState.Playing) {
-    //   this._lottie.goToAndPlay(frame, true);
-    // } else {
-    //   this._lottie.goToAndStop(frame, true);
-    //   this._lottie.pause();
-    // }
   }
 
   /**
@@ -1081,13 +601,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.freeze();
-    // if (!this._lottie) {
-    //   return;
-    // }
-
-    // this._lottie.pause();
-    // this.currentState = PlayerState.Frozen;
-
     this.dispatchEvent(new CustomEvent(PlayerEvents.Freeze));
   }
 
@@ -1100,8 +613,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.setSpeed(value);
-
-    // this._lottie.setSpeed(value);
   }
 
   /**
@@ -1109,15 +620,10 @@ export class DotLottiePlayer extends LitElement {
    *
    * @param value Direction values.
    */
-  public setDirection(value: number): void {
+  public setDirection(value: 1 | -1): void {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.setDirection(value);
-    // if (!this._lottie) {
-    //   return;
-    // }
-
-    // this._lottie.setDirection(value);
   }
 
   /**
@@ -1129,17 +635,12 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.setLoop(value);
-    // if (this._lottie) {
-    //   this._lottie.loop = this._parseLoop(value);
-    // }
   }
 
   public isLooping(): number | boolean {
     if (!this._dotLottieCommonPlayer) return false;
 
-    return this._dotLottieCommonPlayer.loop();
-    // if (this._loop) return this._loop;
-    // return false;
+    return this._dotLottieCommonPlayer.loop;
   }
 
   /**
@@ -1149,7 +650,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.togglePlay();
-    // return this.currentState === PlayerState.Playing ? this.pause() : this.play();
   }
 
   /**
@@ -1159,9 +659,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.toggleLoop();
-    // const newLoop = !this._loop;
-
-    // this.setLooping(newLoop.toString());
   }
 
   /**
@@ -1180,10 +677,10 @@ export class DotLottiePlayer extends LitElement {
     if ('IntersectionObserver' in window) {
       this._io = new IntersectionObserver((entries: IntersectionObserverEntry[]) => {
         if (entries[0] !== undefined && entries[0].isIntersecting) {
-          if (this._dotLottieCommonPlayer?.state === PlayerState.Frozen) {
+          if (this._dotLottieCommonPlayer?.currentState === PlayerState.Frozen) {
             this.play();
           }
-        } else if (this._dotLottieCommonPlayer.state === PlayerState.Playing) {
+        } else if (this._dotLottieCommonPlayer?.currentState === PlayerState.Playing) {
           this.freeze();
         }
       });
@@ -1277,12 +774,10 @@ export class DotLottiePlayer extends LitElement {
           .value=${this.seeker}
           @input=${this._handleSeekChange}
           @mousedown=${() => {
-            this._prevState = this._dotLottieCommonPlayer.currentState;
             this.freeze();
           }}
           @mouseup=${() => {
-            this._prevState === PlayerState.Playing && this.play();
-            this.seek(this._dotLottieCommonPlayer.seek.currentFrame);
+            this._dotLottieCommonPlayer?.unfreeze();
           }}
           aria-valuemin="1"
           aria-valuemax="100"

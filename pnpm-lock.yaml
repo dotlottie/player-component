@@ -69,8 +69,13 @@ importers:
 
   packages/common:
     specifiers:
+<<<<<<< HEAD
       '@dotlottie/dotlottie-js': ^0.1.5
       '@lottiefiles/lottie-types': ^1.1.0
+=======
+      '@dotlottie/dotlottie-js': ^0.1.4
+      '@lottiefiles/lottie-types': ^1.0.1
+>>>>>>> 44e1107 (feat: updated more methods)
       '@preact/signals-core': ^1.2.3
       '@rollup/plugin-commonjs': ^24.1.0
       '@rollup/plugin-node-resolve': ^15.0.2
@@ -84,7 +89,11 @@ importers:
       rollup-plugin-dts: ^5.3.0
       typescript: ^4.7.4
     dependencies:
+<<<<<<< HEAD
       '@dotlottie/dotlottie-js': 0.1.5
+=======
+      '@dotlottie/dotlottie-js': 0.1.4
+>>>>>>> 44e1107 (feat: updated more methods)
       '@preact/signals-core': 1.3.0
       lottie-web: 5.12.0
       react: 18.2.0
@@ -118,6 +127,7 @@ importers:
       '@typescript-eslint/parser': ^2.6.1
       babel-plugin-istanbul: ^6.1.1
       changesets: ^1.0.2
+      common: workspace:^
       cypress: ^9.4.1
       eslint: ^6.6.0
       eslint-config-prettier: ^6.5.0
@@ -146,9 +156,16 @@ importers:
       typescript: ^3.7.5
     dependencies:
       '@rollup/plugin-json': 6.0.0_rollup@2.79.1
+<<<<<<< HEAD
       fflate: 0.7.4
       lit: 2.7.4
       lottie-web: 5.12.0
+=======
+      common: link:../common
+      fflate: 0.7.4
+      lit: 2.7.3
+      lottie-web: 5.11.0
+>>>>>>> 44e1107 (feat: updated more methods)
       tsup: 6.7.0_kn4vkjfp56f7ppqb7bb4dqmgia
     devDependencies:
       '@babel/core': 7.22.1
@@ -2289,8 +2306,13 @@ packages:
       - supports-color
     dev: true
 
+<<<<<<< HEAD
   /@dotlottie/dotlottie-js/0.1.5:
     resolution: {integrity: sha512-JUIp//eu3tQ1KUJBXXuL/ppVOMeko93HJWFxyO3X+uiOWRtVtVjOgFlev14SZWin2exJlAUNwWryNV9GgPJ8Tw==}
+=======
+  /@dotlottie/dotlottie-js/0.1.4:
+    resolution: {integrity: sha512-+hOej0OPipPsnRCiGj8ILVpQ80bxZqtCvcYCev0SsmGJTy8vxvIJzJbQQujjuyoo7ANKI4bYkMmOJfD+THr9Lw==}
+>>>>>>> 44e1107 (feat: updated more methods)
     engines: {node: '>=18.0.0'}
     dependencies:
       '@lottiefiles/lottie-types': 1.1.0
@@ -4286,8 +4308,13 @@ packages:
       rollup: 2.79.1
     dev: false
 
+<<<<<<< HEAD
   /@rollup/plugin-node-resolve/15.1.0_rollup@3.21.0:
     resolution: {integrity: sha512-xeZHCgsiZ9pzYVgAo9580eCGqwh/XCEUM9q6iQfGNocjgkufHAqC3exA+45URvhiYV8sBF9RlBai650eNs7AsA==}
+=======
+  /@rollup/plugin-node-resolve/15.0.2_rollup@3.21.0:
+    resolution: {integrity: sha512-Y35fRGUjC3FaurG722uhUuG8YHOJRJQbI6/CkbRkdPotSpDj9NtIN85z1zrcyDcCQIW4qp5mgG72U+gJ0TAFEg==}
+>>>>>>> 44e1107 (feat: updated more methods)
     engines: {node: '>=14.0.0'}
     peerDependencies:
       rollup: ^2.78.0||^3.0.0
@@ -4474,8 +4501,13 @@ packages:
   /@tsconfig/node14/1.0.3:
     resolution: {integrity: sha512-ysT8mhdixWK6Hw3i1V2AeRqZ5WfXg1G43mqoYlM2nc6388Fq5jcXyr5mRsqViLx/GJYdoL0bfXD8nmF+Zn/Iow==}
 
+<<<<<<< HEAD
   /@tsconfig/node16/1.0.4:
     resolution: {integrity: sha512-vxhUy4J8lyeyinH7Azl1pdd43GJhZH/tP2weN8TntQblOY+A0XbT8DJk1/oCPuOOyg/Ja757rG0CgHcWC8OfMA==}
+=======
+  /@tsconfig/node16/1.0.3:
+    resolution: {integrity: sha512-yOlFc+7UtL/89t2ZhjPvvB/DeAr3r+Dq58IgzsFkOAvVC6NMJXmCGjbptdXdR9qsX7pKcTL+s87FtYREi2dEEQ==}
+>>>>>>> 44e1107 (feat: updated more methods)
 
   /@types/acorn/4.0.6:
     resolution: {integrity: sha512-veQTnWP+1D/xbxVrPC3zHnCZRjSrKfhbMUlEA43iMZLu7EsnTtkJklIuwrCPbOi8YkvDQAiW05VQQFvvz9oieQ==}
@@ -12850,7 +12882,6 @@ packages:
   /lilconfig/2.0.5:
     resolution: {integrity: sha512-xaYmXZtTHPAw5m+xLN8ab9C+3a8YmV3asNSPOATITbtwrfbwaLJj8h66H1WMIpALCkqsIzK3h7oQ+PdX+LQ9Eg==}
     engines: {node: '>=10'}
-    dev: true
 
   /lilconfig/2.1.0:
     resolution: {integrity: sha512-utWOt/GHzuUxnLKxB6dk81RoOeoNeHgbrXiuGk4yyF5qlRz+iIVWu56E2fqGHFrXz0QNUhLB/8nKqvRH66JKGQ==}
@@ -16112,7 +16143,11 @@ packages:
       ts-node:
         optional: true
     dependencies:
+<<<<<<< HEAD
       lilconfig: 2.1.0
+=======
+      lilconfig: 2.0.5
+>>>>>>> 44e1107 (feat: updated more methods)
       ts-node: 10.9.1_typescript@3.9.10
       yaml: 1.10.2
     dev: false
@@ -19833,7 +19868,10 @@ packages:
   /tree-kill/1.2.2:
     resolution: {integrity: sha512-L0Orpi8qGpRG//Nd+H90vFB+3iHnue1zSSGmNOOCh1GLJ7rUKVwV2HvijphGQS2UmhUZewS9VgvxYIdgr+fG1A==}
     hasBin: true
+<<<<<<< HEAD
     dev: false
+=======
+>>>>>>> 44e1107 (feat: updated more methods)
 
   /trim-newlines/3.0.1:
     resolution: {integrity: sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==}
@@ -19855,7 +19893,11 @@ packages:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: false
 
+<<<<<<< HEAD
   /ts-node/10.9.1_6yd3dr4iiziaqkscqiabuqynye:
+=======
+  /ts-node/10.9.1_gz7niyic7zrf5bkdud2q2ufjcm:
+>>>>>>> 44e1107 (feat: updated more methods)
     resolution: {integrity: sha512-NtVysVPkxxrwFGUUxGYhfux8k78pQB3JqYBXlLRZgdGUqTO5wU/UyHop5p70iEbGhB7q5KmiZiU0Y3KlJrScEw==}
     hasBin: true
     peerDependencies:
