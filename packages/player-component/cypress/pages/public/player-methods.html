@@ -4,22 +4,22 @@
   <body>
     <div style="display: block">
       <!-- Check animation loads via method -->
-      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center">
         <div id="player-one"></div>
       </div>
 
       <!-- Check animation load with bad json -->
-      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center">
         <div id="player-two-container"></div>
       </div>
 
       <!-- Check animation load with invalid url -->
-      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center">
         <div id="player-three-container"></div>
       </div>
 
       <!-- Check playing second animation of dotlottie on load -->
-      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center">
         <dotlottie-player
           id="player-four"
           autoplay
@@ -31,7 +31,7 @@
       </div>
 
       <!-- Check playing second animation of dotlottie on load -->
-      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center">
         <dotlottie-player
           id="player-five"
           autoplay
@@ -43,7 +43,7 @@
       </div>
 
       <!-- Check pausing the animation -->
-      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center">
         <dotlottie-player
           id="player-six"
           autoplay
@@ -55,7 +55,7 @@
       </div>
 
       <!-- Check stopping the animation -->
-      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center;">
+      <div class="player-container" style="width: 500px; height: 500px; margin: auto; justify-content: center">
         <dotlottie-player
           id="player-seven"
           autoplay
@@ -79,7 +79,7 @@
         '<dotlottie-player autoplay controls loop mode="normal" style="width: 320px" id="test-player"></lottie-player>',
       );
       const player = document.getElementById('test-player');
-      player.addEventListener('rendered', e => {
+      player.addEventListener('rendered', (e) => {
         player.load('https://assets8.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie');
       });
 
@@ -105,7 +105,7 @@
       const playerFour = document.getElementById('player-four');
       playerFour.addEventListener(
         'ready',
-        e => {
+        (e) => {
           playerFour.play(1);
         },
         { once: true },
@@ -114,7 +114,7 @@
       const playerFive = document.getElementById('player-five');
       playerFive.addEventListener(
         'ready',
-        e => {
+        (e) => {
           playerFive.play('lighthouse');
         },
         { once: true },

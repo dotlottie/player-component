@@ -1,0 +1,88 @@
+name: main
+on:
+  push:
+    branches:
+      - 'main'
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛑 Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.0
+
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+
+      - name: ⎔ Setup pnpm@7
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: ⎔ Setup Node@18
+        uses: actions/setup-node@v3
+        with:
+          cache: 'pnpm'
+          node-version: 18
+
+      - name: 📥 Download deps
+        run: pnpm install
+
+      - name: 🏗 Build
+        run: pnpm build
+
+      - name: 🔍 Verify types
+        run: pnpm type-check
+
+      - name: 💅 Verify format (`pnpm format` committed?)
+        run: pnpm format --check --no-write
+
+      - name: 🕵️ Lint
+        run: pnpm lint
+
+      - name: 🛡️ Test
+        run: pnpm test
+
+  release:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'dotlottie/player-component' && github.event_name == 'push' }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+
+      - name: ⎔ Setup pnpm@7
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: ⎔ Setup Node@18
+        uses: actions/setup-node@v3
+        with:
+          cache: 'pnpm'
+          node-version: 18
+
+      - name: 📥 Download deps
+        run: pnpm install
+
+      - name: 🏗 Build
+        run: pnpm build
+
+      - name: 🚀 Release
+        uses: changesets/action@v1
+        with:
+          commit: 'chore: 🤖 update versions'
+          title: 'chore: 🤖 update versions'
+          publish: pnpm release:publish
+          version: pnpm release:version
+        env:
+          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}

@@ -466,27 +466,27 @@ export class DotLottiePlayer extends LitElement {
       if (autoplay !== undefined) {
         this.autoplay = autoplay;
       }
-  
+
       if (direction !== undefined) {
         this.direction = direction;
       }
-  
+
       if (loop !== undefined) {
         this.loop = loop;
       }
-  
+
       if (playMode !== undefined) {
         this.mode = playMode;
       }
-  
+
       if (speed !== undefined) {
         this.speed = speed;
       }
-  
+
       if (hover !== undefined) {
         this.hover = hover;
       }
-  
+
       if (intermission !== undefined) {
         this.intermission = intermission;
       }
@@ -856,7 +856,6 @@ export class DotLottiePlayer extends LitElement {
 
         if (animationIndex !== -1 && animation !== undefined) {
           this._activeAnimationIndex = animationIndex;
-
 
           this.load(animation, { playbackOptions });
         } else {

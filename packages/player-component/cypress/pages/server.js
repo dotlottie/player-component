@@ -2,16 +2,16 @@
  * Copyright 2022 Design Barn Inc.
  */
 
-const fastify = require("fastify")();
-const path = require("path");
+const fastify = require('fastify')();
+const path = require('path');
 
-fastify.register(require("fastify-static"), {
-  root: path.join(__dirname, "public"),
+fastify.register(require('fastify-static'), {
+  root: path.join(__dirname, 'public'),
 });
 
-fastify.register(require("fastify-static"), {
-  root: path.join(__dirname, "../../", "dist"),
-  prefix: "/dist/",
+fastify.register(require('fastify-static'), {
+  root: path.join(__dirname, '../../', 'dist'),
+  prefix: '/dist/',
   decorateReply: false,
 });
 // Start server.
