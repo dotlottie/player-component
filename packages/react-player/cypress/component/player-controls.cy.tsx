@@ -68,7 +68,7 @@ describe('Controls', () => {
     cy.get('[aria-label="lottie-seek-input"]').should('exist');
   });
 
-  it('only display seek when buttons props are empty', () => {
+  it('only display seek when `buttons` = `[]`', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
