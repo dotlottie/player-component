@@ -769,7 +769,7 @@ export class DotLottiePlayer {
           return;
         }
 
-        this._counterInterval = setTimeout(() => {
+        this._counterInterval = window.setTimeout(() => {
           if (!this._lottie) return;
 
           let newDirection = this._lottie.playDirection;
