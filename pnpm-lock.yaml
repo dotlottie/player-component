@@ -3623,6 +3623,7 @@ packages:
 
   /@lottiefiles/commitlint-config/2.0.0_@commitlint+cli@17.0.3:
     resolution: {integrity: sha512-9UYYFp/jGHXWUhT+y/Vn+KcqPwKfBUL1Yy9nu7FqQ9RUtsbZ26PpuEi2r3lgwHns1+K9oqM9bOAsS9JeZkSE0Q==, tarball: download/@LottieFiles/commitlint-config/2.0.0/7470f16f5b9786c5dd284c456b08a91c16356857}
+    engines: {node: '>= 14'}
     peerDependencies:
       '@commitlint/cli': '*'
     dependencies:
@@ -3632,11 +3633,22 @@ packages:
 
   /@lottiefiles/eslint-plugin/3.0.0_bkcyssjpcfejta2rsq6waiumk4:
     resolution: {integrity: sha512-NifgSAG/ccHfxWEKh4EKwRmVUq7fYWkL+bZdFDktopp/CLYugW/02cAfZa+Su6u+3uzlcKKgl3J7LQd+dRXO/w==, tarball: download/@LottieFiles/eslint-plugin/3.0.0/648e4d9b17378d22d876fa054ff6e3eeb7639403}
+    engines: {node: '>= 14'}
     peerDependencies:
       eslint: '*'
       graphql: '*'
+      jest: '*'
       prettier: '*'
       typescript: '*'
+    peerDependenciesMeta:
+      graphql:
+        optional: true
+      jest:
+        optional: true
+      prettier:
+        optional: true
+      typescript:
+        optional: true
     dependencies:
       '@graphql-eslint/eslint-plugin': 3.8.0_typescript@4.7.4
       '@next/eslint-plugin-next': 12.1.0
@@ -3679,7 +3691,6 @@ packages:
       - bufferutil
       - encoding
       - eslint-import-resolver-webpack
-      - jest
       - supports-color
       - utf-8-validate
     dev: true
@@ -3692,6 +3703,7 @@ packages:
 
   /@lottiefiles/prettier-config/3.0.0_prettier@2.7.1:
     resolution: {integrity: sha512-gHQ5fZ15M2z72hDZDwe8AjOyUXI4fddiB3q1aw20a+wWtCPBg5qHp0+AKZX4to3hHmiTqfFKUh8VGt5WdFLTrw==, tarball: download/@LottieFiles/prettier-config/3.0.0/afc9686569ec81268d8d51c3d3137d4d715a6094}
+    engines: {node: '>= 14'}
     peerDependencies:
       prettier: '*'
     dependencies:
@@ -3703,9 +3715,13 @@ packages:
 
   /@lottiefiles/remark-preset/1.0.0:
     resolution: {integrity: sha512-QmwWxHaCEAYKquck/yK9sjY1zgKt2iIBl7TAjY0HIArVSAQA9gmwo9/c4oaM64gwO3ihRsFarwMzoynCzBL1JA==, tarball: download/@LottieFiles/remark-preset/1.0.0/5217a245ca4b789133b5aa2441712f77e9493acc}
+    engines: {node: '>= 14'}
     peerDependencies:
       puppeteer: '*'
       remark: '*'
+    peerDependenciesMeta:
+      puppeteer:
+        optional: true
     dependencies:
       mdast: 3.0.0
       mdast-util-heading-range: 3.1.0
@@ -3738,6 +3754,7 @@ packages:
 
   /@lottiefiles/tsconfig/2.0.0_typescript@4.7.4:
     resolution: {integrity: sha512-rcDiXVc+WlDCL72IHjW/BCLp9TdEi/DGYAPrpT/GbCaKs5a3UoD8N7zyZt9gRIAjU+XmdHLFTxr8oL5IvqqR8Q==, tarball: download/@LottieFiles/tsconfig/2.0.0/f8914c6cf8d1a4955a2e1e451a4b64da656bdafa}
+    engines: {node: '>= 14'}
     peerDependencies:
       typescript: '*'
     dependencies:
@@ -20694,6 +20711,7 @@ packages:
   /unified/9.2.2:
     resolution: {integrity: sha512-Sg7j110mtefBD+qunSLO1lqOEKdrwBFBrR6Qd8f4uwkhWNlbkaqwHse6e7QvD3AP/MNoJdEDLaf8OxYyoWgorQ==}
     dependencies:
+      '@types/unist': 2.0.6
       bail: 1.0.5
       extend: 3.0.2
       is-buffer: 2.0.5
