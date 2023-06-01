@@ -103,7 +103,11 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (typeof background !== 'undefined') {
       dotLottiePlayer.setBackground(background);
     }
-  }, [loop, autoplay, speed, direction, mode, playOnHover, background]);
+
+    if (typeof intermission !== 'undefined') {
+      dotLottiePlayer.setIntermission(intermission);
+    }
+  }, [loop, autoplay, speed, direction, mode, playOnHover, background, intermission]);
 
   useEffect(() => {
     if (activeAnimationId) {

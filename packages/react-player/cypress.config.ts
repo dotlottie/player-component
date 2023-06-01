@@ -5,8 +5,11 @@
 import { defineConfig } from 'cypress';
 
 export default defineConfig({
-  e2e: {
+  component: {
     video: false,
-    baseUrl: 'http://localhost:5173/test',
+    devServer: {
+      framework: 'react',
+      bundler: 'vite',
+    },
   },
 });
