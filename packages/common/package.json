@@ -17,13 +17,13 @@
     "lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@dotlottie/dotlottie-js": "^0.1.4",
+    "@dotlottie/dotlottie-js": "^0.1.5",
     "@preact/signals-core": "^1.2.3",
     "lottie-web": "^5.10.2",
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@lottiefiles/lottie-types": "^1.0.1",
+    "@lottiefiles/lottie-types": "^1.1.0",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-typescript": "^11.1.0",
