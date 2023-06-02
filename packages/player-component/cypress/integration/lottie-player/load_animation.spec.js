@@ -2,8 +2,6 @@
  * Copyright 2022 Design Barn Inc.
  */
 
-const { WatchDirectoryFlags } = require('typescript');
-
 context('Player component DOM check', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8000/');
