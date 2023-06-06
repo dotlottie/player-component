@@ -1,9 +1,11 @@
 {
+  // "extends": "../../tsconfig.dev.json",
+
   "compilerOptions": {
-    "target": "es2017",
-    "module": "es2015",
+    "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "node",
-    "lib": ["esnext.array", "esnext", "es2017", "dom"],
+    "lib": ["ESNext", "DOM"],
     "declaration": true,
     "declarationMap": true,
     "sourceMap": true,
@@ -15,7 +17,9 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitAny": true,
     "noImplicitThis": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
+    "resolveJsonModule": true
   },
   "include": ["src/**/*.ts", "types/*.ts"],
   "exclude": ["node_modules", "dist"]

@@ -1,77 +1,94 @@
-import babel from '@rollup/plugin-babel';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import commonjs from '@rollup/plugin-commonjs';
-import copy from 'rollup-plugin-copy';
-import filesize from 'rollup-plugin-filesize';
 import resolve from '@rollup/plugin-node-resolve';
-import json from '@rollup/plugin-json';
-import serve from 'rollup-plugin-serve';
-import { terser } from 'rollup-plugin-terser';
-import typescript2 from 'rollup-plugin-typescript2';
+import typescript from '@rollup/plugin-typescript';
+// import { copy } from '@web/rollup-plugin-copy';
+import del from 'rollup-plugin-delete';
+import dts from 'rollup-plugin-dts';
+import json from "@rollup/plugin-json";
 
-const production = !process.env.ROLLUP_WATCH;
-const extensions = ['.js', '.jsx', '.ts', '.tsx', '.mjs'];
-const outputDir = './dist/';
+import packageJson from './package.json' assert { type: 'json' };
 
-export default {
+const extensions = ['.ts'];
+
+const bundle = (config) => ({
+  ...config,
   input: './src/dotlottie-player.ts',
-  // external: (id) =>
-  //   !/^[./]/u.test(id) && !/^fflate/u.test(id) && !/^@lottiefiles\/dotlottie-js/u.test(id) && !/common/u.test(id),
-  treeshake: false,
-  output: [
-    {
-      file: './dist/dotlottie-player.esm.js',
-      // dir: outputDir,
-      format: 'es',
-      sourcemap: true,
-    },
-    {
-      file: './dist/dotlottie-player.js',
-      format: 'umd',
-      name: 'dotlottie-player',
-      sourcemap: true,
-    },
-  ],
-  plugins: [
-    resolve({
-      extensions,
-      jsnext: true,
-      module: true,
-    }),
-    commonjs(),
-    json(),
-    typescript2({
-      check: false,
-    }),
-    babel({
-      extensions: extensions,
-      exclude: ['./node_modules/**'],
-    }),
-    !production &&
-      copy({
-        targets: [
-          {
-            src: './node_modules/@webcomponents/webcomponentsjs/bundles/',
-            dest: outputDir,
-          },
-          {
-            src: './node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js',
-            dest: outputDir,
-          },
-          {
-            src: './tests/**',
-            dest: outputDir,
-          },
-        ],
-      }),
-    filesize(),
-    !production &&
-      serve({
-        contentBase: [outputDir],
-        open: true,
-        host: 'localhost',
-        port: 10000,
-      }),
+  //   external: (id) =>
+  //     !/^[./]/u.test(id) && !/^fflate/u.test(id) && !/^@dotlottie\/dotlottie-js/u.test(id) && !/common/u.test(id),
+});
 
-    production && terser(),
-  ],
-};
+const configs = [
+  bundle({
+    plugins: [
+      del({ targets: 'dist/*' }),
+      resolve({
+        extensions,
+        jsnext: true,
+        module: true,
+      }),
+      json(),
+      commonjs(),
+      typescript({ tsconfig: './tsconfig.json' }),
+      // copy({
+      //   targets: [
+      //     {
+      //       src: './src/dotlottie-player-styles.css',
+      //       dest: './dist',
+      //     },
+      //   ],
+      // }),
+    ],
+    output: [
+      {
+        file: packageJson.module,
+        format: 'esm',
+        sourcemap: true,
+      },
+    ],
+  }),
+  bundle({
+    plugins: [dts()],
+    output: [{ file: 'dist/index.d.ts', format: 'esm' }],
+  }),
+];
+
+export default configs;
+
+
+// // Import rollup plugins
+// import html from '@web/rollup-plugin-html';
+// import { copy } from '@web/rollup-plugin-copy';
+// import resolve from '@rollup/plugin-node-resolve';
+// import { terser } from '@rollup/plugin-terser';
+// import minifyHTML from 'rollup-plugin-minify-html-literals';
+// import summary from 'rollup-plugin-summary';
+
+// export default {
+//   input: 'src/index.ts',
+//   plugins: [
+//     // Resolve bare module specifiers to relative paths
+//     resolve({
+//       extensions,
+//       jsnext: true,
+//       module: true,
+//     }),
+//     // Minify HTML template literals
+//     minifyHTML(),
+//     // Minify JS
+//     terser({
+//       ecma: 2020,
+//       module: true,
+//       warnings: true,
+//     }),
+//     // Print bundle summary
+//     summary(),
+//   ],
+//   output: {
+//     dir: 'build',
+//   },
+//   preserveEntrySignatures: 'strict',
+// };

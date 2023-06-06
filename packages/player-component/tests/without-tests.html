@@ -4,7 +4,8 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 		<title>dotlottie player web component</title>
-		<script src="./dotlottie-player.js"></script>
+		<script type="module" src="../dist/dotlottie-player.global.js"></script>
+		</script>
 	</head>
 
 	<body>
@@ -106,12 +107,17 @@
 		let player = document.getElementById('dotlottie-player');
 		let i = 0;
 
-		console.log(player.getVersions());
+		player.addEventListener('load', () => console.log('load'));
+		
+		player.addEventListener('complete', () => console.log('complete'));
+		
+		player.addEventListener('loopComplete', () => console.log('loop complete'));
 
-		player.addEventListener('load', console.log('load'));
-		player.addEventListener('ready', console.log('ready'));
-		player.addEventListener('frame', console.log('frame'));
-		player.addEventListener('error', console.log('error'));
+		player.addEventListener('ready', () => console.log('ready'));
+
+		// player.addEventListener('frame', (event) => { console.log(event.detail)});
+
+		player.addEventListener('error', () => console.log('error'));
 
 		function prevLottie() {
 			player.previous();
