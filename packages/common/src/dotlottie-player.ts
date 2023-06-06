@@ -689,7 +689,7 @@ export class DotLottiePlayer {
     try {
       this._lottie?.addEventListener(name, cb);
     } catch (error) {
-      logError('[dotLottie]:addEventListener', error);
+      logError(`addEventListener ${error}`);
     }
   }
 
@@ -949,9 +949,11 @@ export class DotLottiePlayer {
       } else {
         throw createError('Load method failing. Object is not a valid Lottie.');
       }
-    } catch (err) {
+    } catch (error: unknown) {
+      const err = error as Error;
+
       this.setCurrentState(PlayerState.Error);
-      logError('err', err);
+      logError(`Error loading animation: ${err.message}`);
     }
   }
 

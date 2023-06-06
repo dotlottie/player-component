@@ -3,3 +3,4 @@
  */
 
 export * from './dotlottie-player';
+export * from './utils';

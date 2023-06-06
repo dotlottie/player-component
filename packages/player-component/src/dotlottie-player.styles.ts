@@ -1,5 +1,5 @@
 /**
- * Copyright 2021 Design Barn Inc.
+ * Copyright 2023 Design Barn Inc.
  */
 
 import { css } from 'lit';

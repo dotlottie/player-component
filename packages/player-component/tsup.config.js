@@ -25,6 +25,7 @@ export default defineConfig([
         outDir: './dist/',
         platform: 'browser',
         target: ['ESNext'],
+        external: ['common']
     },
 
 ]);

@@ -1,28 +1,25 @@
-import { LitElement, TemplateResult, html } from 'lit';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
+import type { CSSResult, TemplateResult } from 'lit';
+import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import type { AnimationItem } from 'lottie-web';
-import styles from './dotlottie-player.styles';
-import { DotLottiePlayer as DotLottieCommonPlayer, RendererType } from '../../common';
-import { PlayerState, PlayMode } from '../../common';
 
+import type { RendererType , DotLottiePlayerState , PlaybackOptions , Manifest } from '../../common';
+import { DotLottiePlayer as DotLottieCommonPlayer , PlayerState, PlayMode , PlayerEvents, logWarning, createError } from '../../common';
 import pkg from '../package.json';
-import { createError, warn } from './utils';
-import { DotLottiePlayerState } from '../../common';
-import { PlayerEvents } from '../../common';
-import { PlaybackOptions } from '../../common';
-import { Manifest } from '../../common';
+
+import styles from './dotlottie-player.styles';
 
 export interface Versions {
-  lottieWebVersion: string;
   dotLottiePlayerVersion: string;
+  lottieWebVersion: string;
 }
 
 /**
  * DotLottiePlayer web component class
- *
- * @export
- * @class DotLottiePlayer
- * @extends {LitElement}
  */
 @customElement('dotlottie-player')
 export class DotLottiePlayer extends LitElement {
@@ -102,18 +99,19 @@ export class DotLottiePlayer extends LitElement {
   public activeAnimationId?: string | null = null;
 
   @state()
-  private seeker: number = 0;
+  private _seeker: number = 0;
 
   private _dotLottieCommonPlayer: DotLottieCommonPlayer | undefined;
-  private _io?: any;
+
+  private _io?: IntersectionObserver;
+
   private _loop?: boolean | number;
+
   private _renderer?: RendererType = 'svg';
 
-  constructor() {
-    super();
-  }
-
   /**
+   * Get number of loops or boolean value of loop.
+   * 
    * @param loop - either a string representing a boolean or a number of loops to play
    * @returns boolean - if loop was activated or not
    */
@@ -129,7 +127,7 @@ export class DotLottiePlayer extends LitElement {
 
       return this._loop;
     } else {
-      warn('loop must be a positive integer or a boolean');
+      logWarning('loop must be a positive integer or a boolean');
     }
 
     return false;
@@ -142,9 +140,9 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer)
       return ;
 
-    if (document.hidden && this._dotLottieCommonPlayer?.currentState === PlayerState.Playing) {
+    if (document.hidden && this._dotLottieCommonPlayer.currentState === PlayerState.Playing) {
       this._dotLottieCommonPlayer.freeze();
-    } else if (this._dotLottieCommonPlayer?.currentState === PlayerState.Frozen) {
+    } else if (this._dotLottieCommonPlayer.currentState === PlayerState.Frozen) {
       this._dotLottieCommonPlayer.play();
     }
   }
@@ -152,14 +150,23 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Handles click and drag actions on the progress track.
    */
-  private _handleSeekChange(e: any): void {
-    if (!this._dotLottieCommonPlayer || isNaN(e.target.value)) {
+  private _handleSeekChange(event: Event): void {
+    const target = event.currentTarget as HTMLInputElement;
+    
+    try {
+      const value = parseInt(target.value, 10);
+
+    if (!this._dotLottieCommonPlayer) {
       return;
     }
 
-    const frame: number = (e.target.value / 100) * this._dotLottieCommonPlayer.totalFrames;
+    const frame: number = (value / 100) * this._dotLottieCommonPlayer.totalFrames;
 
     this.seek(frame);
+
+  } catch (error) {
+      throw createError('Error while seeking animation');
+    }
   }
 
   private _initListeners(): void {
@@ -169,22 +176,22 @@ export class DotLottiePlayer extends LitElement {
     this.dispatchEvent(new CustomEvent(PlayerEvents.DataReady));
 
     if (commonPlayer === undefined) {
-      warn('dotLottie-player-component not initialized - cannot add event listeners');
+      logWarning('player not initialized - cannot add event listeners', 'dotlottie-player-component');
       
       return ;
     }
 
     // Calculate and save the current progress of the animation
-    commonPlayer.state.subscribe( (state: DotLottiePlayerState) => {
-      this.seeker = state.seeker;
+    commonPlayer.state.subscribe( (playerState: DotLottiePlayerState) => {
+      this._seeker = playerState.seeker;
 
       this.requestUpdate();
 
       this.dispatchEvent(
         new CustomEvent(PlayerEvents.Frame, {
           detail: {
-            frame: state.frame,
-            seeker: state.seeker,
+            frame: playerState.frame,
+            seeker: playerState.seeker,
           },
         }),
       );
@@ -247,22 +254,14 @@ export class DotLottiePlayer extends LitElement {
 
     await this._dotLottieCommonPlayer.load(playbackOptions);
 
-    if (this._dotLottieCommonPlayer) {
-      this._initListeners();
-    } else {
-      this.dispatchEvent(new CustomEvent(PlayerEvents.Error));
-
-      throw createError('Player failed to initialize.');
-    }    
+    this._initListeners();
   }
 
   /**
    * Get current animation's id
    */
   public getActiveAnimationId(): string | undefined {
-    if (!this._dotLottieCommonPlayer) return ;
-
-    return this._dotLottieCommonPlayer.activeAnimationId;
+    return this._dotLottieCommonPlayer?.activeAnimationId;
   }
 
   /**
@@ -279,9 +278,7 @@ export class DotLottiePlayer extends LitElement {
    * @returns The current manifest.
    */
   public getManifest(): Manifest | undefined {
-    if (!this._dotLottieCommonPlayer) return ;
-
-    return this._dotLottieCommonPlayer.getManifest();
+    return this._dotLottieCommonPlayer?.getManifest();
   }
 
   /**
@@ -327,7 +324,7 @@ export class DotLottiePlayer extends LitElement {
       return;
     }
     this._dotLottieCommonPlayer.play(targetAnimation, playbackOptions);
-    return ;
+    
   }
 
   /**
@@ -358,8 +355,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.seek(value);
-
-    return ;
   }
 
   /**
@@ -367,8 +362,8 @@ export class DotLottiePlayer extends LitElement {
    *
    * If 'download' argument is boolean true, then a download is triggered in browser.
    */
-  public snapshot(download = true): string | void {
-    if (!this.shadowRoot) return;
+  public snapshot(download = true): string {
+    if (!this.shadowRoot) return '';
 
     // Get SVG element and serialize markup
     const svgElement = this.shadowRoot.querySelector('.animation svg') as Node;
@@ -377,8 +372,9 @@ export class DotLottiePlayer extends LitElement {
     // Trigger file download
     if (download) {
       const element = document.createElement('a');
-      element.href = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(data);
-      element.download = 'download_' + this.seeker + '.svg';
+
+      element.href = `data:image/svg+xml;charset=utf-8,${  encodeURIComponent(data)}`;
+      element.download = `download_${  this._seeker  }.svg`;
       document.body.appendChild(element);
 
       element.click();
@@ -394,7 +390,7 @@ export class DotLottiePlayer extends LitElement {
    * This internal state pauses animation and is used to differentiate between
    * user requested pauses and component instigated pauses.
    */
-  private freeze(): void {
+  private _freeze(): void {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.freeze();
@@ -404,7 +400,7 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Sets animation play speed.
    *
-   * @param value Playback speed.
+   * @param value - Playback speed.
    */
   public setSpeed(value = 1): void {
     if (!this._dotLottieCommonPlayer) return ;
@@ -415,7 +411,7 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Animation play direction.
    *
-   * @param value Direction values.
+   * @param value - Direction values.
    */
   public setDirection(value: 1 | -1): void {
     if (!this._dotLottieCommonPlayer) return ;
@@ -426,7 +422,7 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Sets the looping of the animation.
    *
-   * @param value Whether to enable looping. Boolean true enables looping.
+   * @param value - Whether to enable looping. Boolean true enables looping.
    */
   public setLooping(value: boolean | number): void {
     if (!this._dotLottieCommonPlayer) return ;
@@ -461,7 +457,7 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Returns the styles for the component. Overriding causes styles to not be applied.
    */
-  static get styles() {
+  public static get styles(): CSSResult {
     return styles;
   }
 
@@ -469,8 +465,7 @@ export class DotLottiePlayer extends LitElement {
    * Initialize everything on component first render.
    */
   protected override async firstUpdated(): Promise<void> {
-    if (!this.container)
-        this.container = this.shadowRoot?.querySelector('#animation') as HTMLElement;
+    this.container = this.shadowRoot?.querySelector('#animation') as HTMLElement;
 
     // Add intersection observer for detecting component being out-of-view.
     if ('IntersectionObserver' in window) {
@@ -480,7 +475,7 @@ export class DotLottiePlayer extends LitElement {
             this.play();
           }
         } else if (this._dotLottieCommonPlayer?.currentState === PlayerState.Playing) {
-          this.freeze();
+          this._freeze();
         }
       });
 
@@ -528,7 +523,7 @@ export class DotLottiePlayer extends LitElement {
     document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
   }
 
-  protected renderControls() {
+  protected renderControls(): TemplateResult | undefined {
     const isPlaying: boolean = this._dotLottieCommonPlayer?.currentState === PlayerState.Playing;
     const isPaused: boolean = this._dotLottieCommonPlayer?.currentState === PlayerState.Paused;
     const isStopped: boolean = this._dotLottieCommonPlayer?.currentState === PlayerState.Stopped;
@@ -537,7 +532,7 @@ export class DotLottiePlayer extends LitElement {
       <div id="lottie-controls" aria-label="lottie-animation-controls" class="toolbar">
         <button
           id="lottie-play-button"
-          @click=${this.togglePlay}
+          @click=${(): void => this.togglePlay()}
           class=${isPlaying || isPaused ? 'active' : ''}
           style="align-items:center;"
           tabindex="0"
@@ -557,7 +552,7 @@ export class DotLottiePlayer extends LitElement {
         </button>
         <button
           id="lottie-stop-button"
-          @click=${this.stop}
+          @click=${(): void => this.stop()}
           class=${isStopped ? 'active' : ''}
           style="align-items:center;"
           tabindex="0"
@@ -574,24 +569,24 @@ export class DotLottiePlayer extends LitElement {
           min="0"
           step="1"
           max="100"
-          .value=${this.seeker}
-          @input=${this._handleSeekChange}
-          @mousedown=${() => {
-            this.freeze();
+          .value=${this._seeker}
+          @input=${(event: Event): void => this._handleSeekChange(event)}
+          @mousedown=${(): void => {
+            this._freeze();
           }}
-          @mouseup=${() => {
+          @mouseup=${(): void => {
             this._dotLottieCommonPlayer?.unfreeze();
           }}
           aria-valuemin="1"
           aria-valuemax="100"
           role="slider"
-          aria-valuenow=${this.seeker}
+          aria-valuenow=${this._seeker}
           tabindex="0"
           aria-label="lottie-seek-input"
         />
         <button
           id="lottie-loop-toggle"
-          @click=${this.toggleLooping}
+          @click=${(): void => this.toggleLooping()}
           class=${this._loop ? 'active' : ''}
           style="align-items:center;"
           tabindex="0"
@@ -607,9 +602,11 @@ export class DotLottiePlayer extends LitElement {
     `;
   }
 
-  override render(): TemplateResult | void {
+  public override render(): TemplateResult | void {
     const className: string = this.controls ? 'main controls' : 'main';
     const animationClass: string = this.controls ? 'animation controls' : 'animation';
+
+    
     return html`
       <div id="animation-container" class=${className} lang="en" role="img">
         <div id="animation" class=${animationClass} style="background:${this.background};">
