@@ -309,7 +309,7 @@ export class DotLottiePlayer extends LitElement {
                 if (!asset.p) {
                   return;
                 }
-                if (data[`images/${asset.p}`] === null) {
+                if (!data[`images/${asset.p}`]) {
                   return;
                 }
                 const base64Png = btoa(strFromU8(data[`images/${asset.p}`] as Uint8Array, true));
