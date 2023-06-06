@@ -5,8 +5,6 @@
 import type { RendererSettings, PlayMode } from 'common';
 import { PlayerState, PlayerEvents } from 'common';
 import React, { useEffect, useRef } from 'react';
-import { PlayerState, PlayerEvents } from 'common';
-import React, { useEffect, useRef } from 'react';
 import type { MutableRefObject } from 'react';
 
 import { DotLottieContext } from './dotlottie-context';

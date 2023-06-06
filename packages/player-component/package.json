@@ -23,7 +23,6 @@
     "serve": "node ./cypress/pages/server.js -p 8000 &",
     "start-cypress": "npx cypress run && npx nyc report --reporter=text-summary",
     "run-tests": "pnpm build-with-coverage && pnpm serve && pnpm start-cypress",
-    "run-tests": "pnpm build-with-coverage && pnpm serve && pnpm start-cypress",
     "postrun-tests": "kill $(lsof -t -i:8000)"
   },
   "dependencies": {
