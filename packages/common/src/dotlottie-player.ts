@@ -52,27 +52,59 @@ export enum PlayMode {
 
 export interface ManifestAnimation {
   autoplay?: boolean;
+
+  // Define playback direction 1 forward, -1 backward
   direction?: AnimationDirection;
+
+  // Play on hover
   hover?: boolean;
+
   id: string;
+
+  // Time to wait between playback loops
   intermission?: number;
+
+  // If loop is a number, it defines the number of times the animation will loop
   loop?: boolean | number;
+
+  // Choice between 'bounce' and 'normal'
   playMode?: PlayMode;
+
+  // Desired playback speed, default 1.0
   speed?: number;
+
+  // Theme color
   themeColor?: string;
 }
 
 export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
 
 export interface Manifest {
+  // Default animation to play
   activeAnimationId?: string;
+
+  // List of animations
   animations: ManifestAnimation[];
+
+  // Name of the author
   author?: string;
+
+  // Custom data to be made available to the player and animations
   custom?: Record<string, unknown>;
+
+  // Description of the animation
   description?: string;
+
+  // Name and version of the software that created the dotLottie
   generator?: string;
+
+  // Description of the animation
   keywords?: string;
+
+  // Revision version number of the dotLottie
   revision?: number;
+
+  // Target dotLottie version
   version?: string;
 }
 
@@ -325,6 +357,10 @@ export class DotLottiePlayer {
     return this._mode;
   }
 
+  public get animations(): Map<string, Animation> {
+    return this._animations;
+  }
+
   public setMode(mode: PlayMode): void {
     if (typeof mode !== 'string') return;
     this._mode = mode;
@@ -439,8 +475,23 @@ export class DotLottiePlayer {
     return validatedOptions;
   }
 
+  private _requireAnimationsInTheManifest(): void {
+    if (!this._manifest?.animations.length) {
+      throw createError(`No animations found in manifest.`);
+    }
+  }
+
+  private _requireAnimationsToBeLoaded(): void {
+    if (this._animations.size === 0) {
+      throw createError(`No animations have been loaded.`);
+    }
+  }
+
   public play(activeAnimation?: string | number, options?: PlaybackOptions): void {
     if (!this._lottie) return;
+
+    this._requireAnimationsInTheManifest();
+    this._requireAnimationsToBeLoaded();
 
     if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._activeAnimationId)) {
       if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
@@ -624,7 +675,7 @@ export class DotLottiePlayer {
     try {
       this._lottie?.addEventListener(name, cb);
     } catch (error) {
-      logError('[dotLottie]:addEventListener', error);
+      logError(`addEventListener ${error}`);
     }
   }
 
@@ -846,9 +897,9 @@ export class DotLottiePlayer {
     this._updateTestData();
   }
 
-  public async load(): Promise<void> {
+  public async load(playbackOptions?: PlaybackOptions): Promise<void> {
     if (this._currentState === PlayerState.Loading) {
-      logWarning('Loading inprogress..');
+      logWarning('Loading in progress..');
 
       return;
     }
@@ -876,17 +927,19 @@ export class DotLottiePlayer {
 
         this._animation = animation;
 
-        this.render();
+        this.render({ ...playbackOptions });
       } else if (DotLottiePlayer.isLottie(srcParsed)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this._animation = srcParsed as any;
-        this.render();
+        this.render({ ...playbackOptions });
       } else {
         throw createError('Load method failing. Object is not a valid Lottie.');
       }
-    } catch (err) {
+    } catch (error: unknown) {
+      const err = error as Error;
+
       this.setCurrentState(PlayerState.Error);
-      logError('err', err);
+      logError(`Error loading animation: ${err.message}`);
     }
   }
 

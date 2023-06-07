@@ -43,3 +43,7 @@ next-env.d.ts
 releases/
 
 sample-projects/
+
+packages/player-component/cypress/
+packages/player-component/dist/
+packages/common/dist/
