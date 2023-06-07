@@ -12,7 +12,6 @@ import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
 import { useSelectDotLottieState } from './hooks/use-select-dotlottie-state';
 
-
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   activeAnimationId?: string;
   autoplay?: boolean;

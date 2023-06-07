@@ -14,6 +14,7 @@
 				<button id="reset-btn" onclick="nextLottie()">Next Lottie</button>
 				<button id="reset-btn" onclick="prevLottie()">Prev Lottie</button>
 				<button id="reset-btn" onclick="resetLottie()">Reset Lottie</button>
+				<button id="destroy-btn" onclick="destroyLottie()">Destroy Lottie</button>
 				'activeAnimId' set via the manifest -> should be texting animation
 			</div>
 			<dotlottie-player
@@ -108,6 +109,10 @@
 		let i = 0;
 
 		player.addEventListener('load', () => console.log('load'));
+
+		player.addEventListener('freeze', () => console.log('FREEZE'));
+		
+		player.addEventListener('stopped', () => console.log('stopped'));
 		
 		player.addEventListener('complete', () => console.log('complete'));
 		
@@ -118,6 +123,10 @@
 		// player.addEventListener('frame', (event) => { console.log(event.detail)});
 
 		player.addEventListener('error', () => console.log('error'));
+
+		function destroyLottie() {
+			player.remove();
+		}
 
 		function prevLottie() {
 			player.previous();

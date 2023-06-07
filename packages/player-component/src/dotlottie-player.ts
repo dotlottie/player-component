@@ -109,6 +109,8 @@ export class DotLottiePlayer extends LitElement {
 
   private _renderer?: RendererType = 'svg';
 
+  private _unsubscribeListeners?: () => void;
+
   /**
    * Get number of loops or boolean value of loop.
    * 
@@ -172,9 +174,6 @@ export class DotLottiePlayer extends LitElement {
   private _initListeners(): void {
     const commonPlayer = this._dotLottieCommonPlayer;
 
-    // Because we fetch the data ourselves, fire the load event
-    this.dispatchEvent(new CustomEvent(PlayerEvents.DataReady));
-
     if (commonPlayer === undefined) {
       logWarning('player not initialized - cannot add event listeners', 'dotlottie-player-component');
       
@@ -182,11 +181,15 @@ export class DotLottiePlayer extends LitElement {
     }
 
     // Calculate and save the current progress of the animation
-    commonPlayer.state.subscribe( (playerState: DotLottiePlayerState) => {
+    this._unsubscribeListeners = commonPlayer.state.subscribe( (playerState: DotLottiePlayerState, prevState: DotLottiePlayerState) => {
       this._seeker = playerState.seeker;
 
       this.requestUpdate();
 
+      if (prevState.currentState !== playerState.currentState) {
+         this.dispatchEvent(new CustomEvent(playerState.currentState));
+      }
+      
       this.dispatchEvent(
         new CustomEvent(PlayerEvents.Frame, {
           detail: {
@@ -195,7 +198,7 @@ export class DotLottiePlayer extends LitElement {
           },
         }),
       );
-    })
+    });
 
     // Handle animation play complete
     commonPlayer.addEventListener('complete', () => {
@@ -323,8 +326,8 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) {
       return;
     }
+
     this._dotLottieCommonPlayer.play(targetAnimation, playbackOptions);
-    
   }
 
   /**
@@ -334,8 +337,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.pause();
-
-    this.dispatchEvent(new CustomEvent(PlayerEvents.Pause));
   }
 
   /**
@@ -345,7 +346,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.stop();
-    this.dispatchEvent(new CustomEvent(PlayerEvents.Stop));
   }
 
   /**
@@ -394,7 +394,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return ;
 
     this._dotLottieCommonPlayer.freeze();
-    this.dispatchEvent(new CustomEvent(PlayerEvents.Freeze));
   }
 
   /**
@@ -521,6 +520,8 @@ export class DotLottiePlayer extends LitElement {
 
     // Remove the attached Visibility API's change event listener.
     document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
+
+    this._unsubscribeListeners?.();
   }
 
   protected renderControls(): TemplateResult | undefined {
