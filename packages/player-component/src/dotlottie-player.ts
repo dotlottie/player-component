@@ -7,8 +7,16 @@ import { LitElement, html } from 'lit';
 import { customElement, property, query, state } from 'lit/decorators.js';
 import type { AnimationItem } from 'lottie-web';
 
-import type { RendererType , DotLottiePlayerState , PlaybackOptions , Manifest } from '../../common';
-import { DotLottiePlayer as DotLottieCommonPlayer , PlayerState, PlayMode , PlayerEvents, logWarning, createError } from '../../common';
+import type { RendererType, DotLottiePlayerState, PlaybackOptions, Manifest } from '../../common';
+import {
+  DotLottiePlayer as DotLottieCommonPlayer,
+  PlayerState,
+  PlayMode,
+  PlayerEvents,
+  logWarning,
+  createError,
+  DEFAULT_STATE,
+} from '../../common';
 import pkg from '../package.json';
 
 import styles from './dotlottie-player.styles';
@@ -113,7 +121,7 @@ export class DotLottiePlayer extends LitElement {
 
   /**
    * Get number of loops or boolean value of loop.
-   * 
+   *
    * @param loop - either a string representing a boolean or a number of loops to play
    * @returns boolean - if loop was activated or not
    */
@@ -139,8 +147,7 @@ export class DotLottiePlayer extends LitElement {
    * Handle visibility change events.
    */
   private _onVisibilityChange(): void {
-    if (!this._dotLottieCommonPlayer)
-      return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     if (document.hidden && this._dotLottieCommonPlayer.currentState === PlayerState.Playing) {
       this._dotLottieCommonPlayer.freeze();
@@ -154,19 +161,18 @@ export class DotLottiePlayer extends LitElement {
    */
   private _handleSeekChange(event: Event): void {
     const target = event.currentTarget as HTMLInputElement;
-    
+
     try {
       const value = parseInt(target.value, 10);
 
-    if (!this._dotLottieCommonPlayer) {
-      return;
-    }
+      if (!this._dotLottieCommonPlayer) {
+        return;
+      }
 
-    const frame: number = (value / 100) * this._dotLottieCommonPlayer.totalFrames;
+      const frame: number = (value / 100) * this._dotLottieCommonPlayer.totalFrames;
 
-    this.seek(frame);
-
-  } catch (error) {
+      this.seek(frame);
+    } catch (error) {
       throw createError('Error while seeking animation');
     }
   }
@@ -176,37 +182,39 @@ export class DotLottiePlayer extends LitElement {
 
     if (commonPlayer === undefined) {
       logWarning('player not initialized - cannot add event listeners', 'dotlottie-player-component');
-      
-      return ;
+
+      return;
     }
 
     // Calculate and save the current progress of the animation
-    this._unsubscribeListeners = commonPlayer.state.subscribe( (playerState: DotLottiePlayerState, prevState: DotLottiePlayerState) => {
-      this._seeker = playerState.seeker;
+    this._unsubscribeListeners = commonPlayer.state.subscribe(
+      (playerState: DotLottiePlayerState, prevState: DotLottiePlayerState) => {
+        this._seeker = playerState.seeker;
 
-      this.requestUpdate();
+        this.requestUpdate();
 
-      if (prevState.currentState !== playerState.currentState) {
-         this.dispatchEvent(new CustomEvent(playerState.currentState));
-      }
-      
-      this.dispatchEvent(
-        new CustomEvent(PlayerEvents.Frame, {
-          detail: {
-            frame: playerState.frame,
-            seeker: playerState.seeker,
-          },
-        }),
-      );
-    });
+        if (prevState.currentState !== playerState.currentState) {
+          this.dispatchEvent(new CustomEvent(playerState.currentState));
+        }
+
+        this.dispatchEvent(
+          new CustomEvent(PlayerEvents.Frame, {
+            detail: {
+              frame: playerState.frame,
+              seeker: playerState.seeker,
+            },
+          }),
+        );
+      },
+    );
 
     // Handle animation play complete
     commonPlayer.addEventListener('complete', () => {
-        this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
+      this.dispatchEvent(new CustomEvent(PlayerEvents.Complete));
     });
 
     commonPlayer.addEventListener('loopComplete', () => {
-        this.dispatchEvent(new CustomEvent(PlayerEvents.LoopComplete));
+      this.dispatchEvent(new CustomEvent(PlayerEvents.LoopComplete));
     });
 
     // Handle lottie-web ready event
@@ -239,21 +247,22 @@ export class DotLottiePlayer extends LitElement {
 
     this._dotLottieCommonPlayer = new DotLottieCommonPlayer(src, this.container as HTMLDivElement, {
       renderer: this._renderer,
-      rendererSettings: overrideRendererSettings ? overrideRendererSettings : 
-      { 
+      rendererSettings: overrideRendererSettings
+        ? overrideRendererSettings
+        : {
             scaleMode: 'noScale',
             clearCanvas: false,
             progressiveLoad: true,
             hideOnTransparent: true,
-      },
+          },
       hover: this.hover,
       loop: this._loop,
       direction: this.direction === 1 ? 1 : -1,
       speed: this.speed,
-      intermission: this.intermission,
+      intermission: Number(this.intermission),
       playMode: this.mode,
-      autoplay: this.hover ? false : this.autoplay
-    })
+      autoplay: this.hover ? false : this.autoplay,
+    });
 
     await this._dotLottieCommonPlayer.load(playbackOptions);
 
@@ -274,6 +283,15 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return 0;
 
     return this._dotLottieCommonPlayer.animations.size;
+  }
+
+  /**
+   * @returns the current player states
+   */
+  public getState(): DotLottiePlayerState {
+    if (!this._dotLottieCommonPlayer) return DEFAULT_STATE;
+
+    return this._dotLottieCommonPlayer.getState();
   }
 
   /**
@@ -334,7 +352,7 @@ export class DotLottiePlayer extends LitElement {
    * Pause animation play.
    */
   public pause(): void {
-    if (!this._dotLottieCommonPlayer) return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.pause();
   }
@@ -343,7 +361,7 @@ export class DotLottiePlayer extends LitElement {
    * Stops animation play.
    */
   public stop(): void {
-    if (!this._dotLottieCommonPlayer) return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.stop();
   }
@@ -352,7 +370,7 @@ export class DotLottiePlayer extends LitElement {
    * Seek to a given frame.
    */
   public seek(value: number | string): void {
-    if (!this._dotLottieCommonPlayer) return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.seek(value);
   }
@@ -373,8 +391,8 @@ export class DotLottiePlayer extends LitElement {
     if (download) {
       const element = document.createElement('a');
 
-      element.href = `data:image/svg+xml;charset=utf-8,${  encodeURIComponent(data)}`;
-      element.download = `download_${  this._seeker  }.svg`;
+      element.href = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(data)}`;
+      element.download = `download_${this._seeker}.svg`;
       document.body.appendChild(element);
 
       element.click();
@@ -391,7 +409,7 @@ export class DotLottiePlayer extends LitElement {
    * user requested pauses and component instigated pauses.
    */
   private _freeze(): void {
-    if (!this._dotLottieCommonPlayer) return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.freeze();
   }
@@ -402,7 +420,7 @@ export class DotLottiePlayer extends LitElement {
    * @param value - Playback speed.
    */
   public setSpeed(value = 1): void {
-    if (!this._dotLottieCommonPlayer) return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.setSpeed(value);
   }
@@ -413,7 +431,7 @@ export class DotLottiePlayer extends LitElement {
    * @param value - Direction values.
    */
   public setDirection(value: 1 | -1): void {
-    if (!this._dotLottieCommonPlayer) return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.setDirection(value);
   }
@@ -424,7 +442,7 @@ export class DotLottiePlayer extends LitElement {
    * @param value - Whether to enable looping. Boolean true enables looping.
    */
   public setLooping(value: boolean | number): void {
-    if (!this._dotLottieCommonPlayer) return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.setLoop(value);
   }
@@ -439,7 +457,7 @@ export class DotLottiePlayer extends LitElement {
    * Toggle playing state.
    */
   public togglePlay(): void {
-    if (!this._dotLottieCommonPlayer) return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.togglePlay();
   }
@@ -448,7 +466,7 @@ export class DotLottiePlayer extends LitElement {
    * Toggles animation looping.
    */
   public toggleLooping(): void {
-    if (!this._dotLottieCommonPlayer) return ;
+    if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.toggleLoop();
   }
@@ -607,11 +625,12 @@ export class DotLottiePlayer extends LitElement {
     const className: string = this.controls ? 'main controls' : 'main';
     const animationClass: string = this.controls ? 'animation controls' : 'animation';
 
-    
     return html`
       <div id="animation-container" class=${className} lang="en" role="img">
         <div id="animation" class=${animationClass} style="background:${this.background};">
-          ${this._dotLottieCommonPlayer?.currentState === PlayerState.Error ? html` <div class="error">⚠️</div> ` : undefined}
+          ${this._dotLottieCommonPlayer?.currentState === PlayerState.Error
+            ? html` <div class="error">⚠️</div> `
+            : undefined}
         </div>
         ${this.controls ? this.renderControls() : undefined}
       </div>
