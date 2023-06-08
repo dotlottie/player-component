@@ -1,36 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-		<title>dotlottie player web component</title>
-		<script type="module" src="../dist/dotlottie-player.global.js"></script>
-		</script>
-	</head>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <title>dotlottie player web component</title>
+    <script type="module" src="../dist/dotlottie-player.global.js"></script>
+  </head>
 
-	<body>
-		<div>
-			<div style="text-align: center; margin: auto; justify-content: center; align-items: center;">
-				<button id="reset-btn" onclick="nextLottie()">Next Lottie</button>
-				<button id="reset-btn" onclick="prevLottie()">Prev Lottie</button>
-				<button id="reset-btn" onclick="resetLottie()">Reset Lottie</button>
-				<button id="destroy-btn" onclick="destroyLottie()">Destroy Lottie</button>
-				'activeAnimId' set via the manifest -> should be texting animation
-			</div>
-			<dotlottie-player
-				id="dotlottie-player"
-				autoplay
-				loop
-				controls
-				renderer="svg"
-				style="height: 200px;"
-				src="https://lottie.host/cf7b43d1-3d6b-407a-970b-6305b18bebfa/uB1Jboo1o1.json"
-			>
-			</dotlottie-player>
-			<div style="text-align: center; margin: auto; justify-content: center; align-items: center;">
-				This player has 'activeAnimId' prop set to 1 so will play the lighthouse first.
-			</div>
-			<!-- <dotlottie-player
+  <body>
+    <div>
+      <div style="text-align: center; margin: auto; justify-content: center; align-items: center">
+        <button id="reset-btn" onclick="nextLottie()">Next Lottie</button>
+        <button id="reset-btn" onclick="prevLottie()">Prev Lottie</button>
+        <button id="reset-btn" onclick="resetLottie()">Reset Lottie</button>
+        <button id="destroy-btn" onclick="destroyLottie()">Destroy Lottie</button>
+        'activeAnimId' set via the manifest -> should be texting animation
+      </div>
+      <dotlottie-player
+        id="dotlottie-player"
+        autoplay
+        loop
+        controls
+        renderer="svg"
+        style="height: 200px"
+        src="https://lottie.host/cf7b43d1-3d6b-407a-970b-6305b18bebfa/uB1Jboo1o1.json"
+      >
+      </dotlottie-player>
+      <div style="text-align: center; margin: auto; justify-content: center; align-items: center">
+        This player has 'activeAnimId' prop set to 1 so will play the lighthouse first.
+      </div>
+      <!-- <dotlottie-player
 				id="player-2"
 				src="./exploding_pigeon_and_lighthouse.lottie"
 				autoplay
@@ -41,11 +40,11 @@
 				style="height: 200px;"
 			>
 			</dotlottie-player> -->
-		</div>
+    </div>
 
-		<div style="margin-top: 50px; text-align: center">
-			No asset
-			<!-- <dotlottie-player
+    <div style="margin-top: 50px; text-align: center">
+      No asset
+      <!-- <dotlottie-player
 				id="no-asset"
 				src="https://assets1.lottiefiles.com/dotlotties/dlf10_lt5jbkdg.lottie"
 				autoplay
@@ -56,11 +55,11 @@
 				style="height: 200px;"
 			>
 			</dotlottie-player> -->
-		</div>
+    </div>
 
-		<div style="margin-top: 50px; text-align: center">
-			External image
-			<!-- <dotlottie-player
+    <div style="margin-top: 50px; text-align: center">
+      External image
+      <!-- <dotlottie-player
 				id="external-image"
 				src="https://assets3.lottiefiles.com/dotlotties/dlf10_wyuwp5kj.lottie"
 				autoplay
@@ -71,11 +70,11 @@
 				style="height: 200px;"
 			>
 			</dotlottie-player> -->
-		</div>
+    </div>
 
-		<div style="margin-top: 50px; text-align: center">
-			Internal image
-			<!-- <dotlottie-player
+    <div style="margin-top: 50px; text-align: center">
+      Internal image
+      <!-- <dotlottie-player
 				id="last-player"
 				src="https://assets9.lottiefiles.com/dotlotties/dlf10_oehbsgal.lottie"
 				autoplay
@@ -86,11 +85,11 @@
 				style="height: 200px;"
 			>
 			</dotlottie-player> -->
-		</div>
+    </div>
 
-		<div style="margin-top: 50px; text-align: center">
-			Json file
-			<!-- <dotlottie-player
+    <div style="margin-top: 50px; text-align: center">
+      Json file
+      <!-- <dotlottie-player
 				id="last-player"
 				src="https://lottie.host/e2dbfe51-c278-465e-a770-0a089bbdb050/PHfSd8cBck.json"
 				autoplay
@@ -101,45 +100,45 @@
 				style="height: 200px;"
 			>
 			</dotlottie-player> -->
-		</div>
-	</body>
+    </div>
+  </body>
 
-	<script>
-		let player = document.getElementById('dotlottie-player');
-		let i = 0;
+  <script>
+    let player = document.getElementById('dotlottie-player');
+    let i = 0;
 
-		player.addEventListener('load', () => console.log('load'));
+    player.addEventListener('load', () => console.log('load'));
 
-		player.addEventListener('freeze', () => console.log('FREEZE'));
-		
-		player.addEventListener('stopped', () => console.log('stopped'));
-		
-		player.addEventListener('complete', () => console.log('complete'));
-		
-		player.addEventListener('loopComplete', () => console.log('loop complete'));
+    player.addEventListener('freeze', () => console.log('FREEZE'));
 
-		player.addEventListener('ready', () => console.log('ready'));
+    player.addEventListener('stopped', () => console.log('stopped'));
 
-		// player.addEventListener('frame', (event) => { console.log(event.detail)});
+    player.addEventListener('complete', () => console.log('complete'));
 
-		player.addEventListener('error', () => console.log('error'));
+    player.addEventListener('loopComplete', () => console.log('loop complete'));
 
-		function destroyLottie() {
-			player.remove();
-		}
+    player.addEventListener('ready', () => console.log('ready'));
 
-		function prevLottie() {
-			player.previous();
-		}
+    // player.addEventListener('frame', (event) => { console.log(event.detail)});
 
-		function resetLottie() {
-			player.reset();
-		}
+    player.addEventListener('error', () => console.log('error'));
 
-		function nextLottie() {
-			player.next();
-			// player.next({direction: 1, autoplay: true, loop: true, speed: 0.5, mode: 'normal'});
-			return;
-		}
-	</script>
+    function destroyLottie() {
+      player.remove();
+    }
+
+    function prevLottie() {
+      player.previous();
+    }
+
+    function resetLottie() {
+      player.reset();
+    }
+
+    function nextLottie() {
+      player.next();
+      // player.next({direction: 1, autoplay: true, loop: true, speed: 0.5, mode: 'normal'});
+      return;
+    }
+  </script>
 </html>
