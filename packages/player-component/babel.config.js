@@ -3,8 +3,10 @@
  */
 
 const { CODE_COVERAGE } = process.env;
-const plugins = [['@babel/plugin-proposal-decorators', { legacy: true }],
-['@babel/plugin-proposal-class-properties', { loose: true }]];
+const plugins = [
+  ['@babel/plugin-proposal-decorators', { legacy: true }],
+  ['@babel/plugin-proposal-class-properties', { loose: true }],
+];
 
 if (CODE_COVERAGE === 'true') plugins.push('istanbul');
 
