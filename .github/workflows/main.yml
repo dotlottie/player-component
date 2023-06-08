@@ -4,7 +4,7 @@ on:
     branches:
       - 'main'
   pull_request:
-  
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -27,11 +27,10 @@ jobs:
       - name: ⎔ Setup Node@18
         uses: actions/setup-node@v3
         with:
-          cache: 'pnpm'
           node-version: 18
 
       - name: 📥 Download deps
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: 🏗 Build
         run: pnpm build
@@ -66,11 +65,10 @@ jobs:
       - name: ⎔ Setup Node@18
         uses: actions/setup-node@v3
         with:
-          cache: 'pnpm'
           node-version: 18
 
       - name: 📥 Download deps
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install
 
       - name: 🏗 Build
         run: pnpm build
