@@ -50,7 +50,7 @@ const Item: React.FC = () => {
   const [currentState, setCurrentState] = useState<PlayerState>(PlayerState.Initial);
   const [isReady, setIsReady] = useState('no');
 
-  const root = useRef<any>(null);
+  const root = useRef<unknown>(null);
 
   useEffect(() => {
     if (!root.current) return undefined;
