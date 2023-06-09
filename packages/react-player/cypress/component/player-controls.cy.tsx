@@ -13,12 +13,7 @@ describe('Controls', () => {
   it('should render controls.', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} autoplay>
           <Controls />
         </DotLottiePlayer>
         ,
@@ -30,12 +25,7 @@ describe('Controls', () => {
   it('should display all buttons by default', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} autoplay>
           <Controls />
         </DotLottiePlayer>
         ,
@@ -50,12 +40,7 @@ describe('Controls', () => {
   it('should display specified buttons. [`loop`]', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} autoplay>
           <Controls buttons={['loop']} />
         </DotLottiePlayer>
         ,
@@ -71,12 +56,7 @@ describe('Controls', () => {
   it('only display seek when `buttons` = `[]`', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} autoplay>
           <Controls buttons={[]} />
         </DotLottiePlayer>
         ,
@@ -94,12 +74,7 @@ describe('Controls', () => {
   it('should start to play when play button is pressed.', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          loop
-          style={{ height: '400px', display: 'inline-block' }}
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} loop style={{ height: '400px', display: 'inline-block' }}>
           <Controls />
         </DotLottiePlayer>
         ,
@@ -116,12 +91,7 @@ describe('Controls', () => {
   it('should be able to pause', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} autoplay>
           <Controls />
         </DotLottiePlayer>
         ,
@@ -138,12 +108,7 @@ describe('Controls', () => {
   it('should be able to stop', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} autoplay>
           <Controls />
         </DotLottiePlayer>
         ,
@@ -160,13 +125,7 @@ describe('Controls', () => {
   it('should be able toggle looping', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          loop
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} loop autoplay>
           <Controls />
         </DotLottiePlayer>
         ,
