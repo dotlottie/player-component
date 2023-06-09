@@ -254,7 +254,7 @@ export class DotLottiePlayer {
     };
     const onLeave = (): void => {
       if (this._hover && this.currentState === PlayerState.Playing) {
-        this.pause();
+        this.stop();
       }
     };
 

@@ -56,10 +56,16 @@ describe('Hover', () => {
 
     cy.get('[name="currentState"]').should('not.have.value', PlayerState.Playing);
 
-    cy.get('[data-testid="testPlayer"]').shadow().find('.animation > *').trigger('mouseenter');
+    cy.get('[data-testid="testPlayer"]')
+      .shadow()
+      .find('.animation > *')
+      .trigger('mouseenter');
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
-    cy.get('[data-testid="testPlayer"]').shadow().find('.animation > *').trigger('mouseleave');
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Paused);
+    cy.get('[data-testid="testPlayer"]')
+      .shadow()
+      .find('.animation > *')
+      .trigger('mouseleave');
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Stopped);
   });
 });
