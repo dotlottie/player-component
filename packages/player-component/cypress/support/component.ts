@@ -4,7 +4,7 @@
 
 import { mount } from 'cypress-ct-lit';
 
-import '../../dist/dotlottie-player.global.js';
+import '../../dist/dotlottie-player.js';
 
 declare global {
   namespace Cypress {
