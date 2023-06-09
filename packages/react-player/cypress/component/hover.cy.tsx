@@ -67,7 +67,7 @@ describe('Hover', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
     cy.get('[data-testid="animation"] > *').trigger('mouseleave');
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Paused);
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Stopped);
   });
 
   it('hover should be reactive.', () => {
