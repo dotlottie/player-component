@@ -9,14 +9,7 @@ describe('Player', () => {
   it('should mount', () => {
     cy.mount(
       html`
-        <dotlottie-player
-          data-testid="testPlayer"
-          autoplay
-          loop
-          controls
-          style="height: 200px;"
-          src="https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie"
-        >
+        <dotlottie-player data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/cool-dog.lottie">
         </dotlottie-player>
       `,
     );
@@ -33,7 +26,7 @@ describe('Player', () => {
           loop
           controls
           style="height: 200px;"
-          src="https://lottie.host/cf7b43d1-3d6b-407a-970b-6305b18bebfa/uB1Jboo1o1.json"
+          src="/telented-man.json"
         >
         </dotlottie-player>
       `,
@@ -45,14 +38,7 @@ describe('Player', () => {
   it('should be able to play .lottie', () => {
     cy.mount(
       html`
-        <dotlottie-player
-          data-testid="testPlayer"
-          autoplay
-          loop
-          controls
-          style="height: 200px;"
-          src="https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie"
-        >
+        <dotlottie-player data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/cool-dog.lottie">
         </dotlottie-player>
       `,
     );

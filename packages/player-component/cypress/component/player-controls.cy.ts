@@ -9,13 +9,7 @@ describe('Controls', () => {
   it('should not render controls by default', () => {
     cy.mount(
       html`
-        <dotlottie-player
-          data-testid="testPlayer"
-          autoplay
-          loop
-          style="height: 200px;"
-          src="https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie"
-        >
+        <dotlottie-player data-testid="testPlayer" autoplay loop style="height: 200px;" src="/cool-dog.lottie">
         </dotlottie-player>
       `,
     );
@@ -26,14 +20,7 @@ describe('Controls', () => {
   it('should render controls when controls = `true`', () => {
     cy.mount(
       html`
-        <dotlottie-player
-          data-testid="testPlayer"
-          autoplay
-          loop
-          controls
-          style="height: 200px;"
-          src="https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie"
-        >
+        <dotlottie-player data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/cool-dog.lottie">
         </dotlottie-player>
       `,
     );
@@ -44,13 +31,7 @@ describe('Controls', () => {
   it('should start to play when play button is pressed.', () => {
     cy.mount(
       html`
-        <dotlottie-player
-          data-testid="testPlayer"
-          controls
-          loop
-          style="height: 200px;"
-          src="https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie"
-        >
+        <dotlottie-player data-testid="testPlayer" controls loop style="height: 200px;" src="/cool-dog.lottie">
         </dotlottie-player>
       `,
     );
@@ -64,14 +45,7 @@ describe('Controls', () => {
   it('should be able to pause', () => {
     cy.mount(
       html`
-        <dotlottie-player
-          data-testid="testPlayer"
-          autoplay
-          loop
-          controls
-          style="height: 200px;"
-          src="https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie"
-        >
+        <dotlottie-player data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/cool-dog.lottie">
         </dotlottie-player>
       `,
     );
@@ -86,14 +60,7 @@ describe('Controls', () => {
   it('should be able to stop', () => {
     cy.mount(
       html`
-        <dotlottie-player
-          data-testid="testPlayer"
-          autoplay
-          loop
-          controls
-          style="height: 200px;"
-          src="https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie"
-        >
+        <dotlottie-player data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/cool-dog.lottie">
         </dotlottie-player>
       `,
     );
@@ -108,14 +75,7 @@ describe('Controls', () => {
   it('should be able toggle looping', () => {
     cy.mount(
       html`
-        <dotlottie-player
-          data-testid="testPlayer"
-          autoplay
-          loop
-          controls
-          style="height: 200px;"
-          src="https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie"
-        >
+        <dotlottie-player data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/cool-dog.lottie">
         </dotlottie-player>
       `,
     );

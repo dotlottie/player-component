@@ -12,12 +12,7 @@ describe('Speed', () => {
   it('default speed should be 1', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} autoplay>
           <Controls />
         </DotLottiePlayer>
         ,
@@ -31,8 +26,7 @@ describe('Speed', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+          src={`/cool-dog.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
           speed={2}
           autoplay
@@ -62,8 +56,7 @@ describe('Speed', () => {
           </button>
           <PlayerStateWrapper>
             <DotLottiePlayer
-              // eslint-disable-next-line no-secrets/no-secrets
-              src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+              src={`/cool-dog.lottie`}
               style={{ height: '400px', display: 'inline-block' }}
               speed={speed}
               autoplay
