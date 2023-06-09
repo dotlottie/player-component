@@ -6,7 +6,7 @@
   "author": "Afsal <afsal@lottiefiles.com>, Sam Osborne <sam@lottiefiles.com>",
   "license": "MIT",
   "engines": {
-    "node": ">16.0.0"
+    "node": ">18.0.0"
   },
   "module": "./dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -38,7 +38,6 @@
     "typescript": "^4.7.4"
   },
   "publishConfig": {
-    "access": "restricted",
-    "registry": "https://npm.pkg.github.com/@dotlottie"
+    "access": "restricted"
   }
 }

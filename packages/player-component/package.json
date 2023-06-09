@@ -11,11 +11,7 @@
   "module": "dist/dotlottie-player.mjs",
   "types": "dist/dotlottie-player.esm.d.ts",
   "files": [
-    "dist/dotlottie-player.d.ts",
-    "dist/dotlottie-player.js",
-    "dist/dotlottie-player.js.map",
-    "dist/dotlottie-player.mjs",
-    "dist/dotlottie-player.mjs.map"
+    "dist"
   ],
   "keywords": [
     "dotlottie",
