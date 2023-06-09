@@ -1,74 +1,21 @@
 {
   "name": "@dotlottie/player-component",
   "version": "1.4.0",
-  "type": "module",
   "description": "dotlottie animation player web component.",
-  "main": "dist/dotlottie-player.js",
-  "module": "dist/dotlottie-player.esm.js",
-  "types": "dist/dotlottie-player.esm.d.ts",
-  "homepage": "https://dotlottie.com/players",
   "repository": "https://github.com/dotlottie/player-component.git",
+  "homepage": "https://dotlottie.com/players",
   "bugs": "https://github.com/dotlottie/player-component/issues",
   "author": "Jawish Hameed <jawish@lottiefiles.com>",
   "license": "MIT",
-  "scripts": {
-    "build": "tsup",
-    "dev": "tsup --watch",
-    "build-with-coverage": "CODE_COVERAGE=true pnpm build-dotlottie",
-    "build-dotlottie": "pnpm cleanup && rollup -c",
-    "build:types": "tsc --declaration",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix",
-    "cleanup": "shx rm -rf dist && shx mkdir dist",
-    "serve": "node ./cypress/pages/server.js -p 8000 &",
-    "test": "cypress run --component",
-    "cypress:open": "cypress open --component",
-    "start-cypress": "npx cypress run && npx nyc report --reporter=text-summary",
-    "run-tests": "pnpm build-with-coverage && pnpm serve && pnpm start-cypress",
-    "postrun-tests": "kill $(lsof -t -i:8000)"
-  },
-  "dependencies": {
-    "common": "workspace:^",
-    "lit": "^2.7.5",
-    "lottie-web": "^5.10.0",
-    "tsup": "^6.1.3"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.22.1",
-    "@babel/plugin-proposal-class-properties": "^7.10.4",
-    "@babel/plugin-proposal-decorators": "^7.10.5",
-    "@babel/preset-env": "^7.11.0",
-    "@babel/preset-typescript": "^7.10.4",
-    "@changesets/cli": "^2.24.4",
-    "@cypress/code-coverage": "^3.10.7",
-    "@istanbuljs/nyc-config-typescript": "^1.0.2",
-    "@typescript-eslint/eslint-plugin": "^2.6.1",
-    "@typescript-eslint/parser": "^2.6.1",
-    "babel-plugin-istanbul": "^6.1.1",
-    "changesets": "^1.0.2",
-    "cypress": "^12.11.0",
-    "cypress-ct-lit": "^0.3.2",
-    "eslint": "^6.6.0",
-    "eslint-config-prettier": "^6.5.0",
-    "eslint-plugin-prettier": "^3.1.1",
-    "fastify": "^3.27.1",
-    "fastify-static": "^4.5.0",
-    "prettier": "1.18.2",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "shx": "^0.3.3",
-    "source-map-support": "^0.5.21",
-    "typescript": "^4.7.4",
-    "vite": "^4.3.9"
-  },
+  "main": "dist/dotlottie-player.js",
+  "module": "dist/dotlottie-player.mjs",
+  "types": "dist/dotlottie-player.esm.d.ts",
   "files": [
+    "dist/dotlottie-player.d.ts",
     "dist/dotlottie-player.js",
     "dist/dotlottie-player.js.map",
-    "dist/dotlottie-player.esm.js",
-    "dist/dotlottie-player.esm.js.map",
-    "dist/dotlottie-player.d.ts",
-    "dist/dotlottie-player.styles.d.ts",
-    "dist/dotlottie-player.styles.d.map"
+    "dist/dotlottie-player.mjs",
+    "dist/dotlottie-player.mjs.map"
   ],
   "keywords": [
     "dotlottie",
@@ -78,15 +25,41 @@
     "lit-element",
     "player"
   ],
-  "browserslist": [
-    "> 3%"
-  ],
+  "scripts": {
+    "build": "tsup",
+    "build:types": "tsc --declaration",
+    "cleanup": "shx rm -rf dist && shx mkdir dist",
+    "cypress:open": "cypress open --component",
+    "dev": "tsup --watch",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "test": "cypress run --component"
+  },
+  "dependencies": {
+    "common": "workspace:^",
+    "lit": "^2.7.5",
+    "lottie-web": "^5.10.0",
+    "tsup": "^6.1.3"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.24.4",
+    "@typescript-eslint/eslint-plugin": "^2.6.1",
+    "@typescript-eslint/parser": "^2.6.1",
+    "changesets": "^1.0.2",
+    "cypress": "^12.11.0",
+    "cypress-ct-lit": "^0.3.2",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "1.18.2",
+    "typescript": "^4.7.4",
+    "vite": "^4.3.9"
+  },
   "publishConfig": {
     "access": "public",
     "registry": "https://npm.pkg.github.com/@dotlottie"
   },
-  "nyc": {
-    "extends": "@istanbuljs/nyc-config-typescript",
-    "all": true
-  }
+  "browserslist": [
+    "> 3%"
+  ]
 }
