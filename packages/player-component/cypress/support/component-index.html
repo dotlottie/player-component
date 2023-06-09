@@ -16,7 +16,7 @@
       let player = document.querySelector('dotlottie-player');
       let stateEl = document.querySelector('[data-state]');
 
-      function onFrame(event) {
+      function updateState(event) {
         if (!player) return;
         const state = player.getState();
         for (const key in state) {
@@ -47,13 +47,15 @@
         stateEl = document.querySelector('[data-state]');
         if (player) {
           update();
-          player.addEventListener('frame', onFrame);
+          player.addEventListener('frame', updateState);
+          player.addEventListener('ready', updateState);
         }
       });
 
       Cypress.on('command:end', () => {
         if (!player) return;
-        player.removeEventListener('frame', onFrame);
+        player.removeEventListener('frame', updateState);
+        player.removeEventListener('ready', updateState);
       });
     </script>
   </body>
