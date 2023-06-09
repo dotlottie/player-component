@@ -26,7 +26,6 @@ export default defineConfig([
     ...commonConfig,
     entry: ['./src/dotlottie-player.ts'],
     globalName: 'DotLottiePlayer',
-    external: ['common'],
-    noExternal: ['lit', 'lottie-web'],
+    noExternal: ['lit', 'lottie-web', 'common'],
   },
 ]);
