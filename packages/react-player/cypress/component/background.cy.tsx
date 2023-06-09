@@ -13,8 +13,7 @@ describe('Background', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+          src={`/cool-dog.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
           background="rgb(26, 189, 70)"
           autoplay
@@ -45,8 +44,7 @@ describe('Background', () => {
           </button>
           <PlayerStateWrapper>
             <DotLottiePlayer
-              // eslint-disable-next-line no-secrets/no-secrets
-              src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+              src={`/cool-dog.lottie`}
               style={{ height: '400px', display: 'inline-block' }}
               background={background}
               testId="testPlayer"

@@ -12,13 +12,7 @@ describe('Direction', () => {
   it('direction should default to 1', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          loop
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} loop autoplay>
           <Controls />
         </DotLottiePlayer>
         ,
@@ -32,8 +26,7 @@ describe('Direction', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+          src={`/cool-dog.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
           autoplay
           direction={1}
@@ -51,8 +44,7 @@ describe('Direction', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
-          // eslint-disable-next-line no-secrets/no-secrets
-          src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+          src={`/cool-dog.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
           autoplay
           direction={-1}
@@ -82,8 +74,7 @@ describe('Direction', () => {
           </button>
           <PlayerStateWrapper>
             <DotLottiePlayer
-              // eslint-disable-next-line no-secrets/no-secrets
-              src={`https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie`}
+              src={`/cool-dog.lottie`}
               style={{ height: '400px', display: 'inline-block' }}
               autoplay
               direction={direction}
