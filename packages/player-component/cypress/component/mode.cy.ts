@@ -22,7 +22,7 @@ describe('Mode', () => {
       html`
         <dotlottie-player
           data-testid="testPlayer"
-          mode=${PlayMode.Bounce}
+          playMode=${PlayMode.Bounce}
           autoplay
           controls
           style="height: 200px;"
