@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <title>dotlottie player web component</title>
-        <script type="module" src="../dist/dotlottie-player.global.js"></script>
+        <script type="module" src="../dist/dotlottie-player.js"></script>
     </head>
 
     <body>
@@ -18,13 +18,11 @@
             </div>
             <dotlottie-player
                 id="dotlottie-player"
-                autoplay
-                loop
-                hover
                 controls
-                renderer="svg"
                 style="height: 200px"
-                src="https://lottie.host/cf7b43d1-3d6b-407a-970b-6305b18bebfa/uB1Jboo1o1.json"
+                src="./speed_3_bounce.lottie"
+                speed=".1"
+                playMode="normal"
             >
             </dotlottie-player>
             <div style="text-align: center; margin: auto; justify-content: center; align-items: center">

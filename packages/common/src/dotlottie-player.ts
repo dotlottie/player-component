@@ -3,7 +3,7 @@
  */
 
 import { DotLottie } from '@dotlottie/dotlottie-js';
-import type { Animation } from '@lottiefiles/lottie-types';
+import { type Animation } from '@lottiefiles/lottie-types';
 import lottie from 'lottie-web';
 import type {
   AnimationConfig,
@@ -145,6 +145,10 @@ export interface DotLottiePlayerState extends PlaybackOptions {
   seeker: number;
 }
 
+export interface InitialPlaybackOptions extends PlaybackOptions {
+  renderer: RendererType;
+}
+
 export const DEFAULT_STATE: DotLottiePlayerState = {
   autoplay: false,
   currentState: PlayerState.Initial,
@@ -164,7 +168,7 @@ export class DotLottiePlayer {
 
   protected _src: string | Record<string, unknown>;
 
-  protected _options: Omit<AnimationConfig<RendererType>, 'container'>;
+  protected _animationConfig: Omit<AnimationConfig<RendererType>, 'container'>;
 
   protected _playbackOptions: PlaybackOptions;
 
@@ -208,6 +212,8 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
+  protected _originalPlaybackSettings: DotLottieConfig<RendererType> | undefined;
+
   public constructor(
     src: string | Record<string, unknown>,
     container?: DotLottieElement | null,
@@ -219,8 +225,16 @@ export class DotLottiePlayer {
       this._testId = options.testId;
     }
 
+    // Filter out the playback options
     this._playbackOptions = this._validatePlaybackOptions(options || {});
 
+    console.log('>> playback options');
+    console.log(this._playbackOptions);
+
+    // Store the original playback options
+    this._originalPlaybackSettings = options;
+
+    // Set the active animation id (animation to play first)
     if (typeof options?.activeAnimationId === 'string') {
       this._activeAnimationId = options.activeAnimationId;
     }
@@ -231,12 +245,12 @@ export class DotLottiePlayer {
       this.setBackground(options.background);
     }
 
-    this._options = {
+    this._animationConfig = {
       loop: false,
       autoplay: true,
       renderer: 'svg',
       rendererSettings: {
-        clearCanvas: false,
+        clearCanvas: true,
         progressiveLoad: true,
         hideOnTransparent: true,
       },
@@ -272,15 +286,19 @@ export class DotLottiePlayer {
       // Option from manifest
       const activeAnim = this._manifest?.animations.find((animation) => animation.id === this._activeAnimationId);
 
+      console.log('Active anim id: ' + activeAnim?.id + ' getting ' + option);
       if (activeAnim && activeAnim[option]) {
+        console.log(('Returing active anim ' + activeAnim[option]) as unknown as V);
         return activeAnim[option] as unknown as V;
       }
 
       // Option from defaults
+      console.log(('Returning Default option ' + DEFAULT_OPTIONS[option]) as V);
       return DEFAULT_OPTIONS[option] as V;
     }
 
     // Option from player props
+    console.log(('Returning playback options' + this._playbackOptions[option]) as V);
     return this._playbackOptions[option] as V;
   }
 
@@ -472,6 +490,7 @@ export class DotLottiePlayer {
       }
     }
 
+    this._requireValidPlaybackOptions(validatedOptions);
     return validatedOptions;
   }
 
@@ -710,7 +729,8 @@ export class DotLottiePlayer {
   }
 
   public setDirection(direction: 1 | -1): void {
-    if (typeof direction !== 'number') return;
+    this._requireValidSpeed(direction);
+
     this._lottie?.setDirection(direction);
     this._playbackOptions.direction = direction;
     this._notify();
@@ -722,7 +742,8 @@ export class DotLottiePlayer {
   }
 
   public setSpeed(speed: number): void {
-    if (typeof speed !== 'number') return;
+    this._requireValidSpeed(speed);
+
     this._lottie?.setSpeed(speed);
     this._playbackOptions.speed = speed;
     this._notify();
@@ -734,7 +755,8 @@ export class DotLottiePlayer {
   }
 
   public setAutoplay(value: boolean): void {
-    if (typeof value !== 'boolean') return;
+    this._requireValidAutoplay(value);
+
     if (!this._lottie) return;
     this._lottie.autoplay = value;
     this._playbackOptions.autoplay = value;
@@ -752,7 +774,7 @@ export class DotLottiePlayer {
   }
 
   public setLoop(value: boolean | number): void {
-    if (typeof value !== 'boolean' && typeof value !== 'number') return;
+    this._requireValidLoop(value);
 
     this.clearCountTimer();
 
@@ -773,6 +795,8 @@ export class DotLottiePlayer {
   }
 
   public setBackground(color: string): void {
+    this._requireValidBackground(color);
+
     if (this._container) {
       this._background = color;
       this._container.style.backgroundColor = color;
@@ -845,17 +869,19 @@ export class DotLottiePlayer {
     }
   }
 
+  // If we go back to default animation or at animation 0 we need to use props
   protected render(activeAnimation?: Partial<ManifestAnimation>): void {
+    console.log('~ RENDER ~');
     if (activeAnimation?.id) {
       const anim = this._animations.get(activeAnimation.id);
 
       if (!anim) {
-        throw createError('animation not found.');
+        throw createError(`animation '${activeAnimation.id}' not found`);
       }
       this._activeAnimationId = activeAnimation.id;
       this._animation = anim;
     } else if (!this._animation) {
-      throw createError('no animations selected.');
+      throw createError('no animation selected');
     }
 
     this.destroy();
@@ -863,7 +889,7 @@ export class DotLottiePlayer {
     const loop = activeAnimation?.loop ?? this._getOption('loop');
 
     const options = {
-      ...this._options,
+      ...this._animationConfig,
       autoplay: activeAnimation?.autoplay ?? this._getOption('autoplay'),
       loop: typeof loop === 'number' ? false : loop,
     };
@@ -888,7 +914,7 @@ export class DotLottiePlayer {
     this.setDirection(activeAnimation?.direction ?? this._getOption('direction'));
     this.setSpeed(activeAnimation?.speed ?? this._getOption('speed'));
 
-    const shouldAutoPlay = activeAnimation?.autoplay ?? this._options.autoplay;
+    const shouldAutoPlay = activeAnimation?.autoplay ?? this._animationConfig.autoplay;
 
     if (shouldAutoPlay) {
       this.play();
@@ -1084,6 +1110,96 @@ export class DotLottiePlayer {
       const srcUrl: URL = new URL(src, window.location.href);
 
       return srcUrl.toString();
+    }
+  }
+
+  /**
+   * Ensure that the provided url is a valid string.
+   * The url must be a non-empty string, otherwise an error will be thrown.
+   * @param url - The url to validate.
+   * @throws Error - if the url is not a valid string.
+   *
+   */
+  private _requireValidDirection(direction: number): asserts direction is number {
+    if (direction !== -1 && direction !== 1) {
+      throw createError('Direction can only be -1 (backwards) or 1 (forwards)');
+    }
+  }
+
+  /**
+   * Ensure that the provided intermission is a valid, positive number.
+   * @param intermission - The intermission to validate.
+   * @throws Error - if the intermission is not a valid number.
+   */
+  private _requireValidIntermission(intermission: number): asserts intermission is number {
+    if (intermission < 0 || !Number.isInteger(intermission)) {
+      throw createError('intermission must be a positive number');
+    }
+  }
+
+  /**
+   * Ensure that the provided loop is a valid, positive number or boolean.
+   * @param loop - The loop to validate.
+   * @throws Error - if the loop is not a valid number or boolean.
+   */
+  private _requireValidLoop(loop: number | boolean): asserts loop is number | boolean {
+    if (typeof loop === 'number' && (!Number.isInteger(loop) || loop < 0)) {
+      throw createError('loop must be a positive number or boolean');
+    }
+  }
+
+  /**
+   * Ensure that the provided speed is a valid number.
+   * @param speed - The speed to validate.
+   * @throws Error - if the loop is not a valid number.
+   */
+  private _requireValidSpeed(speed: number): asserts speed is number {
+    if (typeof speed !== 'number') {
+      throw createError('speed must be a number');
+    }
+  }
+
+  /**
+   * Ensure that the provided background is a valid string.
+   * @param background - The background to validate.
+   * @throws Error - if the background is not a valid string.
+   */
+  private _requireValidBackground(background: string): asserts background is string {
+    if (typeof background !== 'string') {
+      throw createError('background must be a string');
+    }
+  }
+
+  /**
+   * Ensure that the provided autoplay is a valid boolean.
+   * @param autoplay - The autoplay to validate.
+   * @throws Error - if the autoplay is not a valid boolean.
+   */
+  private _requireValidAutoplay(autoplay: boolean): asserts autoplay is boolean {
+    if (typeof autoplay !== 'boolean') {
+      throw createError('autoplay must be a boolean');
+    }
+  }
+
+  /**
+   * Ensure that the provided options object is a valid PlaybackOptions object.
+   * @param options - The options object to validate.
+   */
+  private _requireValidPlaybackOptions(options: PlaybackOptions): asserts options is PlaybackOptions {
+    if (options.direction) {
+      this._requireValidDirection(options.direction);
+    }
+
+    if (options.intermission) {
+      this._requireValidIntermission(options.intermission);
+    }
+
+    if (options.loop) {
+      this._requireValidLoop(options.loop);
+    }
+
+    if (options.speed) {
+      this._requireValidSpeed(options.speed);
     }
   }
 }
