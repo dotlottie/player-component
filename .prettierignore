@@ -37,3 +37,4 @@ tmp/
 releases/
 
 packages/player-component/tests/
+packages/player-component/cypress/
