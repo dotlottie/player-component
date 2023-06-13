@@ -14,16 +14,8 @@
                 <button id="reset-btn" onclick="prevLottie()">Prev Lottie</button>
                 <button id="reset-btn" onclick="resetLottie()">Reset Lottie</button>
                 <button id="destroy-btn" onclick="destroyLottie()">Destroy Lottie</button>
-                'activeAnimId' set via the manifest -> should be texting animation
             </div>
-            <dotlottie-player
-                id="dotlottie-player"
-                controls
-                style="height: 200px"
-                src="./speed_3_bounce.lottie"
-                speed=".1"
-                playMode="normal"
-            >
+            <dotlottie-player id="dotlottie-player" controls style="height: 200px" src="./speed_3_bounce.lottie">
             </dotlottie-player>
             <div style="text-align: center; margin: auto; justify-content: center; align-items: center">
                 This player has 'activeAnimId' prop set to 1 so will play the lighthouse first.
@@ -116,7 +108,10 @@
 
         player.addEventListener('loopComplete', () => console.log('loop complete'));
 
-        player.addEventListener('ready', () => console.log('ready'));
+        player.addEventListener('ready', () => {
+            console.log('ready');
+            console.log('Active animation >> ' + player.getCurrentAnimationId());
+        });
 
         // player.addEventListener('frame', (event) => { console.log(event.detail)});
 
