@@ -35,3 +35,5 @@ tmp/
 
 # Renderer releases
 releases/
+
+packages/player-component/tests/
