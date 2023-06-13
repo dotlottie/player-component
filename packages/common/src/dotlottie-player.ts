@@ -3,7 +3,7 @@
  */
 
 import { DotLottie } from '@dotlottie/dotlottie-js';
-import { type Animation } from '@lottiefiles/lottie-types';
+import type { Animation } from '@lottiefiles/lottie-types';
 import lottie from 'lottie-web';
 import type {
   AnimationConfig,
@@ -143,10 +143,6 @@ export interface DotLottiePlayerState extends PlaybackOptions {
   frame: number;
   intermission: number;
   seeker: number;
-}
-
-export interface InitialPlaybackOptions extends PlaybackOptions {
-  renderer: RendererType;
 }
 
 export const DEFAULT_STATE: DotLottiePlayerState = {
