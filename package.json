@@ -1,8 +1,8 @@
 {
   "name": "@dotlottie/player-component",
   "description": "dotLottie web players.",
-  "homepage": "https://dotlottie.com/players",
   "repository": "https://github.com/dotlottie/player-component.git",
+  "homepage": "https://dotlottie.com/players",
   "bugs": "https://github.com/dotlottie/player-component/issues",
   "license": "MIT",
   "scripts": {
@@ -28,7 +28,7 @@
     "renderers:update-releases": "turbo run update-releases",
     "stats:eslint": "pnpm run stats:eslint",
     "stats:ts": "pnpm run stats:ts",
-    "test": "turbo run test",
+    "test": "turbo run test --filter=player-component && turbo run test --filter=react-player",
     "test:coverage": "turbo run test:coverage",
     "type-check": "turbo run type-check"
   },
