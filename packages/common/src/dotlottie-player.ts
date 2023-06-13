@@ -886,38 +886,132 @@ export class DotLottiePlayer {
 
     this.destroy();
 
-    const loop = activeAnimation?.loop ?? this._getOption('loop');
+    const firstAnimation = this._manifest?.animations.at(0)?.id;
 
-    const options = {
-      ...this._animationConfig,
-      autoplay: activeAnimation?.autoplay ?? this._getOption('autoplay'),
-      loop: typeof loop === 'number' ? false : loop,
-    };
+    if (this._activeAnimationId === firstAnimation) {
+      // Check if value is set in props
+      // Otherwise use manifest value
+      let loop: number | boolean = false;
+      let autoplay: boolean = false;
+      let mode: PlayMode = PlayMode.Normal;
+      let intermission: number = 0;
+      let hover: boolean = false;
+      let direction: number = 1;
+      let speed: number = 1;
 
-    this.setMode(activeAnimation?.playMode ?? this._getOption('playMode'));
-    this.setIntermission(activeAnimation?.intermission ?? this._getOption('intermission'));
-    this.setHover(activeAnimation?.hover ?? this._getOption('hover'));
-    this.setLoop(loop);
+      if (this._originalPlaybackSettings?.loop) {
+        loop = this._originalPlaybackSettings.loop;
+      } else {
+        loop = activeAnimation?.loop ?? this._getOption('loop');
+      }
 
-    this._lottie = lottie.loadAnimation({
-      ...options,
-      container: this._container as Element,
-      animationData: this._animation,
-    });
+      if (this._originalPlaybackSettings?.autoplay) {
+        autoplay = this._originalPlaybackSettings.autoplay;
+      } else {
+        autoplay = activeAnimation?.autoplay ?? this._getOption('autoplay');
+      }
 
-    this.addEventListeners();
-    if (this._container) {
-      this._container.__lottie = this._lottie;
-    }
-    this.setCurrentState(PlayerState.Ready);
+      const options = {
+        ...this._animationConfig,
+        autoplay: autoplay,
+        loop: typeof loop === 'number' ? false : loop,
+      };
 
-    this.setDirection(activeAnimation?.direction ?? this._getOption('direction'));
-    this.setSpeed(activeAnimation?.speed ?? this._getOption('speed'));
+      if (this._originalPlaybackSettings?.playMode) {
+        mode = this._originalPlaybackSettings.playMode;
+      } else {
+        mode = activeAnimation?.playMode ?? this._getOption('playMode');
+      }
+      this.setMode(mode);
 
-    const shouldAutoPlay = activeAnimation?.autoplay ?? this._animationConfig.autoplay;
+      if (this._originalPlaybackSettings?.intermission) {
+        intermission = this._originalPlaybackSettings.intermission;
+      } else {
+        intermission = activeAnimation?.intermission ?? this._getOption('intermission');
+      }
+      this.setIntermission(intermission);
 
-    if (shouldAutoPlay) {
-      this.play();
+      if (this._originalPlaybackSettings?.hover) {
+        hover = this._originalPlaybackSettings.hover;
+      } else {
+        hover = activeAnimation?.hover ?? this._getOption('hover');
+      }
+      this.setHover(hover);
+
+      if (this._originalPlaybackSettings?.loop) {
+        loop = this._originalPlaybackSettings.loop;
+      } else {
+        loop = activeAnimation?.loop ?? this._getOption('loop');
+      }
+      this.setLoop(loop);
+
+      this._lottie = lottie.loadAnimation({
+        ...options,
+        container: this._container as Element,
+        animationData: this._animation,
+      });
+
+      this.addEventListeners();
+      if (this._container) {
+        this._container.__lottie = this._lottie;
+      }
+      this.setCurrentState(PlayerState.Ready);
+
+      if (this._originalPlaybackSettings?.direction) {
+        direction = this._originalPlaybackSettings.direction;
+      } else {
+        direction = activeAnimation?.direction ?? this._getOption('direction');
+      }
+
+      this.setDirection(direction === 1 ? 1 : -1);
+
+      if (this._originalPlaybackSettings?.speed) {
+        speed = this._originalPlaybackSettings.speed;
+      } else {
+        speed = activeAnimation?.speed ?? this._getOption('speed');
+      }
+
+      this.setSpeed(speed);
+
+      const shouldAutoPlay = hover ? false : autoplay;
+
+      if (shouldAutoPlay) {
+        this.play();
+      }
+    } else {
+      const loop = activeAnimation?.loop ?? this._getOption('loop');
+
+      const options = {
+        ...this._animationConfig,
+        autoplay: activeAnimation?.autoplay ?? this._getOption('autoplay'),
+        loop: typeof loop === 'number' ? false : loop,
+      };
+
+      this.setMode(activeAnimation?.playMode ?? this._getOption('playMode'));
+      this.setIntermission(activeAnimation?.intermission ?? this._getOption('intermission'));
+      this.setHover(activeAnimation?.hover ?? this._getOption('hover'));
+      this.setLoop(loop);
+
+      this._lottie = lottie.loadAnimation({
+        ...options,
+        container: this._container as Element,
+        animationData: this._animation,
+      });
+
+      this.addEventListeners();
+      if (this._container) {
+        this._container.__lottie = this._lottie;
+      }
+      this.setCurrentState(PlayerState.Ready);
+
+      this.setDirection(activeAnimation?.direction ?? this._getOption('direction'));
+      this.setSpeed(activeAnimation?.speed ?? this._getOption('speed'));
+
+      const shouldAutoPlay = activeAnimation?.autoplay ?? this._animationConfig.autoplay;
+
+      if (shouldAutoPlay) {
+        this.play();
+      }
     }
 
     this._updateTestData();
@@ -1114,11 +1208,8 @@ export class DotLottiePlayer {
   }
 
   /**
-   * Ensure that the provided url is a valid string.
-   * The url must be a non-empty string, otherwise an error will be thrown.
-   * @param url - The url to validate.
-   * @throws Error - if the url is not a valid string.
-   *
+   * Ensure that the provided direction is a valid number.
+   * @param direction - The direction to validate.
    */
   private _requireValidDirection(direction: number): asserts direction is number {
     if (direction !== -1 && direction !== 1) {
@@ -1151,7 +1242,7 @@ export class DotLottiePlayer {
   /**
    * Ensure that the provided speed is a valid number.
    * @param speed - The speed to validate.
-   * @throws Error - if the loop is not a valid number.
+   * @throws Error - if the speed is not a valid number.
    */
   private _requireValidSpeed(speed: number): asserts speed is number {
     if (typeof speed !== 'number') {
