@@ -41,7 +41,7 @@ export class DotLottiePlayer extends LitElement {
    * Play mode.
    */
   @property()
-  public mode: PlayMode = PlayMode.Normal;
+  public playMode: PlayMode = PlayMode.Normal;
 
   /**
    * Autoplay animation on load.
@@ -98,7 +98,7 @@ export class DotLottiePlayer extends LitElement {
   public src?: string;
 
   @property()
-  public intermission = 1;
+  public intermission = 0;
 
   /**
    * Animation id as string or index to play on load.
@@ -245,23 +245,25 @@ export class DotLottiePlayer extends LitElement {
       return;
     }
 
+    /**
+     * User's can call the load method - only do new initialization inside firstConnected()
+     */
     this._dotLottieCommonPlayer = new DotLottieCommonPlayer(src, this.container as HTMLDivElement, {
-      renderer: this._renderer,
-      rendererSettings: overrideRendererSettings
-        ? overrideRendererSettings
-        : {
+      rendererSettings: overrideRendererSettings ?? {
             scaleMode: 'noScale',
-            clearCanvas: false,
+            clearCanvas: true,
             progressiveLoad: true,
             hideOnTransparent: true,
           },
-      hover: this.hover,
-      loop: this._loop,
-      direction: this.direction === 1 ? 1 : -1,
-      speed: this.speed,
-      intermission: Number(this.intermission),
-      playMode: this.mode,
-      autoplay: this.hover ? false : this.autoplay,
+      hover: this.hasAttribute('hover') ? this.hover : undefined,
+      renderer: this.hasAttribute('renderer') ? this._renderer : undefined,
+      loop: this.hasAttribute('loop') ? this._loop : undefined,
+      direction: this.hasAttribute('direction') ? this.direction === 1 ? 1 : -1 : undefined,
+      speed: this.hasAttribute('speed') ? this.speed : undefined,
+      intermission: this.hasAttribute('intermission') ? Number(this.intermission) : undefined,
+      playMode: this.hasAttribute('playMode') ? this.playMode : undefined,
+      autoplay: this.hasAttribute('autoplay') ? this.autoplay : undefined,
+      activeAnimationId: this.hasAttribute('activeAnimationId') ? this.activeAnimationId : undefined,
     });
 
     await this._dotLottieCommonPlayer.load(playbackOptions);
@@ -270,10 +272,10 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
-   * Get current animation's id
+   * @returns Current animation's id
    */
-  public getActiveAnimationId(): string | undefined {
-    return this._dotLottieCommonPlayer?.activeAnimationId;
+  public getCurrentAnimationId(): string | undefined {
+    return this._dotLottieCommonPlayer?.currentAnimationId;
   }
 
   /**
