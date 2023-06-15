@@ -164,7 +164,7 @@ export class DotLottiePlayer {
 
   protected _src: string | Record<string, unknown>;
 
-  protected _options: Omit<AnimationConfig<RendererType>, 'container'>;
+  protected _animationConfig: Omit<AnimationConfig<RendererType>, 'container'>;
 
   protected _playbackOptions: PlaybackOptions;
 
@@ -192,7 +192,11 @@ export class DotLottiePlayer {
 
   protected _manifest: Manifest | undefined = undefined;
 
+  // The active animation id (animation to play first) from the manifest
   protected _activeAnimationId?: string | undefined;
+
+  // The currently playing animation id
+  protected _currentAnimationId?: string | undefined;
 
   protected _testId?: string;
 
@@ -208,6 +212,8 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
+  protected _originalPlaybackSettings: DotLottieConfig<RendererType> | undefined;
+
   public constructor(
     src: string | Record<string, unknown>,
     container?: DotLottieElement | null,
@@ -219,8 +225,13 @@ export class DotLottiePlayer {
       this._testId = options.testId;
     }
 
+    // Filter out the playback options
     this._playbackOptions = this._validatePlaybackOptions(options || {});
 
+    // Store the original playback options
+    this._originalPlaybackSettings = options;
+
+    // Set the active animation id (animation to play first)
     if (typeof options?.activeAnimationId === 'string') {
       this._activeAnimationId = options.activeAnimationId;
     }
@@ -231,12 +242,12 @@ export class DotLottiePlayer {
       this.setBackground(options.background);
     }
 
-    this._options = {
+    this._animationConfig = {
       loop: false,
-      autoplay: true,
+      autoplay: false,
       renderer: 'svg',
       rendererSettings: {
-        clearCanvas: false,
+        clearCanvas: true,
         progressiveLoad: true,
         hideOnTransparent: true,
       },
@@ -270,7 +281,7 @@ export class DotLottiePlayer {
   ): V {
     if (typeof this._playbackOptions[option] === 'undefined') {
       // Option from manifest
-      const activeAnim = this._manifest?.animations.find((animation) => animation.id === this._activeAnimationId);
+      const activeAnim = this._manifest?.animations.find((animation) => animation.id === this._currentAnimationId);
 
       if (activeAnim && activeAnim[option]) {
         return activeAnim[option] as unknown as V;
@@ -329,6 +340,7 @@ export class DotLottiePlayer {
     if (this._src === src) return;
     this._src = src;
     this._activeAnimationId = undefined;
+    this._currentAnimationId = undefined;
     this.load();
   }
 
@@ -472,6 +484,7 @@ export class DotLottiePlayer {
       }
     }
 
+    this._requireValidPlaybackOptions(validatedOptions);
     return validatedOptions;
   }
 
@@ -493,7 +506,7 @@ export class DotLottiePlayer {
     this._requireAnimationsInTheManifest();
     this._requireAnimationsToBeLoaded();
 
-    if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._activeAnimationId)) {
+    if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._currentAnimationId)) {
       if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
         this._lottie.goToAndPlay(this._lottie.totalFrames, true);
       } else {
@@ -539,6 +552,10 @@ export class DotLottiePlayer {
     return this._activeAnimationId;
   }
 
+  public get currentAnimationId(): string | undefined {
+    return this._currentAnimationId;
+  }
+
   public reset(): void {
     const activeId = this._manifest?.activeAnimationId;
 
@@ -564,7 +581,7 @@ export class DotLottiePlayer {
       throw createError('manifest not found.');
     }
 
-    const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._activeAnimationId);
+    const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._currentAnimationId);
 
     if (currentIndex === -1) {
       throw createError('animation not found.');
@@ -590,7 +607,7 @@ export class DotLottiePlayer {
       throw createError('manifest not found.');
     }
 
-    const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._activeAnimationId);
+    const currentIndex = this._manifest.animations.findIndex((anim) => anim.id === this._currentAnimationId);
 
     if (currentIndex === -1) {
       throw createError('animation not found.');
@@ -710,7 +727,8 @@ export class DotLottiePlayer {
   }
 
   public setDirection(direction: 1 | -1): void {
-    if (typeof direction !== 'number') return;
+    this._requireValidSpeed(direction);
+
     this._lottie?.setDirection(direction);
     this._playbackOptions.direction = direction;
     this._notify();
@@ -722,7 +740,8 @@ export class DotLottiePlayer {
   }
 
   public setSpeed(speed: number): void {
-    if (typeof speed !== 'number') return;
+    this._requireValidSpeed(speed);
+
     this._lottie?.setSpeed(speed);
     this._playbackOptions.speed = speed;
     this._notify();
@@ -734,7 +753,8 @@ export class DotLottiePlayer {
   }
 
   public setAutoplay(value: boolean): void {
-    if (typeof value !== 'boolean') return;
+    this._requireValidAutoplay(value);
+
     if (!this._lottie) return;
     this._lottie.autoplay = value;
     this._playbackOptions.autoplay = value;
@@ -752,7 +772,7 @@ export class DotLottiePlayer {
   }
 
   public setLoop(value: boolean | number): void {
-    if (typeof value !== 'boolean' && typeof value !== 'number') return;
+    this._requireValidLoop(value);
 
     this.clearCountTimer();
 
@@ -773,6 +793,8 @@ export class DotLottiePlayer {
   }
 
   public setBackground(color: string): void {
+    this._requireValidBackground(color);
+
     if (this._container) {
       this._background = color;
       this._container.style.backgroundColor = color;
@@ -845,32 +867,81 @@ export class DotLottiePlayer {
     }
   }
 
+  // If we go back to default animation or at animation 0 we need to use props
   protected render(activeAnimation?: Partial<ManifestAnimation>): void {
     if (activeAnimation?.id) {
       const anim = this._animations.get(activeAnimation.id);
 
       if (!anim) {
-        throw createError('animation not found.');
+        throw createError(`animation '${activeAnimation.id}' not found`);
       }
-      this._activeAnimationId = activeAnimation.id;
+      this._currentAnimationId = activeAnimation.id;
       this._animation = anim;
     } else if (!this._animation) {
-      throw createError('no animations selected.');
+      throw createError('no animation selected');
     }
 
     this.destroy();
 
-    const loop = activeAnimation?.loop ?? this._getOption('loop');
+    const firstAnimation = this._manifest?.animations.at(0)?.id;
+
+    let loop: number | boolean = DEFAULT_OPTIONS.loop ?? false;
+    let autoplay: boolean = DEFAULT_OPTIONS.autoplay ?? false;
+    let mode: PlayMode = DEFAULT_OPTIONS.playMode ?? PlayMode.Normal;
+    let intermission: number = DEFAULT_OPTIONS.intermission ?? 0;
+    let hover: boolean = DEFAULT_OPTIONS.hover ?? false;
+    let direction: number = DEFAULT_OPTIONS.direction ?? 1;
+    let speed: number = DEFAULT_OPTIONS.speed ?? 1;
+
+    // Either read properties from passed ManifestAnimation or use manifest values
+    loop = activeAnimation?.loop ?? this._getOption('loop');
+    autoplay = activeAnimation?.autoplay ?? this._getOption('autoplay');
+    mode = activeAnimation?.playMode ?? this._getOption('playMode');
+    intermission = activeAnimation?.intermission ?? this._getOption('intermission');
+    hover = activeAnimation?.hover ?? this._getOption('hover');
+    direction = activeAnimation?.direction ?? this._getOption('direction');
+    speed = activeAnimation?.speed ?? this._getOption('speed');
+
+    // If we're on the first animation or default animation, check and use the saved inital props
+    if (this._currentAnimationId === firstAnimation || this._currentAnimationId === this._activeAnimationId) {
+      if (this._originalPlaybackSettings?.loop) {
+        loop = this._originalPlaybackSettings.loop;
+      }
+
+      if (this._originalPlaybackSettings?.autoplay) {
+        autoplay = this._originalPlaybackSettings.autoplay;
+      }
+
+      if (this._originalPlaybackSettings?.playMode) {
+        mode = this._originalPlaybackSettings.playMode;
+      }
+
+      if (this._originalPlaybackSettings?.intermission) {
+        intermission = this._originalPlaybackSettings.intermission;
+      }
+
+      if (this._originalPlaybackSettings?.hover) {
+        hover = this._originalPlaybackSettings.hover;
+      }
+
+      if (this._originalPlaybackSettings?.direction) {
+        direction = this._originalPlaybackSettings.direction;
+      }
+
+      if (this._originalPlaybackSettings?.speed) {
+        speed = this._originalPlaybackSettings.speed;
+      }
+    }
 
     const options = {
-      ...this._options,
-      autoplay: activeAnimation?.autoplay ?? this._getOption('autoplay'),
+      ...this._animationConfig,
+      autoplay: hover ? false : autoplay,
       loop: typeof loop === 'number' ? false : loop,
     };
 
-    this.setMode(activeAnimation?.playMode ?? this._getOption('playMode'));
-    this.setIntermission(activeAnimation?.intermission ?? this._getOption('intermission'));
-    this.setHover(activeAnimation?.hover ?? this._getOption('hover'));
+    this.setMode(mode);
+    this.setIntermission(intermission);
+    this.setHover(hover);
     this.setLoop(loop);
 
     this._lottie = lottie.loadAnimation({
@@ -885,12 +956,10 @@ export class DotLottiePlayer {
     }
     this.setCurrentState(PlayerState.Ready);
 
-    this.setDirection(activeAnimation?.direction ?? this._getOption('direction'));
-    this.setSpeed(activeAnimation?.speed ?? this._getOption('speed'));
+    this.setDirection(direction === 1 ? 1 : -1);
+    this.setSpeed(speed);
 
-    const shouldAutoPlay = activeAnimation?.autoplay ?? this._options.autoplay;
-
-    if (shouldAutoPlay) {
+    if (autoplay && !hover) {
       this.play();
     }
 
@@ -912,14 +981,14 @@ export class DotLottiePlayer {
       if (typeof srcParsed === 'string') {
         const { activeAnimationId, animations, manifest } = await this.getAnimationData(srcParsed);
 
-        if (!this._activeAnimationId) {
-          this._activeAnimationId = activeAnimationId;
+        if (!this._currentAnimationId) {
+          this._currentAnimationId = activeAnimationId;
         }
 
         this._animations = animations;
         this._manifest = manifest;
 
-        const animation = this._animations.get(this._activeAnimationId);
+        const animation = this._animations.get(this._currentAnimationId);
 
         if (!animation) {
           throw createError(`invalid animation id ${this._activeAnimationId}`);
@@ -1006,10 +1075,14 @@ export class DotLottiePlayer {
       let activeAnimationId: string;
 
       if (manifest.activeAnimationId) {
+        // Set the current playing animation
+        this._currentAnimationId = manifest.activeAnimationId;
+
+        // Set the active animation id value
         this._activeAnimationId = manifest.activeAnimationId;
         activeAnimationId = manifest.activeAnimationId;
       } else {
-        this._activeAnimationId = manifest.animations[0].id;
+        this._currentAnimationId = manifest.animations[0].id;
         activeAnimationId = manifest.animations[0].id;
       }
 
@@ -1084,6 +1157,93 @@ export class DotLottiePlayer {
       const srcUrl: URL = new URL(src, window.location.href);
 
       return srcUrl.toString();
+    }
+  }
+
+  /**
+   * Ensure that the provided direction is a valid number.
+   * @param direction - The direction to validate.
+   */
+  private _requireValidDirection(direction: number): asserts direction is number {
+    if (direction !== -1 && direction !== 1) {
+      throw createError('Direction can only be -1 (backwards) or 1 (forwards)');
+    }
+  }
+
+  /**
+   * Ensure that the provided intermission is a valid, positive number.
+   * @param intermission - The intermission to validate.
+   * @throws Error - if the intermission is not a valid number.
+   */
+  private _requireValidIntermission(intermission: number): asserts intermission is number {
+    if (intermission < 0 || !Number.isInteger(intermission)) {
+      throw createError('intermission must be a positive number');
+    }
+  }
+
+  /**
+   * Ensure that the provided loop is a valid, positive number or boolean.
+   * @param loop - The loop to validate.
+   * @throws Error - if the loop is not a valid number or boolean.
+   */
+  private _requireValidLoop(loop: number | boolean): asserts loop is number | boolean {
+    if (typeof loop === 'number' && (!Number.isInteger(loop) || loop < 0)) {
+      throw createError('loop must be a positive number or boolean');
+    }
+  }
+
+  /**
+   * Ensure that the provided speed is a valid number.
+   * @param speed - The speed to validate.
+   * @throws Error - if the speed is not a valid number.
+   */
+  private _requireValidSpeed(speed: number): asserts speed is number {
+    if (typeof speed !== 'number') {
+      throw createError('speed must be a number');
+    }
+  }
+
+  /**
+   * Ensure that the provided background is a valid string.
+   * @param background - The background to validate.
+   * @throws Error - if the background is not a valid string.
+   */
+  private _requireValidBackground(background: string): asserts background is string {
+    if (typeof background !== 'string') {
+      throw createError('background must be a string');
+    }
+  }
+
+  /**
+   * Ensure that the provided autoplay is a valid boolean.
+   * @param autoplay - The autoplay to validate.
+   * @throws Error - if the autoplay is not a valid boolean.
+   */
+  private _requireValidAutoplay(autoplay: boolean): asserts autoplay is boolean {
+    if (typeof autoplay !== 'boolean') {
+      throw createError('autoplay must be a boolean');
+    }
+  }
+
+  /**
+   * Ensure that the provided options object is a valid PlaybackOptions object.
+   * @param options - The options object to validate.
+   */
+  private _requireValidPlaybackOptions(options: PlaybackOptions): asserts options is PlaybackOptions {
+    if (options.direction) {
+      this._requireValidDirection(options.direction);
+    }
+
+    if (options.intermission) {
+      this._requireValidIntermission(options.intermission);
+    }
+
+    if (options.loop) {
+      this._requireValidLoop(options.loop);
+    }
+
+    if (options.speed) {
+      this._requireValidSpeed(options.speed);
     }
   }
 }

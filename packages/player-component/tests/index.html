@@ -4,7 +4,7 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
         <title>dotlottie player web component</title>
-        <script type="module" src="../dist/dotlottie-player.global.js"></script>
+        <script type="module" src="../dist/dotlottie-player.js"></script>
     </head>
 
     <body>
@@ -14,18 +14,8 @@
                 <button id="reset-btn" onclick="prevLottie()">Prev Lottie</button>
                 <button id="reset-btn" onclick="resetLottie()">Reset Lottie</button>
                 <button id="destroy-btn" onclick="destroyLottie()">Destroy Lottie</button>
-                'activeAnimId' set via the manifest -> should be texting animation
             </div>
-            <dotlottie-player
-                id="dotlottie-player"
-                autoplay
-                loop
-                hover
-                controls
-                renderer="svg"
-                style="height: 200px"
-                src="https://lottie.host/cf7b43d1-3d6b-407a-970b-6305b18bebfa/uB1Jboo1o1.json"
-            >
+            <dotlottie-player id="dotlottie-player" controls style="height: 200px" src="./speed_3_bounce.lottie">
             </dotlottie-player>
             <div style="text-align: center; margin: auto; justify-content: center; align-items: center">
                 This player has 'activeAnimId' prop set to 1 so will play the lighthouse first.
@@ -118,7 +108,10 @@
 
         player.addEventListener('loopComplete', () => console.log('loop complete'));
 
-        player.addEventListener('ready', () => console.log('ready'));
+        player.addEventListener('ready', () => {
+            console.log('ready');
+            console.log('Active animation >> ' + player.getCurrentAnimationId());
+        });
 
         // player.addEventListener('frame', (event) => { console.log(event.detail)});
 
