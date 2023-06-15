@@ -7,7 +7,7 @@ import React, { useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
 export const PlayerStateWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const lottieRef = useRef<any>();
+  const lottieRef = useRef<unknown>();
   const [state, setState] = useState<DotLottiePlayerState>();
 
   function onEvent(): void {

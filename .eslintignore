@@ -47,3 +47,5 @@ sample-projects/
 packages/player-component/cypress/
 packages/player-component/dist/
 packages/common/dist/
+packages/react-player/cypress/
+/apps/react-player-test/
