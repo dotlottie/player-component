@@ -2,7 +2,10 @@
  * Copyright 2023 Design Barn Inc.
  */
 
+/* eslint-disable no-warning-comments */
+
 import { DotLottie } from '@dotlottie/dotlottie-js';
+import { createStyler } from '@lottiefiles/lottie-styler';
 import type { Animation } from '@lottiefiles/lottie-types';
 import lottie from 'lottie-web';
 import type {
@@ -50,8 +53,20 @@ export enum PlayMode {
   Normal = 'normal',
 }
 
+// TODO: export from dotLottie-js
+export interface ManifestTheme {
+  // scoped animations ids
+  animations: string[];
+
+  id: string;
+}
+
+// TODO: export from dotLottie-js
 export interface ManifestAnimation {
   autoplay?: boolean;
+
+  // default theme to use
+  defaultTheme?: string;
 
   // Define playback direction 1 forward, -1 backward
   direction?: AnimationDirection;
@@ -79,6 +94,7 @@ export interface ManifestAnimation {
 
 export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
 
+// TODO: export from dotLottie-js
 export interface Manifest {
   // Default animation to play
   activeAnimationId?: string;
@@ -104,6 +120,9 @@ export interface Manifest {
   // Revision version number of the dotLottie
   revision?: number;
 
+  // themes used in the animations
+  themes?: ManifestTheme[];
+
   // Target dotLottie version
   version?: string;
 }
@@ -120,6 +139,7 @@ export const DEFAULT_OPTIONS: PlaybackOptions = {
   loop: false,
   playMode: PlayMode.Normal,
   speed: 1,
+  defaultTheme: '',
 };
 
 export type { RendererType };
@@ -190,6 +210,10 @@ export class DotLottiePlayer {
 
   protected _animations: Map<string, Animation> = new Map();
 
+  protected _themes: Map<string, string> = new Map();
+
+  protected _defaultTheme: string;
+
   protected _manifest: Manifest | undefined = undefined;
 
   // The active animation id (animation to play first) from the manifest
@@ -224,6 +248,8 @@ export class DotLottiePlayer {
     if (options?.testId) {
       this._testId = options.testId;
     }
+
+    this._defaultTheme = options?.defaultTheme || '';
 
     // Filter out the playback options
     this._playbackOptions = this._validatePlaybackOptions(options || {});
@@ -479,6 +505,12 @@ export class DotLottiePlayer {
           }
           break;
 
+        case 'defaultTheme':
+          if (typeof value === 'string') {
+            validatedOptions.defaultTheme = value;
+          }
+          break;
+
         default:
           break;
       }
@@ -710,6 +742,7 @@ export class DotLottiePlayer {
       speed: this._lottie?.playSpeed ?? 1,
       background: this._background,
       intermission: this._intermission,
+      defaultTheme: this._defaultTheme,
     };
   }
 
@@ -766,6 +799,19 @@ export class DotLottiePlayer {
   public toggleAutoplay(): void {
     if (!this._lottie) return;
     this.setAutoplay(!this._lottie.autoplay);
+  }
+
+  public get defaultTheme(): string {
+    return this._defaultTheme;
+  }
+
+  public setDefaultTheme(value: string): void {
+    this._defaultTheme = value;
+    this._playbackOptions.defaultTheme = value;
+
+    this.render();
+
+    this._notify();
   }
 
   public get loop(): number | boolean {
@@ -891,7 +937,7 @@ export class DotLottiePlayer {
   }
 
   // If we go back to default animation or at animation 0 we need to use props
-  protected render(activeAnimation?: Partial<ManifestAnimation>): void {
+  protected async render(activeAnimation?: Partial<ManifestAnimation>): Promise<void> {
     if (activeAnimation?.id) {
       const anim = this._animations.get(activeAnimation.id);
 
@@ -915,6 +961,7 @@ export class DotLottiePlayer {
     let hover: boolean = DEFAULT_OPTIONS.hover ?? false;
     let direction: number = DEFAULT_OPTIONS.direction ?? 1;
     let speed: number = DEFAULT_OPTIONS.speed ?? 1;
+    let defaultTheme: string = DEFAULT_OPTIONS.defaultTheme ?? '';
 
     // Either read properties from passed ManifestAnimation or use manifest values
     loop = activeAnimation?.loop ?? this._getOption('loop');
@@ -924,6 +971,7 @@ export class DotLottiePlayer {
     hover = activeAnimation?.hover ?? this._getOption('hover');
     direction = activeAnimation?.direction ?? this._getOption('direction');
     speed = activeAnimation?.speed ?? this._getOption('speed');
+    defaultTheme = activeAnimation?.defaultTheme ?? this._getOption('defaultTheme');
 
     // If we're on the first animation or default animation, check and use the saved inital props
     if (this._currentAnimationId === firstAnimation || this._currentAnimationId === this._activeAnimationId) {
@@ -954,6 +1002,10 @@ export class DotLottiePlayer {
       if (this._originalPlaybackSettings?.speed) {
         speed = this._originalPlaybackSettings.speed;
       }
+
+      if (this._originalPlaybackSettings?.defaultTheme) {
+        defaultTheme = this._originalPlaybackSettings.defaultTheme;
+      }
     }
 
     const options = {
@@ -967,6 +1019,18 @@ export class DotLottiePlayer {
     this.setHover(hover);
     this.setLoop(loop);
 
+    const lottieStyleSheet = this._themes.get(defaultTheme) ?? '';
+
+    if (lottieStyleSheet) {
+      const styler = createStyler(JSON.stringify(this._animation));
+
+      const vFile = await styler.style(lottieStyleSheet);
+
+      this._animation = JSON.parse(vFile.toString()) as Animation;
+    } else {
+      this._animation = this._animations.get(this._currentAnimationId ?? '');
+    }
+
     this._lottie = lottie.loadAnimation({
       ...options,
       container: this._container as Element,
@@ -974,9 +1038,11 @@ export class DotLottiePlayer {
     });
 
     this.addEventListeners();
+
     if (this._container) {
       this._container.__lottie = this._lottie;
     }
+
     this.setCurrentState(PlayerState.Ready);
 
     this.setDirection(direction === 1 ? 1 : -1);
@@ -1002,13 +1068,14 @@ export class DotLottiePlayer {
       const srcParsed = DotLottiePlayer.parseSrc(this._src);
 
       if (typeof srcParsed === 'string') {
-        const { activeAnimationId, animations, manifest } = await this.getAnimationData(srcParsed);
+        const { activeAnimationId, animations, manifest, themes } = await this.getAnimationData(srcParsed);
 
         if (!this._currentAnimationId) {
           this._currentAnimationId = activeAnimationId;
         }
 
         this._animations = animations;
+        this._themes = themes;
         this._manifest = manifest;
 
         const animation = this._animations.get(this._currentAnimationId);
@@ -1040,7 +1107,9 @@ export class DotLottiePlayer {
     logError(msg);
   }
 
-  protected async fetchLottieJSON(src: string): Promise<{ animations: Map<string, Animation>; manifest: Manifest }> {
+  protected async fetchLottieJSON(
+    src: string,
+  ): Promise<{ animations: Map<string, Animation>; manifest: Manifest; themes: Map<string, string> }> {
     if (!src.toLowerCase().endsWith('.json')) throw createError('parameter src must be .json');
 
     try {
@@ -1076,6 +1145,7 @@ export class DotLottiePlayer {
 
       return {
         animations,
+        themes: new Map<string, string>(),
         manifest: boilerplateManifest,
       };
     } catch (error) {
@@ -1087,9 +1157,10 @@ export class DotLottiePlayer {
     activeAnimationId: string;
     animations: Map<string, Animation>;
     manifest: Manifest;
+    themes: Map<string, string>;
   }> {
     if (srcParsed.toLowerCase().endsWith('.json')) {
-      const { animations, manifest } = await this.fetchLottieJSON(srcParsed);
+      const { animations, manifest, themes } = await this.fetchLottieJSON(srcParsed);
 
       if (!animations.size || manifest.animations.length === 0 || !manifest.animations[0]) {
         throw createError('No animation to load!');
@@ -1112,6 +1183,7 @@ export class DotLottiePlayer {
       return {
         activeAnimationId,
         animations,
+        themes,
         manifest,
       };
     }
@@ -1123,6 +1195,18 @@ export class DotLottiePlayer {
 
       if (!lottieAnimations.length || !dotLottie.manifest.animations.length || !dotLottie.manifest.animations[0]) {
         throw createError('no animation to load!');
+      }
+
+      const themes: Map<string, string> = new Map();
+
+      for (const theme of dotLottie.manifest.themes || []) {
+        const existingTheme = dotLottie.getTheme(theme.id);
+
+        if (existingTheme?.data) {
+          const lss = await existingTheme.toString();
+
+          themes.set(existingTheme.id, lss);
+        }
       }
 
       const animations: Map<string, Animation> = new Map();
@@ -1155,6 +1239,7 @@ export class DotLottiePlayer {
       return {
         activeAnimationId,
         animations,
+        themes,
         manifest: dotLottie.manifest as Manifest,
       };
     } catch (error) {

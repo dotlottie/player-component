@@ -8,27 +8,31 @@ import type { DotLottieRefProps, ManifestAnimation } from '@dotlottie/react-play
 
 const lotties = [
   {
-    from: 'Multiple lottie (.lottie)',
-    src: './amazing.lottie',
+    from: 'Multiple themes (.lottie)',
+    src: 'https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie',
   },
-  {
-    from: '.lottie',
-    // eslint-disable-next-line no-secrets/no-secrets
-    src: 'https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie',
-  },
-  {
-    from: '.json',
-    src: 'https://assets1.lottiefiles.com/packages/lf20_mGXMLaVUoX.json',
-  },
-  {
-    from: '.json',
-    // eslint-disable-next-line no-secrets/no-secrets
-    src: 'https://lottie.host/cba131d3-3e01-43be-b71c-2de700a12642/c5CK9Co8WD.json',
-  },
-  {
-    from: 'Local .lottie',
-    src: './test.lottie',
-  },
+  // {
+  //   from: 'Multiple lottie (.lottie)',
+  //   src: './amazing.lottie',
+  // },
+  // {
+  //   from: '.lottie',
+  //   // eslint-disable-next-line no-secrets/no-secrets
+  //   src: 'https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie',
+  // },
+  // {
+  //   from: '.json',
+  //   src: 'https://assets1.lottiefiles.com/packages/lf20_mGXMLaVUoX.json',
+  // },
+  // {
+  //   from: '.json',
+  //   // eslint-disable-next-line no-secrets/no-secrets
+  //   src: 'https://lottie.host/cba131d3-3e01-43be-b71c-2de700a12642/c5CK9Co8WD.json',
+  // },
+  // {
+  //   from: 'Local .lottie',
+  //   src: './test.lottie',
+  // },
 ];
 
 interface ItemProps {
@@ -37,6 +41,7 @@ interface ItemProps {
 }
 
 const Item: React.FC<ItemProps> = (props: ItemProps) => {
+  const isDarkMode = React.useContext(ThemeContext) === 'dark';
   const [src, setSrc] = useState<Record<string, unknown> | string>(props.src);
   const [loop, setLoop] = useState(true);
   const [autoplay, setAutoPlay] = useState(true);
@@ -47,7 +52,9 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
   const [mode, setMode] = useState(PlayMode.Normal);
   const [playOnHover, setPlayOnHover] = useState(false);
   const [activeAnimationId, setActiveAnimationId] = useState<string | undefined>();
+  const [theme, setTheme] = useState<string>('');
   const [animations, setAnimations] = useState<ManifestAnimation[]>();
+  const [themes, setThemes] = useState<ManifestTheme[]>();
   const lottieRef = useRef<DotLottieRefProps>();
 
   function handleClick(): void {
@@ -68,6 +75,16 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
       setActiveAnimationId(firstItem.id);
     }
   }, [animations]);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      setBackground('#000000');
+      setTheme(activeAnimationId + '-' + 'dark');
+    } else {
+      setBackground('#FFFFFF');
+      setTheme('');
+    }
+  }, [isDarkMode, activeAnimationId]);
 
   return (
     <>
@@ -97,6 +114,20 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
                   </option>
                 );
               })}
+            </select>
+          )}
+          {Array.isArray(themes) && (
+            <select value={theme} onChange={(event): void => setTheme(event.target.value)}>
+              <option value="">Please select a theme</option>
+              {themes
+                .filter((theme) => theme.animations.includes(activeAnimationId))
+                .map((theme) => {
+                  return (
+                    <option key={theme.id} value={theme.id}>
+                      Apply {theme.id}
+                    </option>
+                  );
+                })}
             </select>
           )}
           <button
@@ -177,11 +208,13 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           direction={direction}
           background={background}
           activeAnimationId={activeAnimationId}
+          defaultTheme={theme}
           onEvent={(name): void => {
             switch (name) {
               case 'ready':
                 console.log('onPlayerReady', lottieRef.current?.getManifest()?.animations);
                 setAnimations(lottieRef.current?.getManifest()?.animations);
+                setThemes(lottieRef.current?.getManifest()?.themes);
                 break;
 
               case 'freeze':

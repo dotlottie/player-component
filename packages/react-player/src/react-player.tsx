@@ -17,6 +17,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   autoplay?: boolean;
   background?: string;
   className?: string;
+  defaultTheme?: string;
   direction?: 1 | -1;
   hover?: boolean;
   intermission?: number;
@@ -49,6 +50,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   className,
   testId,
   children,
+  defaultTheme,
   ...props
 }) => {
   const container = useRef(null);
@@ -72,6 +74,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     playMode,
     autoplay: hover ? false : autoplay,
     testId,
+    defaultTheme,
   });
 
   const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);
@@ -107,7 +110,11 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (typeof intermission !== 'undefined') {
       dotLottiePlayer.setIntermission(intermission);
     }
-  }, [loop, autoplay, speed, direction, playMode, hover, background, intermission]);
+
+    if (typeof defaultTheme !== 'undefined') {
+      dotLottiePlayer.setDefaultTheme(defaultTheme);
+    }
+  }, [loop, autoplay, speed, direction, mode, playOnHover, background, intermission, defaultTheme]);
 
   useEffect(() => {
     if (activeAnimationId) {

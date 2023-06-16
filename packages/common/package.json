@@ -22,7 +22,8 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@dotlottie/dotlottie-js": "^0.2.0",
+    "@dotlottie/dotlottie-js": "^0.2.1",
+    "@lottiefiles/lottie-styler": "^0.4.0",
     "@preact/signals-core": "^1.2.3",
     "lottie-web": "^5.10.2"
   },
