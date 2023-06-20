@@ -15,7 +15,7 @@ describe('Override playMode', () => {
         <DotLottiePlayer
           src={`/speed_3_bounce_and_reverse_playback.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
-          playMode="normal"
+          mode={PlayMode.Normal}
         ></DotLottiePlayer>
       </PlayerStateWrapper>,
     );
