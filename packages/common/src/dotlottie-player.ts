@@ -826,10 +826,32 @@ export class DotLottiePlayer {
     });
 
     this._lottie.addEventListener('loopComplete', () => {
-      if (this._lottie && this.loop && this._mode === PlayMode.Bounce) {
-        const newDirection = (this._lottie.playDirection * -1) as 1 | -1;
+      if (!this._lottie) return;
 
-        this._lottie.setDirection(newDirection);
+      if (this.intermission > 0) {
+        this.pause();
+      }
+
+      let newDirection = this._lottie.playDirection;
+
+      if (this._mode === PlayMode.Bounce && typeof newDirection === 'number') {
+        newDirection = Number(newDirection) * -1;
+      }
+
+      const startFrame = newDirection === -1 ? this._lottie.totalFrames - 1 : 0;
+
+      if (this.intermission) {
+        this._lottie.goToAndPlay(startFrame, true);
+        this._lottie.pause();
+
+        this._counterInterval = window.setTimeout(() => {
+          if (!this._lottie) return;
+
+          this._lottie.setDirection(newDirection as AnimationDirection);
+          this._lottie.goToAndPlay(startFrame, true);
+        }, this._intermission);
+      } else {
+        this._lottie.setDirection(newDirection as AnimationDirection);
         this._lottie.goToAndPlay(newDirection === -1 ? this._lottie.totalFrames - 1 : 0, true);
       }
     });
@@ -941,6 +963,7 @@ export class DotLottiePlayer {
     };
 
     this.setMode(mode);
+    console.log('intermission', intermission);
     this.setIntermission(intermission);
     this.setHover(hover);
     this.setLoop(loop);
