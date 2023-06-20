@@ -4,10 +4,12 @@
 
 import type { DotLottieConfig, PlaybackOptions, Manifest, RendererType, DotLottiePlayerState } from 'common';
 import { DotLottiePlayer } from 'common';
+import type { AnimationItem } from 'lottie-web';
 import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useState, useImperativeHandle } from 'react';
 
 export interface DotLottieRefProps {
+  getLottie: () => AnimationItem | undefined;
   getManifest: () => Manifest | undefined;
   next: (options?: PlaybackOptions) => void;
   play: (indexOrId?: string | number, options?: PlaybackOptions) => void;
@@ -57,6 +59,9 @@ export const useDotLottiePlayer = (
           },
           getCurrentAnimationId: (): string | undefined => {
             return dotLottiePlayer.currentAnimationId;
+          },
+          getLottie: (): AnimationItem | undefined => {
+            return dotLottiePlayer.getAnimationInstance();
           },
         } as DotLottieRefProps;
       },
