@@ -963,7 +963,6 @@ export class DotLottiePlayer {
     };
 
     this.setMode(mode);
-    console.log('intermission', intermission);
     this.setIntermission(intermission);
     this.setHover(hover);
     this.setLoop(loop);
