@@ -485,6 +485,7 @@ export class DotLottiePlayer {
     }
 
     this._requireValidPlaybackOptions(validatedOptions);
+
     return validatedOptions;
   }
 
