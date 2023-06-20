@@ -92,8 +92,7 @@
     "> 3%"
   ],
   "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com/@dotlottie"
+    "access": "public"
   },
   "nyc": {
     "extends": "@istanbuljs/nyc-config-typescript",
