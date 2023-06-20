@@ -72,13 +72,7 @@
     "typescript": "^3.7.5"
   },
   "files": [
-    "dist/dotlottie-player.js",
-    "dist/dotlottie-player.js.map",
-    "dist/dotlottie-player.esm.js",
-    "dist/dotlottie-player.esm.js.map",
-    "dist/dotlottie-player.d.ts",
-    "dist/dotlottie-player.styles.d.ts",
-    "dist/dotlottie-player.styles.d.map"
+    "dist"
   ],
   "keywords": [
     "dotlottie",
