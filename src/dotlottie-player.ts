@@ -49,6 +49,8 @@ export interface Versions {
 
 export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
 
+const ELEMENT_NAME = 'dotlottie-player';
+
 /**
  * DotLottiePlayer web component class
  *
@@ -56,7 +58,6 @@ export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
  * @class DotLottiePlayer
  * @extends {LitElement}
  */
-@customElement('dotlottie-player')
 export class DotLottiePlayer extends LitElement {
   /**
    * Animation container.
@@ -1183,4 +1184,8 @@ export class DotLottiePlayer extends LitElement {
       </div>
     `;
   }
+}
+
+if (!customElements.get(ELEMENT_NAME)) {
+  customElement(ELEMENT_NAME)(DotLottiePlayer);
 }
