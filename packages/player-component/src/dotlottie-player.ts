@@ -250,15 +250,15 @@ export class DotLottiePlayer extends LitElement {
      */
     this._dotLottieCommonPlayer = new DotLottieCommonPlayer(src, this.container as HTMLDivElement, {
       rendererSettings: overrideRendererSettings ?? {
-            scaleMode: 'noScale',
-            clearCanvas: true,
-            progressiveLoad: true,
-            hideOnTransparent: true,
-          },
+        scaleMode: 'noScale',
+        clearCanvas: true,
+        progressiveLoad: true,
+        hideOnTransparent: true,
+      },
       hover: this.hasAttribute('hover') ? this.hover : undefined,
       renderer: this.hasAttribute('renderer') ? this._renderer : undefined,
       loop: this.hasAttribute('loop') ? this._loop : undefined,
-      direction: this.hasAttribute('direction') ? this.direction === 1 ? 1 : -1 : undefined,
+      direction: this.hasAttribute('direction') ? (this.direction === 1 ? 1 : -1) : undefined,
       speed: this.hasAttribute('speed') ? this.speed : undefined,
       intermission: this.hasAttribute('intermission') ? Number(this.intermission) : undefined,
       playMode: this.hasAttribute('playMode') ? this.playMode : undefined,
