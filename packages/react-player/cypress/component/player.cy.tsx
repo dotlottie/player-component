@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { PlayerState } from 'common';
+import { PlayerState } from '@dotlottie/common';
 import React from 'react';
 
 import { Controls } from '../../src/controls';

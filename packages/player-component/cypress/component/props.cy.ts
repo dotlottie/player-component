@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { PlayMode } from 'common';
+import { PlayMode } from '@dotlottie/common';
 import { html } from 'lit';
 
 describe('Override playMode', () => {

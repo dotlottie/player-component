@@ -1,7 +1,8 @@
 {
-  "name": "common",
+  "name": "@dotlottie/common",
   "version": "0.0.0",
   "type": "module",
+  "private": true,
   "description": "",
   "author": "Afsal <afsal@lottiefiles.com>, Sam Osborne <sam@lottiefiles.com>",
   "license": "MIT",

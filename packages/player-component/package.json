@@ -32,7 +32,7 @@
     "test": "cypress run --component"
   },
   "dependencies": {
-    "common": "workspace:^",
+    "@dotlottie/common": "workspace:^",
     "lit": "^2.7.5",
     "lottie-web": "^5.10.0",
     "tsup": "^6.1.3"

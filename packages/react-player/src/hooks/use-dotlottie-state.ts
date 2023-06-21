@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DotLottiePlayerState } from 'common';
+import type { DotLottiePlayerState } from '@dotlottie/common';
 import { useCallback, useSyncExternalStore } from 'react';
 
 import { useDotLottieContext } from '../dotlottie-context';
