@@ -169,14 +169,13 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           lottieRef={lottieRef}
           src={src}
           style={{ height: '400px', display: 'inline-block' }}
-          playOnHover={playOnHover}
+          hover={playOnHover}
           autoplay={autoplay}
           loop={loop}
-          mode={mode}
+          playMode={mode}
           speed={speed}
           direction={direction}
           background={background}
-          controls={controls}
           activeAnimationId={activeAnimationId}
           onEvent={(name): void => {
             switch (name) {

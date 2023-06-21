@@ -18,12 +18,12 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   background?: string;
   className?: string;
   direction?: 1 | -1;
+  hover?: boolean;
   intermission?: number;
   loop?: number | boolean;
   lottieRef?: MutableRefObject<DotLottieRefProps | undefined>;
-  mode?: PlayMode;
   onEvent?: <T extends PlayerEvents>(name: T, params?: unknown) => void;
-  playOnHover?: boolean;
+  playMode?: PlayMode;
   renderer?: 'svg' | 'canvas' | 'html';
   rendererSettings?: RendererSettings;
   speed?: number;
@@ -39,8 +39,8 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   direction,
   intermission,
   loop,
-  mode,
-  playOnHover,
+  playMode,
+  hover,
   speed,
   renderer = 'svg',
   rendererSettings = {},
@@ -63,14 +63,14 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
       hideOnTransparent: true,
       ...rendererSettings,
     },
-    hover: playOnHover,
+    hover,
     loop,
     direction,
     speed,
     intermission,
     background,
-    playMode: mode,
-    autoplay: playOnHover ? false : autoplay,
+    playMode,
+    autoplay: hover ? false : autoplay,
     testId,
   });
 
@@ -93,11 +93,11 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (typeof speed !== 'undefined') {
       dotLottiePlayer.setSpeed(speed);
     }
-    if (typeof mode !== 'undefined') {
-      dotLottiePlayer.setMode(mode);
+    if (typeof playMode !== 'undefined') {
+      dotLottiePlayer.setMode(playMode);
     }
-    if (typeof playOnHover !== 'undefined') {
-      dotLottiePlayer.setHover(playOnHover);
+    if (typeof hover !== 'undefined') {
+      dotLottiePlayer.setHover(hover);
     }
 
     if (typeof background !== 'undefined') {
@@ -107,7 +107,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (typeof intermission !== 'undefined') {
       dotLottiePlayer.setIntermission(intermission);
     }
-  }, [loop, autoplay, speed, direction, mode, playOnHover, background, intermission]);
+  }, [loop, autoplay, speed, direction, playMode, hover, background, intermission]);
 
   useEffect(() => {
     if (activeAnimationId) {

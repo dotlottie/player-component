@@ -40,12 +40,7 @@ describe('Autoplay', () => {
   it('should not play when `playOnHover` = `true` even though `autoplay` = `true`', () => {
     cy.mount(
       <PlayerStateWrapper>
-        <DotLottiePlayer
-          src={`/cool-dog.lottie`}
-          style={{ height: '400px', display: 'inline-block' }}
-          playOnHover
-          autoplay
-        >
+        <DotLottiePlayer src={`/cool-dog.lottie`} style={{ height: '400px', display: 'inline-block' }} hover autoplay>
           <Controls />
         </DotLottiePlayer>
         ,
