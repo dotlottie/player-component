@@ -30,7 +30,7 @@ describe('Mode', () => {
           src={`/cool-dog.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
           loop={false}
-          mode={PlayMode.Bounce}
+          playMode={PlayMode.Bounce}
           autoplay
         >
           <Controls />
@@ -49,7 +49,7 @@ describe('Mode', () => {
           src={`/cool-dog.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
           loop={false}
-          mode={PlayMode.Normal}
+          playMode={PlayMode.Normal}
           autoplay
         >
           <Controls />
@@ -79,7 +79,7 @@ describe('Mode', () => {
             <DotLottiePlayer
               src={`/cool-dog.lottie`}
               style={{ height: '400px', display: 'inline-block' }}
-              mode={mode}
+              playMode={mode}
               loop
               autoplay
             >

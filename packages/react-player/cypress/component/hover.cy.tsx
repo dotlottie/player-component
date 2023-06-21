@@ -30,7 +30,7 @@ describe('Hover', () => {
           src={`/cool-dog.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
           loop
-          playOnHover={true}
+          hover={true}
           autoplay
         >
           <Controls />
@@ -51,7 +51,7 @@ describe('Hover', () => {
           src={`/cool-dog.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
           loop
-          playOnHover={true}
+          hover={true}
           autoplay
           testId="testPlayer"
         >
@@ -89,7 +89,7 @@ describe('Hover', () => {
               src={`/cool-dog.lottie`}
               style={{ height: '400px', display: 'inline-block' }}
               autoplay
-              playOnHover={hover}
+              hover={hover}
             >
               <Controls />
             </DotLottiePlayer>
