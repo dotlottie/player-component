@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DotLottiePlayer, DotLottiePlayerState } from 'common';
+import type { DotLottiePlayer, DotLottiePlayerState } from '@dotlottie/common';
 import { useCallback, useSyncExternalStore } from 'react';
 
 export type Unsubscribe = () => void;

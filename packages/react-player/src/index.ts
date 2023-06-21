@@ -2,8 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { PlayMode, PlayerState, PlayerEvents } from 'common';
-import type { Manifest, ManifestAnimation } from 'common';
+import { PlayMode, PlayerState, PlayerEvents } from '@dotlottie/common';
+import type { Manifest, ManifestAnimation } from '@dotlottie/common';
 
 import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 

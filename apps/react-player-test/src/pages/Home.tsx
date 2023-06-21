@@ -3,8 +3,8 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { DotLottiePlayer, PlayMode, Controls } from 'react-player';
-import type { DotLottieRefProps, ManifestAnimation } from 'react-player';
+import { DotLottiePlayer, PlayMode, Controls } from '@dotlottie/react-player';
+import type { DotLottieRefProps, ManifestAnimation } from '@dotlottie/react-player';
 
 const lotties = [
   {

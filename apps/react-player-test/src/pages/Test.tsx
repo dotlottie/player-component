@@ -3,7 +3,7 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { DotLottiePlayer, PlayerState, PlayMode } from 'react-player';
+import { DotLottiePlayer, PlayerState, PlayMode } from '@dotlottie/react-player';
 import { useSearchParam } from 'react-use';
 
 const lotties = [

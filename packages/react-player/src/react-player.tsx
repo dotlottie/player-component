@@ -2,8 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { RendererSettings, PlayMode } from 'common';
-import { PlayerState, PlayerEvents } from 'common';
+import type { RendererSettings, PlayMode } from '@dotlottie/common';
+import { PlayerState, PlayerEvents } from '@dotlottie/common';
 import React, { useEffect, useRef } from 'react';
 import type { MutableRefObject } from 'react';
 

@@ -1,5 +1,5 @@
 {
-  "name": "react-player",
+  "name": "@dotlottie/react-player",
   "version": "0.0.0",
   "type": "module",
   "description": "",
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@preact/signals-core": "^1.2.3",
-    "common": "workspace:^",
+    "@dotlottie/common": "workspace:^",
     "lottie-web": "^5.10.2",
     "react": "^18.2.0"
   },
