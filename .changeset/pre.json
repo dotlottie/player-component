@@ -1,0 +1,11 @@
+{
+  "mode": "pre",
+  "tag": "next",
+  "initialVersions": {
+    "react-player-test": "0.0.0",
+    "common": "0.0.0",
+    "@dotlottie/player-component": "1.4.0",
+    "react-player": "0.0.0"
+  },
+  "changesets": []
+}
