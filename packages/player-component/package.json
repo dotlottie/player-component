@@ -52,8 +52,7 @@
     "vite": "^4.3.9"
   },
   "publishConfig": {
-    "access": "public",
-    "registry": "https://npm.pkg.github.com/@dotlottie"
+    "access": "public"
   },
   "browserslist": [
     "> 3%"
