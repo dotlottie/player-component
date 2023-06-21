@@ -53,5 +53,8 @@
     "turbo": "1.3.4",
     "typescript": "4.7.4"
   },
-  "packageManager": "pnpm@7.1.6"
+  "packageManager": "pnpm@7.1.6",
+  "dependencies": {
+    "zx": "^7.2.2"
+  }
 }
