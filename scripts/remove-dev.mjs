@@ -26,7 +26,7 @@ const entries = await globby([...files, '!**/node_modules'], {
 });
 
 await Promise.all(
-  entries.map(async entry => {
+  entries.map(async (entry) => {
     await fs.rm(entry, { recursive: true });
     console.log(chalk.white(` ☑ ${entry}`));
   }),
