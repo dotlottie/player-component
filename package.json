@@ -31,7 +31,7 @@
     "renderers:update-releases": "turbo run update-releases",
     "stats:eslint": "pnpm run stats:eslint",
     "stats:ts": "pnpm run stats:ts",
-    "test": "turbo run test",
+    "test": "turbo run test --concurrency=1",
     "test:coverage": "turbo run test:coverage",
     "type-check": "turbo run type-check"
   },
