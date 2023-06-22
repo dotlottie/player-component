@@ -68,26 +68,24 @@ The `DotLottiePlayer` component accepts the following props:
 | `intermission`     | Pause between loops                        | `number`                        | `0`         |
 | `loop`             | Whether to loop animation                 | `boolean`                       | `false`     |
 | `playMode`         | Play mode                                 | `'normal' \| 'bounce'`          | `normal`    |
-| `renderer`         | How to render                             | `'svg' \| 'html' \| 'canvas'`   | `normal`    |
+| `renderer`         | How to render                             | `'svg' \| 'html' \| 'canvas'`   | `svg`       |
 | `speed`            | Play speed                                | `number`                        | `1`         |
-| `onEvent`          | Listen to player events                   | `number`                        | `1`         |
+| `onEvent`          | Listen to player events                   | `function`                      | `undefined` |
 
 ## Events
 
 The following events are exposed via the `onEvent` function:
 
-| Name           | Description                                |
-| -------------- | ------------------------------------------ |
-| `complete`     | Animation completed playing                |
+| Name           | Description                                                               |
+| -------------- | ------------------------------------------                                |
+| `complete`     | Animation completed playing                                               |
 | `error`        | An animation source cannot be parsed, fails to load, or has format errors |
-| `frame`       
-
- | A new frame is entered                      |
-| `freeze`       | Animation is frozen                        |
-| `loopComplete` | Loop animation is complete                  |
-| `pause`        | Animation is paused                        |
-| `ready`        | Animation data is loaded and player is ready |
-| `stop`         | Animation is stopped                       |
+| `frame`        | A new frame is entered                                                    |
+| `freeze`       | Animation is frozen                                                       |
+| `loopComplete` | Loop animation is complete                                                |
+| `pause`        | Animation is paused                                                       |
+| `ready`        | Animation data is loaded and player is ready                              |
+| `stop`         | Animation is stopped                                                      |
 
 ## Examples
 
