@@ -38,3 +38,5 @@ releases/
 
 packages/player-component/tests/
 packages/player-component/cypress/
+
+.changeset/*.json
