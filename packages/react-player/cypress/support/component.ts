@@ -6,7 +6,7 @@
 
 import { mount } from 'cypress/react18';
 
-import '../../src/dotlottie-player-styles.css';
+import '../../src/index.css';
 
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
