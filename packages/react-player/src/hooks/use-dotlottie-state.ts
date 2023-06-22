@@ -5,7 +5,7 @@
 import type { DotLottiePlayerState } from '@dotlottie/common';
 import { useCallback, useSyncExternalStore } from 'react';
 
-import { useDotLottieContext } from '../dotlottie-context';
+import { useDotLottieContext } from '../providers';
 
 export type Unsubscribe = () => void;
 export type Subscribe = (onStateChange: () => void) => Unsubscribe;

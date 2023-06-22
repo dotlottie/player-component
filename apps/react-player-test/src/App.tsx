@@ -4,8 +4,8 @@
 
 import { Route } from 'wouter';
 
-import Home from './pages/home';
-import Test from './pages/test';
+import Home from './pages/Home';
+import Test from './pages/Test';
 
 const App: React.FC = () => {
   return (

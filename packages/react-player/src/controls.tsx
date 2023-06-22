@@ -5,8 +5,8 @@
 import { PlayerState } from '@dotlottie/common';
 import React, { useMemo } from 'react';
 
-import { useDotLottieContext } from './dotlottie-context';
 import { useDotLottieState } from './hooks/use-dotlottie-state';
+import { useDotLottieContext } from './providers';
 
 const AVAILABLE_BUTTONS = ['play', 'stop', 'loop'] as const;
 

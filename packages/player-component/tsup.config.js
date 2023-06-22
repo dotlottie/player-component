@@ -19,7 +19,7 @@ export default defineConfig({
   outDir: 'dist',
   platform: 'browser',
   target: ['ESNext'],
-  entry: ['./src/dotlottie-player.ts'],
+  entry: ['./src/*.ts'],
   globalName: 'DotLottiePlayer',
   noExternal: Object.keys(pkg.dependencies ?? []),
 });

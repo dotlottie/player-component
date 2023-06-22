@@ -19,6 +19,6 @@ export default defineConfig({
   outDir: 'dist',
   platform: 'browser',
   target: ['ESNext'],
-  entry: ['./src/index.ts'],
+  entry: ['./src/*.ts'],
   noExternal: Object.keys(pkg.dependencies ?? []),
 });
