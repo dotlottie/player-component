@@ -7,5 +7,10 @@
     "@dotlottie/common": "0.0.1",
     "react-player-test": "0.0.0"
   },
-  "changesets": ["little-pianos-camp", "tidy-islands-bathe", "twenty-windows-nail"]
+  "changesets": [
+    "green-geckos-decide",
+    "little-pianos-camp",
+    "tidy-islands-bathe",
+    "twenty-windows-nail"
+  ]
 }
