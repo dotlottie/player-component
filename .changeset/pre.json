@@ -4,7 +4,12 @@
   "initialVersions": {
     "@dotlottie/player-component": "2.0.0",
     "@dotlottie/react-player": "0.0.1",
-    "@dotlottie/common": "0.0.1"
+    "@dotlottie/common": "0.0.1",
+    "react-player-test": "0.0.0"
   },
-  "changesets": ["little-pianos-camp"]
+  "changesets": [
+    "little-pianos-camp",
+    "tidy-islands-bathe",
+    "twenty-windows-nail"
+  ]
 }
