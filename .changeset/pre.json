@@ -4,8 +4,7 @@
   "initialVersions": {
     "@dotlottie/player-component": "2.0.0",
     "@dotlottie/react-player": "0.0.1",
-    "react-player-test": "0.0.0",
-    "@dotlottie/common": "0.0.0"
+    "@dotlottie/common": "0.0.1"
   },
   "changesets": ["little-pianos-camp"]
 }
