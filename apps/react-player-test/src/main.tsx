@@ -5,9 +5,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import App from './app';
+import App from './App';
 
-import 'react-player/dist/dotlottie-player-styles.css';
+import '@dotlottie/react-player/dist/index.css';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>

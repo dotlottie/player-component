@@ -7,10 +7,10 @@ import { PlayerState, PlayerEvents } from '@dotlottie/common';
 import React, { useEffect, useRef } from 'react';
 import type { MutableRefObject } from 'react';
 
-import { DotLottieContext } from './dotlottie-context';
 import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
 import { useSelectDotLottieState } from './hooks/use-select-dotlottie-state';
+import { DotLottieProvider } from './providers';
 
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   activeAnimationId?: string;
@@ -178,7 +178,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   }, [frame]);
 
   return (
-    <DotLottieContext.Provider value={dotLottiePlayer}>
+    <DotLottieProvider value={dotLottiePlayer}>
       <div
         className={`dotlottie-container main ${children ? 'controls' : ''} ${className}`}
         lang="en"
@@ -210,6 +210,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
         </div>
         {children}
       </div>
-    </DotLottieContext.Provider>
+    </DotLottieProvider>
   );
 };
