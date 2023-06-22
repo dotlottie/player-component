@@ -13,7 +13,7 @@
     "deps:sync": "syncpack list-mismatches --dev --prod",
     "deps:updates": "ncu --deep",
     "deps:upgrade": "ncu --deep --format repo -i --removeRange",
-    "dev": "turbo run dev --parallel",
+    "dev": "turbo run dev",
     "docs:readme": "remark ./**/README.md --output --ignore-path ./.remarkignore --silently-ignore",
     "format": "pnpm run format:prettier",
     "format:prettier": "prettier --loglevel=warn --no-editorconfig --write .",

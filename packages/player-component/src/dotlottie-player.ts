@@ -2,12 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { CSSResult, TemplateResult } from 'lit';
-import { LitElement, html } from 'lit';
-import { property, query, state } from 'lit/decorators.js';
-import type { AnimationItem } from 'lottie-web';
-
-import type { RendererType, DotLottiePlayerState, PlaybackOptions, Manifest } from '../../common';
+import type { RendererType, DotLottiePlayerState, PlaybackOptions, Manifest } from '@dotlottie/common';
 import {
   DotLottiePlayer as DotLottieCommonPlayer,
   PlayerState,
@@ -16,7 +11,12 @@ import {
   logWarning,
   createError,
   DEFAULT_STATE,
-} from '../../common';
+} from '@dotlottie/common';
+import type { CSSResult, TemplateResult } from 'lit';
+import { LitElement, html } from 'lit';
+import { property, query, state } from 'lit/decorators.js';
+import type { AnimationItem } from 'lottie-web';
+
 import pkg from '../package.json';
 
 import styles from './dotlottie-player.styles';

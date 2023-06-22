@@ -61,3 +61,5 @@ tsdoc-metadata.json
 
 
 .nyc_output
+
+cypress/screenshots
