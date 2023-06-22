@@ -25,7 +25,7 @@
     "cypress:open": "cypress open --component",
     "dev": "tsup --watch",
     "lint": "eslint .",
-    "test": "cypress run --component",
+    "test": "cypress run --component --headless",
     "type-check": "tsc --noEmit"
   },
   "peerDependencies": {

@@ -27,7 +27,7 @@
     "dev": "tsup --watch",
     "lint": "eslint .",
     "lint:fix": "eslint --fix",
-    "test": "cypress run --component",
+    "test": "cypress run --component --headless",
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
