@@ -7,7 +7,5 @@
     "react-player-test": "0.0.0",
     "@dotlottie/common": "0.0.0"
   },
-  "changesets": [
-    "little-pianos-camp"
-  ]
+  "changesets": ["little-pianos-camp"]
 }
