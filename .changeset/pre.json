@@ -6,5 +6,11 @@
     "@dotlottie/react-player": "0.0.1",
     "@dotlottie/common": "0.0.1"
   },
-  "changesets": ["green-geckos-decide", "little-pianos-camp", "tidy-islands-bathe", "twenty-windows-nail"]
+  "changesets": [
+    "green-geckos-decide",
+    "little-pianos-camp",
+    "tidy-islands-bathe",
+    "tidy-numbers-speak",
+    "twenty-windows-nail"
+  ]
 }

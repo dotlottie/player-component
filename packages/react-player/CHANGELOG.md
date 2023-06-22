@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 0.0.1-beta.5
+
+### Patch Changes
+
+- a7f4340: fix: types not exported
+
 ## 0.0.1-beta.4
 
 ### Patch Changes
