@@ -4,7 +4,7 @@
 
 import type { CSSResult, TemplateResult } from 'lit';
 import { LitElement, html } from 'lit';
-import { customElement, property, query, state } from 'lit/decorators.js';
+import { property, query, state } from 'lit/decorators.js';
 import type { AnimationItem } from 'lottie-web';
 
 import type { RendererType, DotLottiePlayerState, PlaybackOptions, Manifest } from '../../common';
@@ -25,6 +25,8 @@ export interface Versions {
   dotLottiePlayerVersion: string;
   lottieWebVersion: string;
 }
+
+const ELEMENT_NAME = 'dotlottie-player';
 
 /**
  * DotLottiePlayer web component class
@@ -315,7 +317,7 @@ export class DotLottiePlayer extends LitElement {
    */
   public getVersions(): Versions {
     return {
-      lottieWebVersion: `${pkg.dependencies['lottie-web']}`,
+      lottieWebVersion: `${pkg.devDependencies['lottie-web']}`,
       dotLottiePlayerVersion: `${pkg.version}`,
     };
   }
@@ -640,5 +642,5 @@ export class DotLottiePlayer extends LitElement {
 }
 
 if (!customElements.get(ELEMENT_NAME)) {
-  customElement(ELEMENT_NAME)(DotLottiePlayer);
+  customElements.define(ELEMENT_NAME, DotLottiePlayer);
 }
