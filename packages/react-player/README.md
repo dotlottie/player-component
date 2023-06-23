@@ -180,7 +180,7 @@ pnpm changeset add
 
 And select the type of version bump you'd like (major, minor, patch).
 
-You can document the changes in detail and format them properly using Markdown by opening the ".md" file that the "yarn changeset" command created in the ".changeset" folder. Open the file, and it should look something like this:
+You can document the changes in detail and format them properly using Markdown by opening the ".md" file that the "pnpm changeset" command created in the ".changeset" folder. Open the file, and it should look something like this:
 
 ```
 ---
