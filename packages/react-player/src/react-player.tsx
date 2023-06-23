@@ -114,7 +114,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (typeof defaultTheme !== 'undefined') {
       dotLottiePlayer.setDefaultTheme(defaultTheme);
     }
-  }, [loop, autoplay, speed, direction, background, intermission, defaultTheme]);
+  }, [loop, autoplay, speed, direction, playMode, hover, background, intermission, defaultTheme]);
 
   useEffect(() => {
     if (activeAnimationId) {
