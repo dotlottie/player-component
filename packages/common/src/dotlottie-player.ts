@@ -938,7 +938,7 @@ export class DotLottiePlayer {
   }
 
   // If we go back to default animation or at animation 0 we need to use props
-  protected render(activeAnimation?: Partial<ManifestAnimation>): void {
+  protected async render(activeAnimation?: Partial<ManifestAnimation>): Promise<void> {
     if (activeAnimation?.id) {
       const anim = this._animations.get(activeAnimation.id);
 
@@ -1023,11 +1023,11 @@ export class DotLottiePlayer {
     const lottieStyleSheet = this._themes.get(defaultTheme) ?? '';
 
     if (lottieStyleSheet) {
-      const vFile = relottie()
+      const vFile = await relottie()
         .use(style, {
           lss: lottieStyleSheet,
         })
-        .processSync(JSON.stringify(this._animation));
+        .process(JSON.stringify(this._animation));
 
       this._animation = JSON.parse(vFile.value) as Animation;
     } else {

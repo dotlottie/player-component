@@ -4,35 +4,36 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { DotLottiePlayer, PlayMode, Controls } from '@dotlottie/react-player';
-import type { DotLottieRefProps, ManifestAnimation } from '@dotlottie/react-player';
+import type { DotLottieRefProps, ManifestAnimation, ManifestTheme } from '@dotlottie/react-player';
+import { ThemeContext } from '../App';
 
 const lotties = [
   {
     from: 'Multiple themes (.lottie)',
     src: 'https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie',
   },
-  // {
-  //   from: 'Multiple lottie (.lottie)',
-  //   src: './amazing.lottie',
-  // },
-  // {
-  //   from: '.lottie',
-  //   // eslint-disable-next-line no-secrets/no-secrets
-  //   src: 'https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie',
-  // },
-  // {
-  //   from: '.json',
-  //   src: 'https://assets1.lottiefiles.com/packages/lf20_mGXMLaVUoX.json',
-  // },
-  // {
-  //   from: '.json',
-  //   // eslint-disable-next-line no-secrets/no-secrets
-  //   src: 'https://lottie.host/cba131d3-3e01-43be-b71c-2de700a12642/c5CK9Co8WD.json',
-  // },
-  // {
-  //   from: 'Local .lottie',
-  //   src: './test.lottie',
-  // },
+  {
+    from: 'Multiple lottie (.lottie)',
+    src: './amazing.lottie',
+  },
+  {
+    from: '.lottie',
+    // eslint-disable-next-line no-secrets/no-secrets
+    src: 'https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie',
+  },
+  {
+    from: '.json',
+    src: 'https://assets1.lottiefiles.com/packages/lf20_mGXMLaVUoX.json',
+  },
+  {
+    from: '.json',
+    // eslint-disable-next-line no-secrets/no-secrets
+    src: 'https://lottie.host/cba131d3-3e01-43be-b71c-2de700a12642/c5CK9Co8WD.json',
+  },
+  {
+    from: 'Local .lottie',
+    src: './test.lottie',
+  },
 ];
 
 interface ItemProps {
@@ -119,15 +120,17 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           {Array.isArray(themes) && (
             <select value={theme} onChange={(event): void => setTheme(event.target.value)}>
               <option value="">Please select a theme</option>
-              {themes
-                .filter((theme) => theme.animations.includes(activeAnimationId))
-                .map((theme) => {
-                  return (
-                    <option key={theme.id} value={theme.id}>
-                      Apply {theme.id}
-                    </option>
-                  );
-                })}
+              {activeAnimationId
+                ? themes
+                    .filter((theme) => theme.animations.includes(activeAnimationId))
+                    .map((theme) => {
+                      return (
+                        <option key={theme.id} value={theme.id}>
+                          Apply {theme.id}
+                        </option>
+                      );
+                    })
+                : null}
             </select>
           )}
           <button

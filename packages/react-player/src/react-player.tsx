@@ -86,6 +86,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (typeof loop !== 'undefined') {
       dotLottiePlayer.setLoop(loop);
     }
+
     if (typeof autoplay !== 'undefined') {
       dotLottiePlayer.setAutoplay(autoplay);
     }
@@ -93,12 +94,15 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (typeof direction !== 'undefined') {
       dotLottiePlayer.setDirection(direction);
     }
+
     if (typeof speed !== 'undefined') {
       dotLottiePlayer.setSpeed(speed);
     }
+
     if (typeof playMode !== 'undefined') {
       dotLottiePlayer.setMode(playMode);
     }
+
     if (typeof hover !== 'undefined') {
       dotLottiePlayer.setHover(hover);
     }
