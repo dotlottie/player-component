@@ -5,8 +5,9 @@
 /* eslint-disable no-warning-comments */
 
 import { DotLottie } from '@dotlottie/dotlottie-js';
-import { createStyler } from '@lottiefiles/lottie-styler';
 import type { Animation } from '@lottiefiles/lottie-types';
+import style from '@lottiefiles/relottie-style';
+import { relottie } from '@lottiefiles/relottie/index';
 import lottie from 'lottie-web';
 import type {
   AnimationConfig,
@@ -937,7 +938,7 @@ export class DotLottiePlayer {
   }
 
   // If we go back to default animation or at animation 0 we need to use props
-  protected async render(activeAnimation?: Partial<ManifestAnimation>): Promise<void> {
+  protected render(activeAnimation?: Partial<ManifestAnimation>): void {
     if (activeAnimation?.id) {
       const anim = this._animations.get(activeAnimation.id);
 
@@ -1022,11 +1023,13 @@ export class DotLottiePlayer {
     const lottieStyleSheet = this._themes.get(defaultTheme) ?? '';
 
     if (lottieStyleSheet) {
-      const styler = createStyler(JSON.stringify(this._animation));
+      const vFile = relottie()
+        .use(style, {
+          lss: lottieStyleSheet,
+        })
+        .processSync(JSON.stringify(this._animation));
 
-      const vFile = await styler.style(lottieStyleSheet);
-
-      this._animation = JSON.parse(vFile.toString()) as Animation;
+      this._animation = JSON.parse(vFile.value) as Animation;
     } else {
       this._animation = this._animations.get(this._currentAnimationId ?? '');
     }
