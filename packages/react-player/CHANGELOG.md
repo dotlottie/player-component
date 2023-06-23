@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 0.0.1-beta.6
+
+### Patch Changes
+
+- 0dfa731: fixed dts
+
 ## 0.0.1-beta.5
 
 ### Patch Changes
