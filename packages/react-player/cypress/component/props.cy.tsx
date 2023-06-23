@@ -31,7 +31,7 @@ describe('Override speed', () => {
         <DotLottiePlayer
           src={`/speed_3_bounce_and_reverse_playback.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
-          speed={5}
+          speed={1}
         ></DotLottiePlayer>
       </PlayerStateWrapper>,
     );
