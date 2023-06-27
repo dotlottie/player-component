@@ -32,6 +32,9 @@ const ELEMENT_NAME = 'dotlottie-player';
  * DotLottiePlayer web component class
  */
 export class DotLottiePlayer extends LitElement {
+  @property({ type: String })
+  public defaultTheme = '';
+
   /**
    * Animation container.
    */
@@ -265,6 +268,7 @@ export class DotLottiePlayer extends LitElement {
       playMode: this.hasAttribute('playMode') ? this.playMode : undefined,
       autoplay: this.hasAttribute('autoplay') ? this.autoplay : undefined,
       activeAnimationId: this.hasAttribute('activeAnimationId') ? this.activeAnimationId : undefined,
+      defaultTheme: this.hasAttribute('defaultTheme') ? this.defaultTheme : undefined,
     });
 
     await this._dotLottieCommonPlayer.load(playbackOptions);
