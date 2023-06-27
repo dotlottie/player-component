@@ -4,9 +4,14 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { DotLottiePlayer, PlayMode, Controls } from '@dotlottie/react-player';
-import type { DotLottieRefProps, ManifestAnimation } from '@dotlottie/react-player';
+import type { DotLottieRefProps, ManifestAnimation, ManifestTheme } from '@dotlottie/react-player';
+import { ThemeContext } from '../App';
 
 const lotties = [
+  {
+    from: 'Multiple themes (.lottie)',
+    src: 'https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie',
+  },
   {
     from: 'Multiple lottie (.lottie)',
     src: './amazing.lottie',
@@ -37,6 +42,7 @@ interface ItemProps {
 }
 
 const Item: React.FC<ItemProps> = (props: ItemProps) => {
+  const isDarkMode = React.useContext(ThemeContext) === 'dark';
   const [src, setSrc] = useState<Record<string, unknown> | string>(props.src);
   const [loop, setLoop] = useState(true);
   const [autoplay, setAutoPlay] = useState(true);
@@ -47,7 +53,9 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
   const [mode, setMode] = useState(PlayMode.Normal);
   const [playOnHover, setPlayOnHover] = useState(false);
   const [activeAnimationId, setActiveAnimationId] = useState<string | undefined>();
+  const [theme, setTheme] = useState<string>('');
   const [animations, setAnimations] = useState<ManifestAnimation[]>();
+  const [themes, setThemes] = useState<ManifestTheme[]>();
   const lottieRef = useRef<DotLottieRefProps>();
 
   function handleClick(): void {
@@ -68,6 +76,16 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
       setActiveAnimationId(firstItem.id);
     }
   }, [animations]);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      setBackground('#000000');
+      setTheme(activeAnimationId + '-' + 'dark');
+    } else {
+      setBackground('#FFFFFF');
+      setTheme('');
+    }
+  }, [isDarkMode, activeAnimationId]);
 
   return (
     <>
@@ -97,6 +115,22 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
                   </option>
                 );
               })}
+            </select>
+          )}
+          {Array.isArray(themes) && (
+            <select value={theme} onChange={(event): void => setTheme(event.target.value)}>
+              <option value="">Please select a theme</option>
+              {activeAnimationId
+                ? themes
+                    .filter((theme) => theme.animations.includes(activeAnimationId))
+                    .map((theme) => {
+                      return (
+                        <option key={theme.id} value={theme.id}>
+                          Apply {theme.id}
+                        </option>
+                      );
+                    })
+                : null}
             </select>
           )}
           <button
@@ -177,11 +211,13 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           direction={direction}
           background={background}
           activeAnimationId={activeAnimationId}
+          defaultTheme={theme}
           onEvent={(name): void => {
             switch (name) {
               case 'ready':
                 console.log('onPlayerReady', lottieRef.current?.getManifest()?.animations);
                 setAnimations(lottieRef.current?.getManifest()?.animations);
+                setThemes(lottieRef.current?.getManifest()?.themes);
                 break;
 
               case 'freeze':
