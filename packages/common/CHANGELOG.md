@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.1.0-beta.2
+
+### Minor Changes
+
+- 14fe8c8: feat: 🎸 theming
+
 ## 0.0.1-beta.1
 
 ### Patch Changes
