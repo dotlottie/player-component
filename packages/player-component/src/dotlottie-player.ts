@@ -145,19 +145,6 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
-   * Handle visibility change events.
-   */
-  private _onVisibilityChange(): void {
-    if (!this._dotLottieCommonPlayer) return;
-
-    if (document.hidden && this._dotLottieCommonPlayer.currentState === PlayerState.Playing) {
-      this._dotLottieCommonPlayer.freeze();
-    } else if (this._dotLottieCommonPlayer.currentState === PlayerState.Frozen) {
-      this._dotLottieCommonPlayer.play();
-    }
-  }
-
-  /**
    * Handles click and drag actions on the progress track.
    */
   private _handleSeekChange(event: Event): void {
@@ -502,11 +489,6 @@ export class DotLottiePlayer extends LitElement {
       this._io.observe(this.container);
     }
 
-    // Add listener for Visibility API's change event.
-    if (typeof document.hidden !== 'undefined') {
-      document.addEventListener('visibilitychange', () => this._onVisibilityChange());
-    }
-
     // Parse loop attribute if present as a number or string-boolean
     // Also check if plain 'loop' prop is present
     if (this.loop) {
@@ -538,9 +520,6 @@ export class DotLottiePlayer extends LitElement {
 
     // Destroy lottie
     this._dotLottieCommonPlayer?.destroy();
-
-    // Remove the attached Visibility API's change event listener.
-    document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
 
     this._unsubscribeListeners?.();
   }

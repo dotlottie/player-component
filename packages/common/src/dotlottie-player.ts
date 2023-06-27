@@ -255,6 +255,7 @@ export class DotLottiePlayer {
     };
 
     this._listenToHover();
+    this._listenToVisibilityChange();
   }
 
   protected _listenToHover(): void {
@@ -274,6 +275,22 @@ export class DotLottiePlayer {
 
     this._container?.addEventListener('mouseleave', onLeave);
     this._container?.addEventListener('mouseenter', onEnter);
+  }
+
+  protected _onVisibilityChange(): void {
+    if (!this._lottie) return;
+
+    if (document.hidden && this.currentState === PlayerState.Playing) {
+      this.freeze();
+    } else if (this.currentState === PlayerState.Frozen) {
+      this.unfreeze();
+    }
+  }
+
+  protected _listenToVisibilityChange(): void {
+    if (typeof document.hidden !== 'undefined') {
+      document.addEventListener('visibilitychange', () => this._onVisibilityChange());
+    }
   }
 
   protected _getOption<T extends keyof Required<PlaybackOptions>, V extends Required<PlaybackOptions>[T]>(
@@ -680,6 +697,7 @@ export class DotLottiePlayer {
     }
 
     this.clearCountTimer();
+    document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
     this._counter = 0;
     this._lottie?.destroy();
   }
