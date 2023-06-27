@@ -1,5 +1,12 @@
 # @dotlottie/player-component
 
+## 2.0.0-beta.4
+
+### Minor Changes
+
+- a64bf5e: chore: moved visibilityChange to common player
+- 14fe8c8: feat: 🎸 theming
+
 ## 2.0.0-beta.3
 
 ### Patch Changes
