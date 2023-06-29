@@ -241,8 +241,6 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
-  protected _originalPlaybackSettings: DotLottieConfig<RendererType> | undefined;
-
   public constructor(
     src: string | Record<string, unknown>,
     container?: DotLottieElement | null,
@@ -258,9 +256,6 @@ export class DotLottiePlayer {
 
     // Filter out the playback options
     this._playbackOptions = this._validatePlaybackOptions(options || {});
-
-    // Store the original playback options
-    this._originalPlaybackSettings = options;
 
     // Set the active animation id (animation to play first)
     if (typeof options?.activeAnimationId === 'string') {
