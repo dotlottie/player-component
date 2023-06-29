@@ -8,10 +8,10 @@ import type { ReactNode } from 'react';
 import { PlayerEvents } from '../../';
 import type { DotLottieRefProps } from '../../';
 
-export const PlayerStateWrapper: React.FC<{ children: ReactNode; onRef?: (ref: DotLottieRefProps) => void }> = ({
-  children,
-  onRef,
-}) => {
+export const PlayerStateWrapper: React.FC<{
+  children: ReactNode;
+  onRef?: (ref: DotLottieRefProps | undefined) => void;
+}> = ({ children, onRef }) => {
   const lottieRef = useRef<DotLottieRefProps>();
   const [state, setState] = useState<DotLottiePlayerState>();
 

@@ -2,9 +2,17 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DotLottieConfig, PlaybackOptions, Manifest, RendererType, DotLottiePlayerState } from '@dotlottie/common';
+import type {
+  DotLottieConfig,
+  PlaybackOptions,
+  Manifest,
+  RendererType,
+  DotLottiePlayerState,
+  PlayMode,
+  AnimationDirection,
+  AnimationItem,
+} from '@dotlottie/common';
 import { DotLottiePlayer } from '@dotlottie/common';
-import type { AnimationItem } from 'lottie-web';
 import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useState, useImperativeHandle } from 'react';
 
@@ -17,12 +25,23 @@ export interface DotLottieRefProps {
   play: (indexOrId?: string | number, options?: PlaybackOptions) => void;
   previous: (options?: PlaybackOptions) => void;
   reset: () => void;
+  setAutoplay: (autoplay: boolean) => void;
+  setBackground: (backgound: string) => void;
+  setDefaultTheme: (defaultTheme: string) => void;
+  setDirection: (direction: AnimationDirection) => void;
+  setHover: (hover: boolean) => void;
+  setIntermission: (intermission: number) => void;
+  setLoop: (loop: number | boolean) => void;
+  setPlayMode: (mode: PlayMode) => void;
+  setSpeed: (speed: number) => void;
 }
 
 export const useDotLottiePlayer = (
   src: Record<string, unknown> | string,
   container: MutableRefObject<HTMLDivElement | null>,
-  config?: DotLottieConfig<RendererType> & { lottieRef?: MutableRefObject<DotLottieRefProps | undefined> },
+  config?: DotLottieConfig<RendererType> & {
+    lottieRef?: MutableRefObject<DotLottieRefProps | undefined>;
+  },
 ): DotLottiePlayer => {
   const [dotLottiePlayer, setDotLottiePlayer] = useState<DotLottiePlayer>(() => {
     return new DotLottiePlayer(src, container.current, config);
@@ -40,7 +59,7 @@ export const useDotLottiePlayer = (
     useImperativeHandle(
       config.lottieRef,
       () => {
-        return {
+        const exposedFunctions: DotLottieRefProps = {
           play: (indexOrId?: string | number, options?: PlaybackOptions): void => {
             dotLottiePlayer.play(indexOrId, options);
           },
@@ -65,7 +84,36 @@ export const useDotLottiePlayer = (
           getLottie: (): AnimationItem | undefined => {
             return dotLottiePlayer.getAnimationInstance();
           },
-        } as DotLottieRefProps;
+          setDefaultTheme: (defaultTheme: string): void => {
+            dotLottiePlayer.setDefaultTheme(defaultTheme);
+          },
+          setBackground: (backgound: string): void => {
+            dotLottiePlayer.setBackground(backgound);
+          },
+          setAutoplay: (autoplay: boolean): void => {
+            dotLottiePlayer.setAutoplay(autoplay);
+          },
+          setDirection: (direction: AnimationDirection): void => {
+            dotLottiePlayer.setDirection(direction);
+          },
+          setHover: (hover: boolean): void => {
+            dotLottiePlayer.setHover(hover);
+          },
+          setIntermission: (intermission: number): void => {
+            dotLottiePlayer.setIntermission(intermission);
+          },
+          setLoop: (loop: number | boolean): void => {
+            dotLottiePlayer.setLoop(loop);
+          },
+          setPlayMode: (mode: PlayMode): void => {
+            dotLottiePlayer.setMode(mode);
+          },
+          setSpeed: (speed: number): void => {
+            dotLottiePlayer.setSpeed(speed);
+          },
+        };
+
+        return exposedFunctions;
       },
       [config.lottieRef.current, dotLottiePlayer],
     );

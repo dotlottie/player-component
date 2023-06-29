@@ -23,6 +23,8 @@ import type {
 import { Store } from './store';
 import { createError, logError, logWarning } from './utils';
 
+export type { AnimationDirection, AnimationItem };
+
 export enum PlayerEvents {
   Complete = 'complete',
   DataFail = 'data_fail',
@@ -325,20 +327,19 @@ export class DotLottiePlayer {
   protected _getOption<T extends keyof Required<PlaybackOptions>, V extends Required<PlaybackOptions>[T]>(
     option: T,
   ): V {
-    if (typeof this._playbackOptions[option] === 'undefined') {
-      // Option from manifest
-      const activeAnim = this._manifest?.animations.find((animation) => animation.id === this._currentAnimationId);
+    // Options from props for 1st animation
+    if (this._currentAnimationId === this._activeAnimationId && typeof this._playbackOptions[option] !== 'undefined') {
+      return this._playbackOptions[option] as V;
+    }
+    // Option from manifest
+    const activeAnim = this._manifest?.animations.find((animation) => animation.id === this._currentAnimationId);
 
-      if (activeAnim && activeAnim[option]) {
-        return activeAnim[option] as unknown as V;
-      }
-
-      // Option from defaults
-      return DEFAULT_OPTIONS[option] as V;
+    if (activeAnim && typeof activeAnim[option] !== 'undefined') {
+      return activeAnim[option] as unknown as V;
     }
 
-    // Option from player props
-    return this._playbackOptions[option] as V;
+    // Option from defaults
+    return DEFAULT_OPTIONS[option] as V;
   }
 
   protected _updateTestData(): void {
@@ -783,7 +784,7 @@ export class DotLottiePlayer {
   }
 
   public setDirection(direction: 1 | -1): void {
-    this._requireValidSpeed(direction);
+    this._requireValidDirection(direction);
 
     this._lottie?.setDirection(direction);
     this._playbackOptions.direction = direction;
@@ -981,7 +982,7 @@ export class DotLottiePlayer {
     let mode: PlayMode = DEFAULT_OPTIONS.playMode ?? PlayMode.Normal;
     let intermission: number = DEFAULT_OPTIONS.intermission ?? 0;
     let hover: boolean = DEFAULT_OPTIONS.hover ?? false;
-    let direction: number = DEFAULT_OPTIONS.direction ?? 1;
+    let direction: AnimationDirection = DEFAULT_OPTIONS.direction ?? 1;
     let speed: number = DEFAULT_OPTIONS.speed ?? 1;
     let defaultTheme: string = DEFAULT_OPTIONS.defaultTheme ?? '';
 
@@ -1071,7 +1072,7 @@ export class DotLottiePlayer {
     this.setCurrentState(PlayerState.Ready);
 
     // Modifying for current animation
-    this._lottie.setDirection(direction === 1 ? 1 : -1);
+    this._lottie.setDirection(direction);
     this._lottie.setSpeed(speed);
 
     if (autoplay && !hover) {
