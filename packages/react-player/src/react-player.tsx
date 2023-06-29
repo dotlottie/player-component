@@ -81,44 +81,62 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   const frame = useSelectDotLottieState(dotLottiePlayer, (state) => state.frame);
   const seeker = useSelectDotLottieState(dotLottiePlayer, (state) => state.seeker);
 
-  // On player props change
+  /**
+   * Updating prop changes.
+   */
   useEffect(() => {
     if (typeof loop !== 'undefined') {
       dotLottiePlayer.setLoop(loop);
     }
+  }, [loop]);
 
+  useEffect(() => {
     if (typeof autoplay !== 'undefined') {
       dotLottiePlayer.setAutoplay(autoplay);
     }
+  }, [autoplay]);
 
+  useEffect(() => {
     if (typeof direction !== 'undefined') {
       dotLottiePlayer.setDirection(direction);
     }
+  }, [direction]);
 
+  useEffect(() => {
     if (typeof speed !== 'undefined') {
       dotLottiePlayer.setSpeed(speed);
     }
+  }, [speed]);
 
+  useEffect(() => {
     if (typeof playMode !== 'undefined') {
       dotLottiePlayer.setMode(playMode);
     }
+  }, [playMode]);
 
+  useEffect(() => {
     if (typeof hover !== 'undefined') {
       dotLottiePlayer.setHover(hover);
     }
+  }, [hover]);
 
+  useEffect(() => {
     if (typeof background !== 'undefined') {
       dotLottiePlayer.setBackground(background);
     }
+  }, [background]);
 
+  useEffect(() => {
     if (typeof intermission !== 'undefined') {
       dotLottiePlayer.setIntermission(intermission);
     }
+  }, [intermission]);
 
-    if (typeof defaultTheme !== 'undefined') {
+  useEffect(() => {
+    if (typeof defaultTheme !== 'undefined' && defaultTheme) {
       dotLottiePlayer.setDefaultTheme(defaultTheme);
     }
-  }, [loop, autoplay, speed, direction, playMode, hover, background, intermission, defaultTheme]);
+  }, [defaultTheme]);
 
   useEffect(() => {
     if (activeAnimationId) {

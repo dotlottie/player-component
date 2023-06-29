@@ -9,8 +9,10 @@ import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useState, useImperativeHandle } from 'react';
 
 export interface DotLottieRefProps {
+  getCurrentAnimationId: () => string | undefined;
   getLottie: () => AnimationItem | undefined;
   getManifest: () => Manifest | undefined;
+  getState: () => DotLottiePlayerState;
   next: (options?: PlaybackOptions) => void;
   play: (indexOrId?: string | number, options?: PlaybackOptions) => void;
   previous: (options?: PlaybackOptions) => void;

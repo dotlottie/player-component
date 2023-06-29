@@ -5,13 +5,22 @@
 import type { DotLottiePlayerState } from '@dotlottie/common';
 import React, { useRef, useState } from 'react';
 import type { ReactNode } from 'react';
+import { PlayerEvents } from '../../';
+import type { DotLottieRefProps } from '../../';
 
-export const PlayerStateWrapper: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const lottieRef = useRef<unknown>();
+export const PlayerStateWrapper: React.FC<{ children: ReactNode; onRef?: (ref: DotLottieRefProps) => void }> = ({
+  children,
+  onRef,
+}) => {
+  const lottieRef = useRef<DotLottieRefProps>();
   const [state, setState] = useState<DotLottiePlayerState>();
 
-  function onEvent(): void {
+  function onEvent(event: PlayerEvents): void {
     const currentState = lottieRef.current?.getState?.();
+
+    if (event === PlayerEvents.Ready) {
+      onRef?.(lottieRef.current);
+    }
 
     if (!currentState) return;
     setState(currentState);

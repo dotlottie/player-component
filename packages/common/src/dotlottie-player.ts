@@ -160,6 +160,7 @@ declare global {
 
 export interface DotLottiePlayerState extends PlaybackOptions {
   background: string;
+  currentAnimationId: string | undefined;
   currentState: PlayerState;
   frame: number;
   intermission: number;
@@ -178,6 +179,7 @@ export const DEFAULT_STATE: DotLottiePlayerState = {
   speed: 1,
   background: 'transparent',
   intermission: 0,
+  currentAnimationId: undefined,
 };
 
 export class DotLottiePlayer {
@@ -762,6 +764,7 @@ export class DotLottiePlayer {
       background: this._background,
       intermission: this._intermission,
       defaultTheme: this._defaultTheme,
+      currentAnimationId: this._currentAnimationId,
     };
   }
 
@@ -994,36 +997,36 @@ export class DotLottiePlayer {
 
     // If we're on the first animation or default animation, check and use the saved inital props
     if (this._currentAnimationId === firstAnimation || this._currentAnimationId === this._activeAnimationId) {
-      if (this._originalPlaybackSettings?.loop) {
-        loop = this._originalPlaybackSettings.loop;
+      if (typeof this._playbackOptions.loop !== 'undefined') {
+        loop = this._playbackOptions.loop;
       }
 
-      if (this._originalPlaybackSettings?.autoplay) {
-        autoplay = this._originalPlaybackSettings.autoplay;
+      if (typeof this._playbackOptions.autoplay !== 'undefined') {
+        autoplay = this._playbackOptions.autoplay;
       }
 
-      if (this._originalPlaybackSettings?.playMode) {
-        mode = this._originalPlaybackSettings.playMode;
+      if (typeof this._playbackOptions.playMode !== 'undefined') {
+        mode = this._playbackOptions.playMode;
       }
 
-      if (this._originalPlaybackSettings?.intermission) {
-        intermission = this._originalPlaybackSettings.intermission;
+      if (typeof this._playbackOptions.intermission !== 'undefined') {
+        intermission = this._playbackOptions.intermission;
       }
 
-      if (this._originalPlaybackSettings?.hover) {
-        hover = this._originalPlaybackSettings.hover;
+      if (typeof this._playbackOptions.hover !== 'undefined') {
+        hover = this._playbackOptions.hover;
       }
 
-      if (this._originalPlaybackSettings?.direction) {
-        direction = this._originalPlaybackSettings.direction;
+      if (typeof this._playbackOptions.direction !== 'undefined') {
+        direction = this._playbackOptions.direction;
       }
 
-      if (this._originalPlaybackSettings?.speed) {
-        speed = this._originalPlaybackSettings.speed;
+      if (typeof this._playbackOptions.speed !== 'undefined') {
+        speed = this._playbackOptions.speed;
       }
 
-      if (this._originalPlaybackSettings?.defaultTheme) {
-        defaultTheme = this._originalPlaybackSettings.defaultTheme;
+      if (typeof this._playbackOptions.defaultTheme !== 'undefined') {
+        defaultTheme = this._playbackOptions.defaultTheme;
       }
     }
 
@@ -1033,10 +1036,11 @@ export class DotLottiePlayer {
       loop: typeof loop === 'number' ? false : loop,
     };
 
-    this.setMode(mode);
-    this.setIntermission(intermission);
-    this.setHover(hover);
-    this.setLoop(loop);
+    // Modifying for current animation
+    this._mode = mode;
+    this._intermission = intermission;
+    this._hover = hover;
+    this._loop = loop;
 
     const lottieStyleSheet = this._themes.get(defaultTheme) ?? '';
 
@@ -1066,8 +1070,9 @@ export class DotLottiePlayer {
 
     this.setCurrentState(PlayerState.Ready);
 
-    this.setDirection(direction === 1 ? 1 : -1);
-    this.setSpeed(speed);
+    // Modifying for current animation
+    this._lottie.setDirection(direction === 1 ? 1 : -1);
+    this._lottie.setSpeed(speed);
 
     if (autoplay && !hover) {
       this.play();
@@ -1091,9 +1096,13 @@ export class DotLottiePlayer {
       if (typeof srcParsed === 'string') {
         const { activeAnimationId, animations, manifest, themes } = await this.getAnimationData(srcParsed);
 
-        if (!this._currentAnimationId) {
-          this._currentAnimationId = activeAnimationId;
+        // Setting the activeAnimationId from Manfiest if it's not set by user
+        if (!this._activeAnimationId) {
+          this._activeAnimationId = activeAnimationId;
         }
+
+        // Setting the animation to be played
+        this._currentAnimationId = this._activeAnimationId;
 
         this._animations = animations;
         this._themes = themes;
@@ -1128,9 +1137,11 @@ export class DotLottiePlayer {
     logError(msg);
   }
 
-  protected async fetchLottieJSON(
-    src: string,
-  ): Promise<{ animations: Map<string, Animation>; manifest: Manifest; themes: Map<string, string> }> {
+  protected async fetchLottieJSON(src: string): Promise<{
+    animations: Map<string, Animation>;
+    manifest: Manifest;
+    themes: Map<string, string>;
+  }> {
     if (!src.toLowerCase().endsWith('.json')) throw createError('parameter src must be .json');
 
     try {
@@ -1190,11 +1201,6 @@ export class DotLottiePlayer {
       let activeAnimationId: string;
 
       if (manifest.activeAnimationId) {
-        // Set the current playing animation
-        this._currentAnimationId = manifest.activeAnimationId;
-
-        // Set the active animation id value
-        this._activeAnimationId = manifest.activeAnimationId;
         activeAnimationId = manifest.activeAnimationId;
       } else {
         this._currentAnimationId = manifest.animations[0].id;
