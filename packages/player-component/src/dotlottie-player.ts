@@ -400,6 +400,21 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
+  * Set theme
+  */
+  public setTheme(theme: string): void {
+    this._dotLottieCommonPlayer?.setDefaultTheme(theme);
+  }
+
+  /**
+  * Get theme
+  */
+  public getTheme(): string | undefined {
+    return this._dotLottieCommonPlayer?.defaultTheme; 
+  }
+
+
+  /**
    * Freeze animation play.
    * This internal state pauses animation and is used to differentiate between
    * user requested pauses and component instigated pauses.
