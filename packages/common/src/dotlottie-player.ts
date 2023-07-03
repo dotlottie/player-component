@@ -340,7 +340,7 @@ export class DotLottiePlayer {
     const allOptions: PlaybackOptions = {};
 
     for (const key in DEFAULT_OPTIONS) {
-      if (DEFAULT_OPTIONS[key as K]) {
+      if (typeof DEFAULT_OPTIONS[key as K] !== 'undefined') {
         allOptions[key as K] = this._getOption(key as K) as V;
       }
     }
@@ -487,9 +487,7 @@ export class DotLottiePlayer {
     }
   }
 
-  protected _validatePlaybackOptions(
-    options?: Record<string, unknown> | ((prevOptions: PlaybackOptions, manifest: PlaybackOptions) => PlaybackOptions),
-  ): Partial<PlaybackOptions> {
+  protected _validatePlaybackOptions(options?: Record<string, unknown>): Partial<PlaybackOptions> {
     if (!options) return {};
     const validatedOptions: Partial<PlaybackOptions> = {};
 
@@ -573,7 +571,7 @@ export class DotLottiePlayer {
 
   public play(
     activeAnimation?: string | number,
-    getOptions?: (prevPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
     if (!this._lottie) return;
 
@@ -669,7 +667,7 @@ export class DotLottiePlayer {
   }
 
   public previous(
-    getOptions?: (prevPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
     if (!this._manifest || !this._manifest.animations.length) {
       throw createError('manifest not found.');
@@ -703,7 +701,7 @@ export class DotLottiePlayer {
   }
 
   public next(
-    getOptions?: (prevPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
     if (!this._manifest || !this._manifest.animations.length) {
       throw createError('manifest not found.');

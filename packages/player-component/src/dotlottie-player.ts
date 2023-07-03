@@ -319,7 +319,7 @@ export class DotLottiePlayer extends LitElement {
    * Play the previous animation. The order is taken from the manifest.
    */
   public previous(
-    getOptions?: (prevPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
     this._dotLottieCommonPlayer?.previous(getOptions);
   }
@@ -328,7 +328,7 @@ export class DotLottiePlayer extends LitElement {
    * Play the next animation. The order is taken from the manifest.
    */
   public next(
-    getOptions?: (prevPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
     this._dotLottieCommonPlayer?.next(getOptions);
   }
@@ -342,7 +342,7 @@ export class DotLottiePlayer extends LitElement {
 
   public play(
     targetAnimation?: string | number,
-    getOptions?: (prevPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
     if (!this._dotLottieCommonPlayer) {
       return;

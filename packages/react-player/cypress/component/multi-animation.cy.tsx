@@ -291,9 +291,9 @@ describe('Multi-Animation', () => {
           <button
             data-testid="play"
             onClick={(): void => {
-              lottieRef.current?.play('wifi', (prev, _) => {
+              lottieRef.current?.play('wifi', (curr, _) => {
                 return {
-                  ...prev,
+                  ...curr,
                   speed: 4,
                   playMode: PlayMode.Bounce,
                   intermission: 1000,
@@ -347,9 +347,9 @@ describe('Multi-Animation', () => {
           <button
             data-testid="next"
             onClick={(): void => {
-              lottieRef.current?.next((prev, _) => {
+              lottieRef.current?.next((curr, _) => {
                 return {
-                  ...prev,
+                  ...curr,
                   speed: 4,
                   playMode: PlayMode.Bounce,
                   intermission: 1000,
@@ -403,9 +403,9 @@ describe('Multi-Animation', () => {
           <button
             data-testid="next"
             onClick={(): void => {
-              lottieRef.current?.previous((prev, _) => {
+              lottieRef.current?.previous((curr, _) => {
                 return {
-                  ...prev,
+                  ...curr,
                   speed: 4,
                   playMode: PlayMode.Bounce,
                   intermission: 1000,

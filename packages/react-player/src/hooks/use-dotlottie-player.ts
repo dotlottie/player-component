@@ -22,14 +22,14 @@ export interface DotLottieRefProps {
   getManifest: () => Manifest | undefined;
   getState: () => DotLottiePlayerState;
   next: (
-    getOptions?: (prevPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
   play: (
     indexOrId?: string | number,
-    getOptions?: (prevPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
   previous: (
-    getOptions?: (prevPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
   reset: () => void;
   revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions>) => void;
@@ -71,7 +71,7 @@ export const useDotLottiePlayer = (
           play: (
             indexOrId?: string | number,
             getOptions?: (
-              prevPlaybackOptions: PlaybackOptions,
+              currPlaybackOptions: PlaybackOptions,
               manifestPlaybackOptions: PlaybackOptions,
             ) => PlaybackOptions,
           ): void => {
@@ -79,7 +79,7 @@ export const useDotLottiePlayer = (
           },
           previous: (
             getOptions?: (
-              prevPlaybackOptions: PlaybackOptions,
+              currPlaybackOptions: PlaybackOptions,
               manifestPlaybackOptions: PlaybackOptions,
             ) => PlaybackOptions,
           ): void => {
@@ -87,7 +87,7 @@ export const useDotLottiePlayer = (
           },
           next: (
             getOptions?: (
-              prevPlaybackOptions: PlaybackOptions,
+              currPlaybackOptions: PlaybackOptions,
               manifestPlaybackOptions: PlaybackOptions,
             ) => PlaybackOptions,
           ): void => {

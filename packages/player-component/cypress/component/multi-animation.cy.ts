@@ -245,8 +245,8 @@ describe('Multi-Animation', () => {
             @click=${(): void => {
               (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.play(
                 'wifi',
-                (prev, _) => ({
-                  ...prev,
+                (curr, _) => ({
+                  ...curr,
                   speed: 4,
                   playMode: PlayMode.Bounce,
                   intermission: 1000,
@@ -290,7 +290,8 @@ describe('Multi-Animation', () => {
           <button
             data-testid="next"
             @click=${(): void => {
-              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.next((prev, _) => ({
+              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.next((curr, _) => ({
+                ...curr,
                 speed: 4,
                 playMode: PlayMode.Bounce,
                 intermission: 1000,
@@ -333,8 +334,8 @@ describe('Multi-Animation', () => {
           <button
             data-testid="previous"
             @click=${(): void => {
-              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.previous((prev, _) => ({
-                ...prev,
+              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.previous((curr, _) => ({
+                ...curr,
                 speed: 4,
                 playMode: PlayMode.Bounce,
                 intermission: 1000,
