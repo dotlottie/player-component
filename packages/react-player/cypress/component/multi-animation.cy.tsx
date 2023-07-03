@@ -219,7 +219,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
   });
 
-  it('should only overrride manifest options for the initial animation', () => {
+  it('should apply props to all animations', () => {
     function Wrapper(): JSX.Element {
       const lottieRef = useRef<DotLottieRefProps>();
 
@@ -266,17 +266,16 @@ describe('Multi-Animation', () => {
     // Got to next. ie. `currentAnimationId = wifi`
     cy.get('[data-testid="next"]').click();
 
-    // Second anmation. Should match the manfiest options
-    cy.get('[name="speed"]').should('have.value', 1);
-    cy.get('[name="playMode"]').should('have.value', PlayMode.Normal);
-    cy.get('[name="intermission"]').should('have.value', 0);
-    cy.get('[name="loop"]').should('have.value', 'true');
+    // Second anmation. Should match the props as well.
+    cy.get('[name="speed"]').should('have.value', 3);
+    cy.get('[name="playMode"]').should('have.value', PlayMode.Bounce);
+    cy.get('[name="intermission"]').should('have.value', 1000);
+    cy.get('[name="loop"]').should('have.value', 'false');
 
     // Got to next. ie. `currentAnimationId = bounce`
     cy.get('[data-testid="next"]').click();
 
     // Back to intial animation. Should match the props from the player.
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="speed"]').should('have.value', 3);
     cy.get('[name="playMode"]').should('have.value', PlayMode.Bounce);
     cy.get('[name="intermission"]').should('have.value', 1000);
@@ -292,12 +291,15 @@ describe('Multi-Animation', () => {
           <button
             data-testid="play"
             onClick={(): void => {
-              lottieRef.current?.play('wifi', {
-                speed: 4,
-                playMode: PlayMode.Bounce,
-                intermission: 1000,
-                loop: false,
-                autoplay: true,
+              lottieRef.current?.play('wifi', (prev, _) => {
+                return {
+                  ...prev,
+                  speed: 4,
+                  playMode: PlayMode.Bounce,
+                  intermission: 1000,
+                  loop: false,
+                  autoplay: true,
+                };
               });
             }}
           >
@@ -345,12 +347,15 @@ describe('Multi-Animation', () => {
           <button
             data-testid="next"
             onClick={(): void => {
-              lottieRef.current?.next({
-                speed: 4,
-                playMode: PlayMode.Bounce,
-                intermission: 1000,
-                loop: false,
-                autoplay: true,
+              lottieRef.current?.next((prev, _) => {
+                return {
+                  ...prev,
+                  speed: 4,
+                  playMode: PlayMode.Bounce,
+                  intermission: 1000,
+                  loop: false,
+                  autoplay: true,
+                };
               });
             }}
           >
@@ -398,12 +403,15 @@ describe('Multi-Animation', () => {
           <button
             data-testid="next"
             onClick={(): void => {
-              lottieRef.current?.previous({
-                speed: 4,
-                playMode: PlayMode.Bounce,
-                intermission: 1000,
-                loop: false,
-                autoplay: true,
+              lottieRef.current?.previous((prev, _) => {
+                return {
+                  ...prev,
+                  speed: 4,
+                  playMode: PlayMode.Bounce,
+                  intermission: 1000,
+                  loop: false,
+                  autoplay: true,
+                };
               });
             }}
           >
@@ -442,7 +450,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="autoplay"]').should('have.value', 'true');
   });
 
-  it('intial animation should always to use the latest props from the player', () => {
+  it('all animations should always to use the latest props from the player', () => {
     function Wrapper(): JSX.Element {
       const lottieRef = useRef<DotLottieRefProps>();
       const [speed, setSpeed] = useState(1);
@@ -516,11 +524,11 @@ describe('Multi-Animation', () => {
     // Go to next animation `wifi`
     cy.get('[data-testid="next"]').click();
 
-    // should match the wifi's manifest
-    cy.get('[name="speed"]').should('have.value', 1);
-    cy.get('[name="playMode"]').should('have.value', PlayMode.Normal);
-    cy.get('[name="intermission"]').should('have.value', 0);
-    cy.get('[name="loop"]').should('have.value', 'true');
+    // Should match with updated props.
+    cy.get('[name="speed"]').should('have.value', 4);
+    cy.get('[name="playMode"]').should('have.value', PlayMode.Bounce);
+    cy.get('[name="intermission"]').should('have.value', 1000);
+    cy.get('[name="loop"]').should('have.value', 'false');
     cy.get('[name="autoplay"]').should('have.value', 'true');
 
     // Go to next animation `bounce`

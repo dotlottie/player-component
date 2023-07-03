@@ -318,15 +318,19 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Play the previous animation. The order is taken from the manifest.
    */
-  public previous(playbackOptions?: PlaybackOptions): void {
-    this._dotLottieCommonPlayer?.previous(playbackOptions);
+  public previous(
+    getOptions?: (prevPlaybackOptions: PlaybackOptions, manfiestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+  ): void {
+    this._dotLottieCommonPlayer?.previous(getOptions);
   }
 
   /**
    * Play the next animation. The order is taken from the manifest.
    */
-  public next(playbackOptions?: PlaybackOptions): void {
-    this._dotLottieCommonPlayer?.next(playbackOptions);
+  public next(
+    getOptions?: (prevPlaybackOptions: PlaybackOptions, manfiestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+  ): void {
+    this._dotLottieCommonPlayer?.next(getOptions);
   }
 
   /**
@@ -336,12 +340,15 @@ export class DotLottiePlayer extends LitElement {
     this._dotLottieCommonPlayer?.reset();
   }
 
-  public play(targetAnimation?: string | number, playbackOptions?: PlaybackOptions): void {
+  public play(
+    targetAnimation?: string | number,
+    getOptions?: (prevPlaybackOptions: PlaybackOptions, manfiestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+  ): void {
     if (!this._dotLottieCommonPlayer) {
       return;
     }
 
-    this._dotLottieCommonPlayer.play(targetAnimation, playbackOptions);
+    this._dotLottieCommonPlayer.play(targetAnimation, getOptions);
   }
 
   /**

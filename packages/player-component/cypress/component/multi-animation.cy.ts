@@ -181,7 +181,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
   });
 
-  it('should only overrride manifest options for the initial animation', () => {
+  it('should apply props to all animations', () => {
     cy.mount(
       html`
         <div>
@@ -219,11 +219,11 @@ describe('Multi-Animation', () => {
     // Got to next. ie. `currentAnimationId = wifi`
     cy.get('[data-testid="next"]').click();
 
-    // Second anmation. Should match the manfiest options
-    cy.get('[name="speed"]').should('have.value', 1);
-    cy.get('[name="playMode"]').should('have.value', PlayMode.Normal);
-    cy.get('[name="intermission"]').should('have.value', 0);
-    cy.get('[name="loop"]').should('have.value', 'true');
+    // Second anmation. Should match the Props
+    cy.get('[name="speed"]').should('have.value', 3);
+    cy.get('[name="playMode"]').should('have.value', PlayMode.Bounce);
+    cy.get('[name="intermission"]').should('have.value', 1000);
+    cy.get('[name="loop"]').should('have.value', 'false');
 
     // Got to next. ie. `currentAnimationId = bounce`
     cy.get('[data-testid="next"]').click();
@@ -245,12 +245,13 @@ describe('Multi-Animation', () => {
             @click=${(): void => {
               (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.play(
                 'wifi',
-                {
+                (prev, _) => ({
+                  ...prev,
                   speed: 4,
                   playMode: PlayMode.Bounce,
                   intermission: 1000,
                   loop: false,
-                },
+                }),
               );
             }}
           >
@@ -289,12 +290,12 @@ describe('Multi-Animation', () => {
           <button
             data-testid="next"
             @click=${(): void => {
-              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.next({
+              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.next((prev, _) => ({
                 speed: 4,
                 playMode: PlayMode.Bounce,
                 intermission: 1000,
                 loop: false,
-              });
+              }));
             }}
           >
             next
@@ -332,12 +333,13 @@ describe('Multi-Animation', () => {
           <button
             data-testid="previous"
             @click=${(): void => {
-              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.previous({
+              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.previous((prev, _) => ({
+                ...prev,
                 speed: 4,
                 playMode: PlayMode.Bounce,
                 intermission: 1000,
                 loop: false,
-              });
+              }));
             }}
           >
             previous

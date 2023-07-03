@@ -21,10 +21,18 @@ export interface DotLottieRefProps {
   getLottie: () => AnimationItem | undefined;
   getManifest: () => Manifest | undefined;
   getState: () => DotLottiePlayerState;
-  next: (options?: PlaybackOptions) => void;
-  play: (indexOrId?: string | number, options?: PlaybackOptions) => void;
-  previous: (options?: PlaybackOptions) => void;
+  next: (
+    getOptions?: (prevPlaybackOptions?: PlaybackOptions, manfiestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
+  ) => void;
+  play: (
+    indexOrId?: string | number,
+    getOptions?: (prevPlaybackOptions?: PlaybackOptions, manfiestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
+  ) => void;
+  previous: (
+    getOptions?: (prevPlaybackOptions?: PlaybackOptions, manfiestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
+  ) => void;
   reset: () => void;
+  revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions>) => void;
   setAutoplay: (autoplay: boolean) => void;
   setBackground: (backgound: string) => void;
   setDefaultTheme: (defaultTheme: string) => void;
@@ -60,14 +68,30 @@ export const useDotLottiePlayer = (
       config.lottieRef,
       () => {
         const exposedFunctions: DotLottieRefProps = {
-          play: (indexOrId?: string | number, options?: PlaybackOptions): void => {
-            dotLottiePlayer.play(indexOrId, options);
+          play: (
+            indexOrId?: string | number,
+            getOptions?: (
+              prevPlaybackOptions: PlaybackOptions,
+              manfiestPlaybackOptions: PlaybackOptions,
+            ) => PlaybackOptions,
+          ): void => {
+            dotLottiePlayer.play(indexOrId, getOptions);
           },
-          previous: (options?: PlaybackOptions): void => {
-            dotLottiePlayer.previous(options);
+          previous: (
+            getOptions?: (
+              prevPlaybackOptions: PlaybackOptions,
+              manfiestPlaybackOptions: PlaybackOptions,
+            ) => PlaybackOptions,
+          ): void => {
+            dotLottiePlayer.previous(getOptions);
           },
-          next: (options?: PlaybackOptions): void => {
-            dotLottiePlayer.next(options);
+          next: (
+            getOptions?: (
+              prevPlaybackOptions: PlaybackOptions,
+              manfiestPlaybackOptions: PlaybackOptions,
+            ) => PlaybackOptions,
+          ): void => {
+            dotLottiePlayer.next(getOptions);
           },
           reset: (): void => {
             dotLottiePlayer.reset();
@@ -110,6 +134,9 @@ export const useDotLottiePlayer = (
           },
           setSpeed: (speed: number): void => {
             dotLottiePlayer.setSpeed(speed);
+          },
+          revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions>) => {
+            dotLottiePlayer.revertToManifestValues(playbackKeys);
           },
         };
 

@@ -85,55 +85,73 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
    * Updating prop changes.
    */
   useEffect(() => {
-    if (typeof loop !== 'undefined') {
+    if (typeof loop === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['loop']);
+    } else {
       dotLottiePlayer.setLoop(loop);
     }
   }, [loop]);
 
   useEffect(() => {
-    if (typeof autoplay !== 'undefined') {
+    if (typeof autoplay === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['autoplay']);
+    } else {
       dotLottiePlayer.setAutoplay(autoplay);
     }
   }, [autoplay]);
 
   useEffect(() => {
-    if (typeof direction !== 'undefined') {
+    if (typeof direction === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['direction']);
+    } else {
       dotLottiePlayer.setDirection(direction);
     }
   }, [direction]);
 
   useEffect(() => {
-    if (typeof speed !== 'undefined') {
+    if (typeof speed === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['speed']);
+    } else {
       dotLottiePlayer.setSpeed(speed);
     }
   }, [speed]);
 
   useEffect(() => {
-    if (typeof playMode !== 'undefined') {
+    if (typeof playMode === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['playMode']);
+    } else {
       dotLottiePlayer.setMode(playMode);
     }
   }, [playMode]);
 
   useEffect(() => {
-    if (typeof hover !== 'undefined') {
+    if (typeof hover === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['hover']);
+    } else {
       dotLottiePlayer.setHover(hover);
     }
   }, [hover]);
 
   useEffect(() => {
-    if (typeof background !== 'undefined') {
+    if (typeof background === 'undefined') {
+      dotLottiePlayer.setBackground('transparent');
+    } else {
       dotLottiePlayer.setBackground(background);
     }
   }, [background]);
 
   useEffect(() => {
-    if (typeof intermission !== 'undefined') {
+    if (typeof intermission === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['intermission']);
+    } else {
       dotLottiePlayer.setIntermission(intermission);
     }
   }, [intermission]);
 
   useEffect(() => {
-    if (typeof defaultTheme !== 'undefined' && defaultTheme) {
+    if (typeof defaultTheme === 'undefined' || !defaultTheme) {
+      dotLottiePlayer.revertToManifestValues(['defaultTheme']);
+    } else {
       dotLottiePlayer.setDefaultTheme(defaultTheme);
     }
   }, [defaultTheme]);
