@@ -407,19 +407,18 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
-  * Set theme
-  */
+   * Set theme
+   */
   public setTheme(theme: string): void {
     this._dotLottieCommonPlayer?.setDefaultTheme(theme);
   }
 
   /**
-  * Get theme
-  */
+   * Get theme
+   */
   public getTheme(): string | undefined {
-    return this._dotLottieCommonPlayer?.defaultTheme; 
+    return this._dotLottieCommonPlayer?.defaultTheme;
   }
-
 
   /**
    * Freeze animation play.
