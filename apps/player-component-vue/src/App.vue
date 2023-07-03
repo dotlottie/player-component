@@ -2,22 +2,22 @@
 import '@dotlottie/player-component';
 import { ref } from 'vue';
 
-const speed = ref('5');
-const direction = ref('1');
+const speed = ref(5);
+const direction = ref(1);
+const playMode = ref('bounce');
 </script>
 
-<!-- todo: props not being passed? -->
 <template>
   <div>
     Vue + Vite 🍒 test
     <dotlottie-player
       src="https://lottie.host/53ececb8-cfb3-4505-ac42-b0214d81d2d7/UBIa29hJUQ.lottie"
-      :direction="direction"
+      :direction.attr="direction"
       controls
       autoplay
+      :playMode.attr="playMode"
       loop
-      playmode="bounce"
-      :speed="`${Number(speed)}`"
+      :speed.attr="speed"
     />
   </div>
 </template>

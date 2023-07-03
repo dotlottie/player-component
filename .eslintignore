@@ -49,4 +49,8 @@ packages/player-component/dist/
 packages/common/dist/
 packages/react-player/cypress/
 /apps/react-player-test/
-/apps/player-component-test/
+/apps/player-component-next/
+/apps/player-component-nuxt/
+/apps/player-component-react/
+/apps/player-component-vue/
+/apps/player-component-web/
