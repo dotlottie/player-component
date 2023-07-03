@@ -21,7 +21,7 @@ dotLottie is an open-source file format that aggregates one or more Lottie files
 
 ## Documentation
 
-- [View the full documentation](https://docs.lottiefiles.com/dotlottie-player/)
+[View the full documentation](https://docs.lottiefiles.com/dotlottie-player/)
 
 ## Installation
 
@@ -56,8 +56,6 @@ import '@dotlottie/player-component';
 ```
 
 ## Usage
-
-### Lottie-Player
 
 Add the element `dotlottie-player` and set the `src` property to a URL pointing to a .lottie or .json file.
 

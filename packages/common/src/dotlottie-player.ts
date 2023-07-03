@@ -1047,7 +1047,7 @@ export class DotLottiePlayer {
         })
         .process(JSON.stringify(this._animation));
 
-      this._animation = JSON.parse(vFile.value) as Animation;
+      this._animation = JSON.parse(vFile.value as string) as Animation;
     } else {
       this._animation = this._animations.get(this._currentAnimationId ?? '');
     }
