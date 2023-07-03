@@ -1,4 +1,4 @@
-import Player from "./player";
+import Player from './player';
 
 declare global {
   namespace JSX {
@@ -18,7 +18,7 @@ export default function Home() {
             direction: 1,
             autoplay: true,
             speed: 1,
-            playMode: 'bounce'
+            playMode: 'bounce',
           }}
           controls
         />
@@ -29,11 +29,11 @@ export default function Home() {
             direction: 1,
             speed: 1,
             autoplay: true,
-            playMode: 'bounce'
+            playMode: 'bounce',
           }}
           controls
         />
       </div>
     </main>
-  )
+  );
 }

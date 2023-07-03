@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import '@dotlottie/player-component'
-import { PlaybackOptions } from '@dotlottie/player-component'
+import '@dotlottie/player-component';
+import { PlaybackOptions } from '@dotlottie/player-component';
 
 export interface PlayerProps {
-  src: string,
-  playbackOptions?: PlaybackOptions,
-  controls?: boolean
+  src: string;
+  playbackOptions?: PlaybackOptions;
+  controls?: boolean;
 }
 
 export default function Player(props: PlayerProps) {
@@ -22,8 +22,8 @@ export default function Player(props: PlayerProps) {
         loop={props.playbackOptions?.loop}
         playMode={props.playbackOptions?.playMode}
         speed={props.playbackOptions?.speed}
-        controls={props.controls}>
-      </dotlottie-player>
+        controls={props.controls}
+      ></dotlottie-player>
     </div>
-  )
+  );
 }
