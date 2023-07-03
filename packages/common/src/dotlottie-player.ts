@@ -573,7 +573,7 @@ export class DotLottiePlayer {
 
   public play(
     activeAnimation?: string | number,
-    getOptions?: (prevPlaybackOptions: PlaybackOptions, manfiestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (prevPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
     if (!this._lottie) return;
 
@@ -669,7 +669,7 @@ export class DotLottiePlayer {
   }
 
   public previous(
-    getOptions?: (prevPlaybackOptions: PlaybackOptions, manfiestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (prevPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
     if (!this._manifest || !this._manifest.animations.length) {
       throw createError('manifest not found.');
@@ -703,7 +703,7 @@ export class DotLottiePlayer {
   }
 
   public next(
-    getOptions?: (prevPlaybackOptions: PlaybackOptions, manfiestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+    getOptions?: (prevPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
     if (!this._manifest || !this._manifest.animations.length) {
       throw createError('manifest not found.');
