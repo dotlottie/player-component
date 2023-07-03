@@ -1,6 +1,7 @@
 import './style.css';
 import { loader } from './loader.ts';
 import '@dotlottie/player-component';
+import { DotLottiePlayer } from '@dotlottie/player-component';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   <div>
@@ -16,7 +17,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
 loader(
   document.querySelector<HTMLButtonElement>('#counter')!,
-  document.querySelector<HTMLElement>('#dotlottie-player')!,
+  document.querySelector<DotLottiePlayer>('#dotlottie-player')!,
   document.querySelector<HTMLButtonElement>('#next')!,
   document.querySelector<HTMLButtonElement>('#prev')!,
 );

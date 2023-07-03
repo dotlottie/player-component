@@ -1,6 +1,8 @@
+import { DotLottiePlayer, PlayMode } from '@dotlottie/player-component';
+
 export function loader(
   element: HTMLButtonElement,
-  player: HTMLElement,
+  player: DotLottiePlayer,
   nextButton: HTMLButtonElement,
   prevButton: HTMLButtonElement,
 ) {
@@ -11,7 +13,7 @@ export function loader(
         preserveAspectRatio: 'xMidYMid slice',
       },
       {
-        playMode: 'normal',
+        playMode: PlayMode.Normal,
         loop: false,
       },
     );
