@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 
 import { DotLottiePlayer as commonPlayer } from '@dotlottie/common';
 import { Controls } from '../../src/controls';
@@ -24,8 +24,7 @@ describe('getVersions', () => {
           <button
             data-testid="versions"
             onClick={(): void => {
-              if (!lottieRef?.current)
-                return;
+              if (!lottieRef?.current) return;
               const v = lottieRef?.current.getVersions();
 
               if (v && resultRef.current) {
