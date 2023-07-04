@@ -310,7 +310,7 @@ export class DotLottiePlayer extends LitElement {
    */
   public getVersions(): Versions {
     return {
-      lottieWebVersion: `${pkg.devDependencies['lottie-web']}`,
+      lottieWebVersion: DotLottieCommonPlayer.getLottieWebVersion(),
       dotLottiePlayerVersion: `${pkg.version}`,
     };
   }

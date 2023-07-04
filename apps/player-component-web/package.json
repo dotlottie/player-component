@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dotlottie/player-component": "workspace:2.0.0-beta.4"
+    "@dotlottie/player-component": "workspace:^"
   },
   "devDependencies": {
     "typescript": "^5.0.2",
