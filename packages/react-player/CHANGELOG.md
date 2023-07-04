@@ -1,5 +1,16 @@
 # @dotlottie/react-player
 
+## 0.1.0-beta.9
+
+### Minor Changes
+
+- d40d5d7: added getversions
+- d40d5d7: chore: updated lottie-web version
+
+### Patch Changes
+
+- 7115251: added changeset
+
 ## 0.1.0-beta.8
 
 ### Minor Changes
