@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.0.0-beta.5
+
+### Minor Changes
+
+- 8629bef: fix: fixed issues in beta release
+
 ## 2.0.0-beta.4
 
 ### Minor Changes
