@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.1.0-beta.4
+
+### Minor Changes
+
+- d40d5d7: added getversions
+
 ## 0.1.0-beta.3
 
 ### Minor Changes
