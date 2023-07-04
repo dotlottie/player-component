@@ -4,7 +4,8 @@
 
 import { PlayerState, DotLottiePlayer as commonPlayer } from '@dotlottie/common';
 import { html } from 'lit';
-import { DotLottiePlayer } from '../../';
+
+import type { DotLottiePlayer } from '../..';
 import pkg from '../../package.json';
 
 describe('getVersions', () => {
@@ -15,10 +16,11 @@ describe('getVersions', () => {
           <button
           data-testid="versions"
           @click=${(): void => {
-            const v = (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer).getVersions();
+            const version = (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer).getVersions();
             const doc = document.querySelector('[data-testid="versionsResult"]');
-            if (v && doc) {
-              doc.innerHTML = `${v.dotLottiePlayerVersion} + ${v.lottieWebVersion}`;
+
+            if (typeof version !== 'undefined' && doc) {
+              doc.innerHTML = `${version.dotLottiePlayerVersion} + ${version.lottieWebVersion}`;
             }
           }}
         >

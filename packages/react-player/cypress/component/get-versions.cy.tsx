@@ -2,15 +2,14 @@
  * Copyright 2023 Design Barn Inc.
  */
 
+import { DotLottiePlayer as commonPlayer, PlayerState } from '@dotlottie/common';
 import React, { useRef } from 'react';
 
-import { DotLottiePlayer as commonPlayer } from '@dotlottie/common';
+import pkg from '../../package.json';
 import { Controls } from '../../src/controls';
+import type { DotLottieRefProps } from '../../src/hooks/use-dotlottie-player';
 import { DotLottiePlayer } from '../../src/react-player';
 import { PlayerStateWrapper } from '../support/player-state-wrapper';
-
-import pkg from '../../package.json';
-import { DotLottieRefProps } from '../../src/hooks/use-dotlottie-player';
 
 describe('getVersions', () => {
   it('should return the versions of the player and lottie-web', () => {
@@ -24,18 +23,18 @@ describe('getVersions', () => {
           <button
             data-testid="versions"
             onClick={(): void => {
-              if (!lottieRef?.current) return;
-              const v = lottieRef?.current.getVersions();
+              if (!lottieRef.current) return;
+              const version = lottieRef.current.getVersions();
 
-              if (v && resultRef.current) {
-                resultRef.current.innerHTML = `${v.dotLottieReactVersion} + ${v.lottieWebVersion}`;
+              if (version && resultRef.current) {
+                resultRef.current.innerHTML = `${version.dotLottieReactVersion} + ${version.lottieWebVersion}`;
               }
             }}
           >
             getVersions
           </button>
           <PlayerStateWrapper
-            onRef={(ref: DotLottieRefProps) => {
+            onRef={(ref: DotLottieRefProps | undefined): void => {
               lottieRef.current = ref;
             }}
           >
@@ -46,13 +45,13 @@ describe('getVersions', () => {
         </>
       );
     }
+    cy.mount(<Wrapper />);
 
-    cy.mount(<Wrapper />).then(() => {
-      cy.get('[data-testid="versions"]').click();
-      cy.get('[data-testid="versionsResult"]').should(
-        'have.text',
-        `${pkg.version} + ${commonPlayer.getLottieWebVersion()}`,
-      );
-    });
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[data-testid="versions"]').click();
+    cy.get('[data-testid="versionsResult"]').should(
+      'have.text',
+      `${pkg.version} + ${commonPlayer.getLottieWebVersion()}`,
+    );
   });
 });
