@@ -24,6 +24,8 @@ describe('getVersions', () => {
           <button
             data-testid="versions"
             onClick={(): void => {
+              if (!lottieRef?.current)
+                return;
               const v = lottieRef?.current.getVersions();
 
               if (v && resultRef.current) {
@@ -46,12 +48,12 @@ describe('getVersions', () => {
       );
     }
 
-    cy.mount(<Wrapper />);
-
-    cy.get('[data-testid="versions"]').click();
-    cy.get('[data-testid="versionsResult"]').should(
-      'have.text',
-      `${pkg.version} + ${commonPlayer.getLottieWebVersion()}`,
-    );
+    cy.mount(<Wrapper />).then(() => {
+      cy.get('[data-testid="versions"]').click();
+      cy.get('[data-testid="versionsResult"]').should(
+        'have.text',
+        `${pkg.version} + ${commonPlayer.getLottieWebVersion()}`,
+      );
+    });
   });
 });
