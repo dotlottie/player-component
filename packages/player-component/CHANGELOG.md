@@ -1,5 +1,12 @@
 # @dotlottie/player-component
 
+## 2.0.0-beta.6
+
+### Minor Changes
+
+- d40d5d7: added getversions
+- d40d5d7: chore: updated lottie-web version
+
 ## 2.0.0-beta.5
 
 ### Minor Changes
