@@ -15,7 +15,7 @@ dotLottie is an open-source file format that combines one or more Lottie files a
 
 ## Documentation
 
-[View the full documentation](https://docs.lottiefiles.com/dotlottie-player/)
+[View the full documentation](https://docs.lottiefiles.com/dotlottie-players/)
 
 ## Installation
 
