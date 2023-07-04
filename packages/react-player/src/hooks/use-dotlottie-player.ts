@@ -16,11 +16,14 @@ import { DotLottiePlayer } from '@dotlottie/common';
 import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useState, useImperativeHandle } from 'react';
 
+import pkg from '../../package.json';
+
 export interface DotLottieRefProps {
   getCurrentAnimationId: () => string | undefined;
   getLottie: () => AnimationItem | undefined;
   getManifest: () => Manifest | undefined;
   getState: () => DotLottiePlayerState;
+  getVersions: () => Versions;
   next: (
     getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
@@ -42,6 +45,11 @@ export interface DotLottieRefProps {
   setLoop: (loop: number | boolean) => void;
   setPlayMode: (mode: PlayMode) => void;
   setSpeed: (speed: number) => void;
+}
+
+export interface Versions {
+  dotLottieReactVersion: string;
+  lottieWebVersion: string;
 }
 
 export const useDotLottiePlayer = (
@@ -107,6 +115,12 @@ export const useDotLottiePlayer = (
           },
           getLottie: (): AnimationItem | undefined => {
             return dotLottiePlayer.getAnimationInstance();
+          },
+          getVersions: (): Versions => {
+            return {
+              lottieWebVersion: DotLottiePlayer.getLottieWebVersion(),
+              dotLottieReactVersion: `${pkg.version}`,
+            };
           },
           setDefaultTheme: (defaultTheme: string): void => {
             dotLottiePlayer.setDefaultTheme(defaultTheme);
