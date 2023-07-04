@@ -20,6 +20,8 @@ import type {
   CanvasRendererConfig,
 } from 'lottie-web';
 
+import pkg from '../package.json';
+
 import { Store } from './store';
 import { createError, logError, logWarning } from './utils';
 
@@ -819,6 +821,10 @@ export class DotLottiePlayer {
 
   public getAnimationInstance(): AnimationItem | undefined {
     return this._lottie;
+  }
+
+  public static getLottieWebVersion(): string {
+    return `${pkg.dependencies['lottie-web']}`;
   }
 
   public addEventListener(name: AnimationEventName, cb: () => unknown): void {
