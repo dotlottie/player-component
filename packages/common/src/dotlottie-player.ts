@@ -636,6 +636,33 @@ export class DotLottiePlayer {
     }
   }
 
+  protected _getAnimationByIdOrIndex(animation: string | number): ManifestAnimation {
+    this._requireAnimationsInTheManifest();
+    this._requireAnimationsToBeLoaded();
+
+    if (typeof animation === 'number') {
+      const animByIndex = this._manifest?.animations[animation];
+
+      if (!animByIndex) {
+        throw createError('animation not found.');
+      }
+
+      return animByIndex;
+    }
+
+    if (typeof animation === 'string') {
+      const animById = this._manifest?.animations.find((anim) => anim.id === animation);
+
+      if (!animById) {
+        throw createError('animation not found.');
+      }
+
+      return animById;
+    }
+
+    throw createError('first param must be a number or string');
+  }
+
   public get activeAnimationId(): string | undefined {
     return this._activeAnimationId;
   }
@@ -925,13 +952,35 @@ export class DotLottiePlayer {
     }
   }
 
-  public revertToManifestValues(playbackKeys?: Array<keyof PlaybackOptions>): void {
-    let revertOptions: Array<keyof PlaybackOptions>;
+  public revertToManifestValues(playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>): void {
+    let revertOptions: Array<keyof PlaybackOptions | 'activeAnimationId'>;
 
     if (!Array.isArray(playbackKeys) || playbackKeys.length === 0) {
-      revertOptions = ['autoplay', 'defaultTheme', 'direction', 'hover', 'intermission', 'loop', 'playMode', 'speed'];
+      revertOptions = [
+        'autoplay',
+        'defaultTheme',
+        'direction',
+        'hover',
+        'intermission',
+        'loop',
+        'playMode',
+        'speed',
+        'activeAnimationId',
+      ];
     } else {
       revertOptions = playbackKeys;
+    }
+
+    let shouldRender = false;
+
+    if (revertOptions.includes('activeAnimationId')) {
+      const activeAnimationId = this._manifest?.activeAnimationId;
+      const animation = this._getAnimationByIdOrIndex(activeAnimationId || 0);
+
+      this._activeAnimationId = activeAnimationId;
+      this._setCurrentAnimation(animation.id);
+
+      shouldRender = true;
     }
 
     revertOptions.forEach((key) => {
@@ -982,7 +1031,10 @@ export class DotLottiePlayer {
       }
     });
 
-    this._notify();
+    // Renders if activeAnimationId being updated.
+    if (shouldRender) {
+      this.render();
+    }
   }
 
   public removeEventListener(name: AnimationEventName, cb?: () => unknown): void {
@@ -1073,16 +1125,21 @@ export class DotLottiePlayer {
     }
   }
 
+  protected _setCurrentAnimation(animationId: string): void {
+    const anim = this._animations.get(animationId);
+
+    if (!anim) {
+      throw createError(`animation '${animationId}' not found`);
+    }
+
+    this._currentAnimationId = animationId;
+    this._animation = anim;
+  }
+
   // If we go back to default animation or at animation 0 we need to use props
   protected async render(activeAnimation?: Partial<ManifestAnimation>): Promise<void> {
     if (activeAnimation?.id) {
-      const anim = this._animations.get(activeAnimation.id);
-
-      if (!anim) {
-        throw createError(`animation '${activeAnimation.id}' not found`);
-      }
-      this._currentAnimationId = activeAnimation.id;
-      this._animation = anim;
+      this._setCurrentAnimation(activeAnimation.id);
     } else if (!this._animation) {
       throw createError('no animation selected');
     }

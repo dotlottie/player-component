@@ -489,6 +489,13 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
+   * Reverts PlaybackOptions to manifest values instead of player props.
+   */
+  public revertToManifestValues(playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>): void {
+    this._dotLottieCommonPlayer?.revertToManifestValues(playbackKeys);
+  }
+
+  /**
    * Returns the styles for the component. Overriding causes styles to not be applied.
    */
   public static get styles(): CSSResult {

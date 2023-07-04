@@ -32,7 +32,7 @@ export interface DotLottieRefProps {
     getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
   reset: () => void;
-  revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions>) => void;
+  revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>) => void;
   setAutoplay: (autoplay: boolean) => void;
   setBackground: (background: string) => void;
   setDefaultTheme: (defaultTheme: string) => void;
@@ -135,7 +135,7 @@ export const useDotLottiePlayer = (
           setSpeed: (speed: number): void => {
             dotLottiePlayer.setSpeed(speed);
           },
-          revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions>) => {
+          revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>) => {
             dotLottiePlayer.revertToManifestValues(playbackKeys);
           },
         };
