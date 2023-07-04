@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 0.1.0-beta.8
+
+### Minor Changes
+
+- 8629bef: fix: fixed issues in beta release
+
 ## 0.1.0-beta.7
 
 ### Minor Changes
