@@ -40,3 +40,10 @@ packages/player-component/tests/
 packages/player-component/cypress/
 
 .changeset/*.json
+
+/apps/react-player-test/
+/apps/player-component-next/
+/apps/player-component-nuxt/
+/apps/player-component-react/
+/apps/player-component-vue/
+/apps/player-component-web
