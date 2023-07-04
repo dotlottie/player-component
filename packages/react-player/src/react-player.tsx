@@ -81,44 +81,80 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   const frame = useSelectDotLottieState(dotLottiePlayer, (state) => state.frame);
   const seeker = useSelectDotLottieState(dotLottiePlayer, (state) => state.seeker);
 
-  // On player props change
+  /**
+   * Updating prop changes.
+   */
   useEffect(() => {
-    if (typeof loop !== 'undefined') {
+    if (typeof loop === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['loop']);
+    } else {
       dotLottiePlayer.setLoop(loop);
     }
+  }, [loop]);
 
-    if (typeof autoplay !== 'undefined') {
+  useEffect(() => {
+    if (typeof autoplay === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['autoplay']);
+    } else {
       dotLottiePlayer.setAutoplay(autoplay);
     }
+  }, [autoplay]);
 
-    if (typeof direction !== 'undefined') {
+  useEffect(() => {
+    if (typeof direction === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['direction']);
+    } else {
       dotLottiePlayer.setDirection(direction);
     }
+  }, [direction]);
 
-    if (typeof speed !== 'undefined') {
+  useEffect(() => {
+    if (typeof speed === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['speed']);
+    } else {
       dotLottiePlayer.setSpeed(speed);
     }
+  }, [speed]);
 
-    if (typeof playMode !== 'undefined') {
+  useEffect(() => {
+    if (typeof playMode === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['playMode']);
+    } else {
       dotLottiePlayer.setMode(playMode);
     }
+  }, [playMode]);
 
-    if (typeof hover !== 'undefined') {
+  useEffect(() => {
+    if (typeof hover === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['hover']);
+    } else {
       dotLottiePlayer.setHover(hover);
     }
+  }, [hover]);
 
-    if (typeof background !== 'undefined') {
+  useEffect(() => {
+    if (typeof background === 'undefined') {
+      dotLottiePlayer.setBackground('transparent');
+    } else {
       dotLottiePlayer.setBackground(background);
     }
+  }, [background]);
 
-    if (typeof intermission !== 'undefined') {
+  useEffect(() => {
+    if (typeof intermission === 'undefined') {
+      dotLottiePlayer.revertToManifestValues(['intermission']);
+    } else {
       dotLottiePlayer.setIntermission(intermission);
     }
+  }, [intermission]);
 
-    if (typeof defaultTheme !== 'undefined') {
+  useEffect(() => {
+    if (typeof defaultTheme === 'undefined' || !defaultTheme) {
+      dotLottiePlayer.revertToManifestValues(['defaultTheme']);
+    } else {
       dotLottiePlayer.setDefaultTheme(defaultTheme);
     }
-  }, [loop, autoplay, speed, direction, playMode, hover, background, intermission, defaultTheme]);
+  }, [defaultTheme]);
 
   useEffect(() => {
     if (activeAnimationId) {
