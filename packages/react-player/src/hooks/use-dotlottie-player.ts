@@ -34,7 +34,7 @@ export interface DotLottieRefProps {
   reset: () => void;
   revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions>) => void;
   setAutoplay: (autoplay: boolean) => void;
-  setBackground: (backgound: string) => void;
+  setBackground: (background: string) => void;
   setDefaultTheme: (defaultTheme: string) => void;
   setDirection: (direction: AnimationDirection) => void;
   setHover: (hover: boolean) => void;
@@ -111,8 +111,8 @@ export const useDotLottiePlayer = (
           setDefaultTheme: (defaultTheme: string): void => {
             dotLottiePlayer.setDefaultTheme(defaultTheme);
           },
-          setBackground: (backgound: string): void => {
-            dotLottiePlayer.setBackground(backgound);
+          setBackground: (background: string): void => {
+            dotLottiePlayer.setBackground(background);
           },
           setAutoplay: (autoplay: boolean): void => {
             dotLottiePlayer.setAutoplay(autoplay);
