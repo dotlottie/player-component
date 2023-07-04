@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.0.1
+
+### Patch Changes
+
+- f4e8ec1: bumping to enable release
+
 ## 2.0.0
 
 ### Minor Changes

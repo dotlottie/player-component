@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.0.0
+
+### Major Changes
+
+- 904c894: bumping for major release
+
 ## 0.1.0
 
 ### Minor Changes
