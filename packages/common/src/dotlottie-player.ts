@@ -23,6 +23,8 @@ import type {
 import { Store } from './store';
 import { createError, logError, logWarning } from './utils';
 
+export type { AnimationDirection, AnimationItem };
+
 export enum PlayerEvents {
   Complete = 'complete',
   DataFail = 'data_fail',
@@ -36,7 +38,6 @@ export enum PlayerEvents {
   Ready = 'ready',
   Stop = 'stop',
 }
-
 export enum PlayerState {
   Error = 'error',
   Fetching = 'fetching',
@@ -160,6 +161,7 @@ declare global {
 
 export interface DotLottiePlayerState extends PlaybackOptions {
   background: string;
+  currentAnimationId: string | undefined;
   currentState: PlayerState;
   frame: number;
   intermission: number;
@@ -178,6 +180,7 @@ export const DEFAULT_STATE: DotLottiePlayerState = {
   speed: 1,
   background: 'transparent',
   intermission: 0,
+  currentAnimationId: undefined,
 };
 
 export class DotLottiePlayer {
@@ -237,8 +240,6 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
-  protected _originalPlaybackSettings: DotLottieConfig<RendererType> | undefined;
-
   public constructor(
     src: string | Record<string, unknown>,
     container?: DotLottieElement | null,
@@ -254,9 +255,6 @@ export class DotLottiePlayer {
 
     // Filter out the playback options
     this._playbackOptions = this._validatePlaybackOptions(options || {});
-
-    // Store the original playback options
-    this._originalPlaybackSettings = options;
 
     // Set the active animation id (animation to play first)
     if (typeof options?.activeAnimationId === 'string') {
@@ -323,20 +321,40 @@ export class DotLottiePlayer {
   protected _getOption<T extends keyof Required<PlaybackOptions>, V extends Required<PlaybackOptions>[T]>(
     option: T,
   ): V {
-    if (typeof this._playbackOptions[option] === 'undefined') {
-      // Option from manifest
-      const activeAnim = this._manifest?.animations.find((animation) => animation.id === this._currentAnimationId);
+    // Options from props for 1st animation
+    if (typeof this._playbackOptions[option] !== 'undefined') {
+      return this._playbackOptions[option] as V;
+    }
+    // Option from manifest
+    const activeAnim = this._manifest?.animations.find((animation) => animation.id === this._currentAnimationId);
 
-      if (activeAnim && activeAnim[option]) {
-        return activeAnim[option] as unknown as V;
-      }
-
-      // Option from defaults
-      return DEFAULT_OPTIONS[option] as V;
+    if (activeAnim && typeof activeAnim[option] !== 'undefined') {
+      return activeAnim[option] as unknown as V;
     }
 
-    // Option from player props
-    return this._playbackOptions[option] as V;
+    // Option from defaults
+    return DEFAULT_OPTIONS[option] as V;
+  }
+
+  protected _getPlaybackOptions<K extends keyof PlaybackOptions, V extends PlaybackOptions[K]>(): PlaybackOptions {
+    const allOptions: PlaybackOptions = {};
+
+    for (const key in DEFAULT_OPTIONS) {
+      if (typeof DEFAULT_OPTIONS[key as K] !== 'undefined') {
+        allOptions[key as K] = this._getOption(key as K) as V;
+      }
+    }
+
+    return allOptions;
+  }
+
+  protected _getOptionsFromAnimation(manifestAnimation: ManifestAnimation): PlaybackOptions {
+    const { id, ...rest } = manifestAnimation;
+
+    return {
+      ...DEFAULT_OPTIONS,
+      ...rest,
+    };
   }
 
   protected _updateTestData(): void {
@@ -551,7 +569,10 @@ export class DotLottiePlayer {
     }
   }
 
-  public play(activeAnimation?: string | number, options?: PlaybackOptions): void {
+  public play(
+    activeAnimation?: string | number,
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+  ): void {
     if (!this._lottie) return;
 
     this._requireAnimationsInTheManifest();
@@ -574,7 +595,17 @@ export class DotLottiePlayer {
       if (!anim) {
         throw createError('animation not found.');
       }
-      this.render(anim);
+
+      if (typeof getOptions === 'function') {
+        this.render({
+          id: anim.id,
+          ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(anim)),
+        });
+      } else {
+        this.render({
+          id: anim.id,
+        });
+      }
     }
 
     if (typeof activeAnimation === 'string') {
@@ -584,10 +615,16 @@ export class DotLottiePlayer {
         throw createError('animation not found.');
       }
 
-      this.render({
-        ...anim,
-        ...this._validatePlaybackOptions(options),
-      });
+      if (typeof getOptions === 'function') {
+        this.render({
+          id: anim.id,
+          ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(anim)),
+        });
+      } else {
+        this.render({
+          id: anim.id,
+        });
+      }
     }
   }
 
@@ -599,6 +636,33 @@ export class DotLottiePlayer {
     }
   }
 
+  protected _getAnimationByIdOrIndex(animation: string | number): ManifestAnimation {
+    this._requireAnimationsInTheManifest();
+    this._requireAnimationsToBeLoaded();
+
+    if (typeof animation === 'number') {
+      const animByIndex = this._manifest?.animations[animation];
+
+      if (!animByIndex) {
+        throw createError('animation not found.');
+      }
+
+      return animByIndex;
+    }
+
+    if (typeof animation === 'string') {
+      const animById = this._manifest?.animations.find((anim) => anim.id === animation);
+
+      if (!animById) {
+        throw createError('animation not found.');
+      }
+
+      return animById;
+    }
+
+    throw createError('first param must be a number or string');
+  }
+
   public get activeAnimationId(): string | undefined {
     return this._activeAnimationId;
   }
@@ -608,7 +672,7 @@ export class DotLottiePlayer {
   }
 
   public reset(): void {
-    const activeId = this._manifest?.activeAnimationId;
+    const activeId = this._activeAnimationId;
 
     if (!activeId) {
       const anim = this._manifest?.animations[0];
@@ -624,10 +688,14 @@ export class DotLottiePlayer {
 
     if (!anim) return;
 
-    this.render(anim);
+    this.render({
+      id: anim.id,
+    });
   }
 
-  public previous(options?: PlaybackOptions): void {
+  public previous(
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+  ): void {
     if (!this._manifest || !this._manifest.animations.length) {
       throw createError('manifest not found.');
     }
@@ -647,13 +715,21 @@ export class DotLottiePlayer {
       throw createError('animation not found.');
     }
 
-    this.render({
-      ...nextAnim,
-      ...this._validatePlaybackOptions(options),
-    });
+    if (typeof getOptions === 'function') {
+      this.render({
+        id: nextAnim.id,
+        ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(nextAnim)),
+      });
+    } else {
+      this.render({
+        id: nextAnim.id,
+      });
+    }
   }
 
-  public next(options?: PlaybackOptions): void {
+  public next(
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+  ): void {
     if (!this._manifest || !this._manifest.animations.length) {
       throw createError('manifest not found.');
     }
@@ -670,10 +746,16 @@ export class DotLottiePlayer {
       throw createError('animation not found.');
     }
 
-    this.render({
-      ...nextAnim,
-      ...this._validatePlaybackOptions(options),
-    });
+    if (typeof getOptions === 'function') {
+      this.render({
+        id: nextAnim.id,
+        ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(nextAnim)),
+      });
+    } else {
+      this.render({
+        id: nextAnim.id,
+      });
+    }
   }
 
   public getManifest(): Manifest | undefined {
@@ -762,6 +844,7 @@ export class DotLottiePlayer {
       background: this._background,
       intermission: this._intermission,
       defaultTheme: this._defaultTheme,
+      currentAnimationId: this._currentAnimationId,
     };
   }
 
@@ -780,7 +863,7 @@ export class DotLottiePlayer {
   }
 
   public setDirection(direction: 1 | -1): void {
-    this._requireValidSpeed(direction);
+    this._requireValidDirection(direction);
 
     this._lottie?.setDirection(direction);
     this._playbackOptions.direction = direction;
@@ -828,7 +911,9 @@ export class DotLottiePlayer {
     this._defaultTheme = value;
     this._playbackOptions.defaultTheme = value;
 
-    this.render();
+    if (this._animation) {
+      this.render();
+    }
 
     this._notify();
   }
@@ -864,6 +949,91 @@ export class DotLottiePlayer {
     if (this._container) {
       this._background = color;
       this._container.style.backgroundColor = color;
+    }
+  }
+
+  public revertToManifestValues(playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>): void {
+    let revertOptions: Array<keyof PlaybackOptions | 'activeAnimationId'>;
+
+    if (!Array.isArray(playbackKeys) || playbackKeys.length === 0) {
+      revertOptions = [
+        'autoplay',
+        'defaultTheme',
+        'direction',
+        'hover',
+        'intermission',
+        'loop',
+        'playMode',
+        'speed',
+        'activeAnimationId',
+      ];
+    } else {
+      revertOptions = playbackKeys;
+    }
+
+    let shouldRender = false;
+
+    if (revertOptions.includes('activeAnimationId')) {
+      const activeAnimationId = this._manifest?.activeAnimationId;
+      const animation = this._getAnimationByIdOrIndex(activeAnimationId || 0);
+
+      this._activeAnimationId = activeAnimationId;
+      this._setCurrentAnimation(animation.id);
+
+      shouldRender = true;
+    }
+
+    revertOptions.forEach((key) => {
+      switch (key) {
+        case 'autoplay':
+          delete this._playbackOptions.autoplay;
+          this.setAutoplay(this._getOption('autoplay'));
+          break;
+
+        case 'defaultTheme':
+          delete this._playbackOptions.defaultTheme;
+          this.setDefaultTheme(this._getOption('defaultTheme'));
+          break;
+
+        case 'direction':
+          delete this._playbackOptions.direction;
+          this.setDirection(this._getOption('direction'));
+          break;
+
+        case 'hover':
+          delete this._playbackOptions.hover;
+          this.setHover(this._getOption('hover'));
+          break;
+
+        case 'intermission':
+          delete this._playbackOptions.intermission;
+          this.setIntermission(this._getOption('intermission'));
+          break;
+
+        case 'loop':
+          delete this._playbackOptions.loop;
+          this.setLoop(this._getOption('loop'));
+          break;
+
+        case 'playMode':
+          delete this._playbackOptions.playMode;
+          this.setMode(this._getOption('playMode'));
+          this.setDirection(this._getOption('direction'));
+          break;
+
+        case 'speed':
+          delete this._playbackOptions.speed;
+          this.setSpeed(this._getOption('speed'));
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    // Renders if activeAnimationId being updated.
+    if (shouldRender) {
+      this.render();
     }
   }
 
@@ -955,30 +1125,33 @@ export class DotLottiePlayer {
     }
   }
 
+  protected _setCurrentAnimation(animationId: string): void {
+    const anim = this._animations.get(animationId);
+
+    if (!anim) {
+      throw createError(`animation '${animationId}' not found`);
+    }
+
+    this._currentAnimationId = animationId;
+    this._animation = anim;
+  }
+
   // If we go back to default animation or at animation 0 we need to use props
   protected async render(activeAnimation?: Partial<ManifestAnimation>): Promise<void> {
     if (activeAnimation?.id) {
-      const anim = this._animations.get(activeAnimation.id);
-
-      if (!anim) {
-        throw createError(`animation '${activeAnimation.id}' not found`);
-      }
-      this._currentAnimationId = activeAnimation.id;
-      this._animation = anim;
+      this._setCurrentAnimation(activeAnimation.id);
     } else if (!this._animation) {
       throw createError('no animation selected');
     }
 
     this.destroy();
 
-    const firstAnimation = this._manifest?.animations.at(0)?.id;
-
     let loop: number | boolean = DEFAULT_OPTIONS.loop ?? false;
     let autoplay: boolean = DEFAULT_OPTIONS.autoplay ?? false;
     let mode: PlayMode = DEFAULT_OPTIONS.playMode ?? PlayMode.Normal;
     let intermission: number = DEFAULT_OPTIONS.intermission ?? 0;
     let hover: boolean = DEFAULT_OPTIONS.hover ?? false;
-    let direction: number = DEFAULT_OPTIONS.direction ?? 1;
+    let direction: AnimationDirection = DEFAULT_OPTIONS.direction ?? 1;
     let speed: number = DEFAULT_OPTIONS.speed ?? 1;
     let defaultTheme: string = DEFAULT_OPTIONS.defaultTheme ?? '';
 
@@ -992,51 +1165,17 @@ export class DotLottiePlayer {
     speed = activeAnimation?.speed ?? this._getOption('speed');
     defaultTheme = activeAnimation?.defaultTheme ?? this._getOption('defaultTheme');
 
-    // If we're on the first animation or default animation, check and use the saved inital props
-    if (this._currentAnimationId === firstAnimation || this._currentAnimationId === this._activeAnimationId) {
-      if (this._originalPlaybackSettings?.loop) {
-        loop = this._originalPlaybackSettings.loop;
-      }
-
-      if (this._originalPlaybackSettings?.autoplay) {
-        autoplay = this._originalPlaybackSettings.autoplay;
-      }
-
-      if (this._originalPlaybackSettings?.playMode) {
-        mode = this._originalPlaybackSettings.playMode;
-      }
-
-      if (this._originalPlaybackSettings?.intermission) {
-        intermission = this._originalPlaybackSettings.intermission;
-      }
-
-      if (this._originalPlaybackSettings?.hover) {
-        hover = this._originalPlaybackSettings.hover;
-      }
-
-      if (this._originalPlaybackSettings?.direction) {
-        direction = this._originalPlaybackSettings.direction;
-      }
-
-      if (this._originalPlaybackSettings?.speed) {
-        speed = this._originalPlaybackSettings.speed;
-      }
-
-      if (this._originalPlaybackSettings?.defaultTheme) {
-        defaultTheme = this._originalPlaybackSettings.defaultTheme;
-      }
-    }
-
     const options = {
       ...this._animationConfig,
       autoplay: hover ? false : autoplay,
       loop: typeof loop === 'number' ? false : loop,
     };
 
-    this.setMode(mode);
-    this.setIntermission(intermission);
-    this.setHover(hover);
-    this.setLoop(loop);
+    // Modifying for current animation
+    this._mode = mode;
+    this._intermission = intermission;
+    this._hover = hover;
+    this._loop = loop;
 
     const lottieStyleSheet = this._themes.get(defaultTheme) ?? '';
 
@@ -1066,8 +1205,9 @@ export class DotLottiePlayer {
 
     this.setCurrentState(PlayerState.Ready);
 
-    this.setDirection(direction === 1 ? 1 : -1);
-    this.setSpeed(speed);
+    // Modifying for current animation
+    this._lottie.setDirection(direction);
+    this._lottie.setSpeed(speed);
 
     if (autoplay && !hover) {
       this.play();
@@ -1091,9 +1231,13 @@ export class DotLottiePlayer {
       if (typeof srcParsed === 'string') {
         const { activeAnimationId, animations, manifest, themes } = await this.getAnimationData(srcParsed);
 
-        if (!this._currentAnimationId) {
-          this._currentAnimationId = activeAnimationId;
+        // Setting the activeAnimationId from Manfiest if it's not set by user
+        if (!this._activeAnimationId) {
+          this._activeAnimationId = activeAnimationId;
         }
+
+        // Setting the animation to be played
+        this._currentAnimationId = this._activeAnimationId;
 
         this._animations = animations;
         this._themes = themes;
@@ -1128,9 +1272,11 @@ export class DotLottiePlayer {
     logError(msg);
   }
 
-  protected async fetchLottieJSON(
-    src: string,
-  ): Promise<{ animations: Map<string, Animation>; manifest: Manifest; themes: Map<string, string> }> {
+  protected async fetchLottieJSON(src: string): Promise<{
+    animations: Map<string, Animation>;
+    manifest: Manifest;
+    themes: Map<string, string>;
+  }> {
     if (!src.toLowerCase().endsWith('.json')) throw createError('parameter src must be .json');
 
     try {
@@ -1190,11 +1336,6 @@ export class DotLottiePlayer {
       let activeAnimationId: string;
 
       if (manifest.activeAnimationId) {
-        // Set the current playing animation
-        this._currentAnimationId = manifest.activeAnimationId;
-
-        // Set the active animation id value
-        this._activeAnimationId = manifest.activeAnimationId;
         activeAnimationId = manifest.activeAnimationId;
       } else {
         this._currentAnimationId = manifest.animations[0].id;

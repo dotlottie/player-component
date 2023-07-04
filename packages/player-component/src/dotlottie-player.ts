@@ -318,15 +318,19 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Play the previous animation. The order is taken from the manifest.
    */
-  public previous(playbackOptions?: PlaybackOptions): void {
-    this._dotLottieCommonPlayer?.previous(playbackOptions);
+  public previous(
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+  ): void {
+    this._dotLottieCommonPlayer?.previous(getOptions);
   }
 
   /**
    * Play the next animation. The order is taken from the manifest.
    */
-  public next(playbackOptions?: PlaybackOptions): void {
-    this._dotLottieCommonPlayer?.next(playbackOptions);
+  public next(
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+  ): void {
+    this._dotLottieCommonPlayer?.next(getOptions);
   }
 
   /**
@@ -336,12 +340,15 @@ export class DotLottiePlayer extends LitElement {
     this._dotLottieCommonPlayer?.reset();
   }
 
-  public play(targetAnimation?: string | number, playbackOptions?: PlaybackOptions): void {
+  public play(
+    targetAnimation?: string | number,
+    getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
+  ): void {
     if (!this._dotLottieCommonPlayer) {
       return;
     }
 
-    this._dotLottieCommonPlayer.play(targetAnimation, playbackOptions);
+    this._dotLottieCommonPlayer.play(targetAnimation, getOptions);
   }
 
   /**
@@ -397,6 +404,20 @@ export class DotLottiePlayer extends LitElement {
     }
 
     return data;
+  }
+
+  /**
+   * Set theme
+   */
+  public setTheme(theme: string): void {
+    this._dotLottieCommonPlayer?.setDefaultTheme(theme);
+  }
+
+  /**
+   * Get theme
+   */
+  public getTheme(): string | undefined {
+    return this._dotLottieCommonPlayer?.defaultTheme;
   }
 
   /**
@@ -465,6 +486,13 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.toggleLoop();
+  }
+
+  /**
+   * Reverts PlaybackOptions to manifest values instead of player props.
+   */
+  public revertToManifestValues(playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>): void {
+    this._dotLottieCommonPlayer?.revertToManifestValues(playbackKeys);
   }
 
   /**

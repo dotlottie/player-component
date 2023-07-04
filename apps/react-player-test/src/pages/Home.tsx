@@ -44,16 +44,16 @@ interface ItemProps {
 const Item: React.FC<ItemProps> = (props: ItemProps) => {
   const isDarkMode = React.useContext(ThemeContext) === 'dark';
   const [src, setSrc] = useState<Record<string, unknown> | string>(props.src);
-  const [loop, setLoop] = useState(true);
-  const [autoplay, setAutoPlay] = useState(true);
+  const [loop, setLoop] = useState<undefined | boolean>(true);
+  const [autoplay, setAutoPlay] = useState<undefined | boolean>(true);
   const [controls, setControls] = useState(true);
-  const [direction, setDirection] = useState<1 | -1>(1);
-  const [background, setBackground] = useState('#FFFFFF00');
-  const [speed, setSpeed] = useState(1);
-  const [mode, setMode] = useState(PlayMode.Normal);
-  const [playOnHover, setPlayOnHover] = useState(false);
+  const [direction, setDirection] = useState<undefined | 1 | -1>(1);
+  const [background, setBackground] = useState<undefined | string>('#FFFFFF00');
+  const [speed, setSpeed] = useState<undefined | number>(1);
+  const [mode, setMode] = useState<undefined | PlayMode>(PlayMode.Normal);
+  const [playOnHover, setPlayOnHover] = useState<undefined | boolean>(false);
   const [activeAnimationId, setActiveAnimationId] = useState<string | undefined>();
-  const [theme, setTheme] = useState<string>('');
+  const [theme, setTheme] = useState<undefined | string>('');
   const [animations, setAnimations] = useState<ManifestAnimation[]>();
   const [themes, setThemes] = useState<ManifestTheme[]>();
   const lottieRef = useRef<DotLottieRefProps>();
@@ -142,6 +142,17 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           </button>
           <button
             onClick={(): void => {
+              lottieRef.current?.next((_, manifest) => {
+                return {
+                  ...manifest,
+                };
+              });
+            }}
+          >
+            Next with (override)
+          </button>
+          <button
+            onClick={(): void => {
               lottieRef.current?.next();
             }}
           >
@@ -198,6 +209,14 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
             <input type="checkbox" onChange={(): void => setPlayOnHover(!playOnHover)} checked={playOnHover} />
             playOnHover
           </label>
+          <button
+            onClick={() => {
+              lottieRef.current?.revertToManifestValues([]);
+              setBackground('transparent');
+            }}
+          >
+            Unset props
+          </button>
         </div>
         <DotLottiePlayer
           lottieRef={lottieRef}
