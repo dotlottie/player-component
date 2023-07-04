@@ -1,0 +1,56 @@
+# Build outputs
+build/
+dist/
+artifacts/
+
+# Changelog
+.changeset/config.json
+CHANGELOG.md
+
+# IDE related
+.idea/
+.history/
+
+# Package management
+node_modules/
+.yarn/
+.pnp.*
+
+# Testing
+coverage/
+__snapshots__
+__fixtures__
+
+# Temporary or local data
+temp/
+tmp/
+
+# Clinic profiling
+.clinic
+
+# Misc files to ignore
+.eslintrc.cjs
+
+# NextJS
+.next/
+next-env.d.ts
+
+# Exclude from ignore
+!.github
+!.vscode,
+
+# Ignore renderer releases
+releases/
+
+sample-projects/
+
+packages/player-component/cypress/
+packages/player-component/dist/
+packages/common/dist/
+packages/react-player/cypress/
+/apps/react-player-test/
+/apps/player-component-next/
+/apps/player-component-nuxt/
+/apps/player-component-react/
+/apps/player-component-vue/
+/apps/player-component-web/

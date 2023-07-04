@@ -23,3 +23,4 @@ Adding an x between the [ ] will render it as a checked box (i.e. [x]).
 
 - [ ] Lint and unit tests pass locally with my changes.
 - [ ] I have added tests that prove my fix is effective or that my feature works.
+- [ ] I have tested my changes on the player-component and React player.

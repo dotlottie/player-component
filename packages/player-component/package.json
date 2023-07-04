@@ -1,0 +1,51 @@
+{
+  "name": "@dotlottie/player-component",
+  "version": "2.0.0",
+  "description": "dotLottie animation player web component.",
+  "repository": "https://github.com/dotlottie/player-component.git",
+  "homepage": "https://dotlottie.com/players",
+  "bugs": "https://github.com/dotlottie/player-component/issues",
+  "author": "Jawish Hameed <jawish@lottiefiles.com>",
+  "license": "MIT",
+  "main": "dist/dotlottie-player.js",
+  "module": "dist/dotlottie-player.mjs",
+  "types": "dist/dotlottie-player.d.ts",
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "dotlottie",
+    "animation",
+    "web component",
+    "component",
+    "lit-element",
+    "player"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "cypress:open": "cypress open --component",
+    "dev": "tsup --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix",
+    "test": "cypress run --component",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "lit": "^2.7.5"
+  },
+  "devDependencies": {
+    "@dotlottie/common": "workspace:^",
+    "cypress": "^12.11.0",
+    "cypress-ct-lit": "^0.3.2",
+    "lottie-web": "^5.12.2",
+    "tsup": "^6.1.3",
+    "typescript": "^4.7.4",
+    "vite": "^4.3.9"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "browserslist": [
+    "> 3%"
+  ]
+}
