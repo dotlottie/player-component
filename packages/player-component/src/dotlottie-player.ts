@@ -28,6 +28,8 @@ export interface Versions {
 
 const ELEMENT_NAME = 'dotlottie-player';
 
+export { PlayMode, PlaybackOptions };
+
 /**
  * DotLottiePlayer web component class
  */

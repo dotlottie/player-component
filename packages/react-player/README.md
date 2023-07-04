@@ -13,6 +13,10 @@ dotLottie is an open-source file format that combines one or more Lottie files a
 
 [Read more about dotLottie here!](https://dotlottie.io/)
 
+## Documentation
+
+[View the full documentation](https://docs.lottiefiles.com/dotlottie-player/)
+
 ## Installation
 
 You can install `@dotlottie/react-player` using npm:
@@ -71,6 +75,7 @@ The `DotLottiePlayer` component accepts the following props:
 | `renderer`         | How to render                             | `'svg' \| 'html' \| 'canvas'`   | `svg`       |
 | `speed`            | Play speed                                | `number`                        | `1`         |
 | `onEvent`          | Listen to player events                   | `function`                      | `undefined` |
+| `defaultTheme`     | Default lss theme to use                  | `string`                        | `undefined` |
 
 ## Events
 
