@@ -1,5 +1,20 @@
 # @dotlottie/player-component
 
+## 2.0.0
+
+### Minor Changes
+
+- 5c6648d: added getversions
+- 5c6648d: chore: updated lottie-web version
+- 4153712: chore: moved visibilityChange to common player
+- 3b01e71: feat: 🎸 theming
+- b9c465d: fix: fixed issues in beta release
+
+### Patch Changes
+
+- acaa1f3: fix: 🐛 bundling
+- 23a8dc9: chore: build all src modules
+
 ## 2.0.0-beta.6
 
 ### Minor Changes

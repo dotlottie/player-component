@@ -1,6 +1,6 @@
 {
   "name": "@dotlottie/react-player",
-  "version": "0.1.0-beta.9",
+  "version": "0.1.0",
   "type": "module",
   "description": "dotlottie animation player react component.",
   "repository": "https://github.com/dotlottie/player-component.git",

@@ -1,5 +1,25 @@
 # @dotlottie/react-player
 
+## 0.1.0
+
+### Minor Changes
+
+- 5c6648d: added getversions
+- 5c6648d: chore: updated lottie-web version
+- 4153712: chore: moved visibilityChange to common player
+- 3b01e71: feat: 🎸 theming
+- b9c465d: fix: fixed issues in beta release
+
+### Patch Changes
+
+- 3146757: added changeset
+- d6c2aa0: chore: added readme
+- acaa1f3: fix: 🐛 bundling
+- f77e3a5: fixed dts
+- 23a8dc9: chore: build all src modules
+- 3db37ce: fix: types not exported
+- 23a8dc9: fix: 🐛 css not exported
+
 ## 0.1.0-beta.9
 
 ### Minor Changes
