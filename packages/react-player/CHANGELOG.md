@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.0.1
+
+### Patch Changes
+
+- 5e10530: fix: nextjs ssr
+
 ## 1.0.0
 
 ### Major Changes
