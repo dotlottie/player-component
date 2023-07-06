@@ -3,6 +3,7 @@
  */
 
 import type { DotLottiePlayer, DotLottiePlayerState } from '@dotlottie/common';
+import { DEFAULT_STATE } from '@dotlottie/common';
 import { useCallback, useSyncExternalStore } from 'react';
 
 export type Unsubscribe = () => void;
@@ -20,5 +21,9 @@ export function useSelectDotLottieState<T>(
     return dotLottiePlayer.state.subscribe(listener);
   };
 
-  return useSyncExternalStore(subscribe, getSelection);
+  const getServerSnapshot = (): T => {
+    return selector(DEFAULT_STATE);
+  };
+
+  return useSyncExternalStore(subscribe, getSelection, getServerSnapshot);
 }
