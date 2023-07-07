@@ -437,6 +437,10 @@ export class DotLottiePlayer {
     return this._animations;
   }
 
+  public get themes(): Map<string, string> {
+    return this._themes;
+  }
+
   public setMode(mode: PlayMode): void {
     if (typeof mode !== 'string') return;
     this._mode = mode;

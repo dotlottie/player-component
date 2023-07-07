@@ -16,8 +16,11 @@ export default css`
     --lottie-player-toolbar-icon-hover-color: #222;
     --lottie-player-toolbar-icon-active-color: #555;
     --lottie-player-seeker-track-color: #ccc;
-    --lottie-player-seeker-thumb-color: rgba(0, 107, 120, 0.8);
+    --lottie-player-seeker-accent-color: #00c1a2;
+    --lottie-player-seeker-thumb-color: #00c1a2;
     --lottie-player-seeker-display: block;
+    --light-mode-border-subtle: #d9e0e6;
+    --light-mode-text-icon-primary: #20272c;
 
     display: block;
     width: 100%;
@@ -25,6 +28,7 @@ export default css`
   }
 
   .main {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -84,11 +88,90 @@ export default css`
     display: none;
   }
 
+  .popover {
+    position: absolute;
+    top: 80px;
+    left: 140px;
+    width: 224px;
+    background-color: #ffffff;
+    box-shadow: 0px 8px 48px 0px rgba(243, 246, 248, 0.15), 0px 8px 16px 0px rgba(61, 72, 83, 0.16),
+      0px 0px 1px 0px rgba(61, 72, 83, 0.36);
+    border-radius: 8px;
+    padding: 8px;
+    z-index: 100;
+  }
+
+  .popover-button-text {
+    display: flex;
+    color: #20272c;
+    height: 23px;
+    flex-direction: column;
+    align-self: stretch;
+  }
+
+  .popover-button {
+    flex-direction: row;
+    cursor: pointer;
+    color: #20272c;
+    justify-content: space-between;
+    display: flex;
+    padding: 4px 8px;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+  }
+
+  .option-title-button {
+    display: flex;
+    flex-direction: row;
+    height: 32px;
+    align-items: center;
+    gap: 4px;
+    align-self: stretch;
+    cursor: pointer;
+    color: var(--light-mode-text-icon-primary);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: -0.32px;
+  }
+
+  .option-title-separator {
+    margin: 8px -8px;
+    border-bottom: 1px solid var(--light-mode-border-subtle);
+  }
+
+  .option-title-chevron {
+    display: flex;
+    margin: 4px;
+  }
+
+  .option-row {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .option-button {
+    display: flex;
+    padding: 4px 8px;
+    color: #20272c;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+  }
+
+  .option-tick {
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+
   .seeker {
     -webkit-appearance: none;
     width: 95%;
     outline: none;
-    background-color: var(--lottie-player-toolbar-background-color);
+    background-color: #353535;
     display: var(--lottie-player-seeker-display);
   }
 
@@ -96,16 +179,16 @@ export default css`
     width: 100%;
     height: 5px;
     cursor: pointer;
-    background: var(--lottie-player-seeker-track-color);
+    accent-color: green;
     border-radius: 3px;
   }
   .seeker::-webkit-slider-thumb {
+    -webkit-appearance: none;
     height: 15px;
     width: 15px;
     border-radius: 50%;
     background: var(--lottie-player-seeker-thumb-color);
     cursor: pointer;
-    -webkit-appearance: none;
     margin-top: -5px;
   }
   .seeker:focus::-webkit-slider-runnable-track {
@@ -132,6 +215,7 @@ export default css`
     background: transparent;
     border-color: transparent;
     color: transparent;
+    accent-color: var(--lottie-player-seeker-accent-color);
   }
   .seeker::-ms-fill-lower {
     background: var(--lottie-player-seeker-track-color);
