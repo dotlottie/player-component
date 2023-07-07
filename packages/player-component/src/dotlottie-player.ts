@@ -340,7 +340,7 @@ export class DotLottiePlayer extends LitElement {
   }
 
   public currentAnimation(): string {
-    if (!this._dotLottieCommonPlayer) return '';
+    if (!this._dotLottieCommonPlayer || !this._dotLottieCommonPlayer.currentAnimationId) return '';
 
     return this._dotLottieCommonPlayer.currentAnimationId;
   }
@@ -630,17 +630,12 @@ export class DotLottiePlayer extends LitElement {
       <div id="lottie-controls" aria-label="lottie-animation-controls" class="toolbar">
         ${this._hasMultipleAnimations
           ? html`
-              <button
-                style="align-items: center; width: 24px; height: 24px;"
-                @click=${(): void => this.previous()}
-                tabindex="0"
-                aria-label="previous-animation"
-              >
-                <svg width="14" height="12" viewBox="0 0 14 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <button @click=${(): void => this.previous()} tabindex="0" aria-label="previous-animation">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fill-rule="evenodd"
                     clip-rule="evenodd"
-                    d="M0.692139 11.5C0.692139 11.7761 0.915996 12 1.19214 12C1.46828 12 1.69214 11.7761 1.69214 11.5L1.69214 0.5C1.69214 0.223858 1.46828 0 1.19214 0C0.915997 0 0.692139 0.223858 0.692139 0.5V11.5ZM11.5192 11.7828C12.1859 12.174 13.0254 11.6933 13.0254 10.9204L13.0254 1.0799C13.0254 0.306915 12.1859 -0.173798 11.5192 0.217468L3.13612 5.13769C2.47769 5.52414 2.47769 6.4761 3.13612 6.86255L11.5192 11.7828Z"
+                    d="M1.69214 13.5C1.69214 13.7761 1.916 14 2.19214 14C2.46828 14 2.69214 13.7761 2.69214 13.5L2.69214 2.5C2.69214 2.22386 2.46828 2 2.19214 2C1.916 2 1.69214 2.22386 1.69214 2.5V13.5ZM12.5192 13.7828C13.1859 14.174 14.0254 13.6933 14.0254 12.9204L14.0254 3.0799C14.0254 2.30692 13.1859 1.8262 12.5192 2.21747L4.13612 7.13769C3.47769 7.52414 3.47769 8.4761 4.13612 8.86255L12.5192 13.7828Z"
                     fill="#20272C"
                   />
                 </svg>
@@ -653,7 +648,6 @@ export class DotLottiePlayer extends LitElement {
             this.togglePlay();
           }}
           class=${isPlaying || isPaused ? 'active' : ''}
-          style="align-items:center; width: 24px; height: 24px;"
           tabindex="0"
           aria-label="play-pause"
         >
@@ -664,24 +658,26 @@ export class DotLottiePlayer extends LitElement {
                 </svg>
               `
             : html`
-                <svg width="24" height="24" aria-hidden="true" focusable="false">
-                  <path d="M8.016 5.016L18.985 12 8.016 18.984V5.015z" />
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M3.99996 2C3.26358 2 2.66663 2.59695 2.66663 3.33333V12.6667C2.66663 13.403 3.26358 14 3.99996 14H5.33329C6.06967 14 6.66663 13.403 6.66663 12.6667V3.33333C6.66663 2.59695 6.06967 2 5.33329 2H3.99996Z"
+                    fill="#20272C"
+                  />
+                  <path
+                    d="M10.6666 2C9.93025 2 9.33329 2.59695 9.33329 3.33333V12.6667C9.33329 13.403 9.93025 14 10.6666 14H12C12.7363 14 13.3333 13.403 13.3333 12.6667V3.33333C13.3333 2.59695 12.7363 2 12 2H10.6666Z"
+                    fill="#20272C"
+                  />
                 </svg>
               `}
         </button>
         ${this._hasMultipleAnimations
           ? html`
-              <button
-                style="align-items: center; width: 24px; height: 24px;"
-                @click=${(): void => this.next()}
-                tabindex="0"
-                aria-label="previous-animation"
-              >
-                <svg width="13" height="12" viewBox="0 0 13 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <button @click=${(): void => this.next()} tabindex="0" aria-label="previous-animation">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fill-rule="evenodd"
                     clip-rule="evenodd"
-                    d="M12.3336 0.5C12.3336 0.223858 12.1097 0 11.8336 0C11.5574 0 11.3336 0.223858 11.3336 0.5V11.5C11.3336 11.7761 11.5574 12 11.8336 12C12.1097 12 12.3336 11.7761 12.3336 11.5V0.5ZM1.50618 0.217221C0.839538 -0.174045 0 0.306668 0 1.07965V10.9201C0 11.6931 0.839538 12.1738 1.50618 11.7825L9.88928 6.86231C10.5477 6.47586 10.5477 5.52389 9.88927 5.13745L1.50618 0.217221Z"
+                    d="M14.3336 2.5C14.3336 2.22386 14.1097 2 13.8336 2C13.5574 2 13.3336 2.22386 13.3336 2.5V13.5C13.3336 13.7761 13.5574 14 13.8336 14C14.1097 14 14.3336 13.7761 14.3336 13.5V2.5ZM3.50618 2.21722C2.83954 1.82595 2 2.30667 2 3.07965V12.9201C2 13.6931 2.83954 14.1738 3.50618 13.7825L11.8893 8.86231C12.5477 8.47586 12.5477 7.52389 11.8893 7.13745L3.50618 2.21722Z"
                     fill="#20272C"
                   />
                 </svg>
@@ -714,13 +710,17 @@ export class DotLottiePlayer extends LitElement {
           id="lottie-loop-toggle"
           @click=${(): void => this.toggleLooping()}
           class=${this._loop ? 'active' : ''}
-          style="align-items:center; width: 24px; height: 24px;"
           tabindex="0"
           aria-label="loop-toggle"
         >
-          <svg width="24" height="24" aria-hidden="true" focusable="false">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
-              d="M17.016 17.016v-4.031h1.969v6h-12v3l-3.984-3.984 3.984-3.984v3h10.031zM6.984 6.984v4.031H5.015v-6h12v-3l3.984 3.984-3.984 3.984v-3H6.984z"
+              d="M10.8654 2.31319C11.0607 2.11793 11.3772 2.11793 11.5725 2.31319L13.4581 4.19881C13.6534 4.39407 13.6534 4.71066 13.4581 4.90592L11.5725 6.79154C11.3772 6.9868 11.0607 6.9868 10.8654 6.79154C10.6701 6.59628 10.6701 6.27969 10.8654 6.08443L11.6162 5.33362H4V6.66695C4 7.03514 3.70152 7.33362 3.33333 7.33362C2.96514 7.33362 2.66666 7.03514 2.66666 6.66695L2.66666 4.66695C2.66666 4.29876 2.96514 4.00028 3.33333 4.00028H11.8454L10.8654 3.0203C10.6701 2.82504 10.6701 2.50846 10.8654 2.31319Z"
+              fill="#20272C"
+            />
+            <path
+              d="M12.4375 11.9999C12.8057 11.9999 13.1042 11.7014 13.1042 11.3332V9.33321C13.1042 8.96502 12.8057 8.66655 12.4375 8.66655C12.0693 8.66655 11.7708 8.96502 11.7708 9.33321V10.6665H4.15462L4.90543 9.91573C5.10069 9.72047 5.10069 9.40389 4.90543 9.20862C4.71017 9.01336 4.39359 9.01336 4.19832 9.20862L2.31271 11.0942C2.11744 11.2895 2.11744 11.6061 2.31271 11.8013L4.19832 13.687C4.39359 13.8822 4.71017 13.8822 4.90543 13.687C5.10069 13.4917 5.10069 13.1751 4.90543 12.9799L3.92545 11.9999H12.4375Z"
+              fill="#20272C"
             />
           </svg>
         </button>
@@ -731,21 +731,20 @@ export class DotLottiePlayer extends LitElement {
                   this._popoverIsOpen = !this._popoverIsOpen;
                   this.requestUpdate();
                 }}
-                style="align-items: center; margin-left: 4px; width: 24px; height: 24px;"
                 tabindex="0"
                 aria-label="options"
               >
-                <svg width="3" height="12" viewBox="0 0 3 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
-                    d="M1.33337 9.66658C0.78109 9.66658 0.333374 10.1143 0.333374 10.6666C0.333374 11.2189 0.781089 11.6666 1.33337 11.6666C1.88566 11.6666 2.33337 11.2189 2.33337 10.6666C2.33337 10.1143 1.88566 9.66658 1.33337 9.66658Z"
+                    d="M8.33337 11.6666C7.78109 11.6666 7.33337 12.1143 7.33337 12.6666C7.33337 13.2189 7.78109 13.6666 8.33337 13.6666C8.88566 13.6666 9.33337 13.2189 9.33337 12.6666C9.33337 12.1143 8.88566 11.6666 8.33337 11.6666Z"
                     fill="#20272C"
                   />
                   <path
-                    d="M0.333374 5.99992C0.333374 5.44763 0.78109 4.99992 1.33337 4.99992C1.88566 4.99992 2.33338 5.44763 2.33338 5.99992C2.33338 6.5522 1.88566 6.99992 1.33337 6.99992C0.78109 6.99992 0.333374 6.5522 0.333374 5.99992Z"
+                    d="M7.33337 7.99992C7.33337 7.44763 7.78109 6.99992 8.33337 6.99992C8.88566 6.99992 9.33338 7.44763 9.33338 7.99992C9.33338 8.5522 8.88566 8.99992 8.33337 8.99992C7.78109 8.99992 7.33337 8.5522 7.33337 7.99992Z"
                     fill="#20272C"
                   />
                   <path
-                    d="M0.333375 1.33325C0.333375 0.780968 0.78109 0.333252 1.33337 0.333252C1.88566 0.333252 2.33338 0.780968 2.33338 1.33325C2.33338 1.88554 1.88566 2.33325 1.33337 2.33325C0.78109 2.33325 0.333374 1.88554 0.333375 1.33325Z"
+                    d="M7.33337 3.33325C7.33337 2.78097 7.78109 2.33325 8.33337 2.33325C8.88566 2.33325 9.33338 2.78097 9.33338 3.33325C9.33338 3.88554 8.88566 4.33325 8.33337 4.33325C7.78109 4.33325 7.33337 3.88554 7.33337 3.33325Z"
                     fill="#20272C"
                   />
                 </svg>
@@ -846,7 +845,7 @@ export class DotLottiePlayer extends LitElement {
                             >
                               <div class="option-tick">
                                 ${this.currentAnimation() === animationName
-                                  ? html` <span>
+                                  ? html`
                                       <svg
                                         width="24"
                                         height="24"
@@ -861,7 +860,7 @@ export class DotLottiePlayer extends LitElement {
                                           fill="#20272C"
                                         />
                                       </svg>
-                                    </span>`
+                                    `
                                   : html``}
                               </div>
                               <div>${animationName}</div>
@@ -910,7 +909,7 @@ export class DotLottiePlayer extends LitElement {
                             >
                               <div class="option-tick">
                                 ${this.currentTheme() === styleName
-                                  ? html` <span>
+                                  ? html`
                                       <svg
                                         width="24"
                                         height="24"
@@ -925,7 +924,7 @@ export class DotLottiePlayer extends LitElement {
                                           fill="#20272C"
                                         />
                                       </svg>
-                                    </span>`
+                                    `
                                   : html``}
                               </div>
                               <div>${styleName}</div>
