@@ -20,8 +20,8 @@ export default css`
     --lottie-player-toolbar-background-color: transparent;
     --lottie-player-toolbar-hover-background-color: #f3f6f8;
     --lottie-player-toolbar-icon-color: #999;
-    --lottie-player-toolbar-icon-hover-color: #222;
-    --lottie-player-toolbar-icon-active-color: #555;
+    --lottie-player-toolbar-icon-hover-color: #f3f6f8;
+    --lottie-player-toolbar-icon-active-color: #00ddb3;
     --lottie-player-seeker-track-color: #ccc;
     --lottie-player-seeker-accent-color: #00c1a2;
     --lottie-player-seeker-thumb-color: #00c1a2;
@@ -33,6 +33,10 @@ export default css`
     width: 100%;
     height: 100%;
     font-family: 'Karla';
+  }
+
+  .active {
+    color: #00ddb3 !important;
   }
 
   .main {
@@ -58,11 +62,22 @@ export default css`
     align-items: center;
     justify-items: center;
     background-color: var(--lottie-player-toolbar-background-color);
-    margin: 0 5px;
+    margin: 0 8px;
     height: 35px;
   }
 
+  .btn-spacing-left {
+    margin-right: 4px;
+    margin-left: 8px;
+  }
+
+  .btn-spacing-right {
+    margin-right: 8px;
+    margin-left: 4px;
+  }
+
   .toolbar button {
+    color: #20272c;
     cursor: pointer;
     fill: var(--lottie-player-toolbar-icon-color);
     display: flex;
@@ -76,7 +91,9 @@ export default css`
   }
 
   .toolbar button:hover {
-    fill: var(--lottie-player-toolbar-icon-hover-color);
+    background-color: var(--lottie-player-toolbar-icon-hover-color);
+    border-style: solid;
+    border-radius: 2px;
   }
 
   .toolbar button.active {
@@ -85,10 +102,13 @@ export default css`
 
   .toolbar button.active:hover {
     fill: var(--lottie-player-toolbar-icon-hover-color);
+    border-radius: 4px;
   }
 
   .toolbar button:focus {
-    outline: 1px dotted var(--lottie-player-toolbar-icon-active-color);
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
   }
 
   .toolbar button svg {
@@ -103,7 +123,7 @@ export default css`
   .popover {
     position: absolute;
     bottom: 40px;
-    left: 140px;
+    left: calc(100% - 239px);
     width: 224px;
     min-height: 84px;
     max-height: 300px;
@@ -113,6 +133,12 @@ export default css`
     border-radius: 8px;
     padding: 8px;
     z-index: 100;
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+
+  .popover::-webkit-scrollbar {
+    width: 0px;
   }
 
   .popover-button {
@@ -126,6 +152,7 @@ export default css`
     align-items: flex-start;
     gap: 8px;
     align-self: stretch;
+    border-radius: 4px;
   }
 
   .popover-button:hover {
@@ -183,6 +210,7 @@ export default css`
     gap: 8px;
     align-self: stretch;
     cursor: pointer;
+    border-radius: 4px;
   }
   .option-button:hover {
     background-color: var(--lottie-player-toolbar-hover-background-color);
@@ -202,6 +230,7 @@ export default css`
     outline: none;
     background-color: #353535;
     display: var(--lottie-player-seeker-display);
+    border-radius: 9999px;
   }
 
   .seeker::-webkit-slider-runnable-track {
