@@ -8,7 +8,7 @@ export function loader(
 ) {
   const setupLoader = () => {
     player.load(
-      'https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie',
+      '/big-dotlottie.lottie',
       {
         preserveAspectRatio: 'xMidYMid slice',
       },

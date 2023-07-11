@@ -128,17 +128,11 @@ export class DotLottiePlayer extends LitElement {
   // Controls state
   private _hasMultipleAnimations = false;
 
-  private _hasStyles = false;
-
   private _popoverIsOpen = false;
 
   private _animationsTabIsOpen = false;
 
   private _styleTabIsOpen = false;
-
-  private _animationNames: string[] = [];
-
-  private _styleNames: string[] = [];
 
   /**
    * Get number of loops or boolean value of loop.
@@ -282,25 +276,11 @@ export class DotLottiePlayer extends LitElement {
 
     await this._dotLottieCommonPlayer.load(playbackOptions);
 
-    /**
-     * Controls state init
-     */
     this._hasMultipleAnimations = this.animationCount() > 1;
-
-    const manifest = this.getManifest();
-
-    if (manifest && manifest.themes) {
-      this._hasStyles = manifest.themes.length >= 1;
-    }
-
-    this._animationNames = this.animations();
-
-    this._styleNames = this.styles();
 
     /**
      * Init done
      */
-
     this._initListeners();
   }
 
@@ -819,7 +799,7 @@ export class DotLottiePlayer extends LitElement {
                       </div>
                     `
                   : html``}
-                ${this._hasStyles && !this._styleTabIsOpen && !this._animationsTabIsOpen
+                ${this.styles().length > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
                   ? html` <div
                       class="popover-button"
                       @click=${(): void => {
@@ -868,7 +848,7 @@ export class DotLottiePlayer extends LitElement {
                       </div>
                       <div class="option-title-separator"></div>
                       <div class="option-row">
-                        ${this._animationNames.map((animationName) => {
+                        ${this.animations().map((animationName) => {
                           return html`
                             <div
                               class="option-button"
@@ -933,7 +913,7 @@ export class DotLottiePlayer extends LitElement {
                       </div>
                       <div class="option-title-separator"></div>
                       <div class="option-row">
-                        ${this._styleNames.map((styleName) => {
+                        ${this.styles().map((styleName) => {
                           return html`
                             <div
                               class="option-button"

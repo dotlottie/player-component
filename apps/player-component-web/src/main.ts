@@ -11,7 +11,8 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="next" type="button">Next</button>
       <button id="prev" type="button">Prev</button>
     </div>
-    <dotlottie-player src="https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie" id="dotlottie-player" activeAnimationId="wifi" speed=1 playMode="bounce" controls style="height: 200px" >
+    <dotlottie-player  id="dotlottie-player" speed=1 playMode="normal" direction=1 loop autoplay controls></dotlottie-player>
+    <dotlottie-player src="https://lottie.host/f5ea648a-8565-4a00-a6cf-2c3160fe12b8/nRNCht8u2u.lottie" speed=1 playMode="normal" direction=1 loop autoplay controls></dotlottie-player>
   </div>
 `;
 
