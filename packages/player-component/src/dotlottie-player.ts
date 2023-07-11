@@ -638,7 +638,7 @@ export class DotLottiePlayer extends LitElement {
               <button
                 @click=${(): void => this.previous()}
                 tabindex="0"
-                aria-label="previous-animation"
+                aria-label="Previous animation"
                 class="btn-spacing-left"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -661,7 +661,7 @@ export class DotLottiePlayer extends LitElement {
             ? `active ${this._hasMultipleAnimations ? 'btn-spacing-center' : 'btn-spacing-right'}`
             : `${this._hasMultipleAnimations ? 'btn-spacing-center' : 'btn-spacing-right'}`}
           tabindex="0"
-          aria-label="play-pause"
+          aria-label="play / pause animation"
         >
           ${isPlaying
             ? html`
@@ -690,7 +690,7 @@ export class DotLottiePlayer extends LitElement {
               <button
                 @click=${(): void => this.next()}
                 tabindex="0"
-                aria-label="previous-animation"
+                aria-label="Next animation"
                 class="btn-spacing-right"
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -775,11 +775,13 @@ export class DotLottiePlayer extends LitElement {
           : html``}
         ${this._popoverIsOpen
           ? html`
-              <div class="popover">
+              <div class="popover" tabindex="0" aria-label="lottie animations styles popover">
                 ${!this._animationsTabIsOpen && !this._styleTabIsOpen
                   ? html`
                       <div
                         class="popover-button"
+                        tabindex="0"
+                        aria-label="animations"
                         @click=${(): void => {
                           this._animationsTabIsOpen = !this._animationsTabIsOpen;
                           this.requestUpdate();
@@ -808,6 +810,8 @@ export class DotLottiePlayer extends LitElement {
                 ${this.styles().length > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
                   ? html` <div
                       class="popover-button"
+                      tabindex="0"
+                      aria-label="styles"
                       @click=${(): void => {
                         this._styleTabIsOpen = !this._styleTabIsOpen;
                         this.requestUpdate();
@@ -829,6 +833,8 @@ export class DotLottiePlayer extends LitElement {
                 ${this._animationsTabIsOpen
                   ? html`<div
                         class="option-title-button"
+                        tabindex="0"
+                        aria-label="Back to main popover menu"
                         @click=${(): void => {
                           this._animationsTabIsOpen = !this._animationsTabIsOpen;
                           this.requestUpdate();
@@ -858,6 +864,8 @@ export class DotLottiePlayer extends LitElement {
                           return html`
                             <div
                               class="option-button"
+                              tabindex="0"
+                              aria-label=${`${animationName}`}
                               @click=${(): void => {
                                 this._animationsTabIsOpen = !this._animationsTabIsOpen;
                                 this._popoverIsOpen = !this._popoverIsOpen;
@@ -894,6 +902,8 @@ export class DotLottiePlayer extends LitElement {
                 ${this._styleTabIsOpen
                   ? html`<div
                         class="option-title-button"
+                        tabindex="0"
+                        aria-label="Back to main popover menu"
                         @click=${(): void => {
                           this._styleTabIsOpen = !this._styleTabIsOpen;
                           this.requestUpdate();
@@ -923,9 +933,9 @@ export class DotLottiePlayer extends LitElement {
                           return html`
                             <div
                               class="option-button"
+                              tabindex="0"
+                              aria-label="${styleName}"
                               @click=${(): void => {
-                                // this._animationsTabIsOpen = !this._animationsTabIsOpen;
-                                // this._popoverIsOpen = !this._popoverIsOpen;
                                 this.setTheme(styleName);
                               }}
                             >
