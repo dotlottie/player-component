@@ -8,7 +8,6 @@ export default css`
   @font-face {
     font-family: 'Karla';
     src: url('./Karla.ttf') format('truetype');
-    /* Other src */
   }
 
   * {
@@ -25,13 +24,14 @@ export default css`
     --lottie-player-seeker-track-color: #00ddb3;
     --lottie-player-seeker-accent-color: #00c1a2;
     --lottie-player-seeker-thumb-color: #00c1a2;
-    --light-mode-border-subtle: #d9e0e6;
-    --light-mode-text-icon-primary: #20272c;
+    --lottie-player-options-separator: #d9e0e6;
 
     display: block;
     width: 100%;
     height: 100%;
-    font-family: 'Karla';
+
+    font-family: 'Karla', sans-serif;
+    font-style: regular;
   }
 
   .active {
@@ -68,6 +68,11 @@ export default css`
   .btn-spacing-left {
     margin-right: 4px;
     margin-left: 8px;
+  }
+
+  .btn-spacing-center {
+    margin-right: 4px;
+    margin-left: 4px;
   }
 
   .btn-spacing-right {
@@ -174,7 +179,7 @@ export default css`
     gap: 4px;
     align-self: stretch;
     cursor: pointer;
-    color: var(--light-mode-text-icon-primary);
+    color: var(--lottie-player-toolbar-icon-color);
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
@@ -184,7 +189,7 @@ export default css`
 
   .option-title-separator {
     margin: 8px -8px;
-    border-bottom: 1px solid var(--light-mode-border-subtle);
+    border-bottom: 1px solid var(--lottie-player-options-separator);
   }
 
   .option-title-chevron {

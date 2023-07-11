@@ -671,7 +671,9 @@ export class DotLottiePlayer extends LitElement {
           @click=${(): void => {
             this.togglePlay();
           }}
-          class=${isPlaying || isPaused ? 'active' : ''}
+          class=${isPlaying || isPaused
+            ? `active ${this._hasMultipleAnimations ? 'btn-spacing-center' : 'btn-spacing-right'}`
+            : `${this._hasMultipleAnimations ? 'btn-spacing-center' : 'btn-spacing-right'}`}
           tabindex="0"
           aria-label="play-pause"
         >
