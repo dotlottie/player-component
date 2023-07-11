@@ -718,7 +718,7 @@ export class DotLottiePlayer extends LitElement {
           : html``}
         <input
           id="lottie-seeker-input"
-          class="seeker"
+          class="seeker ${this._dotLottieCommonPlayer?.direction === -1 ? 'to-left' : ''}"
           type="range"
           min="0"
           step="1"
@@ -737,6 +737,7 @@ export class DotLottiePlayer extends LitElement {
           aria-valuenow=${this._seeker}
           tabindex="0"
           aria-label="lottie-seek-input"
+          style=${`--seeker: ${this._seeker}`}
         />
         <button
           id="lottie-loop-toggle"

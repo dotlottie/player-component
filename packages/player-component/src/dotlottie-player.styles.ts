@@ -19,13 +19,12 @@ export default css`
     --lottie-player-toolbar-height: 35px;
     --lottie-player-toolbar-background-color: transparent;
     --lottie-player-toolbar-hover-background-color: #f3f6f8;
-    --lottie-player-toolbar-icon-color: #999;
+    --lottie-player-toolbar-icon-color: #20272c;
     --lottie-player-toolbar-icon-hover-color: #f3f6f8;
     --lottie-player-toolbar-icon-active-color: #00ddb3;
-    --lottie-player-seeker-track-color: #ccc;
+    --lottie-player-seeker-track-color: #00ddb3;
     --lottie-player-seeker-accent-color: #00c1a2;
     --lottie-player-seeker-thumb-color: #00c1a2;
-    --lottie-player-seeker-display: block;
     --light-mode-border-subtle: #d9e0e6;
     --light-mode-text-icon-primary: #20272c;
 
@@ -36,7 +35,7 @@ export default css`
   }
 
   .active {
-    color: #00ddb3 !important;
+    color: var(--lottie-player-toolbar-icon-active-color) !important;
   }
 
   .main {
@@ -54,7 +53,7 @@ export default css`
     display: flex;
   }
   .animation.controls {
-    height: calc(100% - 35px);
+    height: calc(100% - var(--lottie-player-toolbar-height));
   }
 
   .toolbar {
@@ -63,7 +62,7 @@ export default css`
     justify-items: center;
     background-color: var(--lottie-player-toolbar-background-color);
     margin: 0 8px;
-    height: 35px;
+    height: var(--lottie-player-toolbar-height);
   }
 
   .btn-spacing-left {
@@ -225,77 +224,56 @@ export default css`
   }
 
   .seeker {
-    -webkit-appearance: none;
+    height: 4px;
     width: 95%;
     outline: none;
-    background-color: #353535;
-    display: var(--lottie-player-seeker-display);
+    -webkit-appearance: none;
+    -moz-apperance: none;
     border-radius: 9999px;
+    cursor: pointer;
+    background-image: linear-gradient(
+      to right,
+      rgb(0, 221, 179) calc(var(--seeker) * 1%),
+      rgb(217, 224, 230) calc(var(--seeker) * 1%)
+    );
+  }
+  .seeker.to-left {
+    background-image: linear-gradient(
+      to right,
+      rgb(217, 224, 230) calc(var(--seeker) * 1%),
+      rgb(0, 221, 179) calc(var(--seeker) * 1%)
+    );
+  }
+  .seeker::-webkit-slider-runnable-track:focus {
+    color: #f07167;
+    accent-color: #00ddb3;
   }
 
   .seeker::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
     cursor: pointer;
-    accent-color: green;
-    border-radius: 3px;
   }
   .seeker::-webkit-slider-thumb {
     -webkit-appearance: none;
-    height: 15px;
-    width: 15px;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     background: var(--lottie-player-seeker-thumb-color);
     cursor: pointer;
     margin-top: -5px;
   }
   .seeker:focus::-webkit-slider-runnable-track {
-    background: #999;
-  }
-  .seeker::-moz-range-track {
-    width: 100%;
-    height: 5px;
-    cursor: pointer;
-    background: var(--lottie-player-seeker-track-color);
-    border-radius: 3px;
   }
   .seeker::-moz-range-thumb {
-    height: 15px;
-    width: 15px;
+    appearance: none;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     background: var(--lottie-player-seeker-thumb-color);
     cursor: pointer;
-  }
-  .seeker::-ms-track {
-    width: 100%;
-    height: 5px;
-    cursor: pointer;
-    background: transparent;
+    margin-top: -5px;
     border-color: transparent;
-    color: transparent;
-    accent-color: var(--lottie-player-seeker-accent-color);
-  }
-  .seeker::-ms-fill-lower {
-    background: var(--lottie-player-seeker-track-color);
-    border-radius: 3px;
-  }
-  .seeker::-ms-fill-upper {
-    background: var(--lottie-player-seeker-track-color);
-    border-radius: 3px;
-  }
-  .seeker::-ms-thumb {
-    border: 0;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
-    background: var(--lottie-player-seeker-thumb-color);
-    cursor: pointer;
-  }
-  .seeker:focus::-ms-fill-lower {
-    background: var(--lottie-player-seeker-track-color);
-  }
-  .seeker:focus::-ms-fill-upper {
-    background: var(--lottie-player-seeker-track-color);
   }
 
   .error {
