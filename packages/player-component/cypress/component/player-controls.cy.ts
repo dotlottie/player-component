@@ -38,7 +38,7 @@ describe('Controls', () => {
     // Not playing initially
     cy.get('[name="currentState"]').should('have.value', PlayerState.Ready);
 
-    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="play-pause"]').click();
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="play / pause animation"]').click();
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
   });
 
@@ -53,23 +53,8 @@ describe('Controls', () => {
     // Playing initially
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
-    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="play-pause"]').click();
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="play / pause animation"]').click();
     cy.get('[name="currentState"]').should('have.value', PlayerState.Paused);
-  });
-
-  it('should be able to stop', () => {
-    cy.mount(
-      html`
-        <dotlottie-player data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/cool-dog.lottie">
-        </dotlottie-player>
-      `,
-    );
-
-    // Playing initially
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
-
-    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="stop"]').click();
-    cy.get('[name="currentState"]').should('have.value', PlayerState.Stopped);
   });
 
   it('should be able toggle looping', () => {
@@ -90,4 +75,73 @@ describe('Controls', () => {
     cy.get('[name="loop"]').should('have.value', 'false');
     // cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="loop-toggle"]').should('not.have.class', 'active');
   });
+
+  it('should be able to go to previous animation', () => {
+    cy.mount(
+      html`
+        <dotlottie-player data-testid="testPlayer" activeAnimationId="lottie2" autoplay loop controls style="height: 200px;" src="/big-dotlottie.lottie">
+        </dotlottie-player>
+      `,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="Previous animation"]').click();
+
+    cy.get('[name="currentAnimationId"]').should('have.value', 'lottie1');
+  })
+
+  it('should be able to go to next animation', () => {
+    cy.mount(
+      html`
+        <dotlottie-player data-testid="testPlayer" activeAnimationId="lottie2" autoplay loop controls style="height: 200px;" src="/big-dotlottie.lottie">
+        </dotlottie-player>
+      `,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="Next animation"]').click();
+
+    cy.get('[name="currentAnimationId"]').should('have.value', 'lottie3');
+  })
+
+  it('should be able to switch animation', () => {
+    cy.mount(
+      html`
+        <dotlottie-player data-testid="testPlayer" activeAnimationId="lottie2" autoplay loop controls style="height: 200px;" src="/big-dotlottie.lottie">
+        </dotlottie-player>
+      `,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="options"]').click();
+
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="animations"]').click();
+    
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="lottie4"]').click({force: true});
+
+    cy.get('[name="currentAnimationId"]').should('have.value', 'lottie4');
+  })
+
+  it('should be able to switch styles', () => {
+    cy.mount(
+      html`
+        <dotlottie-player data-testid="testPlayer" activeAnimationId="lottie2" autoplay loop controls style="height: 200px;" src="/big-dotlottie.lottie">
+        </dotlottie-player>
+      `,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="options"]').click();
+
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="styles"]').click();
+    
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="theme3"]').click({force: true});
+
+    cy.get('[name="defaultTheme"]').should('have.value', 'theme3');
+  })
+
 });
