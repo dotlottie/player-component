@@ -301,7 +301,7 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
-   * @returns The ids of all the animationanimations
+   * @returns The ids of all the animations
    */
   public animations(): string[] {
     if (!this._dotLottieCommonPlayer) return [];
@@ -318,12 +318,18 @@ export class DotLottiePlayer extends LitElement {
     return Array.from(this._dotLottieCommonPlayer.themes.keys());
   }
 
+  /**
+   * @returns The current applied theme
+   */
   public currentTheme(): string {
     if (!this._dotLottieCommonPlayer) return '';
 
     return this._dotLottieCommonPlayer.defaultTheme;
   }
 
+  /**
+   * @returns The current playing animation
+   */
   public currentAnimation(): string {
     if (!this._dotLottieCommonPlayer || !this._dotLottieCommonPlayer.currentAnimationId) return '';
 

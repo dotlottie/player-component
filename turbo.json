@@ -30,12 +30,6 @@
     "clean": {},
     "dev": {
       "cache": false
-    },
-    "@dotlottie/player-component#dev": {
-      "dependsOn": ["@dotlottie/common#build"]
-    },
-    "@dotlottie/react-player#dev": {
-      "dependsOn": ["@dotlottie/common#build"]
     }
   }
 }
