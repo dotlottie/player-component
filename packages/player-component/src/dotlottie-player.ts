@@ -755,6 +755,9 @@ export class DotLottiePlayer extends LitElement {
                 tabindex="0"
                 aria-label="options"
                 class="btn-spacing-right"
+                style=${`background-color: ${
+                  this._popoverIsOpen ? 'var(--lottie-player-toolbar-icon-hover-color)' : ''
+                }`}
               >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path

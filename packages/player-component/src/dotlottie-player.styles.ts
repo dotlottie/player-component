@@ -5,10 +5,7 @@
 import { css } from 'lit';
 
 export default css`
-  @font-face {
-    font-family: 'Karla';
-    src: url('./Karla.ttf') format('truetype');
-  }
+  @import url('https://fonts.googleapis.com/css2?family=Karla');
 
   * {
     box-sizing: border-box;
@@ -31,7 +28,6 @@ export default css`
     height: 100%;
 
     font-family: 'Karla', sans-serif;
-    font-style: regular;
   }
 
   .active {
@@ -86,7 +82,8 @@ export default css`
     fill: var(--lottie-player-toolbar-icon-color);
     display: flex;
     background: none;
-    border: 0;
+    border: 0px;
+    border-radius: 4px;
     padding: 4px;
     outline: none;
     width: 24px;
@@ -109,7 +106,7 @@ export default css`
     border-radius: 4px;
   }
 
-  .toolbar button:focus {
+  .toolbar button:focus-visible {
     outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
     border-radius: 4px;
     box-sizing: border-box;
@@ -208,12 +205,13 @@ export default css`
 
   .option-button {
     display: flex;
-    padding: 4px 8px;
+    padding: 8px;
     color: #20272c;
     align-items: center;
     gap: 8px;
     align-self: stretch;
     cursor: pointer;
+    font-size: 14px;
     border-radius: 4px;
   }
   .option-button:hover {
