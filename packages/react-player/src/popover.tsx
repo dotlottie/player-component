@@ -52,6 +52,7 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
               {!_active && (
                 <button
                   className="popover-item"
+                  aria-label={`Go to ${item.title}`}
                   onClick={(): void => {
                     setActive(item.title);
                   }}
@@ -74,11 +75,12 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
                     </button>
                     <span style={{ flex: 1 }}>{item.title}</span>
                   </div>
-                  <div className="popover-items">
+                  <div className="popover-items" aria-label={`List of ${item.title}`}>
                     {item.items.map((sub) => {
                       return (
                         <div key={sub.value}>
                           <button
+                            aria-label={`Select ${sub.value}`}
                             className="popover-item"
                             onClick={(): void => {
                               onSelectItem?.(item.title, sub.value);
