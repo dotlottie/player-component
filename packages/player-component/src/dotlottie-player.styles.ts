@@ -5,7 +5,10 @@
 import { css } from 'lit';
 
 export default css`
-  @import url('https://fonts.googleapis.com/css2?family=Karla');
+  @font-face {
+    font-family: 'Karla';
+    src: url('./Karla-Regular.ttf') format('trueType');
+  }
 
   * {
     box-sizing: border-box;
