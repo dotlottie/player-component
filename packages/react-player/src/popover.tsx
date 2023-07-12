@@ -13,16 +13,15 @@ interface PopoverProps extends React.HTMLAttributes<HTMLDialogElement> {
   active?: string;
   items: Array<{
     items: Array<{
-      selected: boolean,
-      value: string,
-    }>,
-    title: string,
+      selected: boolean;
+      value: string;
+    }>;
+    title: string;
   }>;
   onDismiss?: () => void;
   onSelectItem?: (title: string, value: string) => void;
   open: boolean;
 }
-
 
 export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSelectItem, onDismiss, ...props }) => {
   const [_active, setActive] = useState(active);
@@ -64,12 +63,8 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
                 </button>
               )}
               {_active === item.title && (
-                <div
-                  className="popover-submenu"
-                >
-                  <div
-                    className="popover-header"
-                  >
+                <div className="popover-submenu">
+                  <div className="popover-header">
                     <button
                       onClick={(): void => {
                         setActive('');
@@ -89,7 +84,7 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
                               onSelectItem?.(item.title, sub.value);
                             }}
                           >
-                            <span style={{visibility: sub.selected ? 'visible' : 'hidden'}}>
+                            <span style={{ visibility: sub.selected ? 'visible' : 'hidden' }}>
                               <CheckMark />
                             </span>
                             <span style={{ flex: 1 }}>{sub.value}</span>

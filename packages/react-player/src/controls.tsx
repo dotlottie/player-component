@@ -16,15 +16,7 @@ import { Previous } from './icons/previous';
 import { Popover } from './popover';
 import { useDotLottieContext } from './providers';
 
-const AVAILABLE_BUTTONS = [
-  'play',
-  'stop',
-  'loop',
-  'next',
-  'previous',
-  'animations',
-  'themes',
-] as const;
+const AVAILABLE_BUTTONS = ['play', 'stop', 'loop', 'next', 'previous', 'animations', 'themes'] as const;
 
 interface ControlsProps extends React.HTMLAttributes<HTMLDivElement> {
   buttons?: Array<typeof AVAILABLE_BUTTONS[number]>;
@@ -78,12 +70,12 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   }, [animations, themes, currentAnimationId, defaultTheme]);
 
   const shouldDisplayPopover = useMemo(() => {
-    if (buttons.includes('themes') && Array.isArray(themes) && themes.length)  {
+    if (buttons.includes('themes') && Array.isArray(themes) && themes.length) {
       return true;
     }
 
-    return (buttons.includes('animations') && Array.isArray(animations) && animations.length > 1);
-  }, [popoverItems])
+    return buttons.includes('animations') && Array.isArray(animations) && animations.length > 1;
+  }, [popoverItems]);
 
   function updateManifest(): void {
     const _animations = dotLottiePlayer.getManifest()?.animations;
@@ -133,9 +125,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
         step={0}
         max={100}
         value={seeker || 0}
-        onInput={(event): void =>
-          dotLottiePlayer.seek(String(event.currentTarget.value).concat('%'))
-        }
+        onInput={(event): void => dotLottiePlayer.seek(String(event.currentTarget.value).concat('%'))}
         onMouseDown={(): void => {
           dotLottiePlayer.freeze();
         }}
