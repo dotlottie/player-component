@@ -269,7 +269,13 @@ export default css`
     cursor: pointer;
     margin-top: -5px;
   }
-  .seeker:focus::-webkit-slider-runnable-track {
+  .seeker:focus::-webkit-slider-thumb {
+    background: var(--lottie-player-seeker-thumb-color);
+    outline: 2px solid var(--lottie-player-seeker-track-color);
+    border: 1.5px solid #ffffff;
+  }
+  .seeker::-webkit-slider-thumb:hover {
+    background: #019d91;
   }
   .seeker::-moz-range-thumb {
     appearance: none;
@@ -280,6 +286,11 @@ export default css`
     cursor: pointer;
     margin-top: -5px;
     border-color: transparent;
+  }
+  .seeker:focus::-moz-range-thumb {
+    background: var(--lottie-player-seeker-thumb-color);
+    outline: 2px solid var(--lottie-player-seeker-track-color);
+    border: 1.5px solid #ffffff;
   }
 
   .error {
