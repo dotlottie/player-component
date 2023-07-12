@@ -268,7 +268,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
             }
           }}
         >
-          {controls && <Controls buttons={['loop', 'stop', 'play']} />}
+          {controls && <Controls />}
         </DotLottiePlayer>
       </div>
     </>
