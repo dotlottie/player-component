@@ -57,11 +57,15 @@
   display: flex;
   background: none;
   border: 0;
-  padding: 4px;
+  padding: 4px 8px;
   outline: none;
   height: 100%;
   max-height: 24px;
   border-radius: var(--lottie-player-button-border-radius);
+  font-family: inherit;
+  font-style: inherit;
+  font-size: inherit;
+  font-weight: inherit;
 }
 
 .toolbar .popover button {
@@ -176,6 +180,9 @@
   gap: 8px;
   align-items: center;
   border-bottom: 1px solid #d9e0e6;
+}
+.popover .popover-header button {
+  padding: 4px;
 }
 
 .popover .popover-items {
