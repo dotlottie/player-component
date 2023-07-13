@@ -140,6 +140,11 @@ export default css`
     overflow-y: scroll;
     scrollbar-width: none;
   }
+  .popover:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
 
   .popover::-webkit-scrollbar {
     width: 0px;
@@ -159,6 +164,12 @@ export default css`
     border-radius: 4px;
   }
 
+  .popover-button:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
   .popover-button:hover {
     background-color: var(--lottie-player-toolbar-hover-background-color);
   }
@@ -171,6 +182,23 @@ export default css`
     align-self: stretch;
   }
 
+  .reset-btn {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #63727e;
+  }
+  .reset-btn:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .reset-btn:hover {
+    color: #20272c;
+  }
+
   .option-title-button {
     display: flex;
     flex-direction: row;
@@ -180,6 +208,20 @@ export default css`
     align-self: stretch;
     cursor: pointer;
     color: var(--lottie-player-toolbar-icon-color);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: -0.32px;
+  }
+
+  .option-title-button:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .option-title-text {
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
@@ -220,6 +262,11 @@ export default css`
   .option-button:hover {
     background-color: var(--lottie-player-toolbar-hover-background-color);
   }
+  .option-button:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
 
   .option-tick {
     display: flex;
@@ -250,7 +297,7 @@ export default css`
       rgb(0, 221, 179) calc(var(--seeker) * 1%)
     );
   }
-  .seeker::-webkit-slider-runnable-track:focus {
+  .seeker::-webkit-slider-runnable-track:focus-visible {
     color: #f07167;
     accent-color: #00ddb3;
   }
@@ -269,7 +316,7 @@ export default css`
     cursor: pointer;
     margin-top: -5px;
   }
-  .seeker:focus::-webkit-slider-thumb {
+  .seeker:focus-visible::-webkit-slider-thumb {
     background: var(--lottie-player-seeker-thumb-color);
     outline: 2px solid var(--lottie-player-seeker-track-color);
     border: 1.5px solid #ffffff;
@@ -287,7 +334,7 @@ export default css`
     margin-top: -5px;
     border-color: transparent;
   }
-  .seeker:focus::-moz-range-thumb {
+  .seeker:focus-visible::-moz-range-thumb {
     background: var(--lottie-player-seeker-thumb-color);
     outline: 2px solid var(--lottie-player-seeker-track-color);
     border: 1.5px solid #ffffff;

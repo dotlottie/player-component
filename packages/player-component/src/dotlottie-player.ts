@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { RendererType, DotLottiePlayerState, PlaybackOptions, Manifest } from '@dotlottie/common';
+import type { RendererType, DotLottiePlayerState, PlaybackOptions, Manifest, ManifestTheme } from '@dotlottie/common';
 import {
   DotLottiePlayer as DotLottieCommonPlayer,
   PlayerState,
@@ -134,6 +134,8 @@ export class DotLottiePlayer extends LitElement {
 
   private _styleTabIsOpen = false;
 
+  private _themesForCurrentAnimation: ManifestTheme[] = [];
+
   /**
    * Get number of loops or boolean value of loop.
    *
@@ -221,6 +223,14 @@ export class DotLottiePlayer extends LitElement {
 
     // Handle lottie-web ready event
     commonPlayer.addEventListener('DOMLoaded', () => {
+      const manifest = this.getManifest();
+
+      if (manifest && manifest.themes) {
+        this._themesForCurrentAnimation = manifest.themes.filter((theme) =>
+          theme.animations.includes(this.getCurrentAnimationId() || ''),
+        );
+      }
+
       this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
     });
 
@@ -278,6 +288,14 @@ export class DotLottiePlayer extends LitElement {
 
     this._hasMultipleAnimations = this.animationCount() > 1;
 
+    const manifest = this.getManifest();
+
+    if (manifest && manifest.themes) {
+      this._themesForCurrentAnimation = manifest.themes.filter((theme) =>
+        theme.animations.includes(this.getCurrentAnimationId() || ''),
+      );
+    }
+
     /**
      * Init done
      */
@@ -307,24 +325,6 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return [];
 
     return Array.from(this._dotLottieCommonPlayer.animations.keys());
-  }
-
-  /**
-   * @returns The ids of all the styles
-   */
-  public styles(): string[] {
-    if (!this._dotLottieCommonPlayer) return [];
-
-    return Array.from(this._dotLottieCommonPlayer.themes.keys());
-  }
-
-  /**
-   * @returns The current applied theme
-   */
-  public currentTheme(): string {
-    if (!this._dotLottieCommonPlayer) return '';
-
-    return this._dotLottieCommonPlayer.defaultTheme;
   }
 
   /**
@@ -469,10 +469,21 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
-   * Get theme
+   * @returns All the themes
    */
-  public getTheme(): string | undefined {
-    return this._dotLottieCommonPlayer?.defaultTheme;
+  public themes(): Map<string, string> {
+    if (!this._dotLottieCommonPlayer) return new Map();
+
+    return this._dotLottieCommonPlayer.themes;
+  }
+
+  /**
+   * @returns The current applied theme
+   */
+  public getDefaultTheme(): string {
+    if (!this._dotLottieCommonPlayer) return '';
+
+    return this._dotLottieCommonPlayer.defaultTheme;
   }
 
   /**
@@ -789,6 +800,12 @@ export class DotLottiePlayer extends LitElement {
                           this._animationsTabIsOpen = !this._animationsTabIsOpen;
                           this.requestUpdate();
                         }}
+                        @keydown=${(key: KeyboardEvent): void => {
+                          if (key.code === 'Space' || key.code === 'Enter') {
+                            this._animationsTabIsOpen = !this._animationsTabIsOpen;
+                            this.requestUpdate();
+                          }
+                        }}
                       >
                         <div class="popover-button-text">Animations</div>
                         <div>
@@ -810,7 +827,7 @@ export class DotLottiePlayer extends LitElement {
                       </div>
                     `
                   : html``}
-                ${this.styles().length > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
+                ${this.themes().size > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
                   ? html` <div
                       class="popover-button"
                       tabindex="0"
@@ -819,8 +836,15 @@ export class DotLottiePlayer extends LitElement {
                         this._styleTabIsOpen = !this._styleTabIsOpen;
                         this.requestUpdate();
                       }}
+                      @keydown=${(key: KeyboardEvent): void => {
+                        if (key.code === 'Space' || key.code === 'Enter') {
+                          this._styleTabIsOpen = !this._styleTabIsOpen;
+                          this.requestUpdate();
+                        }
+                        // eslint-disable-next-line no-secrets/no-secrets
+                      }}
                     >
-                      <div class="popover-button-text">Styles</div>
+                      <div class="popover-button-text">Themes</div>
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -841,6 +865,12 @@ export class DotLottiePlayer extends LitElement {
                         @click=${(): void => {
                           this._animationsTabIsOpen = !this._animationsTabIsOpen;
                           this.requestUpdate();
+                        }}
+                        @keydown=${(key: KeyboardEvent): void => {
+                          if (key.code === 'Space' || key.code === 'Enter') {
+                            this._animationsTabIsOpen = !this._animationsTabIsOpen;
+                            this.requestUpdate();
+                          }
                         }}
                       >
                         <div class="option-title-chevron">
@@ -872,8 +902,18 @@ export class DotLottiePlayer extends LitElement {
                               @click=${(): void => {
                                 this._animationsTabIsOpen = !this._animationsTabIsOpen;
                                 this._popoverIsOpen = !this._popoverIsOpen;
+                                this.setTheme('');
                                 this.play(animationName);
                                 this.requestUpdate();
+                              }}
+                              @keydown=${(key: KeyboardEvent): void => {
+                                if (key.code === 'Space' || key.code === 'Enter') {
+                                  this._animationsTabIsOpen = !this._animationsTabIsOpen;
+                                  this._popoverIsOpen = !this._popoverIsOpen;
+                                  this.setTheme('');
+                                  this.play(animationName);
+                                  this.requestUpdate();
+                                }
                               }}
                             >
                               <div class="option-tick">
@@ -903,13 +943,19 @@ export class DotLottiePlayer extends LitElement {
                       </div> `
                   : html``}
                 ${this._styleTabIsOpen
-                  ? html`<div
+                  ? html`<bu
                         class="option-title-button"
                         tabindex="0"
                         aria-label="Back to main popover menu"
                         @click=${(): void => {
                           this._styleTabIsOpen = !this._styleTabIsOpen;
                           this.requestUpdate();
+                        }}
+                        @keydown=${(key: KeyboardEvent): void => {
+                          if (key.code === 'Space' || key.code === 'Enter') {
+                            this._styleTabIsOpen = !this._styleTabIsOpen;
+                            this.requestUpdate();
+                          }
                         }}
                       >
                         <div class="option-title-chevron">
@@ -928,22 +974,43 @@ export class DotLottiePlayer extends LitElement {
                             />
                           </svg>
                         </div>
-                        <div>Styles</div>
-                      </div>
+                        <div class="option-title-text">Themes</div>
+                        <div
+                          class="reset-btn"
+                          tabindex="0"
+                          @click=${(): void => {
+                            this.setTheme('');
+                            this.requestUpdate();
+                          }}
+                          @keydown=${(key: KeyboardEvent): void => {
+                            if (key.code === 'Space' || key.code === 'Enter') {
+                              this.setTheme('');
+                              this.requestUpdate();
+                            }
+                          }}
+                        >
+                          Reset
+                        </div>
+                      </bu>
                       <div class="option-title-separator"></div>
                       <div class="option-row">
-                        ${this.styles().map((styleName) => {
+                        ${this._themesForCurrentAnimation.map((themeName) => {
                           return html`
                             <div
                               class="option-button"
                               tabindex="0"
-                              aria-label="${styleName}"
+                              aria-label="${themeName}"
                               @click=${(): void => {
-                                this.setTheme(styleName);
+                                this.setTheme(themeName.id);
+                              }}
+                              @keydown=${(key: KeyboardEvent): void => {
+                                if (key.code === 'Space' || key.code === 'Enter') {
+                                  this.setTheme(themeName.id);
+                                }
                               }}
                             >
                               <div class="option-tick">
-                                ${this.currentTheme() === styleName
+                                ${this.getDefaultTheme() === themeName.id
                                   ? html`
                                       <svg
                                         width="24"
@@ -962,7 +1029,7 @@ export class DotLottiePlayer extends LitElement {
                                     `
                                   : html``}
                               </div>
-                              <div>${styleName}</div>
+                              <div>${themeName.id}</div>
                             </div>
                           `;
                         })}
