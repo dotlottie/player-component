@@ -789,7 +789,7 @@ export class DotLottiePlayer extends LitElement {
           : html``}
         ${this._popoverIsOpen
           ? html`
-              <div class="popover" tabindex="0" aria-label="lottie animations styles popover">
+              <div class="popover" tabindex="0" aria-label="lottie animations themes popover">
                 ${!this._animationsTabIsOpen && !this._styleTabIsOpen
                   ? html`
                       <div
@@ -831,7 +831,7 @@ export class DotLottiePlayer extends LitElement {
                   ? html` <div
                       class="popover-button"
                       tabindex="0"
-                      aria-label="styles"
+                      aria-label="Themes"
                       @click=${(): void => {
                         this._styleTabIsOpen = !this._styleTabIsOpen;
                         this.requestUpdate();
@@ -999,7 +999,7 @@ export class DotLottiePlayer extends LitElement {
                             <div
                               class="option-button"
                               tabindex="0"
-                              aria-label="${themeName}"
+                              aria-label="${themeName.id}"
                               @click=${(): void => {
                                 this.setTheme(themeName.id);
                               }}

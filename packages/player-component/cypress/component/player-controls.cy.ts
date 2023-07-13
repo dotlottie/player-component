@@ -125,7 +125,7 @@ describe('Controls', () => {
     cy.get('[name="currentAnimationId"]').should('have.value', 'lottie4');
   })
 
-  it('should be able to switch styles', () => {
+  it('should be able to switch themes', () => {
     cy.mount(
       html`
         <dotlottie-player data-testid="testPlayer" activeAnimationId="lottie2" autoplay loop controls style="height: 200px;" src="/big-dotlottie.lottie">
@@ -137,11 +137,11 @@ describe('Controls', () => {
 
     cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="options"]').click();
 
-    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="styles"]').click();
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="Themes"]').click();
     
-    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="theme3"]').click({force: true});
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="theme2"]').click({force: true});
 
-    cy.get('[name="defaultTheme"]').should('have.value', 'theme3');
+    cy.get('[name="defaultTheme"]').should('have.value', 'theme2');
   })
 
 });
