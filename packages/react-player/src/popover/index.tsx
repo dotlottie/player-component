@@ -13,6 +13,7 @@ interface PopoverSubItem {
   value: string;
 }
 interface PopoverItem {
+  enableReset: boolean;
   items: PopoverSubItem[];
   title: string;
 }
@@ -79,6 +80,8 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], onSelectItem, onDi
                   title={item.title}
                   onExpand={handleExpandMenu(item.title)}
                   onBack={goBack}
+                  enableReset={item.enableReset}
+                  onReset={handleSelectItem(item.title, '')}
                 >
                   <ul className="popover-items" aria-label={`List of ${item.title}`}>
                     {item.items.map((sub) => {

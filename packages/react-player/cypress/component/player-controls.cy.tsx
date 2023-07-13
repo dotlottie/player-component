@@ -261,9 +261,38 @@ describe('Controls', () => {
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-light');
 
     cy.get('[aria-label="open-popover"]').click();
-    cy.get('[aria-label="Go to Styles"]').click();
+    cy.get('[aria-label="Go to Themes"]').click();
     cy.get('[aria-label="Select bounce-dark"]').click();
 
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-dark');
+  });
+
+  it('should be able reset selected themes', () => {
+    cy.mount(
+      <PlayerStateWrapper>
+        <DotLottiePlayer
+          defaultTheme="bounce-light"
+          src={`/bounce_wifi.lottie`}
+          style={{ height: '400px', display: 'inline-block' }}
+          loop
+          autoplay
+        >
+          <Controls />
+        </DotLottiePlayer>
+      </PlayerStateWrapper>,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[name="defaultTheme"]').should('have.value', 'bounce-light');
+
+    cy.get('[aria-label="open-popover"]').click();
+    cy.get('[aria-label="Go to Themes"]').click();
+    cy.get('[aria-label="Select bounce-dark"]').click();
+
+    cy.get('[name="defaultTheme"]').should('have.value', 'bounce-dark');
+
+    cy.get('[aria-label="Reset Themes"]').click();
+
+    cy.get('[name="defaultTheme"]').should('have.value', '');
   });
 });

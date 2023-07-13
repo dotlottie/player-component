@@ -9,19 +9,33 @@ import { ChevronRight } from '../icons/chevron-right';
 
 interface ItemProps {
   children?: React.ReactNode;
+  enableReset?: boolean;
   expand: boolean;
   onBack?: () => void;
   onExpand?: () => void;
+  onReset?: () => void;
   title: string;
 }
 
-export const Item: React.FC<ItemProps> = ({ children, expand = false, onBack, onExpand, title }) => {
+export const Item: React.FC<ItemProps> = ({
+  children,
+  enableReset,
+  expand = false,
+  onBack,
+  onExpand,
+  onReset,
+  title,
+}) => {
   const onClickBack = useCallback(() => {
     onBack?.();
   }, [onBack]);
 
   const onClickItem = useCallback(() => {
     onExpand?.();
+  }, [onExpand]);
+
+  const handleReset = useCallback(() => {
+    onReset?.();
   }, [onExpand]);
 
   return (
@@ -40,7 +54,14 @@ export const Item: React.FC<ItemProps> = ({ children, expand = false, onBack, on
             <button onClick={onClickBack}>
               <ChevronLeft />
             </button>
-            <span style={{ flex: 1 }}>{title}</span>
+            <div className="popover-header-title" style={{ flex: 1 }}>
+              <span>{title}</span>
+              {enableReset && (
+                <button className="reset-theme" onClick={handleReset} aria-label={`Reset ${title}`}>
+                  Reset
+                </button>
+              )}
+            </div>
           </div>
           {children}
         </div>

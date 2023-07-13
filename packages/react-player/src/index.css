@@ -201,8 +201,27 @@
   align-items: center;
   border-bottom: 1px solid #d9e0e6;
 }
+
 .popover .popover-header button {
   padding: 4px;
+}
+
+.popover .popover-header .popover-header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popover .popover-header .reset-theme {
+  color: rgba(99, 114, 126, 1);
+  font-size: 12px;
+  font-weight: 400;
+  padding: 0px;
+}
+
+.popover .popover-header .reset-theme:hover {
+  color: rgba(32, 39, 44, 1);
+  background-color: transparent;
 }
 
 .popover .popover-items {

@@ -57,13 +57,15 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       manuItems.push({
         title: 'Animations',
         items: _animations,
+        enableReset: false,
       });
     }
 
     if (Array.isArray(_themes) && _themes.length !== 0) {
       manuItems.push({
-        title: 'Styles',
+        title: 'Themes',
         items: _themes,
+        enableReset: Boolean(defaultTheme),
       });
     }
 
@@ -115,7 +117,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       if (title === 'Animations') {
         dotLottiePlayer.play(value);
       }
-      if (title === 'Styles') {
+      if (title === 'Themes') {
         dotLottiePlayer.setDefaultTheme(value);
       }
     },
