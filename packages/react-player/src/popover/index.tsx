@@ -3,7 +3,7 @@
  */
 
 import React, { useCallback, useRef, useState } from 'react';
-import { useClickAway } from 'react-use';
+import { useClickAway, useKey } from 'react-use';
 
 import { Item } from './item';
 import { SubItem } from './sub-item';
@@ -34,6 +34,11 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
     onDismiss?.();
   });
 
+  useKey('Escape', () => {
+    setActive('');
+    onDismiss?.();
+  });
+
   const goBack = useCallback(() => {
     setActive('');
   }, [setActive]);
@@ -43,6 +48,13 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
       return () => setActive(value);
     },
     [setActive],
+  );
+
+  const handleSelectItem = useCallback(
+    (title: string, value: string) => {
+      return () => onSelectItem?.(title, value);
+    },
+    [onSelectItem],
   );
 
   return (
@@ -76,9 +88,7 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
                           <SubItem
                             value={sub.value}
                             selected={sub.selected}
-                            onSelectItem={(): void => {
-                              onSelectItem?.(item.title, sub.value);
-                            }}
+                            onSelectItem={handleSelectItem(item.title, sub.value)}
                           />
                         </li>
                       );

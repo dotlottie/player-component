@@ -21,9 +21,7 @@ export const SubItem: React.FC<SubItemProps> = ({ onSelectItem, selected = false
     <button
       aria-label={`Select ${value}`}
       className={`popover-item ${selected ? 'selected' : ''}`}
-      onClick={(): void => {
-        onClickItem();
-      }}
+      onClick={onClickItem}
       {...props}
     >
       <span style={{ visibility: selected ? 'visible' : 'hidden' }}>

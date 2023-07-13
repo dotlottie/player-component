@@ -4,7 +4,8 @@
 
 import type { ManifestAnimation, ManifestTheme } from '@dotlottie/common';
 import { PlayerState } from '@dotlottie/common';
-import React, { useEffect, useMemo, useState } from 'react';
+import type { FormEventHandler } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { useDotLottieState } from './hooks/use-dotlottie-state';
 import { EllipsisVertical } from './icons/ellipsis-vertical';
@@ -77,6 +78,57 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
     return buttons.includes('animations') && Array.isArray(animations) && animations.length > 1;
   }, [popoverItems]);
 
+  const openPopover = useCallback(() => {
+    setPopover(!popover);
+  }, [setPopover]);
+
+  const handleDismiss = useCallback(() => {
+    setPopover(false);
+  }, [setPopover]);
+
+  const toggleLoop = useCallback(() => {
+    dotLottiePlayer.toggleLoop();
+  }, [dotLottiePlayer]);
+
+  const handleFreeze = useCallback(() => {
+    dotLottiePlayer.freeze();
+  }, [dotLottiePlayer]);
+
+  const handleUnfreeze = useCallback(() => {
+    dotLottiePlayer.unfreeze();
+  }, [dotLottiePlayer]);
+
+  const handleNext = useCallback(() => {
+    dotLottiePlayer.next();
+  }, [dotLottiePlayer]);
+
+  const handlePrevious = useCallback(() => {
+    dotLottiePlayer.previous();
+  }, [dotLottiePlayer]);
+
+  const handleTogglePlay = useCallback(() => {
+    dotLottiePlayer.togglePlay();
+  }, [dotLottiePlayer]);
+
+  const handleSelectItem = useCallback(
+    (title: string, value: string) => {
+      if (title === 'Animations') {
+        dotLottiePlayer.play(value);
+      }
+      if (title === 'Styles') {
+        dotLottiePlayer.setDefaultTheme(value);
+      }
+    },
+    [dotLottiePlayer],
+  );
+
+  const handleSeek = useCallback<FormEventHandler<HTMLInputElement>>(
+    (event) => {
+      dotLottiePlayer.seek(String(event.currentTarget.value).concat('%'));
+    },
+    [dotLottiePlayer],
+  );
+
   function updateManifest(): void {
     const _animations = dotLottiePlayer.getManifest()?.animations;
     const _themes = dotLottiePlayer.getManifest()?.themes;
@@ -103,17 +155,17 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   return (
     <div aria-label="lottie-animation-controls" className="toolbar" {...props}>
       {buttons.includes('previous') && animations.length > 1 && (
-        <button onClick={(): void => dotLottiePlayer.previous()} aria-label="play-previous">
+        <button onClick={handlePrevious} aria-label="play-previous">
           <Previous />
         </button>
       )}
       {buttons.includes('play') && (
-        <button onClick={(): void => dotLottiePlayer.togglePlay()} aria-label="play-pause">
+        <button onClick={handleTogglePlay} aria-label="play-pause">
           {isPlaying ? <Pause /> : <Play />}
         </button>
       )}
       {buttons.includes('next') && animations.length > 1 && (
-        <button onClick={(): void => dotLottiePlayer.next()} aria-label="play-next">
+        <button onClick={handleNext} aria-label="play-next">
           <Next />
         </button>
       )}
@@ -125,13 +177,9 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
         step={0}
         max={100}
         value={seeker || 0}
-        onInput={(event): void => dotLottiePlayer.seek(String(event.currentTarget.value).concat('%'))}
-        onMouseDown={(): void => {
-          dotLottiePlayer.freeze();
-        }}
-        onMouseUp={(): void => {
-          dotLottiePlayer.unfreeze();
-        }}
+        onInput={handleSeek}
+        onMouseDown={handleFreeze}
+        onMouseUp={handleUnfreeze}
         aria-valuemin={1}
         aria-valuemax={100}
         role="slider"
@@ -140,39 +188,14 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       />
 
       {buttons.includes('loop') && (
-        <button
-          onClick={(): void => {
-            dotLottiePlayer.toggleLoop();
-          }}
-          className={loop ? 'active' : ''}
-          aria-label="loop-toggle"
-        >
+        <button onClick={toggleLoop} className={loop ? 'active' : ''} aria-label="loop-toggle">
           <Loop />
         </button>
       )}
       {shouldDisplayPopover && (
         <div style={{ position: 'relative' }}>
-          <Popover
-            items={popoverItems}
-            open={popover}
-            onDismiss={(): void => {
-              setPopover(false);
-            }}
-            onSelectItem={(title, value): void => {
-              if (title === 'Animations') {
-                dotLottiePlayer.play(value);
-              }
-              if (title === 'Styles') {
-                dotLottiePlayer.setDefaultTheme(value);
-              }
-            }}
-          />
-          <button
-            aria-label="open-popover"
-            onClick={(): void => {
-              setPopover(!popover);
-            }}
-          >
+          <Popover items={popoverItems} open={popover} onDismiss={handleDismiss} onSelectItem={handleSelectItem} />
+          <button aria-label="open-popover" onClick={openPopover}>
             <EllipsisVertical />
           </button>
         </div>
