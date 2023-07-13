@@ -78,12 +78,12 @@
   background-color: var(--lottie-player-button-hover-color);
 }
 
-.toolbar .popover button.selected {
-  background-color: var(--lottie-player-button-hover-color);
-}
-
 .toolbar button.active {
   color: var(--lottie-player-theme-color);
+}
+
+.toolbar button.popover-active {
+  background-color: var(--lottie-player-button-hover-color);
 }
 
 .toolbar button > svg {

@@ -195,7 +195,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       {shouldDisplayPopover && (
         <div style={{ position: 'relative' }}>
           <Popover items={popoverItems} open={popover} onDismiss={handleDismiss} onSelectItem={handleSelectItem} />
-          <button aria-label="open-popover" onClick={openPopover}>
+          <button className={`${popover ? 'popover-active' : ''}`} aria-label="open-popover" onClick={openPopover}>
             <EllipsisVertical />
           </button>
         </div>
