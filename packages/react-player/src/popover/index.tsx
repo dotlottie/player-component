@@ -18,25 +18,24 @@ interface PopoverItem {
 }
 
 interface PopoverProps extends React.HTMLAttributes<HTMLDialogElement> {
-  active?: string;
   items: PopoverItem[];
-  onDismiss?: () => void;
-  onSelectItem?: (title: string, value: string) => void;
+  onDismiss: () => void;
+  onSelectItem: (title: string, value: string) => void;
   open: boolean;
 }
 
-export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSelectItem, onDismiss, ...props }) => {
-  const [_active, setActive] = useState(active);
+export const Popover: React.FC<PopoverProps> = ({ items = [], onSelectItem, onDismiss, ...props }) => {
+  const [active, setActive] = useState('');
   const dialogRef = useRef<HTMLDialogElement>(null);
 
   useClickAway(dialogRef, () => {
     setActive('');
-    onDismiss?.();
+    onDismiss();
   });
 
   useKey('Escape', () => {
     setActive('');
-    onDismiss?.();
+    onDismiss();
   });
 
   const goBack = useCallback(() => {
@@ -52,7 +51,7 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
 
   const handleSelectItem = useCallback(
     (title: string, value: string) => {
-      return () => onSelectItem?.(title, value);
+      return () => onSelectItem(title, value);
     },
     [onSelectItem],
   );
@@ -60,7 +59,7 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
   return (
     <dialog
       ref={dialogRef}
-      style={{ padding: _active ? '0px' : '8px' }}
+      style={{ padding: active ? '0px' : '8px' }}
       className="popover"
       aria-label="Popover Menu"
       {...props}
@@ -74,9 +73,9 @@ export const Popover: React.FC<PopoverProps> = ({ items = [], active = '', onSel
                 width: '100%',
               }}
             >
-              {(_active === item.title || !_active) && (
+              {(active === item.title || !active) && (
                 <Item
-                  expand={_active === item.title}
+                  expand={active === item.title}
                   title={item.title}
                   onExpand={handleExpandMenu(item.title)}
                   onBack={goBack}
