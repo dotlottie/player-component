@@ -8,12 +8,12 @@ import { ChevronLeft } from '../icons/chevron-left';
 import { ChevronRight } from '../icons/chevron-right';
 
 interface ItemProps {
-  children?: React.ReactNode;
-  enableReset?: boolean;
+  children: React.ReactNode;
+  enableReset: boolean;
   expand: boolean;
-  onBack?: () => void;
-  onExpand?: () => void;
-  onReset?: () => void;
+  onBack: () => void;
+  onExpand: () => void;
+  onReset: () => void;
   title: string;
 }
 
@@ -27,16 +27,16 @@ export const Item: React.FC<ItemProps> = ({
   title,
 }) => {
   const onClickBack = useCallback(() => {
-    onBack?.();
+    onBack();
   }, [onBack]);
 
   const onClickItem = useCallback(() => {
-    onExpand?.();
+    onExpand();
   }, [onExpand]);
 
   const handleReset = useCallback(() => {
-    onReset?.();
-  }, [onExpand]);
+    onReset();
+  }, [onReset]);
 
   return (
     <>
