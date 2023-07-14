@@ -129,7 +129,6 @@ export default css`
     bottom: 40px;
     left: calc(100% - 239px);
     width: 224px;
-    min-height: 84px;
     max-height: 300px;
     background-color: #ffffff;
     box-shadow: 0px 8px 48px 0px rgba(243, 246, 248, 0.15), 0px 8px 16px 0px rgba(61, 72, 83, 0.16),
@@ -252,6 +251,7 @@ export default css`
     display: flex;
     padding: 8px;
     color: #20272c;
+    overflow: hidden;
     align-items: center;
     gap: 8px;
     align-self: stretch;

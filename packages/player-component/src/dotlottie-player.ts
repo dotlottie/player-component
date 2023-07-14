@@ -469,12 +469,12 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
-   * @returns All the themes
+   * @returns All the theme keys
    */
-  public themes(): Map<string, string> {
-    if (!this._dotLottieCommonPlayer) return new Map();
+  public themes(): string[] {
+    if (!this._dotLottieCommonPlayer) return [];
 
-    return this._dotLottieCommonPlayer.themes;
+    return Array.from(this._dotLottieCommonPlayer.themes.keys());
   }
 
   /**
@@ -630,9 +630,15 @@ export class DotLottiePlayer extends LitElement {
   }
 
   private _clickOutListener(event: MouseEvent): void {
-    const inside = event.composedPath().includes(this);
+    const inside = event.composedPath().some((element) => {
+      if (element instanceof HTMLElement) {
+        return element.classList.contains('popover') || element.id === 'lottie-animation-options';
+      }
 
-    if (!inside) {
+      return false;
+    });
+
+    if (!inside && this._popoverIsOpen) {
       this._popoverIsOpen = false;
       this.requestUpdate();
     }
@@ -759,6 +765,7 @@ export class DotLottiePlayer extends LitElement {
         ${this._hasMultipleAnimations
           ? html`
               <button
+                id="lottie-animation-options"
                 @click=${(): void => {
                   this._popoverIsOpen = !this._popoverIsOpen;
                   this.requestUpdate();
@@ -789,7 +796,7 @@ export class DotLottiePlayer extends LitElement {
           : html``}
         ${this._popoverIsOpen
           ? html`
-              <div class="popover" tabindex="0" aria-label="lottie animations themes popover">
+              <div id="popover" class="popover" tabindex="0" aria-label="lottie animations themes popover">
                 ${!this._animationsTabIsOpen && !this._styleTabIsOpen
                   ? html`
                       <div
@@ -827,7 +834,7 @@ export class DotLottiePlayer extends LitElement {
                       </div>
                     `
                   : html``}
-                ${this.themes().size > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
+                ${this.themes().length > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
                   ? html` <div
                       class="popover-button"
                       tabindex="0"

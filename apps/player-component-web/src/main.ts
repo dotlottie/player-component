@@ -13,6 +13,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     </div>
     <dotlottie-player  id="dotlottie-player" speed=1 playMode="normal" direction=1 loop autoplay controls></dotlottie-player>
     <dotlottie-player src="https://lottie.host/f5ea648a-8565-4a00-a6cf-2c3160fe12b8/nRNCht8u2u.lottie" speed=1 playMode="normal" direction=1 loop autoplay controls></dotlottie-player>
+    <dotlottie-player src="https://lottie.host/53ececb8-cfb3-4505-ac42-b0214d81d2d7/UBIa29hJUQ.lottie" autoplay loop controls/>
   </div>
 `;
 
