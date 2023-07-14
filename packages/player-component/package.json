@@ -35,9 +35,13 @@
   },
   "devDependencies": {
     "@dotlottie/common": "workspace:^",
+    "@vitejs/plugin-legacy": "^4.1.0",
+    "axe-core": "^4.7.2",
     "cypress": "^12.11.0",
+    "cypress-axe": "^1.4.0",
     "cypress-ct-lit": "^0.3.2",
     "lottie-web": "^5.12.2",
+    "terser": "^5.19.0",
     "tsup": "^6.1.3",
     "typescript": "^4.7.4",
     "vite": "^4.3.9"
