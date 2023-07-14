@@ -833,15 +833,6 @@ packages:
       '@babel/helper-plugin-utils': 7.22.5
     dev: true
 
-  /@babel/plugin-syntax-import-meta/7.10.4_@babel+core@7.22.1:
-    resolution: {integrity: sha512-Yqfm+XDx0+Prh3VSeEQCPU81yC+JWZ2pDPFSS4ZdpfZhp4MkFMaDC1UqseovEKwSUpnIL7+vK+Clp7bfh0iD7g==}
-    peerDependencies:
-      '@babel/core': ^7.0.0-0
-    dependencies:
-      '@babel/core': 7.22.1
-      '@babel/helper-plugin-utils': 7.22.5
-    dev: true
-
   /@babel/plugin-syntax-import-meta/7.10.4_@babel+core@7.22.9:
     resolution: {integrity: sha512-Yqfm+XDx0+Prh3VSeEQCPU81yC+JWZ2pDPFSS4ZdpfZhp4MkFMaDC1UqseovEKwSUpnIL7+vK+Clp7bfh0iD7g==}
     peerDependencies:
@@ -867,6 +858,16 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.22.1
+      '@babel/helper-plugin-utils': 7.22.5
+    dev: true
+
+  /@babel/plugin-syntax-jsx/7.22.5_@babel+core@7.22.9:
+    resolution: {integrity: sha512-gvyP4hZrgrs/wWMaocvxZ44Hw0b3W8Pe+cMxc8V1ULQ07oh8VNbIRaoD1LRZVTvD+0nieDKjfgKg89sD7rrKrg==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.22.9
       '@babel/helper-plugin-utils': 7.22.5
     dev: true
 
@@ -951,6 +952,16 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.22.1
+      '@babel/helper-plugin-utils': 7.22.5
+    dev: true
+
+  /@babel/plugin-syntax-typescript/7.22.5_@babel+core@7.22.9:
+    resolution: {integrity: sha512-1mS2o03i7t1c6VzH6fdQ3OA8tcEIxwG18zIPRp+UY1Ihv6W+XZzBCVxExF9upussPXJ0xE9XRHwMoNs1ep/nRQ==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.22.9
       '@babel/helper-plugin-utils': 7.22.5
     dev: true
 
@@ -1497,6 +1508,21 @@ packages:
       '@babel/helper-create-class-features-plugin': 7.22.6_@babel+core@7.22.1
       '@babel/helper-plugin-utils': 7.22.5
       '@babel/plugin-syntax-typescript': 7.22.5_@babel+core@7.22.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@babel/plugin-transform-typescript/7.22.5_@babel+core@7.22.9:
+    resolution: {integrity: sha512-SMubA9S7Cb5sGSFFUlqxyClTA9zWJ8qGQrppNUm05LtFuN1ELRFNndkix4zUJrC9F+YivWwa1dHMSyo0e0N9dA==}
+    engines: {node: '>=6.9.0'}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.22.9
+      '@babel/helper-annotate-as-pure': 7.22.5
+      '@babel/helper-create-class-features-plugin': 7.22.6_@babel+core@7.22.9
+      '@babel/helper-plugin-utils': 7.22.5
+      '@babel/plugin-syntax-typescript': 7.22.5_@babel+core@7.22.9
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -4973,6 +4999,25 @@ packages:
       '@babel/core': 7.22.1
       '@babel/helper-module-imports': 7.22.5
       '@babel/plugin-syntax-jsx': 7.22.5_@babel+core@7.22.1
+      '@babel/template': 7.22.5
+      '@babel/traverse': 7.22.6
+      '@babel/types': 7.22.5
+      '@vue/babel-helper-vue-transform-on': 1.1.5
+      camelcase: 6.3.0
+      html-tags: 3.3.1
+      svg-tags: 1.0.0
+    transitivePeerDependencies:
+      - supports-color
+    dev: true
+
+  /@vue/babel-plugin-jsx/1.1.5_@babel+core@7.22.9:
+    resolution: {integrity: sha512-nKs1/Bg9U1n3qSWnsHhCVQtAzI6aQXqua8j/bZrau8ywT1ilXQbK4FwEJGmU8fV7tcpuFvWmmN7TMmV1OBma1g==}
+    peerDependencies:
+      '@babel/core': ^7.0.0-0
+    dependencies:
+      '@babel/core': 7.22.9
+      '@babel/helper-module-imports': 7.22.5
+      '@babel/plugin-syntax-jsx': 7.22.5_@babel+core@7.22.9
       '@babel/template': 7.22.5
       '@babel/traverse': 7.22.6
       '@babel/types': 7.22.5
@@ -11079,7 +11124,7 @@ packages:
   /magicast/0.2.9:
     resolution: {integrity: sha512-S1WBXLSVKa34X+Bv7pfA8Umqc1BoglsqzWaQcyuexDc0cjgnERaFTSHbne2OfT27lXYxt/B/sV/2Kh0HaSQkfg==}
     dependencies:
-      '@babel/parser': 7.22.6
+      '@babel/parser': 7.22.7
       '@babel/types': 7.22.5
       recast: 0.23.2
     dev: true
@@ -17327,14 +17372,14 @@ packages:
     peerDependencies:
       vite: ^3.0.0-0 || ^4.0.0-0
     dependencies:
-      '@babel/core': 7.22.1
-      '@babel/plugin-syntax-import-meta': 7.10.4_@babel+core@7.22.1
-      '@babel/plugin-transform-typescript': 7.22.5_@babel+core@7.22.1
-      '@vue/babel-plugin-jsx': 1.1.5_@babel+core@7.22.1
+      '@babel/core': 7.22.9
+      '@babel/plugin-syntax-import-meta': 7.10.4_@babel+core@7.22.9
+      '@babel/plugin-transform-typescript': 7.22.5_@babel+core@7.22.9
+      '@vue/babel-plugin-jsx': 1.1.5_@babel+core@7.22.9
       '@vue/compiler-dom': 3.3.4
       esno: 0.16.3
       kolorist: 1.8.0
-      magic-string: 0.30.0
+      magic-string: 0.30.1
       shell-quote: 1.8.1
     transitivePeerDependencies:
       - supports-color

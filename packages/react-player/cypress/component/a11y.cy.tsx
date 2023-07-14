@@ -1,12 +1,13 @@
 /**
  * Copyright 2023 Design Barn Inc.
  */
+
 import type { Result } from 'axe-core';
 
 import { Controls } from '../../src/controls';
 import { DotLottiePlayer } from '../../src/react-player';
 
-function logA11yViolations(violations: Result[]) {
+function logA11yViolations(violations: Result[]): void {
   cy.task(
     'log',
     `${violations.length} accessibility violation${violations.length === 1 ? '' : 's'} ${
@@ -14,10 +15,10 @@ function logA11yViolations(violations: Result[]) {
     } detected`,
   );
   // pluck specific keys to keep the table readable
-  const violationData = violations.map(({ id, impact, description, nodes }) => ({
+  const violationData = violations.map(({ description, id, impact, nodes }) => ({
+    description,
     id,
     impact,
-    description,
     nodes: nodes.length,
   }));
 
@@ -41,6 +42,6 @@ describe('a11y', () => {
       </DotLottiePlayer>,
     );
 
-    cy.checkA11y('[data-testid="player"]', {}, logA11yViolations, true);
+    cy.checkA11y('[data-testid="player"]', {}, logA11yViolations);
   });
 });

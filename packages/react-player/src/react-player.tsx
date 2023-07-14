@@ -80,6 +80,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);
   const frame = useSelectDotLottieState(dotLottiePlayer, (state) => state.frame);
   const seeker = useSelectDotLottieState(dotLottiePlayer, (state) => state.seeker);
+  const currentAnimationId = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentAnimationId);
 
   /**
    * Updating prop changes.
@@ -229,7 +230,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
       <div
         className={`dotlottie-container main ${children ? 'controls' : ''} ${className}`}
         lang="en"
-        role="img"
         {...(testId && {
           'data-testid': testId,
         })}
@@ -237,7 +237,8 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
       >
         <div
           ref={container}
-          data-name="my-anim"
+          data-name={`${currentAnimationId}`}
+          role="figure"
           className={`animation ${children ? 'controls' : ''}`}
           style={{ position: 'relative' }}
           {...(testId && {
