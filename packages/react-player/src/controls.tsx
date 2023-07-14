@@ -101,10 +101,12 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   }, [dotLottiePlayer]);
 
   const handleNext = useCallback(() => {
+    dotLottiePlayer.setDefaultTheme('');
     dotLottiePlayer.next();
   }, [dotLottiePlayer]);
 
   const handlePrevious = useCallback(() => {
+    dotLottiePlayer.setDefaultTheme('');
     dotLottiePlayer.previous();
   }, [dotLottiePlayer]);
 
