@@ -267,6 +267,37 @@ describe('Controls', () => {
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-dark');
   });
 
+  it('should reset themes when switching animation', () => {
+    cy.mount(
+      <PlayerStateWrapper>
+        <DotLottiePlayer
+          defaultTheme="bounce-light"
+          src={`/bounce_wifi.lottie`}
+          style={{ height: '400px', display: 'inline-block' }}
+          loop
+          autoplay
+        >
+          <Controls />
+        </DotLottiePlayer>
+      </PlayerStateWrapper>,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[name="defaultTheme"]').should('have.value', 'bounce-light');
+
+    cy.get('[aria-label="open-popover"]').click();
+    cy.get('[aria-label="Go to Themes"]').click();
+    cy.get('[aria-label="Select bounce-dark"]').click();
+
+    cy.get('[name="defaultTheme"]').should('have.value', 'bounce-dark');
+
+    cy.get('[aria-label="open-popover"]').click();
+    cy.get('[aria-label="Go to Animations"]').click();
+    cy.get('[aria-label="Select wifi"]').click();
+
+    cy.get('[name="defaultTheme"]').should('have.value', '');
+  });
+
   it('should be able reset selected themes', () => {
     cy.mount(
       <PlayerStateWrapper>

@@ -115,6 +115,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   const handleSelectItem = useCallback(
     (title: string, value: string) => {
       if (title === 'Animations') {
+        dotLottiePlayer.setDefaultTheme('');
         dotLottiePlayer.play(value);
       }
       if (title === 'Themes') {
