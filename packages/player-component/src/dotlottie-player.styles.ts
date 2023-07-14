@@ -129,6 +129,7 @@ export default css`
     bottom: 40px;
     left: calc(100% - 239px);
     width: 224px;
+    min-height: 84px;
     max-height: 300px;
     background-color: #ffffff;
     box-shadow: 0px 8px 48px 0px rgba(243, 246, 248, 0.15), 0px 8px 16px 0px rgba(61, 72, 83, 0.16),
@@ -150,6 +151,10 @@ export default css`
   }
 
   .popover-button {
+    background: none;
+    border: none;
+    font-family: 'Karla', sans-serif;
+    width: 100%;
     flex-direction: row;
     cursor: pointer;
     height: 32px;
@@ -176,18 +181,31 @@ export default css`
   .popover-button-text {
     display: flex;
     color: #20272c;
-    height: 23px;
     flex-direction: column;
     align-self: stretch;
+    justify-content: center;
+    font-family: 'Karla' sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: -0.28px;
   }
 
   .reset-btn {
     font-size: 12px;
+    cursor: pointer;
+    font-family: 'Karla', sans-serif;
+    background: none;
+    border: none;
     font-weight: 400;
     line-height: 18px;
     letter-spacing: 0em;
     text-align: left;
     color: #63727e;
+    padding: 0;
+    width: 31px;
+    height: 18px;
   }
   .reset-btn:focus-visible {
     outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
@@ -201,17 +219,39 @@ export default css`
   .option-title-button {
     display: flex;
     flex-direction: row;
+    width: 100%;
     height: 32px;
     align-items: center;
     gap: 4px;
     align-self: stretch;
     cursor: pointer;
     color: var(--lottie-player-toolbar-icon-color);
+    border: none;
+    background: none;
+    padding: 4px;
+    font-family: 'Karla', sans-serif;
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
     line-height: 150%;
     letter-spacing: -0.32px;
+  }
+  .option-title-button.themes {
+    width: auto;
+    padding: 0;
+  }
+  .option-title-button:hover {
+    background-color: var(--lottie-player-toolbar-icon-hover-color);
+  }
+
+  .option-title-themes-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+  }
+  .option-title-themes-row:hover {
+    background-color: var(--lottie-player-toolbar-icon-hover-color);
   }
 
   .option-title-button:focus-visible {
@@ -248,14 +288,19 @@ export default css`
   }
 
   .option-button {
+    background: none;
+    border: none;
+    font-family: 'Karla', sans-serif;
     display: flex;
-    padding: 8px;
+    padding: 4px 8px;
     color: #20272c;
     overflow: hidden;
     align-items: center;
     gap: 8px;
     align-self: stretch;
     cursor: pointer;
+    height: 32px;
+    font-family: 'Karla', sans-serif;
     font-size: 14px;
     border-radius: 4px;
   }

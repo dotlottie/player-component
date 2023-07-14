@@ -794,64 +794,34 @@ export class DotLottiePlayer extends LitElement {
               </button>
             `
           : html``}
-        ${this._popoverIsOpen
-          ? html`
-              <div id="popover" class="popover" tabindex="0" aria-label="lottie animations themes popover">
-                ${!this._animationsTabIsOpen && !this._styleTabIsOpen
-                  ? html`
-                      <div
-                        class="popover-button"
-                        tabindex="0"
-                        aria-label="animations"
-                        @click=${(): void => {
-                          this._animationsTabIsOpen = !this._animationsTabIsOpen;
-                          this.requestUpdate();
-                        }}
-                        @keydown=${(key: KeyboardEvent): void => {
-                          if (key.code === 'Space' || key.code === 'Enter') {
-                            this._animationsTabIsOpen = !this._animationsTabIsOpen;
-                            this.requestUpdate();
-                          }
-                        }}
-                      >
-                        <div class="popover-button-text">Animations</div>
-                        <div>
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              clip-rule="evenodd"
-                              d="M10.4697 17.5303C10.1768 17.2374 10.1768 16.7626 10.4697 16.4697L14.9393 12L10.4697 7.53033C10.1768 7.23744 10.1768 6.76256 10.4697 6.46967C10.7626 6.17678 11.2374 6.17678 11.5303 6.46967L16.5303 11.4697C16.8232 11.7626 16.8232 12.2374 16.5303 12.5303L11.5303 17.5303C11.2374 17.8232 10.7626 17.8232 10.4697 17.5303Z"
-                              fill="#4C5863"
-                            />
-                          </svg>
-                        </div>
-                      </div>
-                    `
-                  : html``}
-                ${this.themes().length > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
-                  ? html` <div
+      </div>
+      ${this._popoverIsOpen
+        ? html`
+            <div
+              id="popover"
+              class="popover"
+              tabindex="0"
+              aria-label="lottie animations themes popover"
+              style="min-height: ${this.themes().length > 0 ? '84px' : 'auto'}"
+            >
+              ${!this._animationsTabIsOpen && !this._styleTabIsOpen
+                ? html`
+                    <button
                       class="popover-button"
                       tabindex="0"
-                      aria-label="Themes"
+                      aria-label="animations"
                       @click=${(): void => {
-                        this._styleTabIsOpen = !this._styleTabIsOpen;
+                        this._animationsTabIsOpen = !this._animationsTabIsOpen;
                         this.requestUpdate();
                       }}
                       @keydown=${(key: KeyboardEvent): void => {
                         if (key.code === 'Space' || key.code === 'Enter') {
-                          this._styleTabIsOpen = !this._styleTabIsOpen;
+                          this._animationsTabIsOpen = !this._animationsTabIsOpen;
                           this.requestUpdate();
                         }
-                        // eslint-disable-next-line no-secrets/no-secrets
                       }}
                     >
-                      <div class="popover-button-text">Themes</div>
+                      <div class="popover-button-text">Animations</div>
                       <div>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                           <path
@@ -862,107 +832,121 @@ export class DotLottiePlayer extends LitElement {
                           />
                         </svg>
                       </div>
-                    </div>`
-                  : ''}
-                ${this._animationsTabIsOpen
-                  ? html`<div
-                        class="option-title-button"
-                        tabindex="0"
-                        aria-label="Back to main popover menu"
-                        @click=${(): void => {
-                          this._animationsTabIsOpen = !this._animationsTabIsOpen;
-                          this.requestUpdate();
-                        }}
-                        @keydown=${(key: KeyboardEvent): void => {
-                          if (key.code === 'Space' || key.code === 'Enter') {
-                            this._animationsTabIsOpen = !this._animationsTabIsOpen;
-                            this.requestUpdate();
-                          }
-                        }}
-                      >
-                        <div class="option-title-chevron">
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              clip-rule="evenodd"
-                              d="M13.5303 6.46967C13.8232 6.76256 13.8232 7.23744 13.5303 7.53033L9.06066 12L13.5303 16.4697C13.8232 16.7626 13.8232 17.2374 13.5303 17.5303C13.2374 17.8232 12.7626 17.8232 12.4697 17.5303L7.46967 12.5303C7.17678 12.2374 7.17678 11.7626 7.46967 11.4697L12.4697 6.46967C12.7626 6.17678 13.2374 6.17678 13.5303 6.46967Z"
-                              fill="#20272C"
-                            />
-                          </svg>
-                        </div>
-                        <div>Animations</div>
+                    </button>
+                  `
+                : html``}
+              ${this.themes().length > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
+                ? html` <button
+                    class="popover-button"
+                    tabindex="0"
+                    aria-label="Themes"
+                    @click=${(): void => {
+                      this._styleTabIsOpen = !this._styleTabIsOpen;
+                      this.requestUpdate();
+                    }}
+                    @keydown=${(key: KeyboardEvent): void => {
+                      if (key.code === 'Space' || key.code === 'Enter') {
+                        this._styleTabIsOpen = !this._styleTabIsOpen;
+                        this.requestUpdate();
+                      }
+                      // eslint-disable-next-line no-secrets/no-secrets
+                    }}
+                  >
+                    <div class="popover-button-text">Themes</div>
+                    <div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M10.4697 17.5303C10.1768 17.2374 10.1768 16.7626 10.4697 16.4697L14.9393 12L10.4697 7.53033C10.1768 7.23744 10.1768 6.76256 10.4697 6.46967C10.7626 6.17678 11.2374 6.17678 11.5303 6.46967L16.5303 11.4697C16.8232 11.7626 16.8232 12.2374 16.5303 12.5303L11.5303 17.5303C11.2374 17.8232 10.7626 17.8232 10.4697 17.5303Z"
+                          fill="#4C5863"
+                        />
+                      </svg>
+                    </div>
+                  </button>`
+                : ''}
+              ${this._animationsTabIsOpen
+                ? html`<button
+                      class="option-title-button"
+                      tabindex="0"
+                      aria-label="Back to main popover menu"
+                      @click=${(): void => {
+                        this._animationsTabIsOpen = !this._animationsTabIsOpen;
+                        this.requestUpdate();
+                      }}
+                    >
+                      <div class="option-title-chevron">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M13.5303 6.46967C13.8232 6.76256 13.8232 7.23744 13.5303 7.53033L9.06066 12L13.5303 16.4697C13.8232 16.7626 13.8232 17.2374 13.5303 17.5303C13.2374 17.8232 12.7626 17.8232 12.4697 17.5303L7.46967 12.5303C7.17678 12.2374 7.17678 11.7626 7.46967 11.4697L12.4697 6.46967C12.7626 6.17678 13.2374 6.17678 13.5303 6.46967Z"
+                            fill="#20272C"
+                          />
+                        </svg>
                       </div>
-                      <div class="option-title-separator"></div>
-                      <div class="option-row">
-                        ${this.animations().map((animationName) => {
-                          return html`
-                            <div
-                              class="option-button"
-                              tabindex="0"
-                              aria-label=${`${animationName}`}
-                              @click=${(): void => {
+                      <div>Animations</div>
+                    </button>
+                    <div class="option-title-separator"></div>
+                    <div class="option-row">
+                      ${this.animations().map((animationName) => {
+                        return html`
+                          <button
+                            class="option-button"
+                            tabindex="0"
+                            aria-label=${`${animationName}`}
+                            @click=${(): void => {
+                              this._animationsTabIsOpen = !this._animationsTabIsOpen;
+                              this._popoverIsOpen = !this._popoverIsOpen;
+                              this.setTheme('');
+                              this.play(animationName);
+                              this.requestUpdate();
+                            }}
+                            @keydown=${(key: KeyboardEvent): void => {
+                              if (key.code === 'Space' || key.code === 'Enter') {
                                 this._animationsTabIsOpen = !this._animationsTabIsOpen;
                                 this._popoverIsOpen = !this._popoverIsOpen;
                                 this.setTheme('');
                                 this.play(animationName);
                                 this.requestUpdate();
-                              }}
-                              @keydown=${(key: KeyboardEvent): void => {
-                                if (key.code === 'Space' || key.code === 'Enter') {
-                                  this._animationsTabIsOpen = !this._animationsTabIsOpen;
-                                  this._popoverIsOpen = !this._popoverIsOpen;
-                                  this.setTheme('');
-                                  this.play(animationName);
-                                  this.requestUpdate();
-                                }
-                              }}
-                            >
-                              <div class="option-tick">
-                                ${this.currentAnimation() === animationName
-                                  ? html`
-                                      <svg
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          fill-rule="evenodd"
-                                          clip-rule="evenodd"
-                                          d="M20.5281 5.9372C20.821 6.23009 20.821 6.70497 20.5281 6.99786L9.46297 18.063C9.32168 18.2043 9.12985 18.2833 8.93004 18.2826C8.73023 18.2819 8.53895 18.2015 8.39864 18.0593L3.46795 13.0596C3.1771 12.7647 3.1804 12.2898 3.47532 11.999C3.77024 11.7081 4.2451 11.7114 4.53595 12.0063L8.93634 16.4683L19.4675 5.9372C19.7604 5.64431 20.2352 5.64431 20.5281 5.9372Z"
-                                          fill="#20272C"
-                                        />
-                                      </svg>
-                                    `
-                                  : html``}
-                              </div>
-                              <div>${animationName}</div>
+                              }
+                            }}
+                          >
+                            <div class="option-tick">
+                              ${this.currentAnimation() === animationName
+                                ? html`
+                                    <svg
+                                      width="24"
+                                      height="24"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        fill-rule="evenodd"
+                                        clip-rule="evenodd"
+                                        d="M20.5281 5.9372C20.821 6.23009 20.821 6.70497 20.5281 6.99786L9.46297 18.063C9.32168 18.2043 9.12985 18.2833 8.93004 18.2826C8.73023 18.2819 8.53895 18.2015 8.39864 18.0593L3.46795 13.0596C3.1771 12.7647 3.1804 12.2898 3.47532 11.999C3.77024 11.7081 4.2451 11.7114 4.53595 12.0063L8.93634 16.4683L19.4675 5.9372C19.7604 5.64431 20.2352 5.64431 20.5281 5.9372Z"
+                                        fill="#20272C"
+                                      />
+                                    </svg>
+                                  `
+                                : html``}
                             </div>
-                          `;
-                        })}
-                      </div> `
-                  : html``}
-                ${this._styleTabIsOpen
-                  ? html`<bu
-                        class="option-title-button"
+                            <div>${animationName}</div>
+                          </button>
+                        `;
+                      })}
+                    </div> `
+                : html``}
+              ${this._styleTabIsOpen
+                ? html`<div class="option-title-themes-row">
+                      <button
+                        class="option-title-button themes"
                         tabindex="0"
                         aria-label="Back to main popover menu"
                         @click=${(): void => {
                           this._styleTabIsOpen = !this._styleTabIsOpen;
                           this.requestUpdate();
-                        }}
-                        @keydown=${(key: KeyboardEvent): void => {
-                          if (key.code === 'Space' || key.code === 'Enter') {
-                            this._styleTabIsOpen = !this._styleTabIsOpen;
-                            this.requestUpdate();
-                          }
                         }}
                       >
                         <div class="option-title-chevron">
@@ -982,70 +966,64 @@ export class DotLottiePlayer extends LitElement {
                           </svg>
                         </div>
                         <div class="option-title-text">Themes</div>
-                        <div
+                        <button
                           class="reset-btn"
                           tabindex="0"
                           @click=${(): void => {
                             this.setTheme('');
                             this.requestUpdate();
                           }}
-                          @keydown=${(key: KeyboardEvent): void => {
-                            if (key.code === 'Space' || key.code === 'Enter') {
-                              this.setTheme('');
-                              this.requestUpdate();
-                            }
-                          }}
                         >
                           Reset
-                        </div>
-                      </bu>
-                      <div class="option-title-separator"></div>
-                      <div class="option-row">
-                        ${this._themesForCurrentAnimation.map((themeName) => {
-                          return html`
-                            <div
-                              class="option-button"
-                              tabindex="0"
-                              aria-label="${themeName.id}"
-                              @click=${(): void => {
+                        </button>
+                      </button>
+                    </div>
+                    <div class="option-title-separator"></div>
+                    <div class="option-row">
+                      ${this._themesForCurrentAnimation.map((themeName) => {
+                        return html`
+                          <button
+                            class="option-button"
+                            tabindex="0"
+                            aria-label="${themeName.id}"
+                            @click=${(): void => {
+                              this.setTheme(themeName.id);
+                            }}
+                            @keydown=${(key: KeyboardEvent): void => {
+                              if (key.code === 'Space' || key.code === 'Enter') {
                                 this.setTheme(themeName.id);
-                              }}
-                              @keydown=${(key: KeyboardEvent): void => {
-                                if (key.code === 'Space' || key.code === 'Enter') {
-                                  this.setTheme(themeName.id);
-                                }
-                              }}
-                            >
-                              <div class="option-tick">
-                                ${this.getDefaultTheme() === themeName.id
-                                  ? html`
-                                      <svg
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                      >
-                                        <path
-                                          fill-rule="evenodd"
-                                          clip-rule="evenodd"
-                                          d="M20.5281 5.9372C20.821 6.23009 20.821 6.70497 20.5281 6.99786L9.46297 18.063C9.32168 18.2043 9.12985 18.2833 8.93004 18.2826C8.73023 18.2819 8.53895 18.2015 8.39864 18.0593L3.46795 13.0596C3.1771 12.7647 3.1804 12.2898 3.47532 11.999C3.77024 11.7081 4.2451 11.7114 4.53595 12.0063L8.93634 16.4683L19.4675 5.9372C19.7604 5.64431 20.2352 5.64431 20.5281 5.9372Z"
-                                          fill="#20272C"
-                                        />
-                                      </svg>
-                                    `
-                                  : html``}
-                              </div>
-                              <div>${themeName.id}</div>
+                              }
+                            }}
+                          >
+                            <div class="option-tick">
+                              ${this.getDefaultTheme() === themeName.id
+                                ? html`
+                                    <svg
+                                      width="24"
+                                      height="24"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                      <path
+                                        fill-rule="evenodd"
+                                        clip-rule="evenodd"
+                                        d="M20.5281 5.9372C20.821 6.23009 20.821 6.70497 20.5281 6.99786L9.46297 18.063C9.32168 18.2043 9.12985 18.2833 8.93004 18.2826C8.73023 18.2819 8.53895 18.2015 8.39864 18.0593L3.46795 13.0596C3.1771 12.7647 3.1804 12.2898 3.47532 11.999C3.77024 11.7081 4.2451 11.7114 4.53595 12.0063L8.93634 16.4683L19.4675 5.9372C19.7604 5.64431 20.2352 5.64431 20.5281 5.9372Z"
+                                        fill="#20272C"
+                                      />
+                                    </svg>
+                                  `
+                                : html``}
                             </div>
-                          `;
-                        })}
-                      </div>`
-                  : html``}
-              </div>
-            `
-          : html``}
-      </div>
+                            <div>${themeName.id}</div>
+                          </button>
+                        `;
+                      })}
+                    </div>`
+                : html``}
+            </div>
+          `
+        : html``}
     `;
   }
 
