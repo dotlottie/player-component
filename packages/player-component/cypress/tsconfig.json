@@ -1,6 +1,8 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "types": ["cypress", "cypress-ct-lit/types"]
-  }
+    "baseUrl": "./",
+    "types": ["cypress", "cypress-axe", "cypress-ct-lit"]
+  },
+  "include": ["."]
 }

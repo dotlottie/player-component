@@ -305,7 +305,7 @@ export class DotLottiePlayer {
   }
 
   protected _onVisibilityChange(): void {
-    if (!this._lottie) return;
+    if (!this._lottie || typeof document === 'undefined') return;
 
     if (document.hidden && this.currentState === PlayerState.Playing) {
       this.freeze();
@@ -315,7 +315,7 @@ export class DotLottiePlayer {
   }
 
   protected _listenToVisibilityChange(): void {
-    if (typeof document.hidden !== 'undefined') {
+    if (typeof document !== 'undefined' && typeof document.hidden !== 'undefined') {
       document.addEventListener('visibilitychange', () => this._onVisibilityChange());
     }
   }
@@ -818,7 +818,9 @@ export class DotLottiePlayer {
     }
 
     this.clearCountTimer();
-    document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
+    if (typeof document !== 'undefined') {
+      document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
+    }
     this._counter = 0;
     this._lottie?.destroy();
   }
