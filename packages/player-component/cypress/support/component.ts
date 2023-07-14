@@ -2,6 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
+import 'cypress-axe';
+
 import { mount } from 'cypress-ct-lit';
 
 import '../../dist/dotlottie-player.js';
