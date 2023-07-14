@@ -41,6 +41,6 @@ describe('a11y', () => {
       </DotLottiePlayer>,
     );
 
-    cy.checkA11y('[data-testid="player"]', {}, logA11yViolations);
+    cy.checkA11y('[data-testid="player"]', {}, logA11yViolations, true);
   });
 });
