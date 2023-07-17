@@ -652,12 +652,7 @@ export class DotLottiePlayer extends LitElement {
       <div id="lottie-controls" aria-label="lottie-animation-controls" class="toolbar">
         ${this._hasMultipleAnimations
           ? html`
-              <button
-                @click=${(): void => this.previous()}
-                tabindex="0"
-                aria-label="Previous animation"
-                class="btn-spacing-left"
-              >
+              <button @click=${(): void => this.previous()} aria-label="Previous animation" class="btn-spacing-left">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fill-rule="evenodd"
@@ -677,7 +672,6 @@ export class DotLottiePlayer extends LitElement {
           class=${isPlaying || isPaused
             ? `active ${this._hasMultipleAnimations ? 'btn-spacing-center' : 'btn-spacing-right'}`
             : `${this._hasMultipleAnimations ? 'btn-spacing-center' : 'btn-spacing-right'}`}
-          tabindex="0"
           aria-label="play / pause animation"
         >
           ${isPlaying
@@ -704,12 +698,7 @@ export class DotLottiePlayer extends LitElement {
         </button>
         ${this._hasMultipleAnimations
           ? html`
-              <button
-                @click=${(): void => this.next()}
-                tabindex="0"
-                aria-label="Next animation"
-                class="btn-spacing-right"
-              >
+              <button @click=${(): void => this.next()} aria-label="Next animation" class="btn-spacing-right">
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fill-rule="evenodd"
@@ -740,7 +729,6 @@ export class DotLottiePlayer extends LitElement {
           aria-valuemax="100"
           role="slider"
           aria-valuenow=${this._seeker}
-          tabindex="0"
           aria-label="lottie-seek-input"
           style=${`--seeker: ${this._seeker}`}
         />
@@ -748,7 +736,6 @@ export class DotLottiePlayer extends LitElement {
           id="lottie-loop-toggle"
           @click=${(): void => this.toggleLooping()}
           class=${this._dotLottieCommonPlayer?.loop ? 'active btn-spacing-left' : 'btn-spacing-left'}
-          tabindex="0"
           aria-label="loop-toggle"
         >
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -770,7 +757,6 @@ export class DotLottiePlayer extends LitElement {
                   this._popoverIsOpen = !this._popoverIsOpen;
                   this.requestUpdate();
                 }}
-                tabindex="0"
                 aria-label="options"
                 class="btn-spacing-right"
                 style=${`background-color: ${
@@ -838,7 +824,6 @@ export class DotLottiePlayer extends LitElement {
               ${this.themes().length > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
                 ? html` <button
                     class="popover-button"
-                    tabindex="0"
                     aria-label="Themes"
                     @click=${(): void => {
                       this._styleTabIsOpen = !this._styleTabIsOpen;
@@ -868,7 +853,6 @@ export class DotLottiePlayer extends LitElement {
               ${this._animationsTabIsOpen
                 ? html`<button
                       class="option-title-button"
-                      tabindex="0"
                       aria-label="Back to main popover menu"
                       @click=${(): void => {
                         this._animationsTabIsOpen = !this._animationsTabIsOpen;
@@ -889,60 +873,62 @@ export class DotLottiePlayer extends LitElement {
                     </button>
                     <div class="option-title-separator"></div>
                     <div class="option-row">
-                      ${this.animations().map((animationName) => {
-                        return html`
-                          <button
-                            class="option-button"
-                            tabindex="0"
-                            aria-label=${`${animationName}`}
-                            @click=${(): void => {
-                              this._animationsTabIsOpen = !this._animationsTabIsOpen;
-                              this._popoverIsOpen = !this._popoverIsOpen;
-                              this.setTheme('');
-                              this.play(animationName);
-                              this.requestUpdate();
-                            }}
-                            @keydown=${(key: KeyboardEvent): void => {
-                              if (key.code === 'Space' || key.code === 'Enter') {
-                                this._animationsTabIsOpen = !this._animationsTabIsOpen;
-                                this._popoverIsOpen = !this._popoverIsOpen;
-                                this.setTheme('');
-                                this.play(animationName);
-                                this.requestUpdate();
-                              }
-                            }}
-                          >
-                            <div class="option-tick">
-                              ${this.currentAnimation() === animationName
-                                ? html`
-                                    <svg
-                                      width="24"
-                                      height="24"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        fill-rule="evenodd"
-                                        clip-rule="evenodd"
-                                        d="M20.5281 5.9372C20.821 6.23009 20.821 6.70497 20.5281 6.99786L9.46297 18.063C9.32168 18.2043 9.12985 18.2833 8.93004 18.2826C8.73023 18.2819 8.53895 18.2015 8.39864 18.0593L3.46795 13.0596C3.1771 12.7647 3.1804 12.2898 3.47532 11.999C3.77024 11.7081 4.2451 11.7114 4.53595 12.0063L8.93634 16.4683L19.4675 5.9372C19.7604 5.64431 20.2352 5.64431 20.5281 5.9372Z"
-                                        fill="#20272C"
-                                      />
-                                    </svg>
-                                  `
-                                : html``}
-                            </div>
-                            <div>${animationName}</div>
-                          </button>
-                        `;
-                      })}
+                      <ul>
+                        ${this.animations().map((animationName) => {
+                          return html`
+                            <li>
+                              <button
+                                class="option-button"
+                                aria-label=${`${animationName}`}
+                                @click=${(): void => {
+                                  this._animationsTabIsOpen = !this._animationsTabIsOpen;
+                                  this._popoverIsOpen = !this._popoverIsOpen;
+                                  this.setTheme('');
+                                  this.play(animationName);
+                                  this.requestUpdate();
+                                }}
+                                @keydown=${(key: KeyboardEvent): void => {
+                                  if (key.code === 'Space' || key.code === 'Enter') {
+                                    this._animationsTabIsOpen = !this._animationsTabIsOpen;
+                                    this._popoverIsOpen = !this._popoverIsOpen;
+                                    this.setTheme('');
+                                    this.play(animationName);
+                                    this.requestUpdate();
+                                  }
+                                }}
+                              >
+                                <div class="option-tick">
+                                  ${this.currentAnimation() === animationName
+                                    ? html`
+                                        <svg
+                                          width="24"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            fill-rule="evenodd"
+                                            clip-rule="evenodd"
+                                            d="M20.5281 5.9372C20.821 6.23009 20.821 6.70497 20.5281 6.99786L9.46297 18.063C9.32168 18.2043 9.12985 18.2833 8.93004 18.2826C8.73023 18.2819 8.53895 18.2015 8.39864 18.0593L3.46795 13.0596C3.1771 12.7647 3.1804 12.2898 3.47532 11.999C3.77024 11.7081 4.2451 11.7114 4.53595 12.0063L8.93634 16.4683L19.4675 5.9372C19.7604 5.64431 20.2352 5.64431 20.5281 5.9372Z"
+                                            fill="#20272C"
+                                          />
+                                        </svg>
+                                      `
+                                    : html``}
+                                </div>
+                                <div>${animationName}</div>
+                              </button>
+                            </li>
+                          `;
+                        })}
+                      </ul>
                     </div> `
                 : html``}
               ${this._styleTabIsOpen
                 ? html`<div class="option-title-themes-row">
                       <button
                         class="option-title-button themes"
-                        tabindex="0"
                         aria-label="Back to main popover menu"
                         @click=${(): void => {
                           this._styleTabIsOpen = !this._styleTabIsOpen;
@@ -966,59 +952,65 @@ export class DotLottiePlayer extends LitElement {
                           </svg>
                         </div>
                         <div class="option-title-text">Themes</div>
-                        <button
-                          class="reset-btn"
-                          tabindex="0"
-                          @click=${(): void => {
-                            this.setTheme('');
-                            this.requestUpdate();
-                          }}
-                        >
-                          Reset
-                        </button>
+                        ${this._dotLottieCommonPlayer?.defaultTheme === ''
+                          ? html``
+                          : html`
+                              <button
+                                class="reset-btn"
+                                @click=${(): void => {
+                                  this.setTheme('');
+                                  this.requestUpdate();
+                                }}
+                              >
+                                Reset
+                              </button>
+                            `}
                       </button>
                     </div>
                     <div class="option-title-separator"></div>
                     <div class="option-row">
-                      ${this._themesForCurrentAnimation.map((themeName) => {
-                        return html`
-                          <button
-                            class="option-button"
-                            tabindex="0"
-                            aria-label="${themeName.id}"
-                            @click=${(): void => {
-                              this.setTheme(themeName.id);
-                            }}
-                            @keydown=${(key: KeyboardEvent): void => {
-                              if (key.code === 'Space' || key.code === 'Enter') {
-                                this.setTheme(themeName.id);
-                              }
-                            }}
-                          >
-                            <div class="option-tick">
-                              ${this.getDefaultTheme() === themeName.id
-                                ? html`
-                                    <svg
-                                      width="24"
-                                      height="24"
-                                      viewBox="0 0 24 24"
-                                      fill="none"
-                                      xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                      <path
-                                        fill-rule="evenodd"
-                                        clip-rule="evenodd"
-                                        d="M20.5281 5.9372C20.821 6.23009 20.821 6.70497 20.5281 6.99786L9.46297 18.063C9.32168 18.2043 9.12985 18.2833 8.93004 18.2826C8.73023 18.2819 8.53895 18.2015 8.39864 18.0593L3.46795 13.0596C3.1771 12.7647 3.1804 12.2898 3.47532 11.999C3.77024 11.7081 4.2451 11.7114 4.53595 12.0063L8.93634 16.4683L19.4675 5.9372C19.7604 5.64431 20.2352 5.64431 20.5281 5.9372Z"
-                                        fill="#20272C"
-                                      />
-                                    </svg>
-                                  `
-                                : html``}
-                            </div>
-                            <div>${themeName.id}</div>
-                          </button>
-                        `;
-                      })}
+                      <ul>
+                        ${this._themesForCurrentAnimation.map((themeName) => {
+                          return html`
+                            <li>
+                              <button
+                                class="option-button"
+                                aria-label="${themeName.id}"
+                                @click=${(): void => {
+                                  this.setTheme(themeName.id);
+                                }}
+                                @keydown=${(key: KeyboardEvent): void => {
+                                  if (key.code === 'Space' || key.code === 'Enter') {
+                                    this.setTheme(themeName.id);
+                                  }
+                                }}
+                              >
+                                <div class="option-tick">
+                                  ${this.getDefaultTheme() === themeName.id
+                                    ? html`
+                                        <svg
+                                          width="24"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            fill-rule="evenodd"
+                                            clip-rule="evenodd"
+                                            d="M20.5281 5.9372C20.821 6.23009 20.821 6.70497 20.5281 6.99786L9.46297 18.063C9.32168 18.2043 9.12985 18.2833 8.93004 18.2826C8.73023 18.2819 8.53895 18.2015 8.39864 18.0593L3.46795 13.0596C3.1771 12.7647 3.1804 12.2898 3.47532 11.999C3.77024 11.7081 4.2451 11.7114 4.53595 12.0063L8.93634 16.4683L19.4675 5.9372C19.7604 5.64431 20.2352 5.64431 20.5281 5.9372Z"
+                                            fill="#20272C"
+                                          />
+                                        </svg>
+                                      `
+                                    : html``}
+                                </div>
+                                <div>${themeName.id}</div>
+                              </button>
+                            </li>
+                          `;
+                        })}
+                      </ul>
                     </div>`
                 : html``}
             </div>

@@ -286,8 +286,13 @@ export default css`
     display: flex;
     flex-direction: column;
   }
+  .option-row > ul {
+    padding: 0;
+    margin: 0;
+  }
 
   .option-button {
+    width: 100%;
     background: none;
     border: none;
     font-family: 'Karla', sans-serif;
