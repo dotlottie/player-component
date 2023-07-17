@@ -1,6 +1,6 @@
 {
   "name": "@dotlottie/react-player",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "type": "module",
   "description": "dotlottie animation player react component.",
   "repository": "https://github.com/dotlottie/player-component.git",
@@ -37,7 +37,9 @@
     "@types/react": "^18.0.31",
     "@vitejs/plugin-react": "^3.1.0",
     "autoprefixer": "^10.4.14",
+    "axe-core": "^4.7.2",
     "cypress": "^12.11.0",
+    "cypress-axe": "^1.4.0",
     "postcss": "^8.4.24",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

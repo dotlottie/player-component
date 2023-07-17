@@ -3,7 +3,7 @@
  */
 
 // <reference types="cypress" />
-
+import 'cypress-axe';
 import { mount } from 'cypress/react18';
 
 import '../../src/index.css';
