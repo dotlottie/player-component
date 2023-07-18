@@ -11,12 +11,13 @@ export default defineConfig({
     setupNodeEvents(on) {
       on('task', {
         log(message) {
+          // eslint-disable-next-line no-console
           console.log(message);
 
           return null;
         },
         table(message) {
-          // eslint-disable-next-line node/no-unsupported-features/node-builtins
+          // eslint-disable-next-line node/no-unsupported-features/node-builtins, no-console
           console.table(message);
 
           return null;
