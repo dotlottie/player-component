@@ -18,7 +18,7 @@ export function logWarning(warning: string, prefix: string = 'dotLottie-common',
   console.warn(`[${prefix}]:`, warning, ...rest);
 }
 
-export function getLastPathSegment(url: string = ''): string {
+export function getFilename(url: string = ''): string {
   const trimmedUrl = url.trim();
   const pathnameIndex = trimmedUrl.lastIndexOf('/');
   const lastSegmentWithExtension = trimmedUrl.substring(pathnameIndex + 1);
