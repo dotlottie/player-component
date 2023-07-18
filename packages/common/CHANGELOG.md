@@ -1,5 +1,15 @@
 # @dotlottie/common
 
+## 0.2.0
+
+### Minor Changes
+
+- e16e874: updated controls with styling and multi animation support
+
+### Patch Changes
+
+- 0cf77e0: fix: added media type check in determining .json and .lottie
+
 ## 0.1.0
 
 ### Minor Changes

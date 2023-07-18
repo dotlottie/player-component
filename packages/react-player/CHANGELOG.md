@@ -1,5 +1,15 @@
 # @dotlottie/react-player
 
+## 1.1.0
+
+### Minor Changes
+
+- bdfd979: feat: added new player controls
+
+### Patch Changes
+
+- 0cf77e0: fix: added media type check in determining .json and .lottie
+
 ## 1.0.1
 
 ### Patch Changes
