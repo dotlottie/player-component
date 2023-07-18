@@ -5,6 +5,11 @@
 import { css } from 'lit';
 
 export default css`
+  @font-face {
+    font-family: 'Karla';
+    src: url('./Karla-Regular.ttf') format('trueType');
+  }
+
   * {
     box-sizing: border-box;
   }
@@ -12,19 +17,28 @@ export default css`
   :host {
     --lottie-player-toolbar-height: 35px;
     --lottie-player-toolbar-background-color: transparent;
-    --lottie-player-toolbar-icon-color: #999;
-    --lottie-player-toolbar-icon-hover-color: #222;
-    --lottie-player-toolbar-icon-active-color: #555;
-    --lottie-player-seeker-track-color: #ccc;
-    --lottie-player-seeker-thumb-color: rgba(0, 107, 120, 0.8);
-    --lottie-player-seeker-display: block;
+    --lottie-player-toolbar-hover-background-color: #f3f6f8;
+    --lottie-player-toolbar-icon-color: #20272c;
+    --lottie-player-toolbar-icon-hover-color: #f3f6f8;
+    --lottie-player-toolbar-icon-active-color: #00ddb3;
+    --lottie-player-seeker-track-color: #00ddb3;
+    --lottie-player-seeker-accent-color: #00c1a2;
+    --lottie-player-seeker-thumb-color: #00c1a2;
+    --lottie-player-options-separator: #d9e0e6;
 
     display: block;
     width: 100%;
     height: 100%;
+
+    font-family: 'Karla', sans-serif;
+  }
+
+  .active {
+    color: var(--lottie-player-toolbar-icon-active-color) !important;
   }
 
   .main {
+    position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -38,7 +52,7 @@ export default css`
     display: flex;
   }
   .animation.controls {
-    height: calc(100% - 35px);
+    height: calc(100% - var(--lottie-player-toolbar-height));
   }
 
   .toolbar {
@@ -46,23 +60,44 @@ export default css`
     align-items: center;
     justify-items: center;
     background-color: var(--lottie-player-toolbar-background-color);
-    margin: 0 5px;
-    height: 35px;
+    margin: 0 8px;
+    height: var(--lottie-player-toolbar-height);
+  }
+
+  .btn-spacing-left {
+    margin-right: 4px;
+    margin-left: 8px;
+  }
+
+  .btn-spacing-center {
+    margin-right: 4px;
+    margin-left: 4px;
+  }
+
+  .btn-spacing-right {
+    margin-right: 8px;
+    margin-left: 4px;
   }
 
   .toolbar button {
+    color: #20272c;
     cursor: pointer;
     fill: var(--lottie-player-toolbar-icon-color);
     display: flex;
     background: none;
-    border: 0;
-    padding: 0;
+    border: 0px;
+    border-radius: 4px;
+    padding: 4px;
     outline: none;
-    height: 100%;
+    width: 24px;
+    height: 24px;
+    align-items: center;
   }
 
   .toolbar button:hover {
-    fill: var(--lottie-player-toolbar-icon-hover-color);
+    background-color: var(--lottie-player-toolbar-icon-hover-color);
+    border-style: solid;
+    border-radius: 2px;
   }
 
   .toolbar button.active {
@@ -71,89 +106,288 @@ export default css`
 
   .toolbar button.active:hover {
     fill: var(--lottie-player-toolbar-icon-hover-color);
+    border-radius: 4px;
   }
 
-  .toolbar button:focus {
-    outline: 1px dotted var(--lottie-player-toolbar-icon-active-color);
+  .toolbar button:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
   }
 
   .toolbar button svg {
+    width: 16px;
+    height: 16px;
   }
 
   .toolbar button.disabled svg {
     display: none;
   }
 
+  .popover {
+    position: absolute;
+    bottom: 40px;
+    left: calc(100% - 239px);
+    width: 224px;
+    min-height: 84px;
+    max-height: 300px;
+    background-color: #ffffff;
+    box-shadow: 0px 8px 48px 0px rgba(243, 246, 248, 0.15), 0px 8px 16px 0px rgba(61, 72, 83, 0.16),
+      0px 0px 1px 0px rgba(61, 72, 83, 0.36);
+    border-radius: 8px;
+    padding: 8px;
+    z-index: 100;
+    overflow-y: scroll;
+    scrollbar-width: none;
+  }
+  .popover:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .popover::-webkit-scrollbar {
+    width: 0px;
+  }
+
+  .popover-button {
+    background: none;
+    border: none;
+    font-family: 'Karla', sans-serif;
+    width: 100%;
+    flex-direction: row;
+    cursor: pointer;
+    height: 32px;
+    color: #20272c;
+    justify-content: space-between;
+    display: flex;
+    padding: 4px 8px;
+    align-items: flex-start;
+    gap: 8px;
+    align-self: stretch;
+    border-radius: 4px;
+  }
+
+  .popover-button:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .popover-button:hover {
+    background-color: var(--lottie-player-toolbar-hover-background-color);
+  }
+
+  .popover-button-text {
+    display: flex;
+    color: #20272c;
+    flex-direction: column;
+    align-self: stretch;
+    justify-content: center;
+    font-family: 'Karla' sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 150%;
+    letter-spacing: -0.28px;
+  }
+
+  .reset-btn {
+    font-size: 12px;
+    cursor: pointer;
+    font-family: 'Karla', sans-serif;
+    background: none;
+    border: none;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0em;
+    text-align: left;
+    color: #63727e;
+    padding: 0;
+    width: 31px;
+    height: 18px;
+  }
+  .reset-btn:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+  .reset-btn:hover {
+    color: #20272c;
+  }
+
+  .option-title-button {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 32px;
+    align-items: center;
+    gap: 4px;
+    align-self: stretch;
+    cursor: pointer;
+    color: var(--lottie-player-toolbar-icon-color);
+    border: none;
+    background: none;
+    padding: 4px;
+    font-family: 'Karla', sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: -0.32px;
+  }
+  .option-title-button.themes {
+    width: auto;
+    padding: 0;
+  }
+  .option-title-button:hover {
+    background-color: var(--lottie-player-toolbar-icon-hover-color);
+  }
+
+  .option-title-themes-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1 0 0;
+  }
+  .option-title-themes-row:hover {
+    background-color: var(--lottie-player-toolbar-icon-hover-color);
+  }
+
+  .option-title-button:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .option-title-text {
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 150%;
+    letter-spacing: -0.32px;
+  }
+
+  .option-title-separator {
+    margin: 8px -8px;
+    border-bottom: 1px solid var(--lottie-player-options-separator);
+  }
+
+  .option-title-chevron {
+    display: flex;
+    padding: 4px;
+    border-radius: 8px;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .option-row {
+    display: flex;
+    flex-direction: column;
+  }
+  .option-row > ul {
+    padding: 0;
+    margin: 0;
+  }
+
+  .option-button {
+    width: 100%;
+    background: none;
+    border: none;
+    font-family: 'Karla', sans-serif;
+    display: flex;
+    padding: 4px 8px;
+    color: #20272c;
+    overflow: hidden;
+    align-items: center;
+    gap: 8px;
+    align-self: stretch;
+    cursor: pointer;
+    height: 32px;
+    font-family: 'Karla', sans-serif;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+  .option-button:hover {
+    background-color: var(--lottie-player-toolbar-hover-background-color);
+  }
+  .option-button:focus-visible {
+    outline: 2px solid var(--lottie-player-toolbar-icon-active-color);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .option-tick {
+    display: flex;
+    width: 24px;
+    height: 24px;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
   .seeker {
-    -webkit-appearance: none;
+    height: 4px;
     width: 95%;
     outline: none;
-    background-color: var(--lottie-player-toolbar-background-color);
-    display: var(--lottie-player-seeker-display);
+    -webkit-appearance: none;
+    -moz-apperance: none;
+    border-radius: 9999px;
+    cursor: pointer;
+    background-image: linear-gradient(
+      to right,
+      rgb(0, 221, 179) calc(var(--seeker) * 1%),
+      rgb(217, 224, 230) calc(var(--seeker) * 1%)
+    );
+  }
+  .seeker.to-left {
+    background-image: linear-gradient(
+      to right,
+      rgb(217, 224, 230) calc(var(--seeker) * 1%),
+      rgb(0, 221, 179) calc(var(--seeker) * 1%)
+    );
+  }
+  .seeker::-webkit-slider-runnable-track:focus-visible {
+    color: #f07167;
+    accent-color: #00ddb3;
   }
 
   .seeker::-webkit-slider-runnable-track {
     width: 100%;
     height: 5px;
     cursor: pointer;
-    background: var(--lottie-player-seeker-track-color);
-    border-radius: 3px;
   }
   .seeker::-webkit-slider-thumb {
-    height: 15px;
-    width: 15px;
+    -webkit-appearance: none;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     background: var(--lottie-player-seeker-thumb-color);
     cursor: pointer;
-    -webkit-appearance: none;
     margin-top: -5px;
   }
-  .seeker:focus::-webkit-slider-runnable-track {
-    background: #999;
+  .seeker:focus-visible::-webkit-slider-thumb {
+    background: var(--lottie-player-seeker-thumb-color);
+    outline: 2px solid var(--lottie-player-seeker-track-color);
+    border: 1.5px solid #ffffff;
   }
-  .seeker::-moz-range-track {
-    width: 100%;
-    height: 5px;
-    cursor: pointer;
-    background: var(--lottie-player-seeker-track-color);
-    border-radius: 3px;
+  .seeker::-webkit-slider-thumb:hover {
+    background: #019d91;
   }
   .seeker::-moz-range-thumb {
-    height: 15px;
-    width: 15px;
+    appearance: none;
+    height: 16px;
+    width: 16px;
     border-radius: 50%;
     background: var(--lottie-player-seeker-thumb-color);
     cursor: pointer;
-  }
-  .seeker::-ms-track {
-    width: 100%;
-    height: 5px;
-    cursor: pointer;
-    background: transparent;
+    margin-top: -5px;
     border-color: transparent;
-    color: transparent;
   }
-  .seeker::-ms-fill-lower {
-    background: var(--lottie-player-seeker-track-color);
-    border-radius: 3px;
-  }
-  .seeker::-ms-fill-upper {
-    background: var(--lottie-player-seeker-track-color);
-    border-radius: 3px;
-  }
-  .seeker::-ms-thumb {
-    border: 0;
-    height: 15px;
-    width: 15px;
-    border-radius: 50%;
+  .seeker:focus-visible::-moz-range-thumb {
     background: var(--lottie-player-seeker-thumb-color);
-    cursor: pointer;
-  }
-  .seeker:focus::-ms-fill-lower {
-    background: var(--lottie-player-seeker-track-color);
-  }
-  .seeker:focus::-ms-fill-upper {
-    background: var(--lottie-player-seeker-track-color);
+    outline: 2px solid var(--lottie-player-seeker-track-color);
+    border: 1.5px solid #ffffff;
   }
 
   .error {
