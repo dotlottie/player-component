@@ -23,7 +23,7 @@ import type {
 import pkg from '../package.json';
 
 import { Store } from './store';
-import { createError, logError, logWarning } from './utils';
+import { createError, getLastPathSegment, logError, logWarning } from './utils';
 
 export type { AnimationDirection, AnimationItem };
 
@@ -1342,7 +1342,7 @@ export class DotLottiePlayer {
     if (contentType === 'application/json') {
       const lottieJSON = await response.json();
 
-      const filename = srcParsed.substring(Number(srcParsed.lastIndexOf('/')) + 1, srcParsed.lastIndexOf('.'));
+      const filename = getLastPathSegment(srcParsed);
       const { animations, manifest, themes } = await this.processLottieJSON(lottieJSON, filename);
 
       if (!animations.size || manifest.animations.length === 0 || !manifest.animations[0]) {
