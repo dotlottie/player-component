@@ -23,7 +23,7 @@ import type {
 import pkg from '../package.json';
 
 import { Store } from './store';
-import { createError, logError, logWarning } from './utils';
+import { createError, getFilename, logError, logWarning } from './utils';
 
 export type { AnimationDirection, AnimationItem };
 
@@ -1284,24 +1284,16 @@ export class DotLottiePlayer {
     logError(msg);
   }
 
-  protected async fetchLottieJSON(src: string): Promise<{
+  protected async processLottieJSON(
+    data: Record<string, unknown>,
+    filename: string,
+  ): Promise<{
     animations: Map<string, Animation>;
     manifest: Manifest;
     themes: Map<string, string>;
   }> {
-    if (!src.toLowerCase().endsWith('.json')) throw createError('parameter src must be .json');
-
     try {
-      const data = await fetch(src, {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
-          'Response-Type': 'json',
-        },
-      }).then(async (resp) => resp.json());
-
       const animations: Map<string, Animation> = new Map();
-      const filename = src.substring(Number(src.lastIndexOf('/')) + 1, src.lastIndexOf('.'));
 
       const boilerplateManifest: Manifest = {
         animations: [
@@ -1320,7 +1312,7 @@ export class DotLottiePlayer {
         version: '1.0.0',
       };
 
-      animations.set(filename, data);
+      animations.set(filename, data as unknown as Animation);
 
       return {
         animations,
@@ -1328,7 +1320,7 @@ export class DotLottiePlayer {
         manifest: boilerplateManifest,
       };
     } catch (error) {
-      throw createError(`fetchLottieJSON error  ${error}`);
+      throw createError(`error occurred while processing lottie JSON  ${error}`);
     }
   }
 
@@ -1338,8 +1330,24 @@ export class DotLottiePlayer {
     manifest: Manifest;
     themes: Map<string, string>;
   }> {
-    if (srcParsed.toLowerCase().endsWith('.json')) {
-      const { animations, manifest, themes } = await this.fetchLottieJSON(srcParsed);
+    let response: Response;
+
+    try {
+      response = await fetch(srcParsed, {
+        method: 'GET',
+        mode: 'cors',
+      });
+    } catch (error) {
+      throw createError(`error fetching URL: ${srcParsed}`);
+    }
+
+    const contentType = response.headers.get('Content-Type');
+
+    if (contentType === 'application/json') {
+      const lottieJSON = await response.json();
+
+      const filename = srcParsed.includes('.json') ? getFilename(srcParsed) : 'my-animation';
+      const { animations, manifest, themes } = await this.processLottieJSON(lottieJSON, filename);
 
       if (!animations.size || manifest.animations.length === 0 || !manifest.animations[0]) {
         throw createError('No animation to load!');
@@ -1363,8 +1371,9 @@ export class DotLottiePlayer {
     }
 
     try {
+      const arrayBuffer = await response.arrayBuffer();
       const dl = new DotLottie();
-      const dotLottie = await dl.fromURL(srcParsed);
+      const dotLottie = await dl.fromArrayBuffer(arrayBuffer);
       const lottieAnimations = dotLottie.animations;
 
       if (!lottieAnimations.length || !dotLottie.manifest.animations.length || !dotLottie.manifest.animations[0]) {

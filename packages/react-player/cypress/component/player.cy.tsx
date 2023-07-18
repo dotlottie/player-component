@@ -70,4 +70,58 @@ describe('Player', () => {
 
     cy.get('[data-testid="error"]').should('exist');
   });
+
+  it('should be able to load valid json urls with additional query params', () => {
+    cy.mount(
+      <PlayerStateWrapper>
+        <DotLottiePlayer
+          src="/toaster.json?version=12&gzip=true"
+          style={{ height: '400px', display: 'inline-block' }}
+          autoplay
+          testId="testPlayer"
+        >
+          <Controls />
+        </DotLottiePlayer>
+        ,
+      </PlayerStateWrapper>,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+  });
+
+  it('should be able to load valid .lottie urls with additional query params', () => {
+    cy.mount(
+      <PlayerStateWrapper>
+        <DotLottiePlayer
+          src="/cool-dog.lottie?version=12&gzip=true"
+          style={{ height: '400px', display: 'inline-block' }}
+          autoplay
+          testId="testPlayer"
+        >
+          <Controls />
+        </DotLottiePlayer>
+        ,
+      </PlayerStateWrapper>,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+  });
+
+  it('should error for invalid .lottie files', () => {
+    cy.mount(
+      <PlayerStateWrapper>
+        <DotLottiePlayer
+          src="/fake.lottie"
+          style={{ height: '400px', display: 'inline-block' }}
+          autoplay
+          testId="testPlayer"
+        >
+          <Controls />
+        </DotLottiePlayer>
+        ,
+      </PlayerStateWrapper>,
+    );
+
+    cy.get('[data-testid="error"]').should('exist');
+  });
 });
