@@ -1342,7 +1342,7 @@ export class DotLottiePlayer {
     if (contentType === 'application/json') {
       const lottieJSON = await response.json();
 
-      const filename = getLastPathSegment(srcParsed);
+      const filename = srcParsed.includes('.json') ? getLastPathSegment(srcParsed) : 'my-animation';
       const { animations, manifest, themes } = await this.processLottieJSON(lottieJSON, filename);
 
       if (!animations.size || manifest.animations.length === 0 || !manifest.animations[0]) {
