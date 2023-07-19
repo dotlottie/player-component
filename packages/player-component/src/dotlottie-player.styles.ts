@@ -7,7 +7,8 @@ import { css } from 'lit';
 export default css`
   @font-face {
     font-family: 'Karla';
-    src: url('./Karla-Regular.ttf') format('trueType');
+    font-weight: regular;
+    src: url('./fonts/Karla-regular.woff') format('woff');
   }
 
   * {
@@ -31,6 +32,9 @@ export default css`
     height: 100%;
 
     font-family: 'Karla', sans-serif;
+    font-style: normal;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   .active {
@@ -153,7 +157,7 @@ export default css`
   .popover-button {
     background: none;
     border: none;
-    font-family: 'Karla', sans-serif;
+    font-family: inherit;
     width: 100%;
     flex-direction: row;
     cursor: pointer;
@@ -184,7 +188,7 @@ export default css`
     flex-direction: column;
     align-self: stretch;
     justify-content: center;
-    font-family: 'Karla' sans-serif;
+    font-family: inherit;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -195,7 +199,7 @@ export default css`
   .reset-btn {
     font-size: 12px;
     cursor: pointer;
-    font-family: 'Karla', sans-serif;
+    font-family: inherit;
     background: none;
     border: none;
     font-weight: 400;
@@ -229,9 +233,8 @@ export default css`
     border: none;
     background: none;
     padding: 4px;
-    font-family: 'Karla', sans-serif;
+    font-family: inherit;
     font-size: 16px;
-    font-style: normal;
     font-weight: 700;
     line-height: 150%;
     letter-spacing: -0.32px;
@@ -295,7 +298,7 @@ export default css`
     width: 100%;
     background: none;
     border: none;
-    font-family: 'Karla', sans-serif;
+    font-family: inherit;
     display: flex;
     padding: 4px 8px;
     color: #20272c;
@@ -305,7 +308,7 @@ export default css`
     align-self: stretch;
     cursor: pointer;
     height: 32px;
-    font-family: 'Karla', sans-serif;
+    font-family: inherit;
     font-size: 14px;
     border-radius: 4px;
   }

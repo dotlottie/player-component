@@ -1,6 +1,7 @@
 @font-face {
   font-family: 'Karla';
-  src: url('./fonts/Karla.ttf') format('truetype');
+  font-weight: normal;
+  src: url('./fonts/Karla-Regular.woff') format('woff');
 }
 
 * {
@@ -23,7 +24,9 @@
   width: 100%;
   height: 100%;
   font-family: 'Karla', sans-serif;
-  font-style: regular;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .main {
@@ -68,6 +71,8 @@
   font-style: inherit;
   font-size: inherit;
   font-weight: inherit;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .toolbar .popover button {
@@ -194,7 +199,12 @@
 }
 
 .popover .popover-header {
-  font-weight: bold;
+  color: #20272c;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: -0.32px;
   padding: 8px;
   display: flex;
   gap: 8px;
