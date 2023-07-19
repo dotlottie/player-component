@@ -4,12 +4,6 @@
   src: url('./fonts/Karla-Regular.woff') format('woff');
 }
 
-@font-face {
-  font-family: 'Karla';
-  font-weight: bold;
-  src: url('./fonts/Karla-Bold.woff') format('woff');
-}
-
 * {
   box-sizing: border-box;
 }
@@ -205,7 +199,12 @@
 }
 
 .popover .popover-header {
-  font-weight: bold;
+  color: #20272c;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 150%;
+  letter-spacing: -0.32px;
   padding: 8px;
   display: flex;
   gap: 8px;
