@@ -219,6 +219,9 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           </button>
         </div>
         <DotLottiePlayer
+          rendererSettings={{
+            runExpressions: false,
+          }}
           lottieRef={lottieRef}
           src={src}
           style={{ height: '400px', display: 'inline-block' }}

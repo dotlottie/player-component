@@ -30,6 +30,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   speed?: number;
   src: Record<string, unknown> | string;
   testId?: string;
+  useWebWorker?: boolean;
 }
 
 export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
@@ -51,6 +52,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   testId,
   children,
   defaultTheme,
+  useWebWorker = false,
   ...props
 }) => {
   const container = useRef(null);
@@ -75,6 +77,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     autoplay: hover ? false : autoplay,
     testId,
     defaultTheme,
+    useWebWorker,
   });
 
   const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);

@@ -98,6 +98,12 @@ export class DotLottiePlayer extends LitElement {
   public speed = 1;
 
   /**
+   * Use webworker to load animation
+   */
+  @property({ type: Boolean })
+  public useWebWorker = false;
+
+  /**
    * Bodymovin JSON data or URL to JSON.
    */
   @property({ type: String })
@@ -282,6 +288,7 @@ export class DotLottiePlayer extends LitElement {
       autoplay: this.hasAttribute('autoplay') ? this.autoplay : undefined,
       activeAnimationId: this.hasAttribute('activeAnimationId') ? this.activeAnimationId : undefined,
       defaultTheme: this.hasAttribute('defaultTheme') ? this.defaultTheme : undefined,
+      useWebWorker: this.hasAttribute('useWebWorker') ? this.useWebWorker : undefined,
     });
 
     await this._dotLottieCommonPlayer.load(playbackOptions);

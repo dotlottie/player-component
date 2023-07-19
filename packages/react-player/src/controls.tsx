@@ -20,7 +20,7 @@ import { useDotLottieContext } from './providers';
 const AVAILABLE_BUTTONS = ['play', 'stop', 'loop', 'next', 'previous', 'animations', 'themes'] as const;
 
 interface ControlsProps extends React.HTMLAttributes<HTMLDivElement> {
-  buttons?: Array<typeof AVAILABLE_BUTTONS[number]>;
+  buttons?: Array<(typeof AVAILABLE_BUTTONS)[number]>;
   show?: boolean;
 }
 

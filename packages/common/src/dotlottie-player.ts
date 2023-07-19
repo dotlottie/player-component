@@ -147,12 +147,15 @@ export const DEFAULT_OPTIONS: PlaybackOptions = {
 };
 
 export type { RendererType };
-export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRendererConfig;
+export type RendererSettings = SVGRendererConfig &
+  CanvasRendererConfig &
+  HTMLRendererConfig & { runExpressions?: boolean };
 export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> &
   PlaybackOptions & {
     activeAnimationId?: string | null;
     background?: string;
     testId?: string | undefined;
+    useWebWorker?: boolean;
   };
 
 declare global {
@@ -187,6 +190,8 @@ export const DEFAULT_STATE: DotLottiePlayerState = {
 
 export class DotLottiePlayer {
   protected _lottie?: AnimationItem;
+
+  protected _useWebWorker: boolean = false;
 
   protected _src: string | Record<string, unknown>;
 
@@ -264,6 +269,10 @@ export class DotLottiePlayer {
     }
 
     this._container = container || null;
+
+    if (typeof options?.useWebWorker === 'boolean') {
+      this._useWebWorker = options.useWebWorker;
+    }
 
     if (typeof options?.background === 'string') {
       this.setBackground(options.background);
@@ -1202,6 +1211,10 @@ export class DotLottiePlayer {
     } else {
       this._animation = this._animations.get(this._currentAnimationId ?? '');
     }
+
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore: Method type missing in lottie-web
+    lottie.useWebWorker(this._useWebWorker);
 
     this._lottie = lottie.loadAnimation({
       ...options,
