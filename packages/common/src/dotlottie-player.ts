@@ -243,7 +243,7 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
-  private _hasEnteredInteractriveMode: boolean = false;
+  private _hasEnteredInteractiveMode: boolean = false;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -755,7 +755,7 @@ export class DotLottiePlayer {
     const actor = interpret(multiLottieMachine).onTransition((state) => console.log(state));
 
     // So that we only set listeners on the container once
-    if (!this._hasEnteredInteractriveMode) {
+    if (!this._hasEnteredInteractiveMode) {
       this._container?.addEventListener('click', () => {
         console.log('CLICK RECEIVED');
 
@@ -1382,7 +1382,7 @@ export class DotLottiePlayer {
     // Set a subscriber for when the animation changes
     // To remove listners from previous animation
     this.enterInteractiveMode();
-    this._hasEnteredInteractriveMode = true;
+    this._hasEnteredInteractiveMode = true;
 
     // this.leaveInteractiveMode();
 
