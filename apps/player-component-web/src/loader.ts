@@ -8,7 +8,7 @@ export function loader(
 ) {
   const setupLoader = () => {
     player.load(
-      '/big-dotlottie.lottie',
+      'https://assets4.lottiefiles.com/packages/lf20_zyquagfl.json',
       {
         preserveAspectRatio: 'xMidYMid slice',
       },
@@ -18,6 +18,7 @@ export function loader(
       },
     );
 
+    // player.enterInteractiveMode();
     // player.setSpeed(5);
   };
   element.addEventListener('click', () => setupLoader());

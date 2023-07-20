@@ -19,6 +19,7 @@ import type {
   HTMLRendererConfig,
   CanvasRendererConfig,
 } from 'lottie-web';
+import { createMachine, interpret } from 'xstate';
 
 import pkg from '../package.json';
 
@@ -241,6 +242,8 @@ export class DotLottiePlayer {
   protected _frame: number = 0;
 
   protected _seeker: number = 0;
+
+  private _hasEnteredInteractriveMode: boolean = false;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -632,6 +635,160 @@ export class DotLottiePlayer {
         });
       }
     }
+  }
+
+  // Let's try out xState with Lottie animations
+  public enterInteractiveMode(): void {
+    // interface Context {
+    //   onEnter: number;
+    // }
+
+    // const explodingPigeonMachine = createMachine<Context>(
+    //   {
+    //     id: 'exploding_pigeon',
+    //     initial: 'running',
+    //     states: {
+    //       running: {
+    //         // entry: ['initClickListener', 'initHoverListener'],
+    //         // exit: ['removeClickListener'],
+    //         entry: () => {
+    //           this._lottie?.goToAndPlay('bird', true);
+    //         },
+    //         exit: () => {
+    //           this._lottie?.resetSegments(true);
+    //         },
+    //         on: {
+    //           click: {
+    //             target: 'exploding',
+    //           },
+    //         },
+    //         meta: {
+    //           segments: 'exploding',
+    //           autoplay: true,
+    //           loop: true,
+    //         },
+    //       },
+    //       exploding: {
+    //         entry: () => {
+    //           this._lottie?.goToAndPlay('explosion', true);
+    //         },
+    //         exit: () => {
+    //           this._lottie?.resetSegments(true);
+    //         },
+    //         on: {
+    //           complete: {
+    //             target: 'feathers',
+    //           },
+    //         },
+    //         meta: {
+    //           segments: 'feathers',
+    //           autoplay: true,
+    //           loop: false,
+    //         },
+    //       },
+    //       feathers: {
+    //         entry: () => {
+    //           this._lottie?.goToAndPlay('feathers', true);
+    //         },
+    //         exit: () => {
+    //           this._lottie?.resetSegments(true);
+    //         },
+    //         on: {
+    //           complete: {
+    //             target: 'running',
+    //           },
+    //         },
+    //         meta: {
+    //           segments: 'running',
+    //           autoplay: true,
+    //           loop: false,
+    //         },
+    //       },
+    //     },
+    //   },
+    //   // {
+    //   //   actions: {
+    //   //     initClickListener: () => {
+    //   //       this._container?.addEventListener('click', () => { console.log("CLICK RECEIVED") })
+    //   //     },
+    //   //     removeClickListener: () => {
+    //   //       this._container?.removeEventListener('click', () => { console.log("CLICK RECEIVED") })
+    //   //     }
+    //   //   }
+    //   // }
+    // );
+
+    const multiLottieMachine = createMachine({
+      initial: 'bounce',
+      states: {
+        bounce: {
+          // entry: () => {
+          // },
+          exit: () => {
+            console.log('Leaving bounce');
+            this.play('wifi');
+          },
+          on: {
+            click: {
+              target: 'wifi',
+            },
+          },
+        },
+        wifi: {
+          exit: () => {
+            console.log('Leaving wifi');
+            this.play('bounce');
+          },
+          on: {
+            click: {
+              target: 'bounce',
+            },
+          },
+        },
+        actions: {},
+      },
+    });
+    s;
+    // Start the exploding pigeon machine
+    // const actor = interpret(explodingPigeonMachine).onTransition((state) => console.log(state));
+
+    const actor = interpret(multiLottieMachine).onTransition((state) => console.log(state));
+
+    // So that we only set listeners on the container once
+    if (!this._hasEnteredInteractriveMode) {
+      this._container?.addEventListener('click', () => {
+        console.log('CLICK RECEIVED');
+
+        actor.send({
+          type: 'click',
+        });
+      });
+
+      this._container?.addEventListener('mouseenter', () => {
+        // console.log("MOUSEENTER RECEIVED");
+
+        actor.send({
+          type: 'mouseenter',
+        });
+      });
+
+      this._container?.addEventListener('mouseleave', () => {
+        // console.log("MOUSELEAVE RECEIVED");
+
+        actor.send({
+          type: 'mouseleave',
+        });
+      });
+    }
+
+    this._lottie?.addEventListener('loopComplete', () => {
+      // console.log("COMPLETE RECEIVED")
+      actor.send({
+        type: 'complete',
+      });
+    });
+
+    actor.start();
   }
 
   public togglePlay(): void {
@@ -1221,9 +1378,17 @@ export class DotLottiePlayer {
     this._lottie.setDirection(direction);
     this._lottie.setSpeed(speed);
 
-    if (autoplay && !hover) {
-      this.play();
-    }
+    // Its setting listeners on every render
+    // Set a subscriber for when the animation changes
+    // To remove listners from previous animation
+    this.enterInteractiveMode();
+    this._hasEnteredInteractriveMode = true;
+
+    // this.leaveInteractiveMode();
+
+    // if (autoplay && !hover) {
+    //   this.play();
+    // }
 
     this._updateTestData();
   }
