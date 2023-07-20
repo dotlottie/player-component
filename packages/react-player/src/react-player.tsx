@@ -14,6 +14,7 @@ import { DotLottieProvider } from './providers';
 
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   activeAnimationId?: string;
+  activeStateId?: string;
   autoplay?: boolean;
   background?: string;
   className?: string;
@@ -53,6 +54,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   children,
   defaultTheme,
   light = false,
+  activeStateId,
   ...props
 }) => {
   const container = useRef(null);
@@ -78,6 +80,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     testId,
     defaultTheme,
     light,
+    activeStateId,
   });
 
   const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);
@@ -165,6 +168,12 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
       dotLottiePlayer.play(activeAnimationId);
     }
   }, [activeAnimationId]);
+
+  useEffect(() => {
+    if (typeof activeStateId !== 'undefined') {
+      dotLottiePlayer.enterInteractiveMode(activeStateId);
+    }
+  }, [activeStateId]);
 
   /**
    * Adding event listeners if dotLottiePlayer is available

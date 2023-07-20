@@ -6,12 +6,12 @@ import { defineConfig } from 'tsup';
 
 import pkg from './package.json';
 
-export default defineConfig({
+export default defineConfig((options) => ({
   bundle: true,
   clean: true,
   dts: true,
   sourcemap: true,
-  minify: true,
+  minify: !options.watch,
   treeshake: true,
   splitting: true,
   module: 'ESNext',
@@ -23,4 +23,4 @@ export default defineConfig({
   entry: ['./src/*.ts'],
   globalName: 'DotLottiePlayer',
   noExternal: Object.keys(pkg.dependencies ?? []),
-});
+}));
