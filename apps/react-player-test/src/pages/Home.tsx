@@ -46,6 +46,8 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
   const [src, setSrc] = useState<Record<string, unknown> | string>(props.src);
   const [loop, setLoop] = useState<undefined | boolean>(true);
   const [autoplay, setAutoPlay] = useState<undefined | boolean>(true);
+  const [scroll, setScroll] = useState<undefined | boolean>(false);
+  const [show, setShow] = useState<undefined | boolean>(false);
   const [controls, setControls] = useState(true);
   const [direction, setDirection] = useState<undefined | 1 | -1>(1);
   const [background, setBackground] = useState<undefined | string>('#FFFFFF00');
@@ -56,6 +58,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
   const [theme, setTheme] = useState<undefined | string>('');
   const [animations, setAnimations] = useState<ManifestAnimation[]>();
   const [themes, setThemes] = useState<ManifestTheme[]>();
+  const [ready, setReady] = useState(false);
   const lottieRef = useRef<DotLottieRefProps>();
 
   function handleClick(): void {
@@ -66,6 +69,18 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
       setSrc(randomLottie.src);
     }
   }
+
+  useEffect(() => {
+    if (lottieRef && lottieRef.current && ready) {
+      scroll ? lottieRef.current?.playOnScroll() : lottieRef.current?.stopPlayOnScroll();
+    }
+  }, [scroll, lottieRef]);
+
+  useEffect(() => {
+    if (lottieRef && lottieRef.current && ready) {
+      show ? lottieRef.current?.playOnShow() : lottieRef.current?.stopPlayOnShow();
+    }
+  }, [show, lottieRef]);
 
   useEffect(() => {
     if (!animations) return;
@@ -122,14 +137,14 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
               <option value="">Please select a theme</option>
               {activeAnimationId
                 ? themes
-                    .filter((theme) => theme.animations.includes(activeAnimationId))
-                    .map((theme) => {
-                      return (
-                        <option key={theme.id} value={theme.id}>
-                          Apply {theme.id}
-                        </option>
-                      );
-                    })
+                  .filter((theme) => theme.animations.includes(activeAnimationId))
+                  .map((theme) => {
+                    return (
+                      <option key={theme.id} value={theme.id}>
+                        Apply {theme.id}
+                      </option>
+                    );
+                  })
                 : null}
             </select>
           )}
@@ -209,6 +224,14 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
             <input type="checkbox" onChange={(): void => setPlayOnHover(!playOnHover)} checked={playOnHover} />
             playOnHover
           </label>
+          <label>
+            <input type="checkbox" onChange={(): void => setShow(!show)} checked={show} />
+            playOnShow
+          </label>
+          <label>
+            <input type="checkbox" onChange={(): void => setScroll(!scroll)} checked={scroll} />
+            playOnScroll
+          </label>
           <button
             onClick={() => {
               lottieRef.current?.revertToManifestValues([]);
@@ -237,6 +260,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
                 console.log('onPlayerReady', lottieRef.current?.getManifest()?.animations);
                 setAnimations(lottieRef.current?.getManifest()?.animations);
                 setThemes(lottieRef.current?.getManifest()?.themes);
+                setReady(true);
                 break;
 
               case 'freeze':

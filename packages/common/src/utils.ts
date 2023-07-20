@@ -47,3 +47,13 @@ export function isValidLottieString(str: string): boolean {
     return false;
   }
 }
+
+export function getKeyByValue<T extends Record<string, unknown>, V>(object: T, value: V): keyof T {
+  const key = Object.keys(object).find((ke) => object[ke] === value);
+
+  if (key === undefined) {
+    throw new Error('Value not found in the object.');
+  }
+
+  return key;
+}
