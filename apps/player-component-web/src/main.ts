@@ -10,10 +10,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="counter" type="button">Load animation</button>
       <button id="next" type="button">Next</button>
       <button id="prev" type="button">Prev</button>
-      <dotlottie-player src="https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie" id="dotlottie-player" speed=1 playMode="normal" ></dotlottie-player>
+      <dotlottie-player src="https://assets4.lottiefiles.com/packages/lf20_zyquagfl.json" id="dotlottie-player" speed=1 playMode="normal" ></dotlottie-player>
       </div>
   </div>
 `;
+
+// Switch out for bounce / wifi
+// <dotlottie-player src="https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie" id="dotlottie-player" speed=1 playMode="normal" ></dotlottie-player>
 
 // Switch out for pigeon aniamtion
 // <dotlottie-player src="https://assets4.lottiefiles.com/packages/lf20_zyquagfl.json" id="dotlottie-player" speed=1 playMode="normal" ></dotlottie-player>

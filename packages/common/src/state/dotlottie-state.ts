@@ -4,12 +4,15 @@
 
 /* eslint-disable typescript-sort-keys/interface */
 
+import type { PlayMode } from '../dotlottie-player';
+
 export interface StateAnimationSettings {
   autoplay?: boolean;
   direction?: 1 | -1;
   hover?: boolean;
   intermission?: number;
   loop?: boolean;
+  playMode?: PlayMode.Normal | PlayMode.Bounce;
   segments?: [number, number] | string;
   speed?: number;
   theme?: string;
@@ -42,12 +45,12 @@ export interface StateTransitionOnComplete {
 }
 
 export interface StateInfo {
-  id: number;
-  initial?: string;
+  id: string;
+  initial: string;
 }
 
 export interface StateSettings {
-  animationId: string;
+  animationId?: string;
   statePlaybackSettings: StateAnimationSettings;
   onAfter?: StateTransitionOnAfter;
   onClick?: StateTransitionOnClick;
@@ -67,49 +70,82 @@ export interface DotLottieState {
   states: State;
 }
 
-// Example usage
+// For Wifi / Bounce
+export const ExampleState: DotLottieState[] = [
+  {
+    descriptor: {
+      id: 'simple_click_to_next_prev',
+      initial: 'bounceState',
+    },
+    states: {
+      bounceState: {
+        animationId: 'bounce',
+        statePlaybackSettings: {
+          autoplay: true,
+          loop: true,
+          direction: -1,
+          speed: 2,
+        },
+        onClick: {
+          state: 'wifiState',
+        },
+      },
+      wifiState: {
+        animationId: 'wifi',
+        statePlaybackSettings: {
+          autoplay: true,
+          loop: true,
+          direction: 1,
+        },
+        onClick: {
+          state: 'bounceState',
+        },
+      },
+    },
+  },
+];
 
-// const states: DotLottieState[] = [];
-
-// myState.push({
-//   descriptor: {
-//     id: 12,
-//     initial: 'state1',
-//   },
-//   states: {
-//     state1: {
-//       animationId: 'animation1',
-//       statePlaybackSettings: {
-//         autoplay: true,
-//         direction: 1,
-//         hover: false,
-//         intermission: 0,
-//         loop: true,
-//         speed: 1,
-//         theme: 'light',
-//       },
-//       onAfter: {
-//         ms: 1000,
-//         state: 'state2',
-//       },
-//     },
-//     state2: {
-//       animationId: 'animation2',
-//       statePlaybackSettings: {
-//         autoplay: true,
-//         direction: -1,
-//         hover: false,
-//         intermission: 0,
-//         loop: true,
-//         speed: 1,
-//         theme: 'light',
-//       },
-//       onAfter: {
-//         ms: 1000,
-//         state: 'state2',
-//       },
-//     },
-//   },
-// });
-
-// console.log(data);
+// For Exploding pigeon
+export const ExplodingPigeon: DotLottieState[] = [
+  {
+    descriptor: {
+      id: 'exploding_pigeon',
+      initial: 'running',
+    },
+    states: {
+      running: {
+        statePlaybackSettings: {
+          autoplay: true,
+          loop: true,
+          direction: 1,
+          segments: 'bird',
+        },
+        onClick: {
+          state: 'exploding',
+        },
+      },
+      exploding: {
+        statePlaybackSettings: {
+          autoplay: true,
+          loop: false,
+          direction: 1,
+          segments: 'explosion',
+        },
+        onComplete: {
+          state: 'feathers',
+        },
+      },
+      feathers: {
+        statePlaybackSettings: {
+          autoplay: true,
+          loop: false,
+          direction: 1,
+          segments: 'feathers',
+        },
+        onComplete: {
+          state: 'running',
+        },
+      },
+    },
+  },
+];

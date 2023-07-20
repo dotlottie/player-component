@@ -23,6 +23,8 @@ import { createMachine, interpret } from 'xstate';
 
 import pkg from '../package.json';
 
+import type { DotLottieState, StateAnimationSettings } from './state/dotlottie-state';
+import { ExplodingPigeon } from './state/dotlottie-state';
 import { Store } from './store';
 import { createError, getFilename, logError, logWarning } from './utils';
 
@@ -244,6 +246,8 @@ export class DotLottiePlayer {
   protected _seeker: number = 0;
 
   private _hasEnteredInteractiveMode: boolean = false;
+
+  private _xStateActor: any;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -637,158 +641,163 @@ export class DotLottiePlayer {
     }
   }
 
-  // Let's try out xState with Lottie animations
+  private _initMachineAnimation(playbackSettings: StateAnimationSettings): void {
+    if (!this._lottie) {
+      throw new Error('Lottie is not available in convert to machine!');
+    }
+
+    this.setAutoplay(playbackSettings.autoplay ?? false);
+    this.setDirection(playbackSettings.direction ?? 1);
+    this.setHover(playbackSettings.hover ?? false);
+    this.setIntermission(playbackSettings.intermission ?? 0);
+    this.setLoop(playbackSettings.loop ?? false);
+    this.setMode(playbackSettings.playMode ?? PlayMode.Normal);
+    if (playbackSettings.segments) {
+      if (typeof playbackSettings.segments === 'string') {
+        this._lottie.goToAndPlay(playbackSettings.segments, true);
+      } else {
+        this._lottie.playSegments(playbackSettings.segments, true);
+      }
+    }
+    this.setSpeed(playbackSettings.speed ?? 1);
+
+    // TODO: setDefaultTheme calls render which causes infinite loop
+    // this.setDefaultTheme(playbackSettings.theme ?? '');
+  }
+
+  private _convertToMachine(toConvert: DotLottieState[]): any {
+    // What type can we use here?
+    const machine: any = {};
+    const machineStates: any = {};
+
+    if (!this._lottie) {
+      throw new Error('Lottie is not available in convert to machine!');
+    }
+
+    for (let i = 0; i < toConvert.length; i += 1) {
+      // Loop over every toConvert key
+      const descriptor = toConvert[i]?.descriptor;
+
+      machine.id = descriptor?.id;
+
+      if (descriptor && descriptor.initial) machine.initial = descriptor.initial;
+
+      for (const key in toConvert[i]) {
+        if (key === 'states') {
+          const stateObj = toConvert[i];
+
+          if (stateObj) {
+            const states = stateObj[key];
+
+            console.log('// States');
+            console.log(states);
+
+            for (const state in states) {
+              if (state) {
+                console.log('// State');
+                console.log(state);
+
+                const item = states[state];
+
+                console.log('// Item');
+                console.log(item);
+
+                const playbackSettings = item?.statePlaybackSettings;
+
+                console.log('/// Playback Settings');
+                console.log(playbackSettings);
+
+                const objToAdd = {
+                  entry: (): void => {
+                    console.log(`Entering state: ${state}`);
+
+                    if (playbackSettings) this._initMachineAnimation(playbackSettings);
+
+                    // If theres no animationId, we need to apply to current animation
+                    if (item?.animationId) this.play(item.animationId);
+                  },
+                  exit: (): void => {
+                    console.log(`Exiting ${state}`);
+
+                    if (playbackSettings?.segments) {
+                      this._lottie?.resetSegments(true);
+                    }
+                  },
+                  on: {
+                    click: {
+                      target: item?.onClick?.state ?? '',
+                    },
+                    complete: {
+                      target: item?.onComplete?.state ?? '',
+                    },
+                    mouseenter: {
+                      target: item?.onMouseEnter?.state ?? '',
+                    },
+                    mouseleave: {
+                      target: item?.onMouseLeave?.state ?? '',
+                    },
+                  },
+                  meta: {
+                    ...playbackSettings,
+                  },
+                };
+
+                machineStates[state] = objToAdd;
+              }
+            }
+          }
+        }
+      }
+      machine.states = machineStates;
+    }
+
+    return machine;
+  }
+
   public enterInteractiveMode(): void {
-    // interface Context {
-    //   onEnter: number;
-    // }
+    // Need to manage the active machine better
+    if (!this._hasEnteredInteractiveMode) {
+      const mach = this._convertToMachine(ExplodingPigeon);
 
-    // const explodingPigeonMachine = createMachine<Context>(
-    //   {
-    //     id: 'exploding_pigeon',
-    //     initial: 'running',
-    //     states: {
-    //       running: {
-    //         // entry: ['initClickListener', 'initHoverListener'],
-    //         // exit: ['removeClickListener'],
-    //         entry: () => {
-    //           this._lottie?.goToAndPlay('bird', true);
-    //         },
-    //         exit: () => {
-    //           this._lottie?.resetSegments(true);
-    //         },
-    //         on: {
-    //           click: {
-    //             target: 'exploding',
-    //           },
-    //         },
-    //         meta: {
-    //           segments: 'exploding',
-    //           autoplay: true,
-    //           loop: true,
-    //         },
-    //       },
-    //       exploding: {
-    //         entry: () => {
-    //           this._lottie?.goToAndPlay('explosion', true);
-    //         },
-    //         exit: () => {
-    //           this._lottie?.resetSegments(true);
-    //         },
-    //         on: {
-    //           complete: {
-    //             target: 'feathers',
-    //           },
-    //         },
-    //         meta: {
-    //           segments: 'feathers',
-    //           autoplay: true,
-    //           loop: false,
-    //         },
-    //       },
-    //       feathers: {
-    //         entry: () => {
-    //           this._lottie?.goToAndPlay('feathers', true);
-    //         },
-    //         exit: () => {
-    //           this._lottie?.resetSegments(true);
-    //         },
-    //         on: {
-    //           complete: {
-    //             target: 'running',
-    //           },
-    //         },
-    //         meta: {
-    //           segments: 'running',
-    //           autoplay: true,
-    //           loop: false,
-    //         },
-    //       },
-    //     },
-    //   },
-    //   // {
-    //   //   actions: {
-    //   //     initClickListener: () => {
-    //   //       this._container?.addEventListener('click', () => { console.log("CLICK RECEIVED") })
-    //   //     },
-    //   //     removeClickListener: () => {
-    //   //       this._container?.removeEventListener('click', () => { console.log("CLICK RECEIVED") })
-    //   //     }
-    //   //   }
-    //   // }
-    // );
-
-    const multiLottieMachine = createMachine({
-      initial: 'bounce',
-      states: {
-        bounce: {
-          // entry: () => {
-          // },
-          exit: () => {
-            console.log('Leaving bounce');
-            this.play('wifi');
-          },
-          on: {
-            click: {
-              target: 'wifi',
-            },
-          },
-        },
-        wifi: {
-          exit: () => {
-            console.log('Leaving wifi');
-            this.play('bounce');
-          },
-          on: {
-            click: {
-              target: 'bounce',
-            },
-          },
-        },
-        actions: {},
-      },
-    });
-    s;
-    // Start the exploding pigeon machine
-    // const actor = interpret(explodingPigeonMachine).onTransition((state) => console.log(state));
-
-    const actor = interpret(multiLottieMachine).onTransition((state) => console.log(state));
+      console.log('>> Returning A New Machine..');
+      console.log(mach);
+      this._xStateActor = interpret(createMachine(mach));
+    }
 
     // So that we only set listeners on the container once
     if (!this._hasEnteredInteractiveMode) {
       this._container?.addEventListener('click', () => {
-        console.log('CLICK RECEIVED');
-
-        actor.send({
+        this._xStateActor.send({
           type: 'click',
         });
       });
 
       this._container?.addEventListener('mouseenter', () => {
-        // console.log("MOUSEENTER RECEIVED");
-
-        actor.send({
+        this._xStateActor.send({
           type: 'mouseenter',
         });
       });
 
       this._container?.addEventListener('mouseleave', () => {
-        // console.log("MOUSELEAVE RECEIVED");
-
-        actor.send({
+        this._xStateActor.send({
           type: 'mouseleave',
         });
       });
     }
 
     this._lottie?.addEventListener('loopComplete', () => {
-      // console.log("COMPLETE RECEIVED")
-      actor.send({
+      this._xStateActor.send({
         type: 'complete',
       });
     });
 
-    actor.start();
+    this._lottie?.addEventListener('complete', () => {
+      this._xStateActor.send({
+        type: 'complete',
+      });
+    });
+
+    this._xStateActor.start();
   }
 
   public togglePlay(): void {
