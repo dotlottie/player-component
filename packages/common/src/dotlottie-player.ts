@@ -248,7 +248,7 @@ export class DotLottiePlayer {
 
   private _hasEnteredInteractiveMode: boolean = false;
 
-  private _xStateActor: unknown;
+  private _xStateActor: any;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -678,10 +678,10 @@ export class DotLottiePlayer {
     // this.setDefaultTheme(playbackSettings.theme ?? '');
   }
 
-  private _convertToMachine(toConvert: DotLottieState[]): unknown {
+  private _convertToMachine(toConvert: DotLottieState[]): any {
     // What type can we use here?
-    const machine: unknown = {};
-    const machineStates: unknown = {};
+    const machine: any = {};
+    const machineStates: any = {};
 
     if (!this._lottie) {
       throw new Error('Lottie is not available in convert to machine!');
@@ -798,7 +798,7 @@ export class DotLottiePlayer {
       }
     };
 
-    this._xStateActor.subscribe((state: unknown) => {
+    this._xStateActor.subscribe((state: any) => {
       // changed 'undefined' === 'intial'
       if (typeof state.changed === 'undefined' || state.changed) {
         // Remove remaining listeners.
