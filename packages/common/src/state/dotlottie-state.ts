@@ -11,7 +11,7 @@ export interface StateAnimationSettings {
   direction?: 1 | -1;
   hover?: boolean;
   intermission?: number;
-  loop?: boolean;
+  loop?: boolean | number;
   playMode?: PlayMode.Normal | PlayMode.Bounce;
   segments?: [number, number] | string;
   speed?: number;
@@ -130,7 +130,7 @@ export const ExplodingPigeon: DotLottieState[] = [
       exploding: {
         statePlaybackSettings: {
           autoplay: true,
-          loop: false,
+          loop: 3,
           direction: 1,
           segments: 'explosion',
         },

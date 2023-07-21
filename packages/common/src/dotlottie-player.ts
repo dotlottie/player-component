@@ -816,16 +816,12 @@ export class DotLottiePlayer {
       }
     });
 
-    this._lottie?.addEventListener('loopComplete', () => {
-      this._xStateActor.send({
-        type: 'complete',
-      });
-    });
-
-    this._lottie?.addEventListener('complete', () => {
-      this._xStateActor.send({
-        type: 'complete',
-      });
+    this.state.subscribe((state) => {
+      if (state.currentState !== PlayerState.Playing) {
+        this._xStateActor.send({
+          type: 'complete',
+        })
+      }
     });
 
     this._xStateActor.start();
@@ -1277,6 +1273,15 @@ export class DotLottiePlayer {
       }
 
       let newDirection = this._lottie.playDirection;
+
+      if (typeof this._loop === 'number' && this._loop > 0) {
+        this._counter += this._mode === PlayMode.Bounce ? 0.5 : 1;
+        if (this._counter >= this._loop) {
+          this.stop();
+
+          return;
+        }
+      }
 
       if (this._mode === PlayMode.Bounce && typeof newDirection === 'number') {
         newDirection = Number(newDirection) * -1;
