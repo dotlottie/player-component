@@ -18,6 +18,7 @@ import type {
   SVGRendererConfig,
   HTMLRendererConfig,
   CanvasRendererConfig,
+  AnimationSegment,
 } from 'lottie-web';
 import { createMachine, interpret } from 'xstate';
 
@@ -28,7 +29,7 @@ import { ExplodingPigeon } from './state/dotlottie-state';
 import { Store } from './store';
 import { createError, getFilename, logError, logWarning } from './utils';
 
-export type { AnimationDirection, AnimationItem };
+export type { AnimationDirection, AnimationItem, AnimationSegment };
 
 export enum PlayerEvents {
   Complete = 'complete',
@@ -247,7 +248,7 @@ export class DotLottiePlayer {
 
   private _hasEnteredInteractiveMode: boolean = false;
 
-  private _xStateActor: any;
+  private _xStateActor: unknown;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -641,6 +642,18 @@ export class DotLottiePlayer {
     }
   }
 
+  public playSegments(segment: AnimationSegment | AnimationSegment[], force?: boolean): void {
+    if (!this._lottie) return;
+    this._lottie.playSegments(segment, force);
+    this.setCurrentState(PlayerState.Playing);
+  }
+
+  public resetSegments(force: boolean): void {
+    if (!this._lottie) return;
+
+    this._lottie.resetSegments(force);
+  }
+
   private _initMachineAnimation(playbackSettings: StateAnimationSettings): void {
     if (!this._lottie) {
       throw new Error('Lottie is not available in convert to machine!');
@@ -654,9 +667,9 @@ export class DotLottiePlayer {
     this.setMode(playbackSettings.playMode ?? PlayMode.Normal);
     if (playbackSettings.segments) {
       if (typeof playbackSettings.segments === 'string') {
-        this._lottie.goToAndPlay(playbackSettings.segments, true);
+        this.goToAndPlay(playbackSettings.segments, true);
       } else {
-        this._lottie.playSegments(playbackSettings.segments, true);
+        this.playSegments(playbackSettings.segments, true);
       }
     }
     this.setSpeed(playbackSettings.speed ?? 1);
@@ -665,10 +678,10 @@ export class DotLottiePlayer {
     // this.setDefaultTheme(playbackSettings.theme ?? '');
   }
 
-  private _convertToMachine(toConvert: DotLottieState[]): any {
+  private _convertToMachine(toConvert: DotLottieState[]): unknown {
     // What type can we use here?
-    const machine: any = {};
-    const machineStates: any = {};
+    const machine: unknown = {};
+    const machineStates: unknown = {};
 
     if (!this._lottie) {
       throw new Error('Lottie is not available in convert to machine!');
@@ -764,26 +777,44 @@ export class DotLottiePlayer {
       this._xStateActor = interpret(createMachine(mach));
     }
 
-    // So that we only set listeners on the container once
-    if (!this._hasEnteredInteractiveMode) {
-      this._container?.addEventListener('click', () => {
-        this._xStateActor.send({
-          type: 'click',
-        });
-      });
+    const domEventsOnce = ['click', 'mouseenter', 'mouseleave'];
+    const listeners = new Map<string, () => void>();
 
-      this._container?.addEventListener('mouseenter', () => {
+    const domEventHandler = (eventName: string): (() => void) => {
+      const eventListener = (): void => {
+        console.log('<<< MUST FIRE ONECE >>>', eventName);
         this._xStateActor.send({
-          type: 'mouseenter',
+          type: eventName,
         });
-      });
+      };
 
-      this._container?.addEventListener('mouseleave', () => {
-        this._xStateActor.send({
-          type: 'mouseleave',
-        });
-      });
-    }
+      return eventListener;
+    };
+
+    const removePreviousListeners = (): void => {
+      for (const [event, handler] of listeners) {
+        this._container?.removeEventListener(event, handler);
+        listeners.delete(event);
+      }
+    };
+
+    this._xStateActor.subscribe((state: unknown) => {
+      // changed 'undefined' === 'intial'
+      if (typeof state.changed === 'undefined' || state.changed) {
+        // Remove remaining listeners.
+        removePreviousListeners();
+        for (const event of state.nextEvents) {
+          // isDomEvent check
+          if (domEventsOnce.includes(event)) {
+            const listener = domEventHandler(event);
+
+            listeners.set(event, listener);
+            this._container?.addEventListener(event, listener, { once: true });
+          }
+          // To handle Player events
+        }
+      }
+    });
 
     this._lottie?.addEventListener('loopComplete', () => {
       this._xStateActor.send({
