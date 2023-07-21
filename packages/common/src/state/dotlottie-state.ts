@@ -2,62 +2,62 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-/* eslint-disable typescript-sort-keys/interface */
+import type { PlaybackOptions } from '../dotlottie-player';
 
-import type { PlayMode } from '../dotlottie-player';
-
-export interface StateAnimationSettings {
-  autoplay?: boolean;
-  direction?: 1 | -1;
-  hover?: boolean;
-  intermission?: number;
-  loop?: boolean | number;
-  playMode?: PlayMode.Normal | PlayMode.Bounce;
+export interface StateAnimationSettings extends PlaybackOptions {
   segments?: [number, number] | string;
-  speed?: number;
-  theme?: string;
 }
 
-export interface StateTransitionOnClick {
+export interface Transitionable {
   state: string;
 }
 
-export interface StateTransitionOnAfter {
+export interface StateTransitionOnClick extends Transitionable {}
+
+export interface StateTransitionOnAfter extends Transitionable {
   ms: number;
-  state: string;
 }
 
-export interface StateTransitionOnEnter {
+export interface StateTransitionOnEnter extends Transitionable {
   count: number;
-  state: string;
 }
 
-export interface StateTransitionOnMouseEnter {
-  state: string;
-}
+export interface StateTransitionOnMouseEnter extends Transitionable {}
 
-export interface StateTransitionOnMouseLeave {
-  state: string;
-}
+export interface StateTransitionOnMouseLeave extends Transitionable {}
 
-export interface StateTransitionOnComplete {
-  state: string;
-}
+export interface StateTransitionOnComplete extends Transitionable {}
 
 export interface StateInfo {
   id: string;
   initial: string;
 }
 
-export interface StateSettings {
-  animationId?: string;
-  statePlaybackSettings: StateAnimationSettings;
+export const EVENT_MAP = {
+  click: 'onClick',
+  mouseenter: 'onMouseEnter',
+  mouseleve: 'onMouseLeave',
+  complete: 'onComplete',
+};
+
+export const DotLottieStateEvents = Object.values(EVENT_MAP);
+
+export const XStateEvents = Object.keys(EVENT_MAP);
+
+export type EventMap = typeof EVENT_MAP;
+
+export interface StateTransitionEvents {
   onAfter?: StateTransitionOnAfter;
   onClick?: StateTransitionOnClick;
   onComplete?: StateTransitionOnComplete;
   onEnter?: StateTransitionOnEnter;
   onMouseEnter?: StateTransitionOnMouseEnter;
   onMouseLeave?: StateTransitionOnMouseLeave;
+}
+
+export interface StateSettings extends StateTransitionEvents {
+  animationId?: string;
+  statePlaybackSettings: StateAnimationSettings;
 }
 
 export interface State {
@@ -68,6 +68,23 @@ export interface DotLottieState {
   descriptor: StateInfo;
 
   states: State;
+}
+
+export interface XStateTargetEvent {
+  target: string;
+}
+
+export interface XState {
+  entry?: () => void;
+  exit?: () => void;
+  meta: StateAnimationSettings;
+  on: Record<keyof EventMap, XStateTargetEvent>;
+}
+
+export interface XStateMachine {
+  id: string;
+  initial: string;
+  states: Record<string, XState>;
 }
 
 // For Wifi / Bounce

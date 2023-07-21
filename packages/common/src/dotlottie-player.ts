@@ -24,10 +24,20 @@ import { createMachine, interpret } from 'xstate';
 
 import pkg from '../package.json';
 
-import type { DotLottieState, StateAnimationSettings } from './state/dotlottie-state';
-import { ExplodingPigeon } from './state/dotlottie-state';
+import type {
+  DotLottieState,
+  EventMap,
+  StateAnimationSettings,
+  StateSettings,
+  StateTransitionEvents,
+  Transitionable,
+  XState,
+  XStateMachine,
+  XStateTargetEvent,
+} from './state/dotlottie-state';
+import { XStateEvents, ExplodingPigeon, EVENT_MAP } from './state/dotlottie-state';
 import { Store } from './store';
-import { createError, getFilename, logError, logWarning } from './utils';
+import { createError, getFilename, getKeyByValue, logError, logWarning } from './utils';
 
 export type { AnimationDirection, AnimationItem, AnimationSegment };
 
@@ -678,86 +688,72 @@ export class DotLottiePlayer {
     // this.setDefaultTheme(playbackSettings.theme ?? '');
   }
 
-  private _convertToMachine(toConvert: DotLottieState[]): any {
-    // What type can we use here?
-    const machine: any = {};
-    const machineStates: any = {};
+  private _convertToMachine(toConvert: DotLottieState[]): XStateMachine {
+    const machine: XStateMachine = {
+      id: '',
+      initial: '',
+      states: {},
+    };
+    const machineStates: Record<string, XState> = {};
 
     if (!this._lottie) {
       throw new Error('Lottie is not available in convert to machine!');
     }
 
-    for (let i = 0; i < toConvert.length; i += 1) {
+    for (const stateObj of toConvert) {
       // Loop over every toConvert key
-      const descriptor = toConvert[i]?.descriptor;
+      const descriptor = stateObj.descriptor;
 
-      machine.id = descriptor?.id;
+      machine.id = descriptor.id;
 
-      if (descriptor && descriptor.initial) machine.initial = descriptor.initial;
+      if (typeof descriptor.initial !== 'undefined') machine.initial = descriptor.initial;
 
-      for (const key in toConvert[i]) {
-        if (key === 'states') {
-          const stateObj = toConvert[i];
+      if (typeof stateObj !== 'undefined') {
+        const states = stateObj.states;
 
-          if (stateObj) {
-            const states = stateObj[key];
+        for (const state in states) {
+          if (typeof states[state] !== 'undefined' && states[state]) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            const stateSettings: StateSettings = states[state]!;
 
-            console.log('// States');
-            console.log(states);
+            const playbackSettings = stateSettings.statePlaybackSettings;
 
-            for (const state in states) {
-              if (state) {
-                console.log('// State');
-                console.log(state);
+            const eventNames = Object.keys(stateSettings).filter((key) => key.startsWith('on')) as Array<
+              keyof StateTransitionEvents
+            >;
 
-                const item = states[state];
+            const events = {} as Record<keyof EventMap, XStateTargetEvent>;
 
-                console.log('// Item');
-                console.log(item);
+            for (const eventName of eventNames) {
+              if (typeof stateSettings[eventName] !== 'undefined') {
+                const transtionEvent: Transitionable | undefined = stateSettings[eventName];
 
-                const playbackSettings = item?.statePlaybackSettings;
-
-                console.log('/// Playback Settings');
-                console.log(playbackSettings);
-
-                const objToAdd = {
-                  entry: (): void => {
-                    console.log(`Entering state: ${state}`);
-
-                    if (playbackSettings) this._initMachineAnimation(playbackSettings);
-
-                    // If theres no animationId, we need to apply to current animation
-                    if (item?.animationId) this.play(item.animationId);
-                  },
-                  exit: (): void => {
-                    console.log(`Exiting ${state}`);
-
-                    if (playbackSettings?.segments) {
-                      this._lottie?.resetSegments(true);
-                    }
-                  },
-                  on: {
-                    click: {
-                      target: item?.onClick?.state ?? '',
-                    },
-                    complete: {
-                      target: item?.onComplete?.state ?? '',
-                    },
-                    mouseenter: {
-                      target: item?.onMouseEnter?.state ?? '',
-                    },
-                    mouseleave: {
-                      target: item?.onMouseLeave?.state ?? '',
-                    },
-                  },
-                  meta: {
-                    ...playbackSettings,
-                  },
+                events[getKeyByValue(EVENT_MAP, eventName)] = {
+                  target: transtionEvent?.state ?? '',
                 };
-
-                machineStates[state] = objToAdd;
               }
             }
+
+            machineStates[state] = {
+              entry: (): void => {
+                console.log(`Entering state: ${state}`);
+                if (typeof playbackSettings !== 'undefined') {
+                  this._initMachineAnimation(playbackSettings);
+                }
+                // If theres no animationId, we need to apply to current animation
+                if (typeof stateSettings.animationId !== 'undefined') {
+                  this.play(stateSettings.animationId);
+                }
+              },
+              exit: (): void => {
+                console.log(`Exiting ${state}`);
+                if (typeof playbackSettings.segments !== 'undefined') {
+                  this.resetSegments(true);
+                }
+              },
+              on: events,
+              meta: playbackSettings,
+            };
           }
         }
       }
@@ -774,27 +770,37 @@ export class DotLottiePlayer {
 
       console.log('>> Returning A New Machine..');
       console.log(mach);
-      this._xStateActor = interpret(createMachine(mach));
+
+      this._xStateActor = interpret(createMachine<XStateMachine>(mach));
     }
 
-    const domEventsOnce = ['click', 'mouseenter', 'mouseleave'];
-    const listeners = new Map<string, () => void>();
+    const domListeners = new Map<string, () => void>();
+    const stateSubs = new Set<() => void>();
 
-    const domEventHandler = (eventName: string): (() => void) => {
-      const eventListener = (): void => {
-        console.log('<<< MUST FIRE ONECE >>>', eventName);
-        this._xStateActor.send({
-          type: eventName,
-        });
-      };
+    const notifyState = (eventName: string): void =>
+      this._xStateActor.send({
+        type: eventName,
+      });
+
+    const getEventHandler = (eventName: string): (() => void) => {
+      function eventListener(): void {
+        notifyState(eventName);
+      }
+      eventListener.bind(this);
 
       return eventListener;
     };
 
     const removePreviousListeners = (): void => {
-      for (const [event, handler] of listeners) {
+      // DOM
+      for (const [event, handler] of domListeners) {
         this._container?.removeEventListener(event, handler);
-        listeners.delete(event);
+        domListeners.delete(event);
+      }
+      // Player
+      for (const unsubscribe of stateSubs) {
+        unsubscribe();
+        stateSubs.delete(unsubscribe);
       }
     };
 
@@ -805,37 +811,21 @@ export class DotLottiePlayer {
         removePreviousListeners();
         for (const event of state.nextEvents) {
           // isDomEvent check
-          if (domEventsOnce.includes(event)) {
-            const listener = domEventHandler(event);
+          if (XStateEvents.filter((item) => item !== 'complete').includes(event)) {
+            const listener = getEventHandler(event);
 
-            listeners.set(event, listener);
+            domListeners.set(event, listener);
             this._container?.addEventListener(event, listener);
+          } else if (event === 'complete') {
+            const handler = getEventHandler(event);
+            const unsubscribe = this._onComplete(handler);
+
+            stateSubs.add(unsubscribe);
+            // To handle Player events
           }
-          // To handle Player events
         }
       }
     });
-
-    // this.state.subscribe((state) => {
-    //   if (state.currentState !== PlayerState.Playing) {
-    //     this._xStateActor.send({
-    //       type: 'complete',
-    //     })
-    //   }
-    // });
-
-    this.addEventListener('loopComplete', () => {
-        this._xStateActor.send({
-          type: 'complete',
-        })
-
-    })
-    this.addEventListener('complete', () => {
-        this._xStateActor.send({
-          type: 'complete',
-        })
-
-    })
 
     this._xStateActor.start();
   }
@@ -1037,6 +1027,19 @@ export class DotLottiePlayer {
 
   public static getLottieWebVersion(): string {
     return `${pkg.dependencies['lottie-web']}`;
+  }
+
+  protected _onComplete(cb: () => unknown): () => void {
+    return this.state.subscribe((curr, prev): void => {
+      if (
+        prev.currentState === PlayerState.Playing &&
+        curr.currentState !== PlayerState.Playing &&
+        curr.frame === prev.frame
+      ) {
+        // eslint-disable-next-line node/callback-return
+        cb();
+      }
+    });
   }
 
   public addEventListener(name: AnimationEventName, cb: () => unknown): void {
@@ -1343,7 +1346,6 @@ export class DotLottiePlayer {
         }, this._intermission);
       } else {
         this.stop();
-        this.setCurrentState(PlayerState.Stopped);
       }
     });
 

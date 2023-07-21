@@ -13,7 +13,7 @@ export default defineConfig((options) => ({
   clean: true,
   dts: true,
   sourcemap: true,
-  minify: true,
+  minify: !options.watch,
   treeshake: true,
   module: 'ESNext',
   format: ['esm'],
