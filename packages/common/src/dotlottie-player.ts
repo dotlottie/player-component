@@ -809,20 +809,33 @@ export class DotLottiePlayer {
             const listener = domEventHandler(event);
 
             listeners.set(event, listener);
-            this._container?.addEventListener(event, listener, { once: true });
+            this._container?.addEventListener(event, listener);
           }
           // To handle Player events
         }
       }
     });
 
-    this.state.subscribe((state) => {
-      if (state.currentState !== PlayerState.Playing) {
+    // this.state.subscribe((state) => {
+    //   if (state.currentState !== PlayerState.Playing) {
+    //     this._xStateActor.send({
+    //       type: 'complete',
+    //     })
+    //   }
+    // });
+
+    this.addEventListener('loopComplete', () => {
         this._xStateActor.send({
           type: 'complete',
         })
-      }
-    });
+
+    })
+    this.addEventListener('complete', () => {
+        this._xStateActor.send({
+          type: 'complete',
+        })
+
+    })
 
     this._xStateActor.start();
   }

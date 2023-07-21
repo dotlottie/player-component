@@ -123,14 +123,11 @@ export const ExplodingPigeon: DotLottieState[] = [
         onClick: {
           state: 'exploding',
         },
-        onMouseLeave: {
-          state: 'exploding',
-        },
       },
       exploding: {
         statePlaybackSettings: {
           autoplay: true,
-          loop: 3,
+          loop: false,
           direction: 1,
           segments: 'explosion',
         },
