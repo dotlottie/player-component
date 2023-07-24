@@ -1,5 +1,15 @@
 # @dotlottie/player-component
 
+## 2.2.0
+
+### Minor Changes
+
+- e80d2fc: Add support to change the player mode using `setPlayMode` that accepts `normal` or `bounce`
+
+### Patch Changes
+
+- 63fd88c: updated karla font file
+
 ## 2.1.0
 
 ### Minor Changes
