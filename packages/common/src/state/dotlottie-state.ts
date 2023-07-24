@@ -36,7 +36,7 @@ export interface StateInfo {
 export const EVENT_MAP = {
   click: 'onClick',
   mouseenter: 'onMouseEnter',
-  mouseleve: 'onMouseLeave',
+  mouseleave: 'onMouseLeave',
   complete: 'onComplete',
 };
 
@@ -102,8 +102,9 @@ export const ExampleState: DotLottieState[] = [
           loop: true,
           direction: -1,
           speed: 2,
+          defaultTheme: 'bounce-dark',
         },
-        onClick: {
+        onMouseEnter: {
           state: 'wifiState',
         },
       },
@@ -113,8 +114,9 @@ export const ExampleState: DotLottieState[] = [
           autoplay: true,
           loop: true,
           direction: 1,
+          defaultTheme: 'wifi-dark',
         },
-        onClick: {
+        onMouseLeave: {
           state: 'bounceState',
         },
       },
@@ -144,7 +146,7 @@ export const ExplodingPigeon: DotLottieState[] = [
       exploding: {
         statePlaybackSettings: {
           autoplay: true,
-          loop: false,
+          loop: 3,
           direction: 1,
           segments: 'explosion',
         },

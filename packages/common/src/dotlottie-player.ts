@@ -244,7 +244,7 @@ export class DotLottiePlayer {
 
   protected _testId?: string;
 
-  protected _listeners = new Map();
+  protected _listeners = new Map<AnimationEventName, Set<() => void>>();
 
   protected _currentState = PlayerState.Initial;
 
@@ -597,20 +597,24 @@ export class DotLottiePlayer {
     activeAnimation?: string | number,
     getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
-    if (!this._lottie) return;
+    if ([PlayerState.Initial, PlayerState.Loading].includes(this._currentState)) {
+      return;
+    }
 
     this._requireAnimationsInTheManifest();
     this._requireAnimationsToBeLoaded();
 
-    if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._currentAnimationId)) {
-      if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
-        this._lottie.goToAndPlay(this._lottie.totalFrames, true);
-      } else {
-        this._lottie.play();
-      }
-      this.setCurrentState(PlayerState.Playing);
+    if (this._lottie) {
+      if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._currentAnimationId)) {
+        if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
+          this._lottie.goToAndPlay(this._lottie.totalFrames, true);
+        } else {
+          this._lottie.play();
+        }
+        this.setCurrentState(PlayerState.Playing);
 
-      return;
+        return;
+      }
     }
 
     if (typeof activeAnimation === 'number') {
@@ -664,43 +668,50 @@ export class DotLottiePlayer {
     this._lottie.resetSegments(force);
   }
 
-  private _initMachineAnimation(playbackSettings: StateAnimationSettings): void {
+  private _updatePlaybackSettings(playbackSettings: StateAnimationSettings): void {
     if (!this._lottie) {
-      throw new Error('Lottie is not available in convert to machine!');
+      throw new Error('Unable to update playbackSettings. Animations is not rendered yet.');
     }
 
-    this.setAutoplay(playbackSettings.autoplay ?? false);
-    this.setDirection(playbackSettings.direction ?? 1);
-    this.setHover(playbackSettings.hover ?? false);
-    this.setIntermission(playbackSettings.intermission ?? 0);
-    this.setLoop(playbackSettings.loop ?? false);
-    this.setMode(playbackSettings.playMode ?? PlayMode.Normal);
-    if (playbackSettings.segments) {
-      if (typeof playbackSettings.segments === 'string') {
-        this.goToAndPlay(playbackSettings.segments, true);
-      } else {
-        this.playSegments(playbackSettings.segments, true);
-      }
+    if (typeof playbackSettings.autoplay !== 'undefined') {
+      this.setAutoplay(playbackSettings.autoplay);
     }
-    this.setSpeed(playbackSettings.speed ?? 1);
 
-    // TODO: setDefaultTheme calls render which causes infinite loop
-    // this.setDefaultTheme(playbackSettings.theme ?? '');
+    if (typeof playbackSettings.direction !== 'undefined') {
+      this.setDirection(playbackSettings.direction);
+    }
+
+    if (typeof playbackSettings.hover !== 'undefined') {
+      this.setHover(playbackSettings.hover);
+    }
+
+    if (typeof playbackSettings.intermission !== 'undefined') {
+      this.setIntermission(playbackSettings.intermission);
+    }
+
+    if (typeof playbackSettings.loop !== 'undefined') {
+      this.setLoop(playbackSettings.loop);
+    }
+
+    if (typeof playbackSettings.playMode !== 'undefined') {
+      this.setMode(playbackSettings.playMode);
+    }
+
+    if (typeof playbackSettings.speed !== 'undefined') {
+      this.setSpeed(playbackSettings.speed);
+    }
+
+    if (typeof playbackSettings.defaultTheme !== 'undefined') {
+      this.setDefaultTheme(playbackSettings.defaultTheme);
+    }
   }
 
-  private _convertToMachine(toConvert: DotLottieState[]): XStateMachine {
-    const machine: XStateMachine = {
-      id: '',
-      initial: '',
-      states: {},
-    };
+  private _convertToMachine(toConvert: DotLottieState[]): XStateMachine[] {
+    const machines: XStateMachine[] = [];
     const machineStates: Record<string, XState> = {};
 
-    if (!this._lottie) {
-      throw new Error('Lottie is not available in convert to machine!');
-    }
-
     for (const stateObj of toConvert) {
+      const machine = {} as XStateMachine;
       // Loop over every toConvert key
       const descriptor = stateObj.descriptor;
 
@@ -736,13 +747,27 @@ export class DotLottiePlayer {
 
             machineStates[state] = {
               entry: (): void => {
-                console.log(`Entering state: ${state}`);
-                if (typeof playbackSettings !== 'undefined') {
-                  this._initMachineAnimation(playbackSettings);
+                console.log(`Entering state: ${state}`, {
+                  animationId: stateSettings.animationId,
+                  playbackSettings,
+                });
+
+                const shouldRender = !this._lottie || stateSettings.animationId;
+
+                if (shouldRender) {
+                  this.play(stateSettings.animationId || this._activeAnimationId, () => playbackSettings);
                 }
-                // If theres no animationId, we need to apply to current animation
-                if (typeof stateSettings.animationId !== 'undefined') {
-                  this.play(stateSettings.animationId);
+
+                if (playbackSettings.segments) {
+                  if (!shouldRender) {
+                    this._updatePlaybackSettings(playbackSettings);
+                  }
+
+                  if (typeof playbackSettings.segments === 'string') {
+                    this.goToAndPlay(playbackSettings.segments, true);
+                  } else {
+                    this.playSegments(playbackSettings.segments, true);
+                  }
                 }
               },
               exit: (): void => {
@@ -758,24 +783,39 @@ export class DotLottiePlayer {
         }
       }
       machine.states = machineStates;
+      machines.push(machine);
     }
 
-    return machine;
+    return machines;
   }
 
   public enterInteractiveMode(): void {
     // Need to manage the active machine better
+
+    // ExplodingPigeon
+    const activeMachineId = 'exploding_pigeon';
+    // Bounce and Wifi
+    // const activeMachineId = 'simple_click_to_next_prev';
+
     if (!this._hasEnteredInteractiveMode) {
-      const mach = this._convertToMachine(ExplodingPigeon);
+      // ExplodingPigeon
+      const machineSchemas = this._convertToMachine(ExplodingPigeon);
+      // Bounce and wifi
+      // const machineSchemas = this._convertToMachine(ExampleState);
+      const activeSchema = machineSchemas.find((schema) => schema.id === activeMachineId);
+
+      if (typeof activeSchema === 'undefined') {
+        throw createError(`invalid state machine id ${activeMachineId}`);
+      }
 
       console.log('>> Returning A New Machine..');
-      console.log(mach);
+      console.log(activeSchema);
 
-      this._xStateActor = interpret(createMachine<XStateMachine>(mach));
+      this._xStateActor = interpret(createMachine<XStateMachine>(activeSchema));
     }
 
     const domListeners = new Map<string, () => void>();
-    const stateSubs = new Set<() => void>();
+    const playerListers = new Map<AnimationEventName, () => void>();
 
     const notifyState = (eventName: string): void =>
       this._xStateActor.send({
@@ -786,7 +826,6 @@ export class DotLottiePlayer {
       function eventListener(): void {
         notifyState(eventName);
       }
-      eventListener.bind(this);
 
       return eventListener;
     };
@@ -798,9 +837,9 @@ export class DotLottiePlayer {
         domListeners.delete(event);
       }
       // Player
-      for (const unsubscribe of stateSubs) {
-        unsubscribe();
-        stateSubs.delete(unsubscribe);
+      for (const [event, handler] of playerListers) {
+        this.removeEventListener(event, handler);
+        domListeners.delete(event);
       }
     };
 
@@ -810,7 +849,6 @@ export class DotLottiePlayer {
         // Remove remaining listeners.
         removePreviousListeners();
         for (const event of state.nextEvents) {
-          // isDomEvent check
           if (XStateEvents.filter((item) => item !== 'complete').includes(event)) {
             const listener = getEventHandler(event);
 
@@ -818,10 +856,9 @@ export class DotLottiePlayer {
             this._container?.addEventListener(event, listener);
           } else if (event === 'complete') {
             const handler = getEventHandler(event);
-            const unsubscribe = this._onComplete(handler);
 
-            stateSubs.add(unsubscribe);
-            // To handle Player events
+            this.addEventListener(event, handler);
+            playerListers.set(event, handler);
           }
         }
       }
@@ -1029,23 +1066,17 @@ export class DotLottiePlayer {
     return `${pkg.dependencies['lottie-web']}`;
   }
 
-  protected _onComplete(cb: () => unknown): () => void {
-    return this.state.subscribe((curr, prev): void => {
-      if (
-        prev.currentState === PlayerState.Playing &&
-        curr.currentState !== PlayerState.Playing &&
-        curr.frame === prev.frame
-      ) {
-        // eslint-disable-next-line node/callback-return
-        cb();
-      }
-    });
-  }
-
-  public addEventListener(name: AnimationEventName, cb: () => unknown): void {
-    this._listeners.set([name, cb], cb);
+  public addEventListener(name: AnimationEventName, cb: () => void): void {
+    if (!this._listeners.has(name)) {
+      this._listeners.set(name, new Set());
+    }
+    this._listeners.get(name)?.add(cb);
     try {
-      this._lottie?.addEventListener(name, cb);
+      if (name === 'complete') {
+        this._container?.addEventListener(name, cb);
+      } else {
+        this._lottie?.addEventListener(name, cb);
+      }
     } catch (error) {
       logError(`addEventListener ${error}`);
     }
@@ -1129,12 +1160,16 @@ export class DotLottiePlayer {
   }
 
   public setDefaultTheme(value: string): void {
-    this._defaultTheme = value;
-    this._playbackOptions.defaultTheme = value;
+    this._updateDefaultTheme(value);
 
     if (this._animation) {
       this.render();
     }
+  }
+
+  protected _updateDefaultTheme(value: string): void {
+    this._defaultTheme = value;
+    this._playbackOptions.defaultTheme = value;
 
     this._notify();
   }
@@ -1258,18 +1293,24 @@ export class DotLottiePlayer {
     }
   }
 
-  public removeEventListener(name: AnimationEventName, cb?: () => unknown): void {
+  // public triggerComplete
+  public removeEventListener(name: AnimationEventName, cb: () => void): void {
     try {
-      if (cb) {
-        this._lottie?.removeEventListener(name, cb);
+      if (name === 'complete') {
+        this._container?.removeEventListener(name, cb);
       } else {
-        this._lottie?.removeEventListener(name);
+        this._lottie?.removeEventListener(name, cb);
       }
 
-      this._listeners.delete([name, cb]);
+      this._listeners.get(name)?.delete(cb);
     } catch (error) {
       logError('removeEventListener', error as string);
     }
+  }
+
+  protected _handleAnimationComplete(): void {
+    this.stop();
+    this._container?.dispatchEvent(new Event('complete'));
   }
 
   public addEventListeners(): void {
@@ -1293,7 +1334,7 @@ export class DotLottiePlayer {
       if (typeof this._loop === 'number' && this._loop > 0) {
         this._counter += this._mode === PlayMode.Bounce ? 0.5 : 1;
         if (this._counter >= this._loop) {
-          this.stop();
+          this._handleAnimationComplete();
 
           return;
         }
@@ -1325,7 +1366,7 @@ export class DotLottiePlayer {
       if (this._lottie && typeof this._loop === 'number' && this._loop > 0) {
         this._counter += this._mode === PlayMode.Bounce ? 0.5 : 1;
         if (this._counter >= this._loop) {
-          this.stop();
+          this._handleAnimationComplete();
 
           return;
         }
@@ -1345,12 +1386,20 @@ export class DotLottiePlayer {
           this._lottie.goToAndPlay(startFrame, true);
         }, this._intermission);
       } else {
-        this.stop();
+        this._handleAnimationComplete();
       }
     });
 
-    for (const [[name], cb] of this._listeners) {
-      this._lottie.addEventListener(name, cb);
+    for (const [name, callbacks] of this._listeners) {
+      if (name === 'complete') {
+        for (const cb of callbacks) {
+          this._container?.addEventListener(name, cb);
+        }
+      } else {
+        for (const cb of callbacks) {
+          this._lottie.addEventListener(name, cb);
+        }
+      }
     }
   }
 
@@ -1432,23 +1481,13 @@ export class DotLottiePlayer {
       this._container.__lottie = this._lottie;
     }
 
-    this.setCurrentState(PlayerState.Ready);
-
     // Modifying for current animation
     this._lottie.setDirection(direction);
     this._lottie.setSpeed(speed);
 
-    // Its setting listeners on every render
-    // Set a subscriber for when the animation changes
-    // To remove listners from previous animation
-    this.enterInteractiveMode();
-    this._hasEnteredInteractiveMode = true;
-
-    // this.leaveInteractiveMode();
-
-    // if (autoplay && !hover) {
-    //   this.play();
-    // }
+    if (autoplay && !hover) {
+      this.play();
+    }
 
     this._updateTestData();
   }
@@ -1467,31 +1506,42 @@ export class DotLottiePlayer {
 
       if (typeof srcParsed === 'string') {
         const { activeAnimationId, animations, manifest, themes } = await this.getAnimationData(srcParsed);
+        // should come from getAnimationData();
+        const hasInteractivity = true;
 
         // Setting the activeAnimationId from Manfiest if it's not set by user
         if (!this._activeAnimationId) {
           this._activeAnimationId = activeAnimationId;
         }
 
-        // Setting the animation to be played
-        this._currentAnimationId = this._activeAnimationId;
-
         this._animations = animations;
         this._themes = themes;
         this._manifest = manifest;
 
-        const animation = this._animations.get(this._currentAnimationId);
+        this.setCurrentState(PlayerState.Ready);
 
-        if (!animation) {
-          throw createError(`invalid animation id ${this._activeAnimationId}`);
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+        if (hasInteractivity) {
+          this.enterInteractiveMode();
+        } else {
+          // Setting the animation to be played
+          this._currentAnimationId = this._activeAnimationId;
+
+          const animation = this._animations.get(this._currentAnimationId);
+
+          if (!animation) {
+            throw createError(`invalid animation id ${this._activeAnimationId}`);
+          }
+
+          this._animation = animation;
+
+          this.render({ ...playbackOptions });
         }
-
-        this._animation = animation;
-
-        this.render({ ...playbackOptions });
       } else if (DotLottiePlayer.isLottie(srcParsed)) {
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         this._animation = srcParsed as any;
+        this.setCurrentState(PlayerState.Ready);
+
         this.render({ ...playbackOptions });
       } else {
         throw createError('Load method failing. Object is not a valid Lottie.');
