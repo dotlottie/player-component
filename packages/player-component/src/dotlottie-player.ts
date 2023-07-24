@@ -555,6 +555,16 @@ export class DotLottiePlayer extends LitElement {
   }
 
   /**
+   * Sets the player mode
+   * @param mode - The mode to set ('normal', 'bounce')
+   */
+  public setPlayMode(mode: PlayMode): void {
+    if (!this._dotLottieCommonPlayer) return;
+
+    this._dotLottieCommonPlayer.setMode(mode);
+  }
+
+  /**
    * Reverts PlaybackOptions to manifest values instead of player props.
    */
   public revertToManifestValues(playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>): void {
