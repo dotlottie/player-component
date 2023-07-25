@@ -14,6 +14,7 @@ import { DotLottieProvider } from './providers';
 
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   activeAnimationId?: string;
+  activeMachineId?: string;
   autoplay?: boolean;
   background?: string;
   className?: string;
@@ -51,6 +52,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   testId,
   children,
   defaultTheme,
+  activeMachineId,
   ...props
 }) => {
   const container = useRef(null);
@@ -75,6 +77,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     autoplay: hover ? false : autoplay,
     testId,
     defaultTheme,
+    activeMachineId,
   });
 
   const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);
@@ -162,6 +165,12 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
       dotLottiePlayer.play(activeAnimationId);
     }
   }, [activeAnimationId]);
+
+  useEffect(() => {
+    if (typeof activeMachineId !== 'undefined') {
+      dotLottiePlayer.setActiveMachineId(activeMachineId);
+    }
+  }, [activeMachineId]);
 
   /**
    * Adding event listeners if dotLottiePlayer is available

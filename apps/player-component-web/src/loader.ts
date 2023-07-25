@@ -1,3 +1,7 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import { DotLottiePlayer, PlayMode } from '@dotlottie/player-component';
 
 export function loader(
@@ -5,8 +9,11 @@ export function loader(
   player: DotLottiePlayer,
   nextButton: HTMLButtonElement,
   prevButton: HTMLButtonElement,
-) {
-  const setupLoader = () => {
+  explodingPigeon: HTMLButtonElement,
+  smileyWifi: HTMLButtonElement,
+  resetInteractivity: HTMLButtonElement,
+): void {
+  const setupLoader = (): void => {
     player.load(
       'https://assets4.lottiefiles.com/packages/lf20_zyquagfl.json',
       {
@@ -21,7 +28,8 @@ export function loader(
     // player.enterInteractiveMode();
     // player.setSpeed(5);
   };
-  element.addEventListener('click', () => setupLoader());
+
+  element.addEventListener('click', (): void => setupLoader());
 
   nextButton.addEventListener('click', () =>
     player.next({
@@ -32,6 +40,10 @@ export function loader(
   );
 
   prevButton.addEventListener('click', () => player.previous());
+
+  explodingPigeon.addEventListener('click', () => player.setActiveMachineId('exploding_pigeon'));
+  smileyWifi.addEventListener('click', () => player.setActiveMachineId('smiley_wifi'));
+  resetInteractivity.addEventListener('click', () => player.setActiveMachineId(''));
 
   player.addEventListener('ready', () => {
     console.log(player.getManifest());

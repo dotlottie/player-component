@@ -112,6 +112,12 @@ export class DotLottiePlayer extends LitElement {
   @property({ type: String })
   public activeAnimationId?: string | null = null;
 
+  /**
+   * Interactivity machine id.
+   */
+  @property({ type: String })
+  public activeMachineId?: string | undefined;
+
   @state()
   private _seeker: number = 0;
 
@@ -282,6 +288,7 @@ export class DotLottiePlayer extends LitElement {
       autoplay: this.hasAttribute('autoplay') ? this.autoplay : undefined,
       activeAnimationId: this.hasAttribute('activeAnimationId') ? this.activeAnimationId : undefined,
       defaultTheme: this.hasAttribute('defaultTheme') ? this.defaultTheme : undefined,
+      activeMachineId: this.hasAttribute('activeMachineId') ? this.activeMachineId : undefined,
     });
 
     await this._dotLottieCommonPlayer.load(playbackOptions);
@@ -552,6 +559,17 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.toggleLoop();
+  }
+
+  /**
+   * Change the Interactivity machine id and starts it.
+   *
+   * @param value - Playback speed.
+   */
+  public setActiveMachineId(machineId: string): void {
+    if (!this._dotLottieCommonPlayer) return;
+
+    this._dotLottieCommonPlayer.setActiveMachineId(machineId);
   }
 
   /**

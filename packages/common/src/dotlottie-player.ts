@@ -20,24 +20,15 @@ import type {
   CanvasRendererConfig,
   AnimationSegment,
 } from 'lottie-web';
-import { createMachine, interpret } from 'xstate';
 
 import pkg from '../package.json';
 
-import type {
-  DotLottieState,
-  EventMap,
-  StateAnimationSettings,
-  StateSettings,
-  StateTransitionEvents,
-  Transitionable,
-  XState,
-  XStateMachine,
-  XStateTargetEvent,
-} from './state/dotlottie-state';
-import { XStateEvents, ExplodingPigeon, EVENT_MAP } from './state/dotlottie-state';
+import type { DotLottieState } from './state/dotlottie-state';
+import { DotLottieStateMachine } from './state/dotlottie-state-machine';
+import explodingPigeon from './state/exploding-pigeon.json';
+import smileyWifi from './state/smiley-wifi.json';
 import { Store } from './store';
-import { createError, getFilename, getKeyByValue, logError, logWarning } from './utils';
+import { createError, getFilename, logError, logWarning } from './utils';
 
 export type { AnimationDirection, AnimationItem, AnimationSegment };
 
@@ -165,6 +156,7 @@ export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRe
 export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> &
   PlaybackOptions & {
     activeAnimationId?: string | null;
+    activeMachineId?: string;
     background?: string;
     testId?: string | undefined;
   };
@@ -176,6 +168,7 @@ declare global {
 }
 
 export interface DotLottiePlayerState extends PlaybackOptions {
+  activeMachineId: string | undefined;
   background: string;
   currentAnimationId: string | undefined;
   currentState: PlayerState;
@@ -185,6 +178,7 @@ export interface DotLottiePlayerState extends PlaybackOptions {
 }
 
 export const DEFAULT_STATE: DotLottiePlayerState = {
+  activeMachineId: '',
   autoplay: false,
   currentState: PlayerState.Initial,
   frame: 0,
@@ -256,9 +250,11 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
-  private _hasEnteredInteractiveMode: boolean = false;
+  protected _stateSchemas?: DotLottieState[];
 
-  private _xStateActor: any;
+  protected _activeMachineId?: string;
+
+  protected _stateMachine?: DotLottieStateMachine;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -285,6 +281,10 @@ export class DotLottiePlayer {
 
     if (typeof options?.background === 'string') {
       this.setBackground(options.background);
+    }
+
+    if (typeof options?.activeMachineId !== 'undefined') {
+      this._activeMachineId = options.activeMachineId;
     }
 
     this._animationConfig = {
@@ -668,205 +668,6 @@ export class DotLottiePlayer {
     this._lottie.resetSegments(force);
   }
 
-  private _updatePlaybackSettings(playbackSettings: StateAnimationSettings): void {
-    if (!this._lottie) {
-      throw new Error('Unable to update playbackSettings. Animations is not rendered yet.');
-    }
-
-    if (typeof playbackSettings.autoplay !== 'undefined') {
-      this.setAutoplay(playbackSettings.autoplay);
-    }
-
-    if (typeof playbackSettings.direction !== 'undefined') {
-      this.setDirection(playbackSettings.direction);
-    }
-
-    if (typeof playbackSettings.hover !== 'undefined') {
-      this.setHover(playbackSettings.hover);
-    }
-
-    if (typeof playbackSettings.intermission !== 'undefined') {
-      this.setIntermission(playbackSettings.intermission);
-    }
-
-    if (typeof playbackSettings.loop !== 'undefined') {
-      this.setLoop(playbackSettings.loop);
-    }
-
-    if (typeof playbackSettings.playMode !== 'undefined') {
-      this.setMode(playbackSettings.playMode);
-    }
-
-    if (typeof playbackSettings.speed !== 'undefined') {
-      this.setSpeed(playbackSettings.speed);
-    }
-
-    if (typeof playbackSettings.defaultTheme !== 'undefined') {
-      this.setDefaultTheme(playbackSettings.defaultTheme);
-    }
-  }
-
-  private _convertToMachine(toConvert: DotLottieState[]): XStateMachine[] {
-    const machines: XStateMachine[] = [];
-    const machineStates: Record<string, XState> = {};
-
-    for (const stateObj of toConvert) {
-      const machine = {} as XStateMachine;
-      // Loop over every toConvert key
-      const descriptor = stateObj.descriptor;
-
-      machine.id = descriptor.id;
-
-      if (typeof descriptor.initial !== 'undefined') machine.initial = descriptor.initial;
-
-      if (typeof stateObj !== 'undefined') {
-        const states = stateObj.states;
-
-        for (const state in states) {
-          if (typeof states[state] !== 'undefined' && states[state]) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const stateSettings: StateSettings = states[state]!;
-
-            const playbackSettings = stateSettings.statePlaybackSettings;
-
-            const eventNames = Object.keys(stateSettings).filter((key) => key.startsWith('on')) as Array<
-              keyof StateTransitionEvents
-            >;
-
-            const events = {} as Record<keyof EventMap, XStateTargetEvent>;
-
-            for (const eventName of eventNames) {
-              if (typeof stateSettings[eventName] !== 'undefined') {
-                const transtionEvent: Transitionable | undefined = stateSettings[eventName];
-
-                events[getKeyByValue(EVENT_MAP, eventName)] = {
-                  target: transtionEvent?.state ?? '',
-                };
-              }
-            }
-
-            machineStates[state] = {
-              entry: (): void => {
-                console.log(`Entering state: ${state}`, {
-                  animationId: stateSettings.animationId,
-                  playbackSettings,
-                });
-
-                const shouldRender = !this._lottie || stateSettings.animationId;
-
-                if (shouldRender) {
-                  this.play(stateSettings.animationId || this._activeAnimationId, () => playbackSettings);
-                }
-
-                if (playbackSettings.segments) {
-                  if (!shouldRender) {
-                    this._updatePlaybackSettings(playbackSettings);
-                  }
-
-                  if (typeof playbackSettings.segments === 'string') {
-                    this.goToAndPlay(playbackSettings.segments, true);
-                  } else {
-                    this.playSegments(playbackSettings.segments, true);
-                  }
-                }
-              },
-              exit: (): void => {
-                console.log(`Exiting ${state}`);
-                if (typeof playbackSettings.segments !== 'undefined') {
-                  this.resetSegments(true);
-                }
-              },
-              on: events,
-              meta: playbackSettings,
-            };
-          }
-        }
-      }
-      machine.states = machineStates;
-      machines.push(machine);
-    }
-
-    return machines;
-  }
-
-  public enterInteractiveMode(): void {
-    // Need to manage the active machine better
-
-    // ExplodingPigeon
-    const activeMachineId = 'exploding_pigeon';
-    // Bounce and Wifi
-    // const activeMachineId = 'simple_click_to_next_prev';
-
-    if (!this._hasEnteredInteractiveMode) {
-      // ExplodingPigeon
-      const machineSchemas = this._convertToMachine(ExplodingPigeon);
-      // Bounce and wifi
-      // const machineSchemas = this._convertToMachine(ExampleState);
-      const activeSchema = machineSchemas.find((schema) => schema.id === activeMachineId);
-
-      if (typeof activeSchema === 'undefined') {
-        throw createError(`invalid state machine id ${activeMachineId}`);
-      }
-
-      console.log('>> Returning A New Machine..');
-      console.log(activeSchema);
-
-      this._xStateActor = interpret(createMachine<XStateMachine>(activeSchema));
-    }
-
-    const domListeners = new Map<string, () => void>();
-    const playerListers = new Map<AnimationEventName, () => void>();
-
-    const notifyState = (eventName: string): void =>
-      this._xStateActor.send({
-        type: eventName,
-      });
-
-    const getEventHandler = (eventName: string): (() => void) => {
-      function eventListener(): void {
-        notifyState(eventName);
-      }
-
-      return eventListener;
-    };
-
-    const removePreviousListeners = (): void => {
-      // DOM
-      for (const [event, handler] of domListeners) {
-        this._container?.removeEventListener(event, handler);
-        domListeners.delete(event);
-      }
-      // Player
-      for (const [event, handler] of playerListers) {
-        this.removeEventListener(event, handler);
-        domListeners.delete(event);
-      }
-    };
-
-    this._xStateActor.subscribe((state: any) => {
-      // changed 'undefined' === 'intial'
-      if (typeof state.changed === 'undefined' || state.changed) {
-        // Remove remaining listeners.
-        removePreviousListeners();
-        for (const event of state.nextEvents) {
-          if (XStateEvents.filter((item) => item !== 'complete').includes(event)) {
-            const listener = getEventHandler(event);
-
-            domListeners.set(event, listener);
-            this._container?.addEventListener(event, listener);
-          } else if (event === 'complete') {
-            const handler = getEventHandler(event);
-
-            this.addEventListener(event, handler);
-            playerListers.set(event, handler);
-          }
-        }
-      }
-    });
-
-    this._xStateActor.start();
-  }
-
   public togglePlay(): void {
     if (this.currentState === PlayerState.Playing) {
       this.pause();
@@ -908,6 +709,23 @@ export class DotLottiePlayer {
 
   public get currentAnimationId(): string | undefined {
     return this._currentAnimationId;
+  }
+
+  public get container(): DotLottieElement | undefined {
+    return this._container ?? undefined;
+  }
+
+  public get activeMachineId(): string | undefined {
+    return this._activeAnimationId;
+  }
+
+  public setActiveMachineId(machineId: string): void {
+    this._activeMachineId = machineId;
+    this._stateMachine?.stop();
+
+    if (machineId) {
+      this._startInteractivity();
+    }
   }
 
   public reset(): void {
@@ -1097,6 +915,7 @@ export class DotLottiePlayer {
       intermission: this._intermission,
       defaultTheme: this._defaultTheme,
       currentAnimationId: this._currentAnimationId,
+      activeMachineId: this._activeAnimationId ?? '',
     };
   }
 
@@ -1414,6 +1233,19 @@ export class DotLottiePlayer {
     this._animation = anim;
   }
 
+  protected _startInteractivity(): void {
+    if (typeof this._stateSchemas === 'undefined') {
+      throw createError('no interactivity states are available.');
+    }
+
+    if (typeof this._activeMachineId === 'undefined') {
+      throw createError('machineId is not specified.');
+    }
+
+    this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
+    this._stateMachine.start(this._activeMachineId);
+  }
+
   // If we go back to default animation or at animation 0 we need to use props
   protected async render(activeAnimation?: Partial<ManifestAnimation>): Promise<void> {
     if (activeAnimation?.id) {
@@ -1505,9 +1337,7 @@ export class DotLottiePlayer {
       const srcParsed = DotLottiePlayer.parseSrc(this._src);
 
       if (typeof srcParsed === 'string') {
-        const { activeAnimationId, animations, manifest, themes } = await this.getAnimationData(srcParsed);
-        // should come from getAnimationData();
-        const hasInteractivity = true;
+        const { activeAnimationId, animations, manifest, states, themes } = await this.getAnimationData(srcParsed);
 
         // Setting the activeAnimationId from Manfiest if it's not set by user
         if (!this._activeAnimationId) {
@@ -1517,12 +1347,13 @@ export class DotLottiePlayer {
         this._animations = animations;
         this._themes = themes;
         this._manifest = manifest;
+        this._stateSchemas = states;
 
         this.setCurrentState(PlayerState.Ready);
 
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (hasInteractivity) {
-          this.enterInteractiveMode();
+        if (this._stateSchemas.length && this._activeMachineId) {
+          // has interactivity
+          this._startInteractivity();
         } else {
           // Setting the animation to be played
           this._currentAnimationId = this._activeAnimationId;
@@ -1603,6 +1434,7 @@ export class DotLottiePlayer {
     activeAnimationId: string;
     animations: Map<string, Animation>;
     manifest: Manifest;
+    states: DotLottieState[];
     themes: Map<string, string>;
   }> {
     let response: Response;
@@ -1641,6 +1473,7 @@ export class DotLottiePlayer {
         activeAnimationId,
         animations,
         themes,
+        states: [],
         manifest,
       };
     }
@@ -1694,10 +1527,20 @@ export class DotLottiePlayer {
         throw createError('no animation to load!');
       }
 
+      // TODO: Get states from dotlottie-js once its ready.
+      const loadDemoState = ['pigeon', 'wifi', 'smiley'].every((key) => Array.from(animations.keys()).includes(key));
+      const states = [] as DotLottieState[];
+
+      if (loadDemoState) {
+        states.push(explodingPigeon as DotLottieState);
+        states.push(smileyWifi as DotLottieState);
+      }
+
       return {
         activeAnimationId,
         animations,
         themes,
+        states,
         manifest: dotLottie.manifest as Manifest,
       };
     } catch (error) {
