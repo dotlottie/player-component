@@ -156,7 +156,7 @@ export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRe
 export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> &
   PlaybackOptions & {
     activeAnimationId?: string | null;
-    activeMachineId?: string;
+    activeStateId?: string;
     background?: string;
     testId?: string | undefined;
   };
@@ -168,7 +168,7 @@ declare global {
 }
 
 export interface DotLottiePlayerState extends PlaybackOptions {
-  activeMachineId: string | undefined;
+  activeStateId: string | undefined;
   background: string;
   currentAnimationId: string | undefined;
   currentState: PlayerState;
@@ -178,7 +178,7 @@ export interface DotLottiePlayerState extends PlaybackOptions {
 }
 
 export const DEFAULT_STATE: DotLottiePlayerState = {
-  activeMachineId: '',
+  activeStateId: '',
   autoplay: false,
   currentState: PlayerState.Initial,
   frame: 0,
@@ -252,7 +252,7 @@ export class DotLottiePlayer {
 
   protected _stateSchemas?: DotLottieState[];
 
-  protected _activeMachineId?: string;
+  protected _activeStateId?: string;
 
   protected _stateMachine?: DotLottieStateMachine;
 
@@ -283,8 +283,8 @@ export class DotLottiePlayer {
       this.setBackground(options.background);
     }
 
-    if (typeof options?.activeMachineId !== 'undefined') {
-      this._activeMachineId = options.activeMachineId;
+    if (typeof options?.activeStateId !== 'undefined') {
+      this._activeStateId = options.activeStateId;
     }
 
     this._animationConfig = {
@@ -715,15 +715,15 @@ export class DotLottiePlayer {
     return this._container ?? undefined;
   }
 
-  public get activeMachineId(): string | undefined {
-    return this._activeAnimationId;
+  public get activeStateId(): string | undefined {
+    return this._activeStateId;
   }
 
-  public setActiveMachineId(machineId: string): void {
-    this._activeMachineId = machineId;
+  public setActiveStateId(stateId: string): void {
+    this._activeStateId = stateId;
     this._stateMachine?.stop();
 
-    if (machineId) {
+    if (stateId) {
       this._startInteractivity();
     }
   }
@@ -915,7 +915,7 @@ export class DotLottiePlayer {
       intermission: this._intermission,
       defaultTheme: this._defaultTheme,
       currentAnimationId: this._currentAnimationId,
-      activeMachineId: this._activeAnimationId ?? '',
+      activeStateId: this._activeStateId ?? '',
     };
   }
 
@@ -1238,12 +1238,12 @@ export class DotLottiePlayer {
       throw createError('no interactivity states are available.');
     }
 
-    if (typeof this._activeMachineId === 'undefined') {
-      throw createError('machineId is not specified.');
+    if (typeof this._activeStateId === 'undefined') {
+      throw createError('stateId is not specified.');
     }
 
     this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
-    this._stateMachine.start(this._activeMachineId);
+    this._stateMachine.start(this._activeStateId);
   }
 
   // If we go back to default animation or at animation 0 we need to use props
@@ -1351,7 +1351,7 @@ export class DotLottiePlayer {
 
         this.setCurrentState(PlayerState.Ready);
 
-        if (this._stateSchemas.length && this._activeMachineId) {
+        if (this._stateSchemas.length && this._activeStateId) {
           // has interactivity
           this._startInteractivity();
         } else {

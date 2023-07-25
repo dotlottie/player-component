@@ -36,7 +36,7 @@ export interface DotLottieRefProps {
   ) => void;
   reset: () => void;
   revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>) => void;
-  setActiveMachineId: (machineId: string) => void;
+  setActiveStateId: (stateId: string) => void;
   setAutoplay: (autoplay: boolean) => void;
   setBackground: (background: string) => void;
   setDefaultTheme: (defaultTheme: string) => void;
@@ -153,8 +153,8 @@ export const useDotLottiePlayer = (
           revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>) => {
             dotLottiePlayer.revertToManifestValues(playbackKeys);
           },
-          setActiveMachineId: (machineId: string) => {
-            dotLottiePlayer.setActiveMachineId(machineId);
+          setActiveStateId: (stateId: string) => {
+            dotLottiePlayer.setActiveStateId(stateId);
           },
         };
 

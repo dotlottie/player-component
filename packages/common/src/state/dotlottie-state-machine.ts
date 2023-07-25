@@ -22,7 +22,7 @@ import type {
 import { XStateEvents, EVENT_MAP } from './dotlottie-state';
 
 export class DotLottieStateMachine {
-  protected activeMachineId: string = '';
+  protected activeStateId: string = '';
 
   protected _service: any;
 
@@ -38,17 +38,17 @@ export class DotLottieStateMachine {
 
   public constructor(schemas: DotLottieState[], player: DotLottiePlayer) {
     this._player = player;
-    this._machineSchemas = this._transfromToXStateSchema(schemas);
+    this._machineSchemas = this._transformToXStateSchema(schemas);
 
     this._domElement = player.container;
   }
 
-  public start(machineId: string): void {
+  public start(stateId: string): void {
     this._removeEventListeners();
-    const activeSchema = this._machineSchemas.get(machineId);
+    const activeSchema = this._machineSchemas.get(stateId);
 
     if (typeof activeSchema === 'undefined') {
-      throw createError(`invalid state machine id ${machineId}`);
+      throw createError(`invalid state machine id ${stateId}`);
     }
 
     this._service = interpret(createMachine<XStateMachine>(activeSchema));
@@ -119,7 +119,7 @@ export class DotLottieStateMachine {
     throw createError(callback.toString());
   }
 
-  protected _transfromToXStateSchema(toConvert: DotLottieState[]): Map<string, XStateMachine> {
+  protected _transformToXStateSchema(toConvert: DotLottieState[]): Map<string, XStateMachine> {
     const machines = new Map<string, XStateMachine>();
 
     for (const stateObj of toConvert) {

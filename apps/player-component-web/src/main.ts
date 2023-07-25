@@ -17,7 +17,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="exploding_pigeon" type="button">exploding pigeon</button>
       <button id="smiley_wifi" type="button">Smiley Wifi</button>
       <button id="reset" type="button">Reset</button>
-      <dotlottie-player activeMachineId="exploding_pigeon" src="/test_02_with_states.lottie" id="dotlottie-player" speed=1 playMode="normal" autoplay loop></dotlottie-player>
+      <dotlottie-player activeStateId="exploding_pigeon" src="/test_02_with_states.lottie" id="dotlottie-player" speed=1 playMode="normal" autoplay loop></dotlottie-player>
       </div>
   </div>
 `;

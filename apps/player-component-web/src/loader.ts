@@ -41,9 +41,9 @@ export function loader(
 
   prevButton.addEventListener('click', () => player.previous());
 
-  explodingPigeon.addEventListener('click', () => player.setActiveMachineId('exploding_pigeon'));
-  smileyWifi.addEventListener('click', () => player.setActiveMachineId('smiley_wifi'));
-  resetInteractivity.addEventListener('click', () => player.setActiveMachineId(''));
+  explodingPigeon.addEventListener('click', () => player.setActiveStateId('exploding_pigeon'));
+  smileyWifi.addEventListener('click', () => player.setActiveStateId('smiley_wifi'));
+  resetInteractivity.addEventListener('click', () => player.setActiveStateId(''));
 
   player.addEventListener('ready', () => {
     console.log(player.getManifest());
