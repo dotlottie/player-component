@@ -1460,7 +1460,7 @@ export class DotLottiePlayer {
       for (const stateKey of stateKeys) {
         const newState = dotLottie.getState(stateKey);
 
-        console.log('Detected : ' + stateKey);
+        console.log(`Detected : ${stateKey}`);
         if (newState) states.push(newState);
       }
 
