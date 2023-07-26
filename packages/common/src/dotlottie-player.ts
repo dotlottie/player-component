@@ -692,7 +692,7 @@ export class DotLottiePlayer {
 
     const nextAnim =
       this._manifest.animations[
-        (currentIndex - 1 + this._manifest.animations.length) % this._manifest.animations.length
+        (Number(currentIndex) - 1 + Number(this._manifest.animations.length)) % this._manifest.animations.length
       ];
 
     if (!nextAnim || !nextAnim.id) {
@@ -724,7 +724,7 @@ export class DotLottiePlayer {
       throw createError('animation not found.');
     }
 
-    const nextAnim = this._manifest.animations[(currentIndex + 1) % this._manifest.animations.length];
+    const nextAnim = this._manifest.animations[(Number(currentIndex) + 1) % this._manifest.animations.length];
 
     if (!nextAnim || !nextAnim.id) {
       throw createError('animation not found.');
