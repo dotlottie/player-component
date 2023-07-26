@@ -5,6 +5,7 @@
 /* eslint-disable no-warning-comments */
 
 import { DotLottie } from '@dotlottie/dotlottie-js';
+import type { DotLottieStateCommon, Manifest, ManifestAnimation, PlaybackOptions } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
 import style from '@lottiefiles/relottie-style';
 import { relottie } from '@lottiefiles/relottie/index';
@@ -20,24 +21,12 @@ import type {
   CanvasRendererConfig,
   AnimationSegment,
 } from 'lottie-web';
-import { createMachine, interpret } from 'xstate';
 
 import pkg from '../package.json';
 
-import type {
-  DotLottieState,
-  EventMap,
-  StateAnimationSettings,
-  StateSettings,
-  StateTransitionEvents,
-  Transitionable,
-  XState,
-  XStateMachine,
-  XStateTargetEvent,
-} from './state/dotlottie-state';
-import { XStateEvents, ExplodingPigeon, EVENT_MAP } from './state/dotlottie-state';
+import { DotLottieStateMachine } from './state/dotlottie-state-machine';
 import { Store } from './store';
-import { createError, getFilename, getKeyByValue, logError, logWarning } from './utils';
+import { createError, getFilename, logError, logWarning } from './utils';
 
 export type { AnimationDirection, AnimationItem, AnimationSegment };
 
@@ -72,78 +61,7 @@ export enum PlayMode {
 }
 
 // TODO: export from dotLottie-js
-export interface ManifestTheme {
-  // scoped animations ids
-  animations: string[];
-
-  id: string;
-}
-
-// TODO: export from dotLottie-js
-export interface ManifestAnimation {
-  autoplay?: boolean;
-
-  // default theme to use
-  defaultTheme?: string;
-
-  // Define playback direction 1 forward, -1 backward
-  direction?: AnimationDirection;
-
-  // Play on hover
-  hover?: boolean;
-
-  id: string;
-
-  // Time to wait between playback loops
-  intermission?: number;
-
-  // If loop is a number, it defines the number of times the animation will loop
-  loop?: boolean | number;
-
-  // Choice between 'bounce' and 'normal'
-  playMode?: PlayMode;
-
-  // Desired playback speed, default 1.0
-  speed?: number;
-
-  // Theme color
-  themeColor?: string;
-}
-
-export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
-
-// TODO: export from dotLottie-js
-export interface Manifest {
-  // Default animation to play
-  activeAnimationId?: string;
-
-  // List of animations
-  animations: ManifestAnimation[];
-
-  // Name of the author
-  author?: string;
-
-  // Custom data to be made available to the player and animations
-  custom?: Record<string, unknown>;
-
-  // Description of the animation
-  description?: string;
-
-  // Name and version of the software that created the dotLottie
-  generator?: string;
-
-  // Description of the animation
-  keywords?: string;
-
-  // Revision version number of the dotLottie
-  revision?: number;
-
-  // themes used in the animations
-  themes?: ManifestTheme[];
-
-  // Target dotLottie version
-  version?: string;
-}
+export { ManifestTheme, ManifestAnimation, Manifest, PlaybackOptions } from '@dotlottie/dotlottie-js';
 
 export interface DotLottieElement extends HTMLDivElement {
   __lottie?: AnimationItem | null;
@@ -165,6 +83,7 @@ export type RendererSettings = SVGRendererConfig & CanvasRendererConfig & HTMLRe
 export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, 'container'> &
   PlaybackOptions & {
     activeAnimationId?: string | null;
+    activeStateId?: string;
     background?: string;
     testId?: string | undefined;
   };
@@ -176,6 +95,7 @@ declare global {
 }
 
 export interface DotLottiePlayerState extends PlaybackOptions {
+  activeStateId: string | undefined;
   background: string;
   currentAnimationId: string | undefined;
   currentState: PlayerState;
@@ -185,6 +105,7 @@ export interface DotLottiePlayerState extends PlaybackOptions {
 }
 
 export const DEFAULT_STATE: DotLottiePlayerState = {
+  activeStateId: '',
   autoplay: false,
   currentState: PlayerState.Initial,
   frame: 0,
@@ -256,9 +177,11 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
-  private _hasEnteredInteractiveMode: boolean = false;
+  protected _stateSchemas?: DotLottieStateCommon[];
 
-  private _xStateActor: any;
+  protected _activeStateId?: string;
+
+  protected _stateMachine?: DotLottieStateMachine;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -285,6 +208,10 @@ export class DotLottiePlayer {
 
     if (typeof options?.background === 'string') {
       this.setBackground(options.background);
+    }
+
+    if (typeof options?.activeStateId !== 'undefined') {
+      this._activeStateId = options.activeStateId;
     }
 
     this._animationConfig = {
@@ -668,205 +595,6 @@ export class DotLottiePlayer {
     this._lottie.resetSegments(force);
   }
 
-  private _updatePlaybackSettings(playbackSettings: StateAnimationSettings): void {
-    if (!this._lottie) {
-      throw new Error('Unable to update playbackSettings. Animations is not rendered yet.');
-    }
-
-    if (typeof playbackSettings.autoplay !== 'undefined') {
-      this.setAutoplay(playbackSettings.autoplay);
-    }
-
-    if (typeof playbackSettings.direction !== 'undefined') {
-      this.setDirection(playbackSettings.direction);
-    }
-
-    if (typeof playbackSettings.hover !== 'undefined') {
-      this.setHover(playbackSettings.hover);
-    }
-
-    if (typeof playbackSettings.intermission !== 'undefined') {
-      this.setIntermission(playbackSettings.intermission);
-    }
-
-    if (typeof playbackSettings.loop !== 'undefined') {
-      this.setLoop(playbackSettings.loop);
-    }
-
-    if (typeof playbackSettings.playMode !== 'undefined') {
-      this.setMode(playbackSettings.playMode);
-    }
-
-    if (typeof playbackSettings.speed !== 'undefined') {
-      this.setSpeed(playbackSettings.speed);
-    }
-
-    if (typeof playbackSettings.defaultTheme !== 'undefined') {
-      this.setDefaultTheme(playbackSettings.defaultTheme);
-    }
-  }
-
-  private _convertToMachine(toConvert: DotLottieState[]): XStateMachine[] {
-    const machines: XStateMachine[] = [];
-    const machineStates: Record<string, XState> = {};
-
-    for (const stateObj of toConvert) {
-      const machine = {} as XStateMachine;
-      // Loop over every toConvert key
-      const descriptor = stateObj.descriptor;
-
-      machine.id = descriptor.id;
-
-      if (typeof descriptor.initial !== 'undefined') machine.initial = descriptor.initial;
-
-      if (typeof stateObj !== 'undefined') {
-        const states = stateObj.states;
-
-        for (const state in states) {
-          if (typeof states[state] !== 'undefined' && states[state]) {
-            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const stateSettings: StateSettings = states[state]!;
-
-            const playbackSettings = stateSettings.statePlaybackSettings;
-
-            const eventNames = Object.keys(stateSettings).filter((key) => key.startsWith('on')) as Array<
-              keyof StateTransitionEvents
-            >;
-
-            const events = {} as Record<keyof EventMap, XStateTargetEvent>;
-
-            for (const eventName of eventNames) {
-              if (typeof stateSettings[eventName] !== 'undefined') {
-                const transtionEvent: Transitionable | undefined = stateSettings[eventName];
-
-                events[getKeyByValue(EVENT_MAP, eventName)] = {
-                  target: transtionEvent?.state ?? '',
-                };
-              }
-            }
-
-            machineStates[state] = {
-              entry: (): void => {
-                console.log(`Entering state: ${state}`, {
-                  animationId: stateSettings.animationId,
-                  playbackSettings,
-                });
-
-                const shouldRender = !this._lottie || stateSettings.animationId;
-
-                if (shouldRender) {
-                  this.play(stateSettings.animationId || this._activeAnimationId, () => playbackSettings);
-                }
-
-                if (playbackSettings.segments) {
-                  if (!shouldRender) {
-                    this._updatePlaybackSettings(playbackSettings);
-                  }
-
-                  if (typeof playbackSettings.segments === 'string') {
-                    this.goToAndPlay(playbackSettings.segments, true);
-                  } else {
-                    this.playSegments(playbackSettings.segments, true);
-                  }
-                }
-              },
-              exit: (): void => {
-                console.log(`Exiting ${state}`);
-                if (typeof playbackSettings.segments !== 'undefined') {
-                  this.resetSegments(true);
-                }
-              },
-              on: events,
-              meta: playbackSettings,
-            };
-          }
-        }
-      }
-      machine.states = machineStates;
-      machines.push(machine);
-    }
-
-    return machines;
-  }
-
-  public enterInteractiveMode(): void {
-    // Need to manage the active machine better
-
-    // ExplodingPigeon
-    const activeMachineId = 'exploding_pigeon';
-    // Bounce and Wifi
-    // const activeMachineId = 'simple_click_to_next_prev';
-
-    if (!this._hasEnteredInteractiveMode) {
-      // ExplodingPigeon
-      const machineSchemas = this._convertToMachine(ExplodingPigeon);
-      // Bounce and wifi
-      // const machineSchemas = this._convertToMachine(ExampleState);
-      const activeSchema = machineSchemas.find((schema) => schema.id === activeMachineId);
-
-      if (typeof activeSchema === 'undefined') {
-        throw createError(`invalid state machine id ${activeMachineId}`);
-      }
-
-      console.log('>> Returning A New Machine..');
-      console.log(activeSchema);
-
-      this._xStateActor = interpret(createMachine<XStateMachine>(activeSchema));
-    }
-
-    const domListeners = new Map<string, () => void>();
-    const playerListers = new Map<AnimationEventName, () => void>();
-
-    const notifyState = (eventName: string): void =>
-      this._xStateActor.send({
-        type: eventName,
-      });
-
-    const getEventHandler = (eventName: string): (() => void) => {
-      function eventListener(): void {
-        notifyState(eventName);
-      }
-
-      return eventListener;
-    };
-
-    const removePreviousListeners = (): void => {
-      // DOM
-      for (const [event, handler] of domListeners) {
-        this._container?.removeEventListener(event, handler);
-        domListeners.delete(event);
-      }
-      // Player
-      for (const [event, handler] of playerListers) {
-        this.removeEventListener(event, handler);
-        domListeners.delete(event);
-      }
-    };
-
-    this._xStateActor.subscribe((state: any) => {
-      // changed 'undefined' === 'intial'
-      if (typeof state.changed === 'undefined' || state.changed) {
-        // Remove remaining listeners.
-        removePreviousListeners();
-        for (const event of state.nextEvents) {
-          if (XStateEvents.filter((item) => item !== 'complete').includes(event)) {
-            const listener = getEventHandler(event);
-
-            domListeners.set(event, listener);
-            this._container?.addEventListener(event, listener);
-          } else if (event === 'complete') {
-            const handler = getEventHandler(event);
-
-            this.addEventListener(event, handler);
-            playerListers.set(event, handler);
-          }
-        }
-      }
-    });
-
-    this._xStateActor.start();
-  }
-
   public togglePlay(): void {
     if (this.currentState === PlayerState.Playing) {
       this.pause();
@@ -910,6 +638,23 @@ export class DotLottiePlayer {
     return this._currentAnimationId;
   }
 
+  public get container(): DotLottieElement | undefined {
+    return this._container ?? undefined;
+  }
+
+  public get activeStateId(): string | undefined {
+    return this._activeStateId;
+  }
+
+  public setActiveStateId(stateId: string): void {
+    this._activeStateId = stateId;
+    this._stateMachine?.stop();
+
+    if (stateId) {
+      this._startInteractivity();
+    }
+  }
+
   public reset(): void {
     const activeId = this._activeAnimationId;
 
@@ -947,7 +692,7 @@ export class DotLottiePlayer {
 
     const nextAnim =
       this._manifest.animations[
-        (currentIndex - 1 + this._manifest.animations.length) % this._manifest.animations.length
+        (Number(currentIndex) - 1 + Number(this._manifest.animations.length)) % this._manifest.animations.length
       ];
 
     if (!nextAnim || !nextAnim.id) {
@@ -979,7 +724,7 @@ export class DotLottiePlayer {
       throw createError('animation not found.');
     }
 
-    const nextAnim = this._manifest.animations[(currentIndex + 1) % this._manifest.animations.length];
+    const nextAnim = this._manifest.animations[(Number(currentIndex) + 1) % this._manifest.animations.length];
 
     if (!nextAnim || !nextAnim.id) {
       throw createError('animation not found.');
@@ -1097,6 +842,7 @@ export class DotLottiePlayer {
       intermission: this._intermission,
       defaultTheme: this._defaultTheme,
       currentAnimationId: this._currentAnimationId,
+      activeStateId: this._activeStateId ?? '',
     };
   }
 
@@ -1414,6 +1160,19 @@ export class DotLottiePlayer {
     this._animation = anim;
   }
 
+  protected _startInteractivity(): void {
+    if (typeof this._stateSchemas === 'undefined') {
+      throw createError('no interactivity states are available.');
+    }
+
+    if (typeof this._activeStateId === 'undefined') {
+      throw createError('stateId is not specified.');
+    }
+
+    this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
+    this._stateMachine.start(this._activeStateId);
+  }
+
   // If we go back to default animation or at animation 0 we need to use props
   protected async render(activeAnimation?: Partial<ManifestAnimation>): Promise<void> {
     if (activeAnimation?.id) {
@@ -1429,7 +1188,7 @@ export class DotLottiePlayer {
     let mode: PlayMode = DEFAULT_OPTIONS.playMode ?? PlayMode.Normal;
     let intermission: number = DEFAULT_OPTIONS.intermission ?? 0;
     let hover: boolean = DEFAULT_OPTIONS.hover ?? false;
-    let direction: AnimationDirection = DEFAULT_OPTIONS.direction ?? 1;
+    let direction: AnimationDirection = (DEFAULT_OPTIONS.direction ?? 1) as AnimationDirection;
     let speed: number = DEFAULT_OPTIONS.speed ?? 1;
     let defaultTheme: string = DEFAULT_OPTIONS.defaultTheme ?? '';
 
@@ -1439,7 +1198,7 @@ export class DotLottiePlayer {
     mode = activeAnimation?.playMode ?? this._getOption('playMode');
     intermission = activeAnimation?.intermission ?? this._getOption('intermission');
     hover = activeAnimation?.hover ?? this._getOption('hover');
-    direction = activeAnimation?.direction ?? this._getOption('direction');
+    direction = (activeAnimation?.direction ?? this._getOption('direction')) as AnimationDirection;
     speed = activeAnimation?.speed ?? this._getOption('speed');
     defaultTheme = activeAnimation?.defaultTheme ?? this._getOption('defaultTheme');
 
@@ -1505,9 +1264,7 @@ export class DotLottiePlayer {
       const srcParsed = DotLottiePlayer.parseSrc(this._src);
 
       if (typeof srcParsed === 'string') {
-        const { activeAnimationId, animations, manifest, themes } = await this.getAnimationData(srcParsed);
-        // should come from getAnimationData();
-        const hasInteractivity = true;
+        const { activeAnimationId, animations, manifest, states, themes } = await this.getAnimationData(srcParsed);
 
         // Setting the activeAnimationId from Manfiest if it's not set by user
         if (!this._activeAnimationId) {
@@ -1517,12 +1274,13 @@ export class DotLottiePlayer {
         this._animations = animations;
         this._themes = themes;
         this._manifest = manifest;
+        this._stateSchemas = states;
 
         this.setCurrentState(PlayerState.Ready);
 
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-        if (hasInteractivity) {
-          this.enterInteractiveMode();
+        if (this._stateSchemas.length && this._activeStateId) {
+          // has interactivity
+          this._startInteractivity();
         } else {
           // Setting the animation to be played
           this._currentAnimationId = this._activeAnimationId;
@@ -1603,6 +1361,7 @@ export class DotLottiePlayer {
     activeAnimationId: string;
     animations: Map<string, Animation>;
     manifest: Manifest;
+    states: DotLottieStateCommon[];
     themes: Map<string, string>;
   }> {
     let response: Response;
@@ -1641,6 +1400,7 @@ export class DotLottiePlayer {
         activeAnimationId,
         animations,
         themes,
+        states: [],
         manifest,
       };
     }
@@ -1694,10 +1454,21 @@ export class DotLottiePlayer {
         throw createError('no animation to load!');
       }
 
+      const stateKeys = dotLottie.manifest.states ?? [];
+      const states = [] as DotLottieStateCommon[];
+
+      for (const stateKey of stateKeys) {
+        const newState = dotLottie.getState(stateKey);
+
+        console.log(`Detected : ${stateKey}`);
+        if (newState) states.push(newState);
+      }
+
       return {
         activeAnimationId,
         animations,
         themes,
+        states,
         manifest: dotLottie.manifest as Manifest,
       };
     } catch (error) {
