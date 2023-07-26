@@ -17,11 +17,13 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="exploding_pigeon" type="button">exploding pigeon</button>
       <button id="smiley_wifi" type="button">Smiley Wifi</button>
       <button id="reset" type="button">Reset</button>
-      <dotlottie-player activeStateId="exploding_pigeon" src="/lf_interactivity_page.lottie" id="lf-player"></dotlottie-player>
-      <dotlottie-player activeStateId="exploding_pigeon" src="/test_02_with_states.lottie" id="dotlottie-player" speed=1 playMode="normal" autoplay loop></dotlottie-player>
+      <dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" speed=1 playMode="normal" autoplay loop></dotlottie-player>
       </div>
   </div>
 `;
+// <dotlottie-player activeStateId="exploding_pigeon" src="/lf_interactivity_page.lottie" id="lf-player"></dotlottie-player>
+   
+// <dotlottie-player activeStateId="exploding_pigeon" src="/test_02_with_states.lottie" id="dotlottie-player" speed=1 playMode="normal" autoplay loop></dotlottie-player>
 
 // Switch out for bounce / wifi
 // <dotlottie-player src="https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie" id="dotlottie-player" speed=1 playMode="normal" ></dotlottie-player>
@@ -38,4 +40,5 @@ loader(
   document.querySelector<HTMLButtonElement>('#exploding_pigeon')!,
   document.querySelector<HTMLButtonElement>('#smiley_wifi')!,
   document.querySelector<HTMLButtonElement>('#reset')!,
+  document.querySelector<HTMLInputElement>('#state-input')!,
 );

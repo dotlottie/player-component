@@ -4,6 +4,8 @@
 
 import { DotLottiePlayer, PlayMode } from '@dotlottie/player-component';
 
+let loaded = false;
+
 export function loader(
   element: HTMLButtonElement,
   player: DotLottiePlayer,
@@ -12,6 +14,7 @@ export function loader(
   explodingPigeon: HTMLButtonElement,
   smileyWifi: HTMLButtonElement,
   resetInteractivity: HTMLButtonElement,
+  stateInput: HTMLInputElement,
 ): void {
   const setupLoader = (): void => {
     player.load(
@@ -50,5 +53,32 @@ export function loader(
     // player.setSpeed(5);
     // player.setDirection(-1);
     // player.setPlayMode('normal');
+    if (!loaded) {
+    loaded = true;
+
+      player.getManifest().states.forEach((state) => {
+        let btn = document.createElement('button');
+    
+        btn.innerHTML = state;
+        btn.type = 'button';
+        // set style
+        btn.style.cssText = "margin: 5px;"
+    
+        btn.addEventListener('click', () => {
+          player.setActiveStateId(state)
+          
+          console.log(player.getState())
+        });
+        
+        // append btn to container
+        document.querySelector('.card')!.appendChild(btn);
+      });
+    }
   });
+  console.log(player.getManifest());
+
+  // Init state buttons
+  // stateInput.addEventListener('change', () => {
+  //   player.setActiveStateId(stateInput.value);
+  // });
 }

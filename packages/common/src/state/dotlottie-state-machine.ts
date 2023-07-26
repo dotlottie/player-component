@@ -2,24 +2,22 @@
  * Copyright 2023 Design Barn Inc.
  */
 
+import type { EventMap, StateAnimationSettings, XStateTargetEvent } from '@dotlottie/dotlottie-js';
+import {
+  EVENT_MAP,
+  XStateEvents,
+  type DotLottieStateCommon,
+  type StateSettings,
+  type StateTransitionEvents,
+  type Transitionable,
+  type XState,
+  type XStateMachine,
+} from '@dotlottie/dotlottie-js';
 import type { AnimationEventName } from 'lottie-web';
 import { createMachine, interpret } from 'xstate';
 
 import type { DotLottieElement, DotLottiePlayer } from '../dotlottie-player';
 import { createError, getKeyByValue } from '../utils';
-
-import type {
-  DotLottieState,
-  EventMap,
-  StateAnimationSettings,
-  StateSettings,
-  StateTransitionEvents,
-  Transitionable,
-  XState,
-  XStateMachine,
-  XStateTargetEvent,
-} from './dotlottie-state';
-import { XStateEvents, EVENT_MAP } from './dotlottie-state';
 
 export class DotLottieStateMachine {
   protected activeStateId: string = '';
@@ -36,7 +34,7 @@ export class DotLottieStateMachine {
 
   protected _machineSchemas = new Map<string, XStateMachine>();
 
-  public constructor(schemas: DotLottieState[], player: DotLottiePlayer) {
+  public constructor(schemas: DotLottieStateCommon[], player: DotLottiePlayer) {
     this._player = player;
     this._machineSchemas = this._transformToXStateSchema(schemas);
 
@@ -119,21 +117,23 @@ export class DotLottieStateMachine {
     throw createError(callback.toString());
   }
 
-  protected _transformToXStateSchema(toConvert: DotLottieState[]): Map<string, XStateMachine> {
+  protected _transformToXStateSchema(toConvert: DotLottieStateCommon[]): Map<string, XStateMachine> {
     const machines = new Map<string, XStateMachine>();
 
     for (const stateObj of toConvert) {
       const machineStates: Record<string, XState> = {};
       const machine = {} as XStateMachine;
       // Loop over every toConvert key
-      const descriptor = stateObj.descriptor;
+      const descriptor = stateObj.state?.descriptor ?? '';
+
+      if (!descriptor) throw createError('Descriptor is required. Please provide a valid state descriptor.');
 
       machine.id = descriptor.id;
 
       if (typeof descriptor.initial !== 'undefined') machine.initial = descriptor.initial;
 
       if (typeof stateObj !== 'undefined') {
-        const states = stateObj.states;
+        const states = stateObj.state?.states ?? {};
 
         for (const state in states) {
           if (typeof states[state] !== 'undefined' && states[state]) {
@@ -213,7 +213,7 @@ export class DotLottieStateMachine {
     }
 
     if (typeof playbackSettings.direction !== 'undefined') {
-      this._player.setDirection(playbackSettings.direction);
+      this._player.setDirection(playbackSettings.direction === 1 ? 1 : -1);
     }
 
     if (typeof playbackSettings.hover !== 'undefined') {

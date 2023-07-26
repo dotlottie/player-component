@@ -5,6 +5,7 @@
 /* eslint-disable no-warning-comments */
 
 import { DotLottie } from '@dotlottie/dotlottie-js';
+import type { DotLottieStateCommon, Manifest, ManifestAnimation, PlaybackOptions } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
 import style from '@lottiefiles/relottie-style';
 import { relottie } from '@lottiefiles/relottie/index';
@@ -23,10 +24,7 @@ import type {
 
 import pkg from '../package.json';
 
-import type { DotLottieState } from './state/dotlottie-state';
 import { DotLottieStateMachine } from './state/dotlottie-state-machine';
-import explodingPigeon from './state/exploding-pigeon.json';
-import smileyWifi from './state/smiley-wifi.json';
 import { Store } from './store';
 import { createError, getFilename, logError, logWarning } from './utils';
 
@@ -63,78 +61,7 @@ export enum PlayMode {
 }
 
 // TODO: export from dotLottie-js
-export interface ManifestTheme {
-  // scoped animations ids
-  animations: string[];
-
-  id: string;
-}
-
-// TODO: export from dotLottie-js
-export interface ManifestAnimation {
-  autoplay?: boolean;
-
-  // default theme to use
-  defaultTheme?: string;
-
-  // Define playback direction 1 forward, -1 backward
-  direction?: AnimationDirection;
-
-  // Play on hover
-  hover?: boolean;
-
-  id: string;
-
-  // Time to wait between playback loops
-  intermission?: number;
-
-  // If loop is a number, it defines the number of times the animation will loop
-  loop?: boolean | number;
-
-  // Choice between 'bounce' and 'normal'
-  playMode?: PlayMode;
-
-  // Desired playback speed, default 1.0
-  speed?: number;
-
-  // Theme color
-  themeColor?: string;
-}
-
-export type PlaybackOptions = Omit<ManifestAnimation, 'id'>;
-
-// TODO: export from dotLottie-js
-export interface Manifest {
-  // Default animation to play
-  activeAnimationId?: string;
-
-  // List of animations
-  animations: ManifestAnimation[];
-
-  // Name of the author
-  author?: string;
-
-  // Custom data to be made available to the player and animations
-  custom?: Record<string, unknown>;
-
-  // Description of the animation
-  description?: string;
-
-  // Name and version of the software that created the dotLottie
-  generator?: string;
-
-  // Description of the animation
-  keywords?: string;
-
-  // Revision version number of the dotLottie
-  revision?: number;
-
-  // themes used in the animations
-  themes?: ManifestTheme[];
-
-  // Target dotLottie version
-  version?: string;
-}
+export { ManifestTheme, ManifestAnimation, Manifest, PlaybackOptions } from '@dotlottie/dotlottie-js';
 
 export interface DotLottieElement extends HTMLDivElement {
   __lottie?: AnimationItem | null;
@@ -250,7 +177,7 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
-  protected _stateSchemas?: DotLottieState[];
+  protected _stateSchemas?: DotLottieStateCommon[];
 
   protected _activeStateId?: string;
 
@@ -1261,7 +1188,7 @@ export class DotLottiePlayer {
     let mode: PlayMode = DEFAULT_OPTIONS.playMode ?? PlayMode.Normal;
     let intermission: number = DEFAULT_OPTIONS.intermission ?? 0;
     let hover: boolean = DEFAULT_OPTIONS.hover ?? false;
-    let direction: AnimationDirection = DEFAULT_OPTIONS.direction ?? 1;
+    let direction: AnimationDirection = (DEFAULT_OPTIONS.direction ?? 1) as AnimationDirection;
     let speed: number = DEFAULT_OPTIONS.speed ?? 1;
     let defaultTheme: string = DEFAULT_OPTIONS.defaultTheme ?? '';
 
@@ -1271,7 +1198,7 @@ export class DotLottiePlayer {
     mode = activeAnimation?.playMode ?? this._getOption('playMode');
     intermission = activeAnimation?.intermission ?? this._getOption('intermission');
     hover = activeAnimation?.hover ?? this._getOption('hover');
-    direction = activeAnimation?.direction ?? this._getOption('direction');
+    direction = (activeAnimation?.direction ?? this._getOption('direction')) as AnimationDirection;
     speed = activeAnimation?.speed ?? this._getOption('speed');
     defaultTheme = activeAnimation?.defaultTheme ?? this._getOption('defaultTheme');
 
@@ -1434,7 +1361,7 @@ export class DotLottiePlayer {
     activeAnimationId: string;
     animations: Map<string, Animation>;
     manifest: Manifest;
-    states: DotLottieState[];
+    states: DotLottieStateCommon[];
     themes: Map<string, string>;
   }> {
     let response: Response;
@@ -1527,13 +1454,14 @@ export class DotLottiePlayer {
         throw createError('no animation to load!');
       }
 
-      // TODO: Get states from dotlottie-js once its ready.
-      const loadDemoState = ['pigeon', 'wifi', 'smiley'].every((key) => Array.from(animations.keys()).includes(key));
-      const states = [] as DotLottieState[];
+      const stateKeys = dotLottie.manifest.states ?? [];
+      const states = [] as DotLottieStateCommon[];
 
-      if (loadDemoState) {
-        states.push(explodingPigeon as DotLottieState);
-        states.push(smileyWifi as DotLottieState);
+      for (const stateKey of stateKeys) {
+        const newState = dotLottie.getState(stateKey);
+
+        console.log('Detected : ' + stateKey);
+        if (newState) states.push(newState);
       }
 
       return {
