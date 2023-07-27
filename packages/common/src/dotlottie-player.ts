@@ -358,7 +358,7 @@ export class DotLottiePlayer {
   }
 
   public get hover(): boolean {
-    return this.hover;
+    return this._hover;
   }
 
   public setHover(hover: boolean): void {
@@ -1169,7 +1169,10 @@ export class DotLottiePlayer {
       throw createError('stateId is not specified.');
     }
 
-    this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
+    if (!this._stateMachine) {
+      this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
+    }
+
     this._stateMachine.start(this._activeStateId);
   }
 

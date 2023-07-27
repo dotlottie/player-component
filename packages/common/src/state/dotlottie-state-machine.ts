@@ -16,6 +16,7 @@ import {
 import type { AnimationEventName } from 'lottie-web';
 import { createMachine, interpret } from 'xstate';
 
+import { DEFAULT_OPTIONS } from '../dotlottie-player';
 import type { DotLottieElement, DotLottiePlayer } from '../dotlottie-player';
 import { createError, getKeyByValue } from '../utils';
 
@@ -42,7 +43,7 @@ export class DotLottieStateMachine {
   }
 
   public start(stateId: string): void {
-    this._removeEventListeners();
+    this.stop();
     const activeSchema = this._machineSchemas.get(stateId);
 
     if (typeof activeSchema === 'undefined') {
@@ -58,7 +59,7 @@ export class DotLottieStateMachine {
 
   public stop(): void {
     this._removeEventListeners();
-    this._service.stop();
+    this._service?.stop();
   }
 
   protected _removeEventListeners(): void {
@@ -168,10 +169,10 @@ export class DotLottieStateMachine {
                 const shouldRender = !this._player.getAnimationInstance() || stateSettings.animationId;
 
                 if (shouldRender) {
-                  this._player.play(
-                    stateSettings.animationId || this._player.activeAnimationId,
-                    () => playbackSettings,
-                  );
+                  this._player.play(stateSettings.animationId || this._player.activeAnimationId, () => ({
+                    ...DEFAULT_OPTIONS,
+                    ...playbackSettings,
+                  }));
                 }
 
                 if (playbackSettings.segments) {
