@@ -532,7 +532,12 @@ export class DotLottiePlayer {
     this._requireAnimationsToBeLoaded();
 
     if (this._lottie) {
-      if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._currentAnimationId)) {
+      if (
+        !activeAnimation ||
+        (typeof activeAnimation === 'string' &&
+          activeAnimation === this._currentAnimationId &&
+          typeof getOptions !== 'function')
+      ) {
         if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
           this._lottie.goToAndPlay(this._lottie.totalFrames, true);
         } else {
