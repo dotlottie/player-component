@@ -181,7 +181,18 @@ export class DotLottieStateMachine {
                   if (typeof playbackSettings.segments === 'string') {
                     this._player.goToAndPlay(playbackSettings.segments, true);
                   } else {
-                    this._player.playSegments(playbackSettings.segments, true);
+                    const [frame1, frame2] = playbackSettings.segments;
+                    let newFrame1 = frame1;
+
+                    // Solves: If both frames are same lottie-web takes animation to frame 0
+                    if (frame1 !== 0 && frame1 === frame2) {
+                      newFrame1 = frame1 - 1;
+                    }
+                    this._player.playSegments([newFrame1, frame2], true);
+                  }
+                  // Pauses animation. By default `playSegments` plays animation.
+                  if (!playbackSettings.autoplay) {
+                    this._player.pause();
                   }
                 }
               },
