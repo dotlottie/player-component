@@ -195,7 +195,7 @@ importers:
 
   packages/common:
     specifiers:
-      '@dotlottie/dotlottie-js': 0.4.0-beta.5
+      '@dotlottie/dotlottie-js': 0.4.0-beta.8
       '@lottiefiles/lottie-types': ^1.2.0
       '@lottiefiles/relottie': 1.0.0
       '@lottiefiles/relottie-style': 0.4.1
@@ -205,7 +205,7 @@ importers:
       typescript: ^4.7.4
       xstate: ^4.38.1
     dependencies:
-      '@dotlottie/dotlottie-js': 0.4.0-beta.5
+      '@dotlottie/dotlottie-js': 0.4.0-beta.8
       '@lottiefiles/relottie': 1.0.0
       '@lottiefiles/relottie-style': 0.4.1
       '@preact/signals-core': 1.3.0
@@ -2077,8 +2077,8 @@ packages:
       - supports-color
     dev: true
 
-  /@dotlottie/dotlottie-js/0.4.0-beta.5:
-    resolution: {integrity: sha512-ottq4w84zjuacK5MLTg7nU3CeCTl7lb6VxOV9BcWgk9RIufXkBbzVkWsiYOFSa55SC4Lqp161GONveBgsNQGMA==}
+  /@dotlottie/dotlottie-js/0.4.0-beta.8:
+    resolution: {integrity: sha512-huVzBX7Pz5/ljDmm0BBTn/11G4x03N9jD0Lifql/IJCW4sIY2aq3O5+HBmVBCQqgMWurYfrgnL8ycwcitOndWQ==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@lottiefiles/lottie-types': 1.2.0

@@ -2,7 +2,12 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { EventMap, StateAnimationSettings, XStateTargetEvent } from '@dotlottie/dotlottie-js';
+import type {
+  EventMap,
+  StateAnimationSettings,
+  StateTransitionOnAfter,
+  XStateTargetEvent,
+} from '@dotlottie/dotlottie-js';
 import {
   EVENT_MAP,
   XStateEvents,
@@ -147,14 +152,28 @@ export class DotLottieStateMachine {
             >;
 
             const events = {} as Record<keyof EventMap, XStateTargetEvent>;
+            const after = {} as Record<number, XStateTargetEvent>;
 
             for (const eventName of eventNames) {
               if (typeof stateSettings[eventName] !== 'undefined') {
                 const transtionEvent: Transitionable | undefined = stateSettings[eventName];
 
-                events[getKeyByValue(EVENT_MAP, eventName)] = {
-                  target: transtionEvent?.state ?? '',
-                };
+                if (eventName === EVENT_MAP.after) {
+                  const onAfterTransitionEvent = transtionEvent as StateTransitionOnAfter;
+
+                  after[onAfterTransitionEvent.ms] = {
+                    target: transtionEvent?.state ?? '',
+                  };
+                } else if (eventName === EVENT_MAP.enter) {
+                  // TO DO
+                  events[getKeyByValue(EVENT_MAP, eventName)] = {
+                    target: transtionEvent?.state ?? '',
+                  };
+                } else {
+                  events[getKeyByValue(EVENT_MAP, eventName)] = {
+                    target: transtionEvent?.state ?? '',
+                  };
+                }
               }
             }
 
@@ -191,6 +210,7 @@ export class DotLottieStateMachine {
                 }
               },
               on: events,
+              after,
               meta: playbackSettings,
             };
           }
@@ -214,10 +234,6 @@ export class DotLottieStateMachine {
 
     if (typeof playbackSettings.direction !== 'undefined') {
       this._player.setDirection(playbackSettings.direction === 1 ? 1 : -1);
-    }
-
-    if (typeof playbackSettings.hover !== 'undefined') {
-      this._player.setHover(playbackSettings.hover);
     }
 
     if (typeof playbackSettings.intermission !== 'undefined') {
