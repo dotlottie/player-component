@@ -358,7 +358,7 @@ export class DotLottiePlayer {
   }
 
   public get hover(): boolean {
-    return this.hover;
+    return this._hover;
   }
 
   public setHover(hover: boolean): void {
@@ -532,7 +532,12 @@ export class DotLottiePlayer {
     this._requireAnimationsToBeLoaded();
 
     if (this._lottie) {
-      if (!activeAnimation || (typeof activeAnimation === 'string' && activeAnimation === this._currentAnimationId)) {
+      if (
+        !activeAnimation ||
+        (typeof activeAnimation === 'string' &&
+          activeAnimation === this._currentAnimationId &&
+          typeof getOptions !== 'function')
+      ) {
         if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
           this._lottie.goToAndPlay(this._lottie.totalFrames, true);
         } else {
@@ -1169,7 +1174,10 @@ export class DotLottiePlayer {
       throw createError('stateId is not specified.');
     }
 
-    this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
+    if (!this._stateMachine) {
+      this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
+    }
+
     this._stateMachine.start(this._activeStateId);
   }
 

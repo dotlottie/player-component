@@ -16,6 +16,7 @@ import {
 import type { AnimationEventName } from 'lottie-web';
 import { createMachine, interpret } from 'xstate';
 
+import { DEFAULT_OPTIONS } from '../dotlottie-player';
 import type { DotLottieElement, DotLottiePlayer } from '../dotlottie-player';
 import { createError, getKeyByValue } from '../utils';
 
@@ -42,7 +43,7 @@ export class DotLottieStateMachine {
   }
 
   public start(stateId: string): void {
-    this._removeEventListeners();
+    this.stop();
     const activeSchema = this._machineSchemas.get(stateId);
 
     if (typeof activeSchema === 'undefined') {
@@ -58,7 +59,7 @@ export class DotLottieStateMachine {
 
   public stop(): void {
     this._removeEventListeners();
-    this._service.stop();
+    this._service?.stop();
   }
 
   protected _removeEventListeners(): void {
@@ -168,10 +169,10 @@ export class DotLottieStateMachine {
                 const shouldRender = !this._player.getAnimationInstance() || stateSettings.animationId;
 
                 if (shouldRender) {
-                  this._player.play(
-                    stateSettings.animationId || this._player.activeAnimationId,
-                    () => playbackSettings,
-                  );
+                  this._player.play(stateSettings.animationId || this._player.activeAnimationId, () => ({
+                    ...DEFAULT_OPTIONS,
+                    ...playbackSettings,
+                  }));
                 }
 
                 if (playbackSettings.segments) {
@@ -180,7 +181,18 @@ export class DotLottieStateMachine {
                   if (typeof playbackSettings.segments === 'string') {
                     this._player.goToAndPlay(playbackSettings.segments, true);
                   } else {
-                    this._player.playSegments(playbackSettings.segments, true);
+                    const [frame1, frame2] = playbackSettings.segments;
+                    let newFrame1 = frame1;
+
+                    // Solves: If both frames are same lottie-web takes animation to frame 0
+                    if (frame1 !== 0 && frame1 === frame2) {
+                      newFrame1 = frame1 - 1;
+                    }
+                    this._player.playSegments([newFrame1, frame2], true);
+                  }
+                  // Pauses animation. By default `playSegments` plays animation.
+                  if (!playbackSettings.autoplay) {
+                    this._player.pause();
                   }
                 }
               },
