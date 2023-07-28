@@ -17,8 +17,20 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="exploding_pigeon" type="button">exploding pigeon</button>
       <button id="smiley_wifi" type="button">Smiley Wifi</button>
       <button id="reset" type="button">Reset</button>
-      <dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" speed=1 playMode="normal" autoplay loop></dotlottie-player>
-      </div>
+      <!--<dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" activeStateId="state_segments"></dotlottie-player>-->
+    </div>
+    <div class="card">
+    <!--<dotlottie-player src="/toggle.lottie" id="toggle" activeStateId="state_toggle"></dotlottie-player>-->
+    <dotlottie-player src="/onAfter.lottie" id="onAfter" activeStateId="onAfter"></dotlottie-player>
+    <!--
+    <dotlottie-player src="/stateSegments.lottie" id="state_segments" activeStateId="state_segments"></dotlottie-player>
+    <dotlottie-player src="/segmentsOnHover.lottie" id="loadInQueue" activeStateId="state_segments_on_hover"></dotlottie-player>
+    <dotlottie-player src="/animationOnHover.lottie" id="animationOnHover" activeStateId="state_animation_on_hover"></dotlottie-player>
+    <dotlottie-player src="/pigeon.lottie" id="pigeon" activeStateId="exploding_pigeon"></dotlottie-player>
+    <dotlottie-player src="/repeat.lottie" id="repeat" activeStateId="state_repeat"></dotlottie-player>
+    <dotlottie-player src="/loadInQueue.lottie" id="loadInQueue" activeStateId="state_load_in_queue_1"></dotlottie-player>
+  -->    
+    </div>
   </div>
 `;
 // <dotlottie-player activeStateId="exploding_pigeon" src="/lf_interactivity_page.lottie" id="lf-player"></dotlottie-player>
