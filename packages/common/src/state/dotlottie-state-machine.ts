@@ -34,7 +34,7 @@ export class DotLottieStateMachine {
 
   protected _domElement: DotLottieElement | undefined;
 
-  protected _playerListers = new Map<AnimationEventName, () => void>();
+  protected _playerListeners = new Map<AnimationEventName, () => void>();
 
   protected _player: DotLottiePlayer;
 
@@ -43,12 +43,12 @@ export class DotLottieStateMachine {
   public constructor(schemas: DotLottieStateCommon[], player: DotLottiePlayer) {
     this._player = player;
     this._machineSchemas = this._transformToXStateSchema(schemas);
-
     this._domElement = player.container;
   }
 
   public start(stateId: string): void {
     this.stop();
+
     const activeSchema = this._machineSchemas.get(stateId);
 
     if (typeof activeSchema === 'undefined') {
@@ -74,10 +74,11 @@ export class DotLottieStateMachine {
       this._domElement?.removeEventListener(event, handler);
       this._domListeners.delete(event);
     }
+
     // Player
-    for (const [event, handler] of this._playerListers) {
+    for (const [event, handler] of this._playerListeners) {
       this._player.removeEventListener(event, handler);
-      this._playerListers.delete(event);
+      this._playerListeners.delete(event);
     }
   }
 
@@ -102,6 +103,7 @@ export class DotLottieStateMachine {
       if (typeof state.changed === 'undefined' || state.changed) {
         // Remove remaining listeners.
         this._removeEventListeners();
+
         for (const event of state.nextEvents) {
           if (XStateEvents.filter((item) => item !== 'complete').includes(event)) {
             const handler = getEventHandler(event);
@@ -112,7 +114,7 @@ export class DotLottieStateMachine {
             const handler = getEventHandler(event);
 
             this._player.addEventListener(event, handler);
-            this._playerListers.set(event, handler);
+            this._playerListeners.set(event, handler);
           }
         }
       }
