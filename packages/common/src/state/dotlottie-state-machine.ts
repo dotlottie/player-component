@@ -194,9 +194,9 @@ export class DotLottieStateMachine {
                   }));
                 }
 
-                if (playbackSettings.segments) {
-                  this._updatePlaybackSettings(playbackSettings);
+                this._updatePlaybackSettings(playbackSettings);
 
+                if (playbackSettings.segments) {
                   if (typeof playbackSettings.segments === 'string') {
                     this._player.goToAndPlay(playbackSettings.segments, true);
                   } else {
@@ -209,6 +209,7 @@ export class DotLottieStateMachine {
                     }
                     this._player.playSegments([newFrame1, frame2], true);
                   }
+
                   // Pauses animation. By default `playSegments` plays animation.
                   if (!playbackSettings.autoplay) {
                     this._player.pause();
@@ -216,9 +217,10 @@ export class DotLottieStateMachine {
                 }
               },
               exit: (): void => {
-                console.log(`Exiting ${state}`);
+                // Reset segments to remove frame interval
+                // Using force=false to prevent animation from going to frame 0
                 if (typeof playbackSettings.segments !== 'undefined') {
-                  this._player.resetSegments(true);
+                  this._player.resetSegments(false);
                 }
               },
               on: events,

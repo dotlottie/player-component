@@ -1060,8 +1060,10 @@ export class DotLottiePlayer {
   }
 
   protected _handleAnimationComplete(): void {
-    this.stop();
-    this._container?.dispatchEvent(new Event('complete'));
+    // If loop = number, and animation has reached the end, call stop to go to frame 0
+    if (typeof this._loop === 'number') this.stop();
+
+    this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
   }
 
   public addEventListeners(): void {
@@ -1075,6 +1077,8 @@ export class DotLottiePlayer {
 
     this._lottie.addEventListener('loopComplete', () => {
       if (!this._lottie) return;
+
+      this._container?.dispatchEvent(new Event(PlayerEvents.LoopComplete));
 
       if (this.intermission > 0) {
         this.pause();
