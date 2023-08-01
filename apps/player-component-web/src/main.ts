@@ -20,16 +20,22 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <!--<dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" activeStateId="state_segments"></dotlottie-player>-->
     </div>
     <div class="card">
-    <!--<dotlottie-player src="/toggle.lottie" id="toggle" activeStateId="state_toggle"></dotlottie-player>-->
-    <dotlottie-player src="/onAfter.lottie" id="onAfter" activeStateId="onAfter"></dotlottie-player>
+    <dotlottie-player src="/car.lottie" id="car" activeStateId="start"></dotlottie-player>
+    <dotlottie-player src="/pigeon.lottie" id="pigeon" activeStateId="exploding_pigeon"></dotlottie-player>
+    <dotlottie-player src="/toggle.lottie" id="toggle" activeStateId="state_toggle"></dotlottie-player>
+    <dotlottie-player src="/repeat.lottie" id="repeat" activeStateId="state_repeat"></dotlottie-player>
+    <dotlottie-player src="/onComplete.lottie" id="onComplete" activeStateId="onComplete"></dotlottie-player>
+
+
     <!--
+    <dotlottie-player src="/onAfter.lottie" id="onAfter" activeStateId="onAfter"></dotlottie-player>
     <dotlottie-player src="/stateSegments.lottie" id="state_segments" activeStateId="state_segments"></dotlottie-player>
     <dotlottie-player src="/segmentsOnHover.lottie" id="loadInQueue" activeStateId="state_segments_on_hover"></dotlottie-player>
     <dotlottie-player src="/animationOnHover.lottie" id="animationOnHover" activeStateId="state_animation_on_hover"></dotlottie-player>
-    <dotlottie-player src="/pigeon.lottie" id="pigeon" activeStateId="exploding_pigeon"></dotlottie-player>
-    <dotlottie-player src="/repeat.lottie" id="repeat" activeStateId="state_repeat"></dotlottie-player>
     <dotlottie-player src="/loadInQueue.lottie" id="loadInQueue" activeStateId="state_load_in_queue_1"></dotlottie-player>
-  -->    
+    <dotlottie-player src="/mouseEnterLeave.lottie" id="mouseEnterLeave" activeStateId="mouseEnterMouseLeave"></dotlottie-player>
+    -->
+
     </div>
   </div>
 `;
