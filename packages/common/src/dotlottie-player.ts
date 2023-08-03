@@ -181,6 +181,8 @@ export class DotLottiePlayer {
 
   protected _activeStateId?: string;
 
+  protected _inInteractiveMode: boolean = false;
+
   protected _stateMachine?: DotLottieStateMachine;
 
   public constructor(
@@ -651,7 +653,8 @@ export class DotLottiePlayer {
     return this._activeStateId;
   }
 
-  public setActiveStateId(stateId: string): void {
+  public enterInteractiveMode(stateId: string): void {
+    this._inInteractiveMode = stateId.length > 0;
     this._activeStateId = stateId;
     this._stateMachine?.stop();
 
@@ -660,8 +663,15 @@ export class DotLottiePlayer {
     }
   }
 
+  public exitInteractiveMode(): void {
+    this._inInteractiveMode = false;
+    this._stateMachine?.stop();
+  }
+
   public reset(): void {
     const activeId = this._activeAnimationId;
+
+    this.exitInteractiveMode();
 
     if (!activeId) {
       const anim = this._manifest?.animations[0];
@@ -685,6 +695,12 @@ export class DotLottiePlayer {
   public previous(
     getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
+    if (this._inInteractiveMode) {
+      logWarning('previous() is not supported in interactive mode.');
+
+      return;
+    }
+
     if (!this._manifest || !this._manifest.animations.length) {
       throw createError('manifest not found.');
     }
@@ -719,6 +735,12 @@ export class DotLottiePlayer {
   public next(
     getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
+    if (this._inInteractiveMode) {
+      logWarning('next() is not supported in interactive mode.');
+
+      return;
+    }
+
     if (!this._manifest || !this._manifest.animations.length) {
       throw createError('manifest not found.');
     }
