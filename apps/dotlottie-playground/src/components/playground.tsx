@@ -87,6 +87,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file }) => {
   const startLottiePlayer = useCallback(async () => {
     const _prev = updatedLottie;
 
+    await dotLottie.build();
     const file = await dotLottie.toBlob();
 
     const url = URL.createObjectURL(file);
@@ -431,8 +432,6 @@ export const Playground: React.FC<PlaygroundProps> = ({ file }) => {
                     onEvent={handlePlayerEvents}
                     lottieRef={lottiePlayer}
                     src={updatedLottie}
-                    autoplay
-                    loop
                   >
                     <Controls />
                   </DotLottiePlayer>
