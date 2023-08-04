@@ -1,0 +1,42 @@
+{
+  "name": "dotlottie-playground",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@dotlottie/dotlottie-js": "0.4.0-beta.8",
+    "@dotlottie/react-player": "workspace:^",
+    "@monaco-editor/react": "^4.5.1",
+    "@reduxjs/toolkit": "^1.9.5",
+    "monaco-editor": "^0.40.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-icons": "^4.10.1",
+    "react-redux": "^8.1.2",
+    "react-resizable-layout": "^0.6.0",
+    "react-resizable-panels": "^0.0.54",
+    "react-use": "^17.4.0",
+    "tailwindcss": "3.3.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.15",
+    "@types/react-dom": "^18.2.7",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "@vitejs/plugin-react": "^4.0.3",
+    "autoprefixer": "^10.4.14",
+    "eslint": "^8.45.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.4.3",
+    "postcss": "^8.4.27",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  }
+}
