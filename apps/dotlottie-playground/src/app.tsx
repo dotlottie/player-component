@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { useCallback, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 
 import '@dotlottie/react-player/dist/index.css';
@@ -19,7 +19,7 @@ const SAMPLE_FILES = [
 ];
 
 interface HomeScreenProps {
-  onStart: (file: ArrayBuffer) => void;
+  onStart: (file: ArrayBuffer, fileName: string) => void;
 }
 const HomeScreen = ({ onStart }: HomeScreenProps) => {
   const onDrop = useCallback(
@@ -27,7 +27,7 @@ const HomeScreen = ({ onStart }: HomeScreenProps) => {
       if (!acceptedFiles.length) return;
 
       const arrayBuffer = await acceptedFiles[0].arrayBuffer();
-      onStart(arrayBuffer);
+      onStart(arrayBuffer, acceptedFiles[0].name);
     },
     [onStart],
   );
@@ -38,7 +38,7 @@ const HomeScreen = ({ onStart }: HomeScreenProps) => {
     (file: { name: string; path: string }) => {
       return async () => {
         const arrayBuffer = await fetch(file.path).then((res) => res.arrayBuffer());
-        onStart(arrayBuffer);
+        onStart(arrayBuffer, file.name);
       };
     },
     [onStart],
@@ -75,17 +75,26 @@ const HomeScreen = ({ onStart }: HomeScreenProps) => {
 };
 
 function App() {
-  const [file, setFile] = useState<ArrayBuffer | undefined>();
+  const [file, setFile] = useState<{ name?: string; arrayBuffer?: ArrayBuffer }>({});
 
   const onStart = useCallback(
-    (file: ArrayBuffer) => {
-      setFile(file);
+    (arrayBuffer: ArrayBuffer, name: string) => {
+      setFile({
+        name,
+        arrayBuffer,
+      });
     },
     [setFile],
   );
 
   return (
-    <div className="h-screen bg-dark">{!file ? <HomeScreen onStart={onStart} /> : <Playground file={file} />}</div>
+    <div className="h-screen bg-dark">
+      {!file.arrayBuffer ? (
+        <HomeScreen onStart={onStart} />
+      ) : (
+        <Playground file={file.arrayBuffer} fileName={file.name || 'unammed.lottie'} />
+      )}
+    </div>
   );
 }
 

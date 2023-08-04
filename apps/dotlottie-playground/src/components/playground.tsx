@@ -31,9 +31,10 @@ import { PlaybackOptionsEditor } from './playback-options-editor';
 
 interface PlaygroundProps {
   file: ArrayBuffer;
+  fileName: string;
 }
 
-export const Playground: React.FC<PlaygroundProps> = ({ file }) => {
+export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
   const dispatch = useAppDispatch();
   const lottiePlayer = useRef<DotLottieRefProps>();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -45,11 +46,14 @@ export const Playground: React.FC<PlaygroundProps> = ({ file }) => {
   const editorFileContent = useAppSelector((state) => state.editor.file?.content);
   const editorFileType = useAppSelector((state) => state.editor.file?.type);
 
+  const [_fileName, setFileName] = useState(fileName);
+
   const onDrop = useCallback(
     async (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
 
       const newInstance = await dotLottie.fromArrayBuffer(await file.arrayBuffer());
+      setFileName(file.name);
       setDotLottie(newInstance);
     },
     [dotLottie, setDotLottie],
@@ -79,10 +83,10 @@ export const Playground: React.FC<PlaygroundProps> = ({ file }) => {
 
   const editorUpdated = useAppSelector((state) => state.editor.updated);
 
-  const handleDownload = useCallback(() => {
-    // TODO: get the name of the file.
-    dotLottie.download('todo_get_filename.lottie');
-  }, [dotLottie]);
+  const handleDownload = useCallback(async () => {
+    await dotLottie.build();
+    dotLottie.download(_fileName);
+  }, [dotLottie, _fileName]);
 
   const startLottiePlayer = useCallback(async () => {
     const _prev = updatedLottie;
@@ -344,7 +348,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file }) => {
           )}
         </Dropzone>
         <div className="flex-1 flex justify-center items-center text-gray-400 text-sm">
-          <span>todo_change_filename.lottie</span>
+          <span>{_fileName || 'unnamed.lottie'}</span>
         </div>
         <Button onClick={handleDownload}>Download</Button>
       </div>
