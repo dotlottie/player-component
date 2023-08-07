@@ -4,7 +4,7 @@
 
 /* eslint-disable no-warning-comments */
 
-import { DotLottie } from '@dotlottie/dotlottie-js';
+import { getAnimations, getManifest, getThemes, loadFromArrayBuffer } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
 import style from '@lottiefiles/relottie-style';
 import { relottie } from '@lottiefiles/relottie/index';
@@ -1372,47 +1372,44 @@ export class DotLottiePlayer {
 
     try {
       const arrayBuffer = await response.arrayBuffer();
-      const dl = new DotLottie();
-      const dotLottie = await dl.fromArrayBuffer(arrayBuffer);
-      const lottieAnimations = dotLottie.animations;
 
-      if (!lottieAnimations.length || !dotLottie.manifest.animations.length || !dotLottie.manifest.animations[0]) {
+      const dotLottieByteArray = await loadFromArrayBuffer(arrayBuffer);
+      const manifest = await getManifest(dotLottieByteArray);
+
+      if (!manifest || manifest.animations.length === 0) {
         throw createError('no animation to load!');
       }
 
+      const themesMap = await getThemes(dotLottieByteArray);
+
       const themes: Map<string, string> = new Map();
 
-      for (const theme of dotLottie.manifest.themes || []) {
-        const existingTheme = dotLottie.getTheme(theme.id);
+      for (const themeId of Object.keys(themesMap)) {
+        const lss = themesMap[themeId];
 
-        if (existingTheme?.data) {
-          const lss = await existingTheme.toString();
-
-          themes.set(existingTheme.id, lss);
+        if (lss) {
+          themes.set(themeId, lss);
         }
       }
 
+      const animationsMap = await getAnimations(dotLottieByteArray);
+
       const animations: Map<string, Animation> = new Map();
 
-      for (const anim of lottieAnimations) {
-        const animation = await dotLottie.getAnimation(anim.id);
+      for (const animationId of Object.keys(animationsMap)) {
+        const animation = animationsMap[animationId];
 
         if (animation) {
-          animations.set(
-            anim.id,
-            await animation.toJSON({
-              inlineAssets: true,
-            }),
-          );
+          animations.set(animationId, animation);
         }
       }
 
       let activeAnimationId: string;
 
-      if (dotLottie.manifest.activeAnimationId) {
-        activeAnimationId = dotLottie.manifest.activeAnimationId;
+      if (manifest.activeAnimationId) {
+        activeAnimationId = manifest.activeAnimationId;
       } else {
-        activeAnimationId = dotLottie.manifest.animations[0].id;
+        activeAnimationId = manifest.animations[0]?.id || '';
       }
 
       if (!animations.size) {
@@ -1423,7 +1420,7 @@ export class DotLottiePlayer {
         activeAnimationId,
         animations,
         themes,
-        manifest: dotLottie.manifest as Manifest,
+        manifest: manifest as Manifest,
       };
     } catch (error) {
       throw createError(`getAnimationData error ${error}`);
