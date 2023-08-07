@@ -1297,10 +1297,11 @@ export class DotLottiePlayer {
       throw createError('stateId is not specified.');
     }
 
-    if (!this._stateMachine) {
-      this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
+    if (this._stateMachine) {
+      this._stateMachine.stop();
     }
 
+    this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
     this._stateMachine.start(this._activeStateId);
   }
 

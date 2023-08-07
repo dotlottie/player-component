@@ -5,6 +5,8 @@ import { useKey } from 'react-use';
 import { Title } from './title';
 import { FileIcon } from './file-icon';
 import { RxCross2 } from 'react-icons/rx';
+import { useMemo } from 'react';
+import { useAppSelector } from '../../store/hooks';
 
 const FILE_TYPES = ['json', 'lss'] as const;
 
@@ -22,6 +24,7 @@ interface FileTreeProps {
   onRemove?: (title: string, fileName: string) => void;
   onAddNew?: (title: string, fileName: string) => void;
   onUpload?: (title: string, file: File) => void;
+  className?: string;
 }
 
 export const FileTree: React.FC<FileTreeProps> = ({
@@ -31,18 +34,16 @@ export const FileTree: React.FC<FileTreeProps> = ({
   onUpload,
   files,
   title,
-  ...props
+  className,
 }) => {
-  const onDrop = useCallback((acceptedFiles: File[]) => {
-    console.log('drop', acceptedFiles);
-  }, []);
-
   const handleClick = useCallback(
     (fileName: string) => {
       return () => onClick?.(title, fileName);
     },
     [onClick, title],
   );
+
+  const fileExtention = useMemo(() => (title.toLowerCase() === 'themes' ? 'lss' : 'json'), [title]);
 
   const handleRemove = useCallback(
     (fileName: string) => {
@@ -68,18 +69,12 @@ export const FileTree: React.FC<FileTreeProps> = ({
     { event: 'keyup' },
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    noClick: true,
-    multiple: false,
-  });
-
   const handleAddNew = useCallback(
     (value: string) => {
-      onAddNew?.(title, `${value}.json`);
+      onAddNew?.(title, `${value}.${fileExtention}`);
       setDisplayAdd(false);
     },
-    [onAddNew, title],
+    [onAddNew, title, fileExtention],
   );
 
   const handleUpload = useCallback(
@@ -89,15 +84,31 @@ export const FileTree: React.FC<FileTreeProps> = ({
     [onUpload, title],
   );
 
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      handleUpload(acceptedFiles[0]);
+    },
+    [handleUpload],
+  );
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop,
+    noClick: true,
+    multiple: false,
+  });
+
+  const editorFileName = useAppSelector((state) => state.editor.file?.name);
+  const editorAnimationId = useAppSelector((state) => state.editor.animationId);
+
   return (
-    <div className="flex flex-col" {...props}>
+    <div className={`flex flex-col ${className}`}>
       <Title
         title={title}
         onClickAdd={startAddNew}
         onUpload={handleUpload}
         buttons={title === 'Animations' ? ['upload'] : ['upload', 'add']}
       />
-      <div className="relative h-full" {...getRootProps()}>
+      <div className="relative h-full overflow-y-auto custom-scrollbar" {...getRootProps()}>
         <input {...getInputProps()} />
         {isDragActive && (
           <div className="absolute inset-0 bg-black opacity-50 text-white flex justify-center items-center">
@@ -108,10 +119,18 @@ export const FileTree: React.FC<FileTreeProps> = ({
           {Array.isArray(files) &&
             files.map((file, index) => {
               return (
-                <li key={index} className="w-full">
+                <li
+                  key={index}
+                  data-value={title}
+                  className={`w-full ${
+                    `${editorAnimationId}.json` === file.name || editorFileName === file.name
+                      ? 'bg-gray-700 text-gray-100'
+                      : 'text-gray-400'
+                  }`}
+                >
                   <button
                     onClick={handleClick(file.name)}
-                    className="group w-full bg-dark flex items-center gap-1 px-2 py-1 pl-4 text-gray-400 text-sm whitespace-nowrap hover:text-white"
+                    className="group w-full flex items-center gap-1 px-2 py-1 pl-4 text-sm whitespace-nowrap hover:text-white"
                   >
                     <span>
                       <FileIcon type={file.type} />

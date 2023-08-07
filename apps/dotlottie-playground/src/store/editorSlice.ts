@@ -28,7 +28,7 @@ export const editorSlice = createSlice({
   initialState,
   reducers: {
     setEditorFile: (state, action) => {
-      state.file = action.payload;
+      state.file = { ...(state.file || {}), ...(action.payload || {}) };
       state.animationId = undefined;
       state.updated = false;
     },
@@ -79,6 +79,7 @@ export const {
   setEditorFile,
   clearEditorFile,
   updateEditorFile,
+  clearEditorState,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

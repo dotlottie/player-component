@@ -1,33 +1,22 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDotLottie } from '../hooks/use-dotlottie';
-import { PlayMode, PlaybackOptions } from '@dotlottie/react-player';
 import { BooleanEditor } from './input-editor/boolean';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setEditorPlaybacOptions, setEditorUpdated } from '../store/editorSlice';
 import { InputDropdown } from './input-editor/dropdown';
 import { InputNumber } from './input-editor/input-number';
 import { BiSolidSave } from 'react-icons/bi';
+import { PlaybackOptions } from '@dotlottie/react-player';
 
 interface PlaybackOptionsEditorProps {
   onUpdate: () => void;
 }
 
-export const DEFAULT_OPTIONS: PlaybackOptions = {
-  autoplay: false,
-  direction: 1,
-  hover: false,
-  intermission: 0,
-  loop: false,
-  playMode: PlayMode.Normal,
-  speed: 1,
-  defaultTheme: '',
-};
-
 export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ onUpdate }) => {
   const { dotLottie, setPlaybackOptions } = useDotLottie();
   const dispatch = useAppDispatch();
 
-  const playbackOptions = useAppSelector((state) => state.editor.playbackOptions);
+  const playbackOptions: PlaybackOptions = useAppSelector((state) => state.editor.playbackOptions);
   const animationId = useAppSelector((state) => state.editor.animationId);
   const editorUpdated = useAppSelector((state) => state.editor.updated);
 
@@ -37,7 +26,6 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
     (async () => {
       const animation = await dotLottie.getAnimation(animationId);
 
-      console.log('animationId', animation);
       if (animation) {
         dispatch(
           setEditorPlaybacOptions({
@@ -57,7 +45,6 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
   const update = useCallback(
     (key: string) => {
       return (value: unknown): void => {
-        console.log('updating', key, value);
         dispatch(
           setEditorPlaybacOptions({
             [key]: value,
@@ -75,14 +62,17 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
       dispatch(setEditorUpdated(false));
       onUpdate();
     }
-  }, [animationId, playbackOptions, setPlaybackOptions]);
+  }, [animationId, playbackOptions, setPlaybackOptions, dispatch, onUpdate]);
 
   return (
-    <div>
-      <div className="flex justify-end pr-4 py-1 flex-shrink border-b border-gray-600">
+    <div className="h-full flex-col">
+      <div className="flex justify-between items-stretch pr-4 flex-shrink border-b border-gray-600">
+        <span className="text-white text-sm border-b border-b-blue-500 border-r border-gray-600 px-4 flex items-center">
+          Animation: {animationId}
+        </span>
         <button
           title="Save"
-          className="text-gray-400 hover:text-white disabled:text-gray-700"
+          className="text-gray-400 py-1 hover:text-white disabled:text-gray-700"
           onClick={handleSave}
           disabled={!editorUpdated}
         >
@@ -90,7 +80,6 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
         </button>
       </div>
       <div className="p-8">
-        <div className="text-gray-400 text-2xl mb-4">Animation: {animationId}</div>
         <ul>
           {Object.keys(playbackOptions).map((key) => {
             switch (key) {
@@ -121,7 +110,7 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
                   <li key={key}>
                     <InputDropdown
                       label={key}
-                      value={playbackOptions[key] as string}
+                      value={String(playbackOptions[key])}
                       onChange={update(key)}
                       items={[
                         { name: 'Normal', value: '1' },

@@ -1,7 +1,7 @@
 {
   "descriptor": {
     "id": "<file_name>",
-    "initial": "intialState"
+    "initial": "initialState"
   },
   "states": {
     "initialState": {

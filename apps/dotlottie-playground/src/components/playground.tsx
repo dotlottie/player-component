@@ -20,6 +20,8 @@ import { removeState, setStates } from '../store/stateSlice';
 import { removeTheme, setThemes } from '../store/themeSlice';
 import { formatJSON, getMockDotLottieState, processFilename } from '../utils';
 import {
+  clearEditorFile,
+  clearEditorState,
   setEditorAnimationId,
   setEditorFile,
   setEditorUpdated,
@@ -45,6 +47,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
   const [updatedLottie, setUpdatedLottie] = useState<string>('');
   const editorFileContent = useAppSelector((state) => state.editor.file?.content);
   const editorFileType = useAppSelector((state) => state.editor.file?.type);
+  const editorAnimationId = useAppSelector((state) => state.editor.animationId);
 
   const [_fileName, setFileName] = useState(fileName);
 
@@ -104,46 +107,6 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
     }
   }, [dotLottie, setUpdatedLottie]);
 
-  const handleSave = useCallback(() => {
-    if (!isCodeValid || !currentFileName) return;
-
-    let editorValue: any = editorRef.current?.getValue();
-
-    if (!editorValue) return;
-
-    switch (currentFilePath) {
-      case 'States':
-        editorValue = JSON.parse(editorValue);
-        if (editorValue && currentFileName) {
-          // Use currentFileName when removing. Use might have updated the id
-          dotLottie.removeState(currentFileName.replace(/.json/, ''));
-          dotLottie.addState({
-            id: editorValue.descriptor.id,
-            state: editorValue,
-          });
-        }
-        break;
-      case 'Themes':
-        if (currentFileName) {
-          dotLottie.removeTheme(currentFileName.replace(/.lss/, ''));
-          // TODO: add how to apply themes to animations?
-          dotLottie.addTheme({
-            id: currentFileName,
-            data: editorValue,
-          });
-        }
-        break;
-    }
-
-    dispatch(setEditorUpdated(false));
-    fetchFromDotLottie();
-    startLottiePlayer();
-  }, [isCodeValid, currentFileName, dotLottie, dispatch, startLottiePlayer]);
-
-  function onMount(editor: monaco.editor.IStandaloneCodeEditor) {
-    editorRef.current = editor;
-  }
-
   const fetchFromDotLottie = useCallback(() => {
     const anims = dotLottie.manifest.animations.map((item) => {
       return {
@@ -171,6 +134,53 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
     dispatch(setThemes(themes));
   }, [dispatch, dotLottie]);
 
+  const handleSave = useCallback(() => {
+    if (!isCodeValid || !currentFileName) return;
+
+    const editorValue: string | undefined = editorRef.current?.getValue();
+    let editorValueParsed: unknown;
+
+    if (!editorValue) return;
+
+    switch (currentFilePath) {
+      case 'States':
+        editorValueParsed = JSON.parse(editorValue);
+        if (editorValue && currentFileName) {
+          // Use currentFileName when removing. Use might have updated the id
+          dotLottie.removeState(currentFileName.replace(/.json/, ''));
+          const newStateId = (editorValueParsed as DotLottieState).descriptor.id;
+          dotLottie.addState({
+            id: newStateId,
+            state: editorValueParsed as DotLottieState,
+          });
+          dispatch(
+            setEditorFile({
+              name: newStateId,
+            }),
+          );
+        }
+        break;
+      case 'Themes':
+        if (currentFileName) {
+          dotLottie.removeTheme(currentFileName.replace(/.lss/, ''));
+          // TODO: add how to apply themes to animations?
+          dotLottie.addTheme({
+            id: currentFileName,
+            data: editorValue,
+          });
+        }
+        break;
+    }
+
+    dispatch(setEditorUpdated(false));
+    fetchFromDotLottie();
+    startLottiePlayer();
+  }, [isCodeValid, currentFileName, dotLottie, dispatch, startLottiePlayer, currentFilePath, fetchFromDotLottie]);
+
+  function onMount(editor: monaco.editor.IStandaloneCodeEditor) {
+    editorRef.current = editor;
+  }
+
   useEffect(() => {
     fetchFromDotLottie();
 
@@ -178,7 +188,6 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
       startLottiePlayer();
     }
     return () => {
-      console.log('cleaup', updatedLottie);
       URL.revokeObjectURL(updatedLottie);
     };
   }, [dotLottie, startLottiePlayer, fetchFromDotLottie]);
@@ -246,30 +255,36 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
           break;
         case 'Animations':
           dotLottie.removeAnimation(fileName.replace('.json', ''));
-          console.log('animations', dotLottie.animations);
           dispatch(removeAnimation(fileName));
           break;
         case 'Themes':
           dotLottie.removeTheme(fileName.replace('.lss', ''));
           dispatch(removeTheme(fileName));
+          if (currentFileName === fileName) {
+            dispatch(clearEditorFile());
+          }
           break;
+      }
+
+      if (currentFileName === fileName || editorAnimationId === fileName.replace(/.json/, '')) {
+        dispatch(clearEditorState());
       }
 
       startLottiePlayer();
     },
-    [dotLottie, dispatch, startLottiePlayer],
+    [dotLottie, dispatch, startLottiePlayer, currentFileName, editorAnimationId],
   );
 
   const handleUpload = useCallback(
     async (title: string, file: File) => {
       const fileName = processFilename(file.name).replace(/(.json|.lss)/, '');
-      let parsedContent: Record<string, unknown> | undefined;
+      let parsedContent: unknown;
       switch (title) {
         case 'States':
           parsedContent = JSON.parse(await file.text());
           dotLottie.addState({
             id: fileName,
-            state: parsedContent as any,
+            state: parsedContent as DotLottieState,
           });
           break;
         case 'Animations':
@@ -294,7 +309,6 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
   );
 
   const restartPlayer = useCallback(() => {
-    console.log('restartPlayer');
     fetchFromDotLottie();
     startLottiePlayer();
   }, [fetchFromDotLottie, startLottiePlayer]);
@@ -334,8 +348,6 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
     [dispatch],
   );
 
-  const editorAnimationId = useAppSelector((state) => state.editor.animationId);
-
   return (
     <div className="h-full flex flex-col">
       <div className="w-full bg-dark p-2 flex gap-2 justify-end">
@@ -355,8 +367,9 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
       <div className="flex grow border-t border-gray-600 flex-1">
         <PanelGroup autoSaveId="dotlottie-playground" direction="horizontal">
           <Panel defaultSize={10} maxSize={40} className="bg-dark">
-            <section className="grid grid-rows-3 h-full">
+            <section className="flex flex-col h-full">
               <FileTree
+                className="flex-1 h-1/3"
                 title="Animations"
                 files={animations}
                 onClick={openPlaybackOptionsEditor}
@@ -364,6 +377,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
                 onUpload={handleUpload}
               />
               <FileTree
+                className="flex-1"
                 title="States"
                 files={states}
                 onClick={openInEditor}
@@ -372,6 +386,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
                 onAddNew={handleAddNew}
               />
               <FileTree
+                className="flex-1"
                 title="Themes"
                 files={themes}
                 onClick={openInEditor}
@@ -393,10 +408,13 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
               {editorAnimationId && <PlaybackOptionsEditor onUpdate={restartPlayer} />}
               {editorFileContent && (
                 <div className="h-full flex flex-col">
-                  <div className="flex justify-end pr-4 py-1 flex-shrink border-b border-gray-600">
+                  <div className="flex justify-between items-stretch pr-4 flex-shrink border-b border-gray-600">
+                    <span className="text-white text-sm border-b border-b-blue-500 border-r border-gray-600 px-4 flex items-center">
+                      {currentFileName}
+                    </span>
                     <button
                       title="Save"
-                      className="text-gray-400 hover:text-white disabled:text-gray-700"
+                      className="text-gray-400 py-1 hover:text-white disabled:text-gray-700"
                       onClick={handleSave}
                       disabled={!editorUpdated}
                     >

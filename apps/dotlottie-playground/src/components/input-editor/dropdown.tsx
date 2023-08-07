@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, useCallback } from 'react';
 
 interface InputDropdownProps {
-  value: string;
+  value?: string;
   label: string;
   items: { name: string; value: string }[];
   onChange?: (value: string) => void;

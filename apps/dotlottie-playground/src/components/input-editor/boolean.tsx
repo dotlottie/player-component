@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { PiToggleLeftFill, PiToggleRightFill } from 'react-icons/pi';
 
 interface BooleanEditorProps {
-  value: boolean;
+  value?: boolean;
   label: string;
   onToggle?: (value: boolean) => void;
 }

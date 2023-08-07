@@ -6,8 +6,6 @@ import Dropzone from 'react-dropzone';
 
 import { cn } from '../../utils';
 
-// React.FC<FileTreeProps> = ({ files, ...props }) => {
-
 const AVAILABLE_BUTTONS = ['add', 'upload'] as const;
 
 type AvailableButtons = typeof AVAILABLE_BUTTONS[number];
@@ -41,7 +39,7 @@ export const Title: React.FC<TitleProps> = ({ buttons, onClickAdd, onUpload, tit
       <span className="w-full text-left text-md">{title}</span>
       {Array.isArray(buttons) &&
         buttons.map((item) => {
-          const buttonsToDisplay = [];
+          const buttonsToDisplay = [] as React.ReactNode[];
           switch (item) {
             case 'add':
               buttonsToDisplay.push(

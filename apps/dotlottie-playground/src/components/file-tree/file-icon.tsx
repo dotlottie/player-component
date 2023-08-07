@@ -1,3 +1,4 @@
+import React from 'react';
 import { BsFiletypeJson, BsFiletypeCss } from 'react-icons/bs';
 import { SupportedFileTypes } from '.';
 

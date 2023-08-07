@@ -24,3 +24,23 @@
 [hidden] {
   display: none;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-left: 1px solid rgba(156, 163, 175, 0.4);
+}
+
+/* Handle */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(120, 119, 119, 0.8);
+}
+
+/* Handle on hover */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 119, 119, 1);
+}

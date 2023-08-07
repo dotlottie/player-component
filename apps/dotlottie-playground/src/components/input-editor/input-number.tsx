@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, useCallback } from 'react';
 
 interface InputNumberProps {
-  value: number;
+  value?: number;
   label: string;
   onChange?: (value: number) => void;
 }
