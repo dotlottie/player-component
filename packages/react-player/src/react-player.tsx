@@ -168,7 +168,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
 
   useEffect(() => {
     if (typeof activeStateId !== 'undefined') {
-      dotLottiePlayer.setActiveStateId(activeStateId);
+      dotLottiePlayer.enterInteractiveMode(activeStateId);
     }
   }, [activeStateId]);
 

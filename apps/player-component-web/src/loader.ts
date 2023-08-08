@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { DotLottiePlayer, PlayMode } from '@dotlottie/player-component';
+import { DotLottiePlayer, PlayMode, PlaybackOptions } from '@dotlottie/player-component';
 
 let loaded = false;
 
@@ -35,18 +35,14 @@ export function loader(
   element.addEventListener('click', (): void => setupLoader());
 
   nextButton.addEventListener('click', () =>
-    player.next({
-      loop: false,
-      direction: -1,
-      speed: 5,
-    }),
+    player.next(),
   );
 
   prevButton.addEventListener('click', () => player.previous());
 
-  explodingPigeon.addEventListener('click', () => player.setActiveStateId('exploding_pigeon'));
-  smileyWifi.addEventListener('click', () => player.setActiveStateId('smiley_wifi'));
-  resetInteractivity.addEventListener('click', () => player.setActiveStateId(''));
+  explodingPigeon.addEventListener('click', () => player.enterInteractiveMode('exploding_pigeon'));
+  smileyWifi.addEventListener('click', () => player.enterInteractiveMode('smiley_wifi'));
+  resetInteractivity.addEventListener('click', () => player.reset());
 
   player.addEventListener('ready', () => {
     console.log(player.getManifest());
@@ -65,7 +61,7 @@ export function loader(
         btn.style.cssText = "margin: 5px;"
     
         btn.addEventListener('click', () => {
-          player.setActiveStateId(state)
+          player.enterInteractiveMode(state)
           
           console.log(player.getState())
         });
@@ -77,8 +73,4 @@ export function loader(
   });
   console.log(player.getManifest());
 
-  // Init state buttons
-  // stateInput.addEventListener('change', () => {
-  //   player.setActiveStateId(stateInput.value);
-  // });
 }
