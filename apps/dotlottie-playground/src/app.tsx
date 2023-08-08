@@ -4,41 +4,64 @@
 
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-
-import '@dotlottie/react-player/dist/index.css';
-import { Playground } from './components/playground';
 import { BsFileZipFill } from 'react-icons/bs';
+
+import { Playground } from './components/playground';
+import '@dotlottie/react-player/dist/index.css';
 
 const SAMPLE_FILES = [
   { name: 'toggle.lottie', path: './toggle.lottie' },
   { name: 'lf_interactivity_page.lottie', path: './lf_interactivity_page.lottie' },
-  {
-    name: 'cool_dog.lottie',
-    path: 'https://lottie.host/ffebcde0-ed6d-451a-b86a-35f693f249d7/7BMTlaBW7h.lottie',
-  },
 ];
 
 interface HomeScreenProps {
   onStart: (file: ArrayBuffer, fileName: string) => void;
 }
-const HomeScreen = ({ onStart }: HomeScreenProps) => {
-  const onDrop = useCallback(
-    async (acceptedFiles: File[]) => {
-      if (!acceptedFiles.length) return;
+const HomeScreen = ({ onStart }: HomeScreenProps): React.ReactNode => {
+  const handleStart = useCallback(
+    async (lottieFile: File | ArrayBuffer, lottieFileName?: string): Promise<void> => {
+      let arrayBuffer: ArrayBuffer;
+      let name = '';
 
-      const arrayBuffer = await acceptedFiles[0].arrayBuffer();
-      onStart(arrayBuffer, acceptedFiles[0].name);
+      if (lottieFile instanceof File) {
+        arrayBuffer = await lottieFile.arrayBuffer();
+        name = lottieFile.name;
+      } else {
+        arrayBuffer = lottieFile;
+        name = lottieFileName || 'new_awesome';
+      }
+
+      if (typeof arrayBuffer !== 'undefined') {
+        onStart(arrayBuffer, name);
+      }
     },
     [onStart],
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, noClick: true });
+  const onDrop = useCallback(
+    (acceptedFiles: File[]) => {
+      const acceptedFile = acceptedFiles[0];
+
+      if (!acceptedFile) return;
+
+      handleStart(acceptedFile);
+    },
+    [onStart],
+  );
+
+  const { getInputProps, getRootProps, isDragActive } = useDropzone({ onDrop, noClick: true });
+
+  const fetchLottieAndStart = useCallback(async (url: string, name: string) => {
+    const resp = await fetch(url);
+    const arrayBuffer = await resp.arrayBuffer();
+
+    handleStart(arrayBuffer, name);
+  }, []);
 
   const startWith = useCallback(
     (file: { name: string; path: string }) => {
-      return async () => {
-        const arrayBuffer = await fetch(file.path).then((res) => res.arrayBuffer());
-        onStart(arrayBuffer, file.name);
+      return () => {
+        fetchLottieAndStart(file.path, file.name);
       };
     },
     [onStart],
@@ -74,8 +97,8 @@ const HomeScreen = ({ onStart }: HomeScreenProps) => {
   );
 };
 
-function App() {
-  const [file, setFile] = useState<{ name?: string; arrayBuffer?: ArrayBuffer }>({});
+const App: React.FC = () => {
+  const [file, setFile] = useState<{ arrayBuffer?: ArrayBuffer; name?: string }>({});
 
   const onStart = useCallback(
     (arrayBuffer: ArrayBuffer, name: string) => {
@@ -89,13 +112,13 @@ function App() {
 
   return (
     <div className="h-screen bg-dark">
-      {!file.arrayBuffer ? (
-        <HomeScreen onStart={onStart} />
-      ) : (
+      {file.arrayBuffer ? (
         <Playground file={file.arrayBuffer} fileName={file.name || 'unammed.lottie'} />
+      ) : (
+        <HomeScreen onStart={onStart} />
       )}
     </div>
   );
-}
+};
 
 export default App;

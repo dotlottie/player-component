@@ -3,9 +3,10 @@
  */
 
 import type { DotLottieState } from '@dotlottie/dotlottie-js';
+
 import mockState from './assets/mock-state.json';
 
-export const cn = (...args: unknown[]) => args.filter(Boolean).join(' ');
+export const cn = (...args: unknown[]): string => args.filter(Boolean).join(' ');
 
 export function createError(error: string, prefix = 'dotLottie-common'): Error {
   const err = new Error(`[${prefix}]: ${error}`);
@@ -26,17 +27,19 @@ export function logWarning(warning: string, prefix: string = 'dotLottie-common',
 export function formatJSON(value: string): string {
   try {
     const res = JSON.parse(value);
+
     return JSON.stringify(res, null, '\t');
   } catch (error) {
     const errorJson = {
-      error: error,
+      error,
     };
+
     return JSON.stringify(errorJson, null, '\t');
   }
 }
 
 export function processFilename(fileName: string = ''): string {
-  return fileName.replace(/\s+/, '_').toLowerCase();
+  return fileName.replace(/\s+/u, '_').toLowerCase();
 }
 
 export function getMockDotLottieState(): DotLottieState {

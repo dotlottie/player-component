@@ -1,7 +1,12 @@
-import React, { HTMLAttributes } from 'react';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
+import React, { type HTMLAttributes } from 'react';
 
 interface ButtonProps extends HTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
+  onClick?: () => void | Promise<void>;
 }
 
 export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ children, ...props }, ref) => {

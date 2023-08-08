@@ -1,8 +1,13 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import { configureStore } from '@reduxjs/toolkit';
-import animationSlice from './animationSlice';
-import themeSlice from './themeSlice';
-import stateSlice from './stateSlice';
-import editorSlice from './editorSlice';
+
+import animationSlice from './animation-slice';
+import editorSlice from './editor-slice';
+import stateSlice from './state-slice';
+import themeSlice from './theme-slice';
 
 const store = configureStore({
   reducer: {

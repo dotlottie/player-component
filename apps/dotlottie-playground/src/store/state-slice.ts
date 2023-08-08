@@ -1,5 +1,10 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import { createSlice } from '@reduxjs/toolkit';
-import { SupportedFile } from './types';
+
+import { type SupportedFile } from './types';
 
 interface StateSlice {
   list: SupportedFile[];

@@ -1,18 +1,22 @@
-import { PlaybackOptions } from '@dotlottie/react-player';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
+import { type PlaybackOptions } from '@dotlottie/react-player';
 import { createSlice } from '@reduxjs/toolkit';
 
 export interface EditorFile {
-  name: string;
-  type: string;
-  path: string;
   content: string;
+  name: string;
+  path: string;
+  type: string;
 }
 interface EditorSlice {
-  file?: EditorFile;
-  validationStatus: boolean;
-  updated: boolean;
   animationId?: string;
+  file?: EditorFile;
   playbackOptions: PlaybackOptions;
+  updated: boolean;
+  validationStatus: boolean;
 }
 
 const initialState: EditorSlice = {
@@ -71,15 +75,15 @@ export const editorSlice = createSlice({
 });
 
 export const {
-  setEditorAnimationId,
-  setEditorPlaybacOptions,
+  clearEditorFile,
   clearEditorPlaybackOptions,
+  clearEditorState,
+  setEditorAnimationId,
+  setEditorFile,
+  setEditorPlaybacOptions,
   setEditorUpdated,
   setEditorValidatationStatus,
-  setEditorFile,
-  clearEditorFile,
   updateEditorFile,
-  clearEditorState,
 } = editorSlice.actions;
 
 export default editorSlice.reducer;

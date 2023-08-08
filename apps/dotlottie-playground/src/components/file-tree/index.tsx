@@ -1,12 +1,17 @@
-import React, { ElementRef, FocusEventHandler, KeyboardEventHandler, useCallback, useRef, useState } from 'react';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
 
+import React, { useCallback, useMemo, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
-import { useKey } from 'react-use';
-import { Title } from './title';
-import { FileIcon } from './file-icon';
 import { RxCross2 } from 'react-icons/rx';
-import { useMemo } from 'react';
+import { useKey } from 'react-use';
+
 import { useAppSelector } from '../../store/hooks';
+
+import { AddNew } from './add-new';
+import { FileIcon } from './file-icon';
+import { Title } from './title';
 
 const FILE_TYPES = ['json', 'lss'] as const;
 
@@ -18,27 +23,29 @@ export interface SupportedFile {
 }
 
 interface FileTreeProps {
-  title: string;
-  files: SupportedFile[];
-  onClick?: (title: string, fileName: string) => void;
-  onRemove?: (title: string, fileName: string) => void;
-  onAddNew?: (title: string, fileName: string) => void;
-  onUpload?: (title: string, file: File) => void;
   className?: string;
+  files: SupportedFile[];
+  onAddNew?: (title: string, fileName: string) => void | Promise<void>;
+  onClick?: (title: string, fileName: string) => void | Promise<void>;
+  onRemove?: (title: string, fileName: string) => void | Promise<void>;
+  onUpload?: (title: string, file: File) => void | Promise<void>;
+  title: string;
 }
 
 export const FileTree: React.FC<FileTreeProps> = ({
+  className,
+  files,
+  onAddNew,
   onClick,
   onRemove,
-  onAddNew,
   onUpload,
-  files,
   title,
-  className,
 }) => {
   const handleClick = useCallback(
     (fileName: string) => {
-      return () => onClick?.(title, fileName);
+      return () => {
+        onClick?.(title, fileName);
+      };
     },
     [onClick, title],
   );
@@ -91,7 +98,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
     [handleUpload],
   );
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+  const { getInputProps, getRootProps, isDragActive } = useDropzone({
     onDrop,
     noClick: true,
     multiple: false,
@@ -115,7 +122,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
             Drop {title}
           </div>
         )}
-        <ul className="w-full py-2" onClick={() => {}}>
+        <ul className="w-full py-2">
           {Array.isArray(files) &&
             files.map((file, index) => {
               return (
@@ -155,43 +162,6 @@ export const FileTree: React.FC<FileTreeProps> = ({
           )}
         </ul>
       </div>
-    </div>
-  );
-};
-
-// Add new input
-interface AddNewProps {
-  onAdd: (value: string) => void;
-  extension: SupportedFileTypes;
-}
-export const AddNew: React.FC<AddNewProps> = ({ extension, onAdd }) => {
-  const ref = useRef<ElementRef<'input'>>(null);
-
-  const handleBlur = useCallback<FocusEventHandler<HTMLInputElement>>(
-    (event) => {
-      if (typeof onAdd === 'function' && event.target.value) {
-        onAdd(event.target.value.replace(/\s+/g, '_'));
-      }
-    },
-    [onAdd],
-  );
-
-  const handleKeyUp = useCallback<KeyboardEventHandler<HTMLInputElement>>(
-    (event) => {
-      if (event.key === 'Enter' && ref.current?.value && typeof onAdd === 'function') {
-        onAdd(ref.current.value.replace(/\s+/g, '_'));
-      }
-    },
-    [onAdd],
-  );
-
-  return (
-    <div className="w-full bg-dark flex items-center gap-1 px-2 py-1 pl-4 text-gray-400 text-sm whitespace-nowrap hover:text-white">
-      <span>
-        <FileIcon type="json" />
-      </span>
-      <input ref={ref} type="text" className="bg-gray-white text-black" onKeyUp={handleKeyUp} onBlur={handleBlur} />
-      <span>{extension}</span>
     </div>
   );
 };

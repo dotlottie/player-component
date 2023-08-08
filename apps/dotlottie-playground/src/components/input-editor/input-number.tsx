@@ -1,12 +1,16 @@
-import React, { ChangeEventHandler, useCallback } from 'react';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
+import React, { type ChangeEventHandler, useCallback } from 'react';
 
 interface InputNumberProps {
-  value?: number;
   label: string;
   onChange?: (value: number) => void;
+  value?: number;
 }
 
-export const InputNumber: React.FC<InputNumberProps> = ({ onChange, value, label }) => {
+export const InputNumber: React.FC<InputNumberProps> = ({ label, onChange, value }) => {
   const handleChange = useCallback<ChangeEventHandler<HTMLInputElement>>(
     (event) => {
       onChange?.(Number(event.target.value));

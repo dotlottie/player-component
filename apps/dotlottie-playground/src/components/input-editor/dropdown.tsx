@@ -1,13 +1,17 @@
-import React, { ChangeEventHandler, useCallback } from 'react';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
+import React, { type ChangeEventHandler, useCallback } from 'react';
 
 interface InputDropdownProps {
-  value?: string;
+  items: Array<{ name: string; value: string }>;
   label: string;
-  items: { name: string; value: string }[];
   onChange?: (value: string) => void;
+  value?: string;
 }
 
-export const InputDropdown: React.FC<InputDropdownProps> = ({ items, onChange, value, label }) => {
+export const InputDropdown: React.FC<InputDropdownProps> = ({ items, label, onChange, value }) => {
   const handleChange = useCallback<ChangeEventHandler<HTMLSelectElement>>(
     (event) => {
       onChange?.(event.target.value);

@@ -1,3 +1,7 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 export const SUPPORTED_FILE_TYPES = ['json', 'lss'] as const;
 export const EDITOR_ACTIONS = [
   'themes_add',
@@ -17,6 +21,6 @@ export interface SupportedFile {
 }
 
 export interface EditorAction {
-  type: EditorActions;
   payload: unknown;
+  type: EditorActions;
 }

@@ -1,8 +1,12 @@
-import React, { HTMLAttributes, useCallback } from 'react';
-import { FaFolder } from 'react-icons/fa';
-import { AiFillFileAdd } from 'react-icons/ai';
-import { LuUpload } from 'react-icons/lu';
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
+import React, { type HTMLAttributes, useCallback } from 'react';
 import Dropzone from 'react-dropzone';
+import { AiFillFileAdd } from 'react-icons/ai';
+import { FaFolder } from 'react-icons/fa';
+import { LuUpload } from 'react-icons/lu';
 
 import { cn } from '../../utils';
 
@@ -11,16 +15,17 @@ const AVAILABLE_BUTTONS = ['add', 'upload'] as const;
 type AvailableButtons = typeof AVAILABLE_BUTTONS[number];
 
 interface TitleProps extends HTMLAttributes<HTMLDivElement> {
-  title: string;
+  buttons?: AvailableButtons[];
   onClickAdd?: () => void;
   onUpload?: (file: File) => void;
-  buttons?: AvailableButtons[];
+  title: string;
 }
 
 export const Title: React.FC<TitleProps> = ({ buttons, onClickAdd, onUpload, title, ...props }) => {
   const onDrop = useCallback(
-    async (acceptedFiles: File[]) => {
+    (acceptedFiles: File[]) => {
       const file = acceptedFiles[0];
+
       onUpload?.(file);
     },
     [onUpload],
@@ -40,6 +45,7 @@ export const Title: React.FC<TitleProps> = ({ buttons, onClickAdd, onUpload, tit
       {Array.isArray(buttons) &&
         buttons.map((item) => {
           const buttonsToDisplay = [] as React.ReactNode[];
+
           switch (item) {
             case 'add':
               buttonsToDisplay.push(
@@ -48,10 +54,11 @@ export const Title: React.FC<TitleProps> = ({ buttons, onClickAdd, onUpload, tit
                 </button>,
               );
               break;
+
             case 'upload':
               buttonsToDisplay.push(
                 <Dropzone key={item} onDrop={onDrop}>
-                  {({ getRootProps, getInputProps }) => (
+                  {({ getInputProps, getRootProps }): JSX.Element => (
                     <button {...getRootProps()} className="hover:text-white" title="Upload">
                       <input {...getInputProps()} />
                       <LuUpload size={20} />
@@ -60,7 +67,11 @@ export const Title: React.FC<TitleProps> = ({ buttons, onClickAdd, onUpload, tit
                 </Dropzone>,
               );
               break;
+
+            default:
+              break;
           }
+
           return buttonsToDisplay;
         })}
     </div>

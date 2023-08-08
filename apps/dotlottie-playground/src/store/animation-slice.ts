@@ -1,5 +1,10 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import { createSlice } from '@reduxjs/toolkit';
-import { SupportedFile } from './types';
+
+import { type SupportedFile } from './types';
 
 interface AnimationSlice {
   list: SupportedFile[];
@@ -17,7 +22,6 @@ export const animationSlice = createSlice({
       state.list = action.payload;
     },
     addAnimation: (state, action) => {
-      console.log('action paly  ', action);
       state.list.push(action.payload);
     },
     removeAnimation: (state, action) => {

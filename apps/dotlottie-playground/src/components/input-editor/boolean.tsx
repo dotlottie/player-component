@@ -1,13 +1,17 @@
+/**
+ * Copyright 2023 Design Barn Inc.
+ */
+
 import React, { useCallback } from 'react';
 import { PiToggleLeftFill, PiToggleRightFill } from 'react-icons/pi';
 
 interface BooleanEditorProps {
-  value?: boolean;
   label: string;
   onToggle?: (value: boolean) => void;
+  value?: boolean;
 }
 
-export const BooleanEditor: React.FC<BooleanEditorProps> = ({ onToggle, value, label }) => {
+export const BooleanEditor: React.FC<BooleanEditorProps> = ({ label, onToggle, value }) => {
   const handleToggle = useCallback(() => {
     onToggle?.(!value);
   }, [onToggle, value]);

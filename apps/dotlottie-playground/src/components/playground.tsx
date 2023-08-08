@@ -2,23 +2,17 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import Editor from '@monaco-editor/react';
 import type { DotLottieState } from '@dotlottie/dotlottie-js';
-import monaco from 'monaco-editor';
+import { Controls, DotLottiePlayer, type DotLottieRefProps, PlayerEvents } from '@dotlottie/react-player';
+import Editor from '@monaco-editor/react';
+import type monaco from 'monaco-editor';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { Controls, DotLottiePlayer, DotLottieRefProps, PlayerEvents } from '@dotlottie/react-player';
-import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import Dropzone, { useDropzone } from 'react-dropzone';
+import { BiSolidSave } from 'react-icons/bi';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
-import { FileTree } from '../components/file-tree';
-
-import '@dotlottie/react-player/dist/index.css';
-import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { removeAnimation, setAnimations } from '../store/animationSlice';
 import { useDotLottie } from '../hooks/use-dotlottie';
-import { removeState, setStates } from '../store/stateSlice';
-import { removeTheme, setThemes } from '../store/themeSlice';
-import { formatJSON, getMockDotLottieState, processFilename } from '../utils';
+import { removeAnimation, setAnimations } from '../store/animation-slice';
 import {
   clearEditorFile,
   clearEditorState,
@@ -26,17 +20,23 @@ import {
   setEditorFile,
   setEditorUpdated,
   setEditorValidatationStatus,
-} from '../store/editorSlice';
-import { Button } from '../components/button';
-import { BiSolidSave } from 'react-icons/bi';
+} from '../store/editor-slice';
+import { useAppSelector, useAppDispatch } from '../store/hooks';
+import { removeState, setStates } from '../store/state-slice';
+import { removeTheme, setThemes } from '../store/theme-slice';
+import { formatJSON, getMockDotLottieState, processFilename } from '../utils';
+
+import { Button } from './button';
+import { FileTree } from './file-tree';
 import { PlaybackOptionsEditor } from './playback-options-editor';
+import '@dotlottie/react-player/dist/index.css';
 
 interface PlaygroundProps {
   file: ArrayBuffer;
   fileName: string;
 }
 
-export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
+export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fileName: dotLottieFileName }) => {
   const dispatch = useAppDispatch();
   const lottiePlayer = useRef<DotLottieRefProps>();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
@@ -46,30 +46,50 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
   const { dotLottie, setDotLottie } = useDotLottie();
   const [updatedLottie, setUpdatedLottie] = useState<string>('');
   const editorFileContent = useAppSelector((state) => state.editor.file?.content);
-  const editorFileType = useAppSelector((state) => state.editor.file?.type);
+  const editorFileType = useAppSelector((state) => state.editor.file?.type || 'json');
   const editorAnimationId = useAppSelector((state) => state.editor.animationId);
 
-  const [_fileName, setFileName] = useState(fileName);
+  const [_dotLottieFileName, setDotLottieFileName] = useState(dotLottieFileName);
+
+  const updateDotLottieInstance = useCallback(
+    async (lottieFile: File | ArrayBuffer, lottieFileName?: string): Promise<void> => {
+      let arrayBuffer: ArrayBuffer;
+      let name = '';
+
+      if (lottieFile instanceof File) {
+        arrayBuffer = await lottieFile.arrayBuffer();
+        name = lottieFile.name;
+      } else {
+        arrayBuffer = lottieFile;
+        name = lottieFileName || 'new_awesome';
+      }
+
+      if (typeof arrayBuffer !== 'undefined') {
+        const newInstance = await dotLottie.fromArrayBuffer(arrayBuffer);
+
+        setDotLottieFileName(name);
+        setDotLottie(newInstance);
+      }
+    },
+    [setDotLottieFileName, setDotLottie],
+  );
 
   const onDrop = useCallback(
-    async (acceptedFiles: File[]) => {
-      const file = acceptedFiles[0];
+    (acceptedFiles: File[]) => {
+      const acceptedFile = acceptedFiles[0];
 
-      const newInstance = await dotLottie.fromArrayBuffer(await file.arrayBuffer());
-      setFileName(file.name);
-      setDotLottie(newInstance);
+      if (typeof acceptedFile === 'undefined') return;
+
+      updateDotLottieInstance(acceptedFile);
     },
-    [dotLottie, setDotLottie],
+    [updateDotLottieInstance],
   );
 
   useEffect(() => {
-    (async () => {
-      const newInstance = await dotLottie.fromArrayBuffer(file);
-      setDotLottie(newInstance);
-    })();
-  }, [file, setDotLottie]);
+    updateDotLottieInstance(dotLottieFile, dotLottieFileName);
+  }, [updateDotLottieInstance]);
 
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, noClick: true });
+  const { getInputProps, getRootProps, isDragActive } = useDropzone({ onDrop, noClick: true });
 
   const isCodeValid = useAppSelector((state) => state.editor.validationStatus);
   const currentFileName = useAppSelector((state) => state.editor.file?.name);
@@ -87,51 +107,54 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
   const editorUpdated = useAppSelector((state) => state.editor.updated);
 
   const handleDownload = useCallback(async () => {
-    await dotLottie.build();
-    dotLottie.download(_fileName);
-  }, [dotLottie, _fileName]);
+    await dotLottie.build().then(() => {
+      dotLottie.download(_dotLottieFileName);
+    });
+  }, [dotLottie, _dotLottieFileName]);
 
   const startLottiePlayer = useCallback(async () => {
     const _prev = updatedLottie;
 
     await dotLottie.build();
-    const file = await dotLottie.toBlob();
+    const _file = await dotLottie.toBlob();
 
-    const url = URL.createObjectURL(file);
+    // eslint-disable-next-line  node/no-unsupported-features/node-builtins
+    const url = URL.createObjectURL(_file);
 
     setUpdatedLottie('');
     setUpdatedLottie(url);
 
     if (_prev) {
+      // eslint-disable-next-line  node/no-unsupported-features/node-builtins
       URL.revokeObjectURL(_prev);
     }
   }, [dotLottie, setUpdatedLottie]);
 
   const fetchFromDotLottie = useCallback(() => {
-    const anims = dotLottie.manifest.animations.map((item) => {
+    const _anims = dotLottie.manifest.animations.map((item) => {
       return {
         name: `${item.id}.json`,
         type: 'json',
       };
     });
 
-    const states = dotLottie.states.map((item) => {
+    const _states = dotLottie.states.map((item) => {
       return {
         name: `${item.id}.json`,
         type: 'json',
       };
     });
 
-    const themes = dotLottie.themes.map((item) => {
+    const _themes = dotLottie.themes.map((item) => {
       return {
         name: `${item.id}.lss`,
         type: 'lss',
       };
     });
 
-    dispatch(setAnimations(anims));
-    dispatch(setStates(states));
-    dispatch(setThemes(themes));
+    dispatch(setAnimations(_anims));
+    dispatch(setStates(_states));
+    dispatch(setThemes(_themes));
   }, [dispatch, dotLottie]);
 
   const handleSave = useCallback(() => {
@@ -147,8 +170,9 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
         editorValueParsed = JSON.parse(editorValue);
         if (editorValue && currentFileName) {
           // Use currentFileName when removing. Use might have updated the id
-          dotLottie.removeState(currentFileName.replace(/.json/, ''));
+          dotLottie.removeState(currentFileName.replace(/.json/gu, ''));
           const newStateId = (editorValueParsed as DotLottieState).descriptor.id;
+
           dotLottie.addState({
             id: newStateId,
             state: editorValueParsed as DotLottieState,
@@ -160,15 +184,20 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
           );
         }
         break;
+
       case 'Themes':
         if (currentFileName) {
-          dotLottie.removeTheme(currentFileName.replace(/.lss/, ''));
+          dotLottie.removeTheme(currentFileName.replace(/.lss/gu, ''));
+          // eslint-disable-next-line no-warning-comments
           // TODO: add how to apply themes to animations?
           dotLottie.addTheme({
             id: currentFileName,
             data: editorValue,
           });
         }
+        break;
+
+      default:
         break;
     }
 
@@ -177,7 +206,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
     startLottiePlayer();
   }, [isCodeValid, currentFileName, dotLottie, dispatch, startLottiePlayer, currentFilePath, fetchFromDotLottie]);
 
-  function onMount(editor: monaco.editor.IStandaloneCodeEditor) {
+  function onMount(editor: monaco.editor.IStandaloneCodeEditor): void {
     editorRef.current = editor;
   }
 
@@ -187,7 +216,9 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
     if (dotLottie.animations.length) {
       startLottiePlayer();
     }
+
     return () => {
+      // eslint-disable-next-line  node/no-unsupported-features/node-builtins
       URL.revokeObjectURL(updatedLottie);
     };
   }, [dotLottie, startLottiePlayer, fetchFromDotLottie]);
@@ -201,10 +232,13 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
         case 'States':
           fileContent = dotLottie.getState(fileName.substring(0, fileName.lastIndexOf('.')))?.toString();
           break;
+
         case 'Themes':
-          fileContent = await dotLottie.getTheme(fileName.replace(/.lss/, ''))?.toString();
+          fileContent = await dotLottie.getTheme(fileName.replace(/.lss/u, ''))?.toString();
           isTheme = true;
-          console.log('fileContent', fileContent, fileName.replace(/.lss/, ''));
+          break;
+
+        default:
           break;
       }
 
@@ -225,8 +259,10 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
   const validateFile = useCallback(
     (markers: monaco.editor.IMarker[]) => {
       const hasError = markers.some((marker) => marker.severity === 8);
+
       if (hasError) {
         dispatch(setEditorValidatationStatus(false));
+
         return;
       }
       dispatch(setEditorValidatationStatus(true));
@@ -239,8 +275,9 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
   const handlePlayerEvents = useCallback(
     (event: PlayerEvents) => {
       if (event === PlayerEvents.Ready) {
-        const states = lottiePlayer.current?.getManifest()?.states;
-        setPlayerStates(states || []);
+        const _states = lottiePlayer.current?.getManifest()?.states;
+
+        setPlayerStates(_states || []);
       }
     },
     [lottiePlayer],
@@ -253,10 +290,12 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
           dotLottie.removeState(fileName.replace('.json', ''));
           dispatch(removeState(fileName));
           break;
+
         case 'Animations':
           dotLottie.removeAnimation(fileName.replace('.json', ''));
           dispatch(removeAnimation(fileName));
           break;
+
         case 'Themes':
           dotLottie.removeTheme(fileName.replace('.lss', ''));
           dispatch(removeTheme(fileName));
@@ -264,9 +303,12 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
             dispatch(clearEditorFile());
           }
           break;
+
+        default:
+          break;
       }
 
-      if (currentFileName === fileName || editorAnimationId === fileName.replace(/.json/, '')) {
+      if (currentFileName === fileName || editorAnimationId === fileName.replace(/.json/u, '')) {
         dispatch(clearEditorState());
       }
 
@@ -277,8 +319,9 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
 
   const handleUpload = useCallback(
     async (title: string, file: File) => {
-      const fileName = processFilename(file.name).replace(/(.json|.lss)/, '');
+      const fileName = processFilename(file.name).replace(/(.json|.lss)/gu, '');
       let parsedContent: unknown;
+
       switch (title) {
         case 'States':
           parsedContent = JSON.parse(await file.text());
@@ -287,6 +330,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
             state: parsedContent as DotLottieState,
           });
           break;
+
         case 'Animations':
           parsedContent = JSON.parse(await file.text());
           if (parsedContent) {
@@ -296,9 +340,13 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
             });
           }
           break;
+
         case 'Themes':
           // const content = await file.text();
           console.log('TODO: upload theme');
+          break;
+
+        default:
           break;
       }
 
@@ -315,7 +363,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
 
   const handleAddNew = useCallback(
     async (title: string, fileName: string) => {
-      const updatedFileName = processFilename(fileName).replace(/(.json|.lss)/, '');
+      const updatedFileName = processFilename(fileName).replace(/(.json|.lss)/gu, '');
       let mockState: DotLottieState;
 
       switch (title) {
@@ -327,11 +375,15 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
             state: mockState,
           });
           break;
+
         case 'Themes':
           dotLottie.addTheme({
             id: updatedFileName,
             data: '/* Make your animations colorful */',
           });
+          break;
+
+        default:
           break;
       }
 
@@ -343,7 +395,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
 
   const openPlaybackOptionsEditor = useCallback(
     (_: string, fileName: string) => {
-      dispatch(setEditorAnimationId(fileName.replace(/.json/, '')));
+      dispatch(setEditorAnimationId(fileName.replace(/.json/gu, '')));
     },
     [dispatch],
   );
@@ -352,15 +404,15 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
     <div className="h-full flex flex-col">
       <div className="w-full bg-dark p-2 flex gap-2 justify-end">
         <Dropzone onDrop={onDrop}>
-          {({ getRootProps, getInputProps }) => (
-            <Button {...getRootProps()}>
-              <input {...getInputProps()} />
+          {(state): JSX.Element => (
+            <Button {...state.getRootProps()}>
+              <input {...state.getInputProps()} />
               Start Over
             </Button>
           )}
         </Dropzone>
         <div className="flex-1 flex justify-center items-center text-gray-400 text-sm">
-          <span>{_fileName || 'unnamed.lottie'}</span>
+          <span>{_dotLottieFileName || 'unnamed.lottie'}</span>
         </div>
         <Button onClick={handleDownload}>Download</Button>
       </div>
@@ -461,7 +513,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file, fileName }) => {
                     <span>Available states:</span>
                     {playerStates.map((state) => {
                       return (
-                        <Button onClick={() => lottiePlayer.current?.setActiveStateId(state)} key={state}>
+                        <Button onClick={(): void => lottiePlayer.current?.setActiveStateId(state)} key={state}>
                           {state}
                         </Button>
                       );
