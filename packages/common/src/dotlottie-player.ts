@@ -5,7 +5,7 @@
 /* eslint-disable no-warning-comments */
 
 import { DotLottie } from '@dotlottie/dotlottie-js';
-import type { DotLottieStateCommon, Manifest, ManifestAnimation, PlaybackOptions } from '@dotlottie/dotlottie-js';
+import type { Manifest, ManifestAnimation, PlaybackOptions, LottieStateMachine } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
 import style from '@lottiefiles/relottie-style';
 import { relottie } from '@lottiefiles/relottie/index';
@@ -177,7 +177,7 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
-  protected _stateSchemas?: DotLottieStateCommon[];
+  protected _stateSchemas?: LottieStateMachine[];
 
   protected _activeStateId?: string;
 
@@ -1373,7 +1373,7 @@ export class DotLottiePlayer {
     activeAnimationId: string;
     animations: Map<string, Animation>;
     manifest: Manifest;
-    states: DotLottieStateCommon[];
+    states: LottieStateMachine[];
     themes: Map<string, string>;
   }> {
     let response: Response;
@@ -1467,12 +1467,11 @@ export class DotLottiePlayer {
       }
 
       const stateKeys = dotLottie.manifest.states ?? [];
-      const states = [] as DotLottieStateCommon[];
+      const states = [] as LottieStateMachine[];
 
       for (const stateKey of stateKeys) {
-        const newState = dotLottie.getState(stateKey);
+        const newState = dotLottie.getStateMachine(stateKey);
 
-        console.log(`Detected : ${stateKey}`);
         if (newState) states.push(newState);
       }
 

@@ -17,15 +17,19 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="exploding_pigeon" type="button">exploding pigeon</button>
       <button id="smiley_wifi" type="button">Smiley Wifi</button>
       <button id="reset" type="button">Reset</button>
-      <!--<dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" activeStateId="state_segments"></dotlottie-player>-->
+
+      <div style="width: 500px; height: 500px; margin: auto; justify-content: center">
+        <dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" autoplay loop class="w-10 h-10"></dotlottie-player>
+      </div>
     </div>
     <div class="card">
+    <!--
     <dotlottie-player src="/car.lottie" id="car" activeStateId="start"></dotlottie-player>
     <dotlottie-player src="/pigeon.lottie" id="pigeon" activeStateId="exploding_pigeon"></dotlottie-player>
     <dotlottie-player src="/toggle.lottie" id="toggle" activeStateId="state_toggle"></dotlottie-player>
     <dotlottie-player src="/repeat.lottie" id="repeat" activeStateId="state_repeat"></dotlottie-player>
     <dotlottie-player src="/onComplete.lottie" id="onComplete" activeStateId="onComplete"></dotlottie-player>
-
+-->
 
     <!--
     <dotlottie-player src="/onAfter.lottie" id="onAfter" activeStateId="onAfter"></dotlottie-player>

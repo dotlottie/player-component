@@ -11,7 +11,7 @@ import type {
 import {
   EVENT_MAP,
   XStateEvents,
-  type DotLottieStateCommon,
+  type LottieStateMachine,
   type StateSettings,
   type StateTransitionEvents,
   type Transitionable,
@@ -40,7 +40,7 @@ export class DotLottieStateMachine {
 
   protected _machineSchemas = new Map<string, XStateMachine>();
 
-  public constructor(schemas: DotLottieStateCommon[], player: DotLottiePlayer) {
+  public constructor(schemas: LottieStateMachine[], player: DotLottiePlayer) {
     this._player = player;
     this._machineSchemas = this._transformToXStateSchema(schemas);
     this._domElement = player.container;
@@ -65,6 +65,7 @@ export class DotLottieStateMachine {
   public stop(): void {
     this._removeEventListeners();
     this._service?.stop();
+    this._player.stop();
   }
 
   protected _removeEventListeners(): void {
@@ -125,23 +126,20 @@ export class DotLottieStateMachine {
     throw createError(callback.toString());
   }
 
-  protected _transformToXStateSchema(toConvert: DotLottieStateCommon[]): Map<string, XStateMachine> {
+  protected _transformToXStateSchema(toConvert: LottieStateMachine[]): Map<string, XStateMachine> {
     const machines = new Map<string, XStateMachine>();
 
     for (const stateObj of toConvert) {
       const machineStates: Record<string, XState> = {};
       const machine = {} as XStateMachine;
       // Loop over every toConvert key
-      const descriptor = stateObj.state?.descriptor ?? '';
 
-      if (!descriptor) throw createError('Descriptor is required. Please provide a valid state descriptor.');
+      machine.id = stateObj.id;
 
-      machine.id = descriptor.id;
-
-      if (typeof descriptor.initial !== 'undefined') machine.initial = descriptor.initial;
+      if (typeof stateObj.initial !== 'undefined') machine.initial = stateObj.initial;
 
       if (typeof stateObj !== 'undefined') {
-        const states = stateObj.state?.states ?? {};
+        const states = stateObj.states;
 
         for (const state in states) {
           if (typeof states[state] !== 'undefined' && states[state]) {
@@ -182,21 +180,22 @@ export class DotLottieStateMachine {
 
             machineStates[state] = {
               entry: (): void => {
-                console.log(`Entering state: ${state}`, {
-                  animationId: stateSettings.animationId,
-                  playbackSettings,
-                });
-
-                const shouldRender = !this._player.getAnimationInstance() || stateSettings.animationId;
+                // If the animation is the same as the current one, only update the playback settings, dont re-render
+                // If the state machine is different than the current one, re-render the animation
+                const shouldRender =
+                  !this._player.getAnimationInstance() ||
+                  (stateSettings.animationId && stateSettings.animationId !== this._player.currentAnimationId);
 
                 if (shouldRender) {
-                  this._player.play(stateSettings.animationId || this._player.activeAnimationId, () => ({
+                  this._player.play(stateSettings.animationId, () => ({
                     ...DEFAULT_OPTIONS,
                     ...playbackSettings,
                   }));
+                } else {
+                  // If animation is already rendered, update playback settings
+                  // To do: if autoplay, play animation if not don't
+                  this._updatePlaybackSettings(playbackSettings);
                 }
-
-                this._updatePlaybackSettings(playbackSettings);
 
                 if (playbackSettings.segments) {
                   if (typeof playbackSettings.segments === 'string') {
@@ -233,7 +232,7 @@ export class DotLottieStateMachine {
         }
       }
       machine.states = machineStates;
-      machines.set(descriptor.id, machine);
+      machines.set(stateObj.id, machine);
     }
 
     return machines;
@@ -246,6 +245,12 @@ export class DotLottieStateMachine {
 
     if (typeof playbackSettings.autoplay !== 'undefined') {
       this._player.setAutoplay(playbackSettings.autoplay);
+
+      if (playbackSettings.autoplay) {
+        this._player.play();
+      } else {
+        this._player.pause();
+      }
     }
 
     if (typeof playbackSettings.direction !== 'undefined') {
