@@ -2,8 +2,6 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-/* eslint-disable no-warning-comments */
-
 import { DotLottie } from '@dotlottie/dotlottie-js';
 import type { Manifest, ManifestAnimation, PlaybackOptions, LottieStateMachine } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
@@ -44,6 +42,7 @@ export enum PlayerEvents {
   Stop = 'stop',
 }
 export enum PlayerState {
+  Completed = 'completed',
   Error = 'error',
   Fetching = 'fetching',
   Frozen = 'frozen',
@@ -60,7 +59,6 @@ export enum PlayMode {
   Normal = 'normal',
 }
 
-// TODO: export from dotLottie-js
 export { ManifestTheme, ManifestAnimation, Manifest, PlaybackOptions } from '@dotlottie/dotlottie-js';
 
 export interface DotLottieElement extends HTMLDivElement {
@@ -267,10 +265,22 @@ export class DotLottiePlayer {
     }
   }
 
+  /**
+   * Retrieves a specific playback option.
+   *
+   * @remarks
+   * It grabs option in the following order.
+   * 1. From this._playbackOptions (i.e user specified options) if available
+   * 2. From Manifest if available
+   * 3. Otherwise Default
+   *
+   * @param option - The option key to retrieve.
+   * @returns The value of the specified playback option.
+   */
   protected _getOption<T extends keyof Required<PlaybackOptions>, V extends Required<PlaybackOptions>[T]>(
     option: T,
   ): V {
-    // Options from props for 1st animation
+    // Options from props
     if (typeof this._playbackOptions[option] !== 'undefined') {
       return this._playbackOptions[option] as V;
     }
@@ -285,6 +295,13 @@ export class DotLottiePlayer {
     return DEFAULT_OPTIONS[option] as V;
   }
 
+  /**
+   * Retrieves all playback options.
+   *
+   * @see _getOption() function for more context on how it retrieves options
+   *
+   * @returns An object containing all playback options.
+   */
   protected _getPlaybackOptions<K extends keyof PlaybackOptions, V extends PlaybackOptions[K]>(): PlaybackOptions {
     const allOptions: PlaybackOptions = {};
 
@@ -297,6 +314,12 @@ export class DotLottiePlayer {
     return allOptions;
   }
 
+  /**
+   * Extracts playback options from a manifest animation, combining them with default options.
+   *
+   * @param manifestAnimation - The animation object from the manifest.
+   * @returns A playback options object derived from the manifest animation and default options.
+   */
   protected _getOptionsFromAnimation(manifestAnimation: ManifestAnimation): PlaybackOptions {
     const { id, ...rest } = manifestAnimation;
 
@@ -522,10 +545,35 @@ export class DotLottiePlayer {
     }
   }
 
+  /**
+   * Initiates playback of the animation in the DotLottie player.
+   *
+   * @param activeAnimation - The identifier of the animation to be played. Triggers re-render
+   * @param getOptions - A function that allows customization of playback options.
+   *
+   * @remarks
+   * This function starts playing the animation within the DotLottie player.
+   * It can be used to play a specific animation by providing its identifier.
+   * Should only pass activeAnimationId to render a specific animation. Triggers re-render when passed.
+   * The `getOptions` function, if provided, can be used to customize playback options based on the current playback state and the options specified in the animation manifest.
+   *
+   * @returns void
+   *
+   * @example
+   * ```
+   * player.play('animation1'); // Renders the animation1. And only starts playing if autoplay === true
+   * player.play(); // Can call with empty params to play animation1
+   *
+   * player.play(); // Start playing when player is paused or stopped. Doesn't change animation
+   * ```
+   */
   public play(
     activeAnimation?: string | number,
     getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
   ): void {
+    // If the player is in the 'Initial' or 'Loading' state, playback cannot be initiated.
+    // As animationData won't be available at this point.
+    // This avoids the error thrown if user calls play little bit earlier. Useful for the react-layer
     if ([PlayerState.Initial, PlayerState.Loading].includes(this._currentState)) {
       return;
     }
@@ -534,13 +582,10 @@ export class DotLottiePlayer {
     this._requireAnimationsToBeLoaded();
 
     if (this._lottie) {
-      if (
-        !activeAnimation ||
-        (typeof activeAnimation === 'string' &&
-          activeAnimation === this._currentAnimationId &&
-          typeof getOptions !== 'function')
-      ) {
+      if (!activeAnimation) {
+        // Handles play for the currently active animation
         if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) {
+          // If direction is -1 and currentFrame is 0, play needs to start at last frame. Otherwise there are no frames to play.
           this._lottie.goToAndPlay(this._lottie.totalFrames, true);
         } else {
           this._lottie.play();
@@ -559,11 +604,13 @@ export class DotLottiePlayer {
       }
 
       if (typeof getOptions === 'function') {
+        // If a `getOptions` function is provided, use it to customize playback options.
         this.render({
           id: anim.id,
           ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(anim)),
         });
       } else {
+        // Otherwise it doesn't override playback options
         this.render({
           id: anim.id,
         });
@@ -578,11 +625,13 @@ export class DotLottiePlayer {
       }
 
       if (typeof getOptions === 'function') {
+        // If a `getOptions` function is provided, use it to customize playback options.
         this.render({
           id: anim.id,
           ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(anim)),
         });
       } else {
+        // Otherwise it doesn't override playback options
         this.render({
           id: anim.id,
         });
@@ -610,6 +659,15 @@ export class DotLottiePlayer {
     }
   }
 
+  /**
+   * Retrieves a manifest animation by its identifier or index.
+   *
+   * @param animation - The identifier or index of the animation to retrieve.
+   * @returns The manifest animation corresponding to the provided identifier or index.
+   *
+   * @throws If the specified animation identifier or index is not found in the manifest.
+   * @throws If the first parameter is not a valid number or string.
+   */
   protected _getAnimationByIdOrIndex(animation: string | number): ManifestAnimation {
     this._requireAnimationsInTheManifest();
     this._requireAnimationsToBeLoaded();
@@ -721,11 +779,13 @@ export class DotLottiePlayer {
     }
 
     if (typeof getOptions === 'function') {
+      // If a `getOptions` function is provided, use it to customize playback options.
       this.render({
         id: nextAnim.id,
         ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(nextAnim)),
       });
     } else {
+      // Otherwise it doesn't override playback options
       this.render({
         id: nextAnim.id,
       });
@@ -758,11 +818,13 @@ export class DotLottiePlayer {
     }
 
     if (typeof getOptions === 'function') {
+      // If a `getOptions` function is provided, use it to customize playback options.
       this.render({
         id: nextAnim.id,
         ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(nextAnim)),
       });
     } else {
+      // Otherwise it doesn't override playback options
       this.render({
         id: nextAnim.id,
       });
@@ -957,7 +1019,7 @@ export class DotLottiePlayer {
     this.clearCountTimer();
 
     this._loop = value;
-    this._lottie?.setLoop(Boolean(value));
+    this._lottie?.setLoop(typeof value === 'number' ? true : value);
     this._playbackOptions.loop = value;
     this._notify();
     this._updateTestData();
@@ -981,6 +1043,17 @@ export class DotLottiePlayer {
     }
   }
 
+  /**
+   * Reverts playback options to their values as defined in the manifest for specified keys.
+   *
+   * @param playbackKeys - An optional array of playback option keys to revert. If not provided, all supported keys will be reverted.
+   *
+   * @remarks
+   * - activeAnimationId added as an additional option as its part of Manifest.
+   * - A re-render will be triggered if `activeAnimationId` or `defaultTheme` is being passed
+   *
+   * @returns Nothing.
+   */
   public revertToManifestValues(playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>): void {
     let revertOptions: Array<keyof PlaybackOptions | 'activeAnimationId'>;
 
@@ -1086,14 +1159,20 @@ export class DotLottiePlayer {
     if (typeof this._loop === 'number') this.stop();
 
     this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
+    this._counter = 0;
+    this.clearCountTimer();
+    this.setCurrentState(PlayerState.Completed);
   }
 
   public addEventListeners(): void {
     if (!this._lottie) return;
+
     this._lottie.addEventListener('enterFrame', () => {
+      // Update seeker and frame value based on the current animation frame
       if (!this._lottie) return;
       this._frame = this._lottie.currentFrame;
       this._seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
+      // Notify state subscriptions about the frame and seeker update.
       this._notify();
     });
 
@@ -1109,8 +1188,11 @@ export class DotLottiePlayer {
       let newDirection = this._lottie.playDirection;
 
       if (typeof this._loop === 'number' && this._loop > 0) {
+        // In case loop is a number keep the track of the loops internally.
+        // For PlayMode `bounce` 1 loop = once it completes playing for both directions
         this._counter += this._mode === PlayMode.Bounce ? 0.5 : 1;
         if (this._counter >= this._loop) {
+          // Once it completes specified number of loops trigger a manual complete to stop the player.
           this._handleAnimationComplete();
 
           return;
@@ -1118,36 +1200,50 @@ export class DotLottiePlayer {
       }
 
       if (this._mode === PlayMode.Bounce && typeof newDirection === 'number') {
+        // Reverse the direction if playing in 'Bounce' mode.
         newDirection = Number(newDirection) * -1;
       }
 
+      // Determine the start frame based on the direction.
       const startFrame = newDirection === -1 ? this._lottie.totalFrames - 1 : 0;
 
       if (this.intermission) {
+        // Intermission behavior.
+        // 1. Pause:  Pause the player
+        // 2. Set Timer:  Resume.
+
         this._lottie.goToAndPlay(startFrame, true);
+        // 1. Pause
         this._lottie.pause();
 
+        // 2. Set a timeout to resume animation after intermission duration.
         this._counterInterval = window.setTimeout(() => {
           if (!this._lottie) return;
 
+          // Next Play event
           this._lottie.setDirection(newDirection as AnimationDirection);
           this._lottie.goToAndPlay(startFrame, true);
         }, this._intermission);
       } else {
+        // Without intermission keep playing without interruption
+        // Note: A manual goToAndPlay is required to handle bounce
         this._lottie.setDirection(newDirection as AnimationDirection);
         this._lottie.goToAndPlay(newDirection === -1 ? this._lottie.totalFrames - 1 : 0, true);
       }
     });
 
     this._lottie.addEventListener('complete', () => {
-      if (this._lottie && typeof this._loop === 'number' && this._loop > 0) {
-        this._counter += this._mode === PlayMode.Bounce ? 0.5 : 1;
-        if (this._counter >= this._loop) {
+      // Special case: To handle the reverse play for PlayMode bounce. If loop is false.
+      if (this._lottie && this._loop === false && this._mode === PlayMode.Bounce) {
+        this._counter += 0.5;
+        // Trigger complete after reverse play
+        if (this._counter >= 1) {
           this._handleAnimationComplete();
 
           return;
         }
 
+        // Set a timeout to resume animation after intermission duration.
         this._counterInterval = window.setTimeout(() => {
           if (!this._lottie) return;
 
@@ -1167,6 +1263,7 @@ export class DotLottiePlayer {
       }
     });
 
+    // Re-attaching the listeners. Requires for re-renders
     for (const [name, callbacks] of this._listeners) {
       if (name === 'complete') {
         for (const cb of callbacks) {
@@ -1239,7 +1336,9 @@ export class DotLottiePlayer {
     const options = {
       ...this._animationConfig,
       autoplay: hover ? false : autoplay,
-      loop: typeof loop === 'number' ? false : loop,
+      // If loop is a number pass to lottie-web as `true`.
+      // See 'loopComplete' to understand how loops are handled.
+      loop: typeof loop === 'number' ? true : loop,
     };
 
     // Modifying for current animation
@@ -1391,6 +1490,12 @@ export class DotLottiePlayer {
     }
   }
 
+  /**
+   * Retrieves animation data from the provided source URL and processes it for playback.
+   *
+   * @param srcParsed - The parsed source URL from which to fetch animation data.
+   * @returns An object containing various animation-related data, including animations, manifest, states, themes, and more.
+   */
   protected async getAnimationData(srcParsed: string): Promise<{
     activeAnimationId: string;
     animations: Map<string, Animation>;
@@ -1412,6 +1517,7 @@ export class DotLottiePlayer {
     const contentType = response.headers.get('Content-Type');
 
     if (contentType === 'application/json') {
+      // Handling lottie JSON files
       const lottieJSON = await response.json();
 
       const filename = srcParsed.includes('.json') ? getFilename(srcParsed) : 'my-animation';
@@ -1439,6 +1545,7 @@ export class DotLottiePlayer {
       };
     }
 
+    // Handling .lotte files
     try {
       const arrayBuffer = await response.arrayBuffer();
       const dl = new DotLottie();
