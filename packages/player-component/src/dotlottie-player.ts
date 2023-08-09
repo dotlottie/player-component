@@ -212,6 +212,7 @@ export class DotLottiePlayer extends LitElement {
             detail: {
               frame: playerState.frame,
               seeker: playerState.seeker,
+              visibilityPercentage: playerState.visibilityPercentage,
             },
           }),
         );
@@ -235,6 +236,15 @@ export class DotLottiePlayer extends LitElement {
         this._themesForCurrentAnimation = manifest.themes.filter((theme) =>
           theme.animations.includes(this.getCurrentAnimationId() || ''),
         );
+      }
+
+      // Handle play on scroll
+      // To do add playback option to manifest
+      // To do add as prop
+      if (this._dotLottieCommonPlayer) {
+        this._dotLottieCommonPlayer.handlePlayOnScroll();
+      } else {
+        console.log('Player is null');
       }
 
       this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));

@@ -19,7 +19,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="reset" type="button">Reset</button>
 
       <div style="width: 500px; height: 500px; margin: auto; justify-content: center">
-        <dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" autoplay loop class="w-10 h-10"></dotlottie-player>
+<!--        <dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" autoplay loop class="w-10 h-10"></dotlottie-player>-->
       </div>
     </div>
     <div class="card">
@@ -40,6 +40,11 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <dotlottie-player src="/mouseEnterLeave.lottie" id="mouseEnterLeave" activeStateId="mouseEnterMouseLeave"></dotlottie-player>
     -->
 
+    <div style="height: 100vh"></div>
+    <div style="width: 500px; height: 500px; margin: auto; justify-content: center">
+      <dotlottie-player controls src="https://assets5.lottiefiles.com/packages/lf20_FISfBK.json" autoplay loop class="w-10 h-10"></dotlottie-player>
+    </div>
+    <div style="height: 100vh"></div>
     </div>
   </div>
 `;

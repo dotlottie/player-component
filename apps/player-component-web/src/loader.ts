@@ -44,6 +44,10 @@ export function loader(
   smileyWifi.addEventListener('click', () => player.enterInteractiveMode('smiley_wifi'));
   resetInteractivity.addEventListener('click', () => player.reset());
 
+  player.addEventListener('frame', (e) => {
+    // console.log(e);
+  });
+
   player.addEventListener('ready', () => {
     console.log(player.getManifest());
     // player.setSpeed(5);

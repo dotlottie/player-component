@@ -100,6 +100,7 @@ export interface DotLottiePlayerState extends PlaybackOptions {
   frame: number;
   intermission: number;
   seeker: number;
+  visibilityPercentage: number;
 }
 
 export const DEFAULT_STATE: DotLottiePlayerState = {
@@ -116,6 +117,7 @@ export const DEFAULT_STATE: DotLottiePlayerState = {
   background: 'transparent',
   intermission: 0,
   currentAnimationId: undefined,
+  visibilityPercentage: 0,
 };
 
 export class DotLottiePlayer {
@@ -180,6 +182,12 @@ export class DotLottiePlayer {
   protected _activeStateId?: string;
 
   protected _inInteractiveMode: boolean = false;
+
+  private _scrollTicking: boolean = false;
+
+  private _scrollCallback: (() => void) | undefined = undefined;
+
+  private _visibilityPercentage: number = 0;
 
   protected _stateMachine?: DotLottieStateMachine;
 
@@ -460,6 +468,67 @@ export class DotLottiePlayer {
       this.freeze();
     } else {
       this.pause();
+    }
+  }
+
+  private _areNumbersInRange(num1: number, num2: number): boolean {
+    return num1 >= 0 && num1 <= 1 && num2 >= 0 && num2 <= 1;
+  }
+
+  // Add frame event listener to get visiblility percentage
+  // visibilityPercentage should be set by IO
+  private _updatePosition(threshold?: [number, number]): void {
+    // To do use segments
+    const start = 0;
+    const end = this.totalFrames - 1;
+    const [firstThreshold, lastThreshold] = threshold ?? [0, 1];
+
+    if (!this._areNumbersInRange(firstThreshold, lastThreshold)) {
+      logError('threshold values must be between 0 and 1');
+
+      return;
+    }
+
+    if (this.container) {
+      const { height, top } = this.container.getBoundingClientRect();
+
+      // Calculate current view percentage
+      const current = window.innerHeight - top;
+      const max = window.innerHeight + height;
+
+      const positionInViewport = current / max;
+
+      console.log(positionInViewport * 100);
+
+      const res =
+        start + Math.round(((positionInViewport - firstThreshold) / (lastThreshold - firstThreshold)) * (end - start));
+
+      this.goToAndStop(res, true);
+    }
+
+    this._scrollTicking = false;
+  }
+
+  private _requestTick(): void {
+    if (!this._scrollTicking) {
+      requestAnimationFrame(() => this._updatePosition());
+      this._scrollTicking = true;
+    }
+  }
+
+  public handlePlayOnScroll(_callback?: () => void): void {
+    this.stop();
+
+    this._scrollCallback = (): void => this._requestTick();
+
+    window.addEventListener('scroll', this._scrollCallback);
+  }
+
+  public removePlayOnScroll(): void {
+    if (this._scrollCallback) {
+      this.stop();
+
+      window.removeEventListener('scroll', this._scrollCallback);
     }
   }
 
@@ -921,6 +990,7 @@ export class DotLottiePlayer {
       autoplay: this._lottie?.autoplay ?? false,
       currentState: this._currentState,
       frame: this._frame,
+      visibilityPercentage: this._visibilityPercentage,
       seeker: this._seeker,
       direction: (this._lottie?.playDirection ?? 1) as AnimationDirection,
       hover: this._hover,
