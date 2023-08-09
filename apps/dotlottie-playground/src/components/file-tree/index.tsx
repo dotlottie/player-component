@@ -130,7 +130,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
                   key={index}
                   data-value={title}
                   className={`w-full ${
-                    `${editorAnimationId}.json` === file.name || editorFileName === file.name
+                    editorAnimationId === file.name || editorFileName === file.name
                       ? 'bg-gray-700 text-gray-100'
                       : 'text-gray-400'
                   }`}

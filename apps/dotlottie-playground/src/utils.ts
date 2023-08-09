@@ -2,9 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DotLottieState } from '@dotlottie/dotlottie-js';
-
 import mockState from './assets/mock-state.json';
+import { type DotLottieStateMachineOptions } from './hooks/use-dotlottie';
 
 export const cn = (...args: unknown[]): string => args.filter(Boolean).join(' ');
 
@@ -42,7 +41,7 @@ export function processFilename(fileName: string = ''): string {
   return fileName.replace(/\s+/u, '_').toLowerCase();
 }
 
-export function getMockDotLottieState(): DotLottieState {
+export function getMockDotLottieState(): DotLottieStateMachineOptions {
   // Removing reference
   return JSON.parse(JSON.stringify(mockState));
 }

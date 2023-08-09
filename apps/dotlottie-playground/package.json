@@ -9,8 +9,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dotlottie/dotlottie-js": "0.4.0-beta.8",
+    "@dotlottie/dotlottie-js": "0.4.0-beta.10",
     "@dotlottie/react-player": "workspace:^",
+    "@lottiefiles/lottie-types": "^1.2.0",
     "@monaco-editor/react": "^4.5.1",
     "@reduxjs/toolkit": "^1.9.5",
     "monaco-editor": "^0.40.0",
@@ -21,6 +22,7 @@
     "react-redux": "^8.1.2",
     "react-resizable-layout": "^0.6.0",
     "react-resizable-panels": "^0.0.54",
+    "react-select": "^5.7.4",
     "react-use": "^17.4.0",
     "tailwindcss": "3.3.2"
   },

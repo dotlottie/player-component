@@ -888,6 +888,8 @@ export class DotLottiePlayer {
     if (typeof document !== 'undefined') {
       document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
     }
+    this._frame = 0;
+    this._seeker = 0;
     this._counter = 0;
     this._lottie?.destroy();
   }
@@ -1377,6 +1379,8 @@ export class DotLottiePlayer {
     // Modifying for current animation
     this._lottie.setDirection(direction);
     this._lottie.setSpeed(speed);
+
+    this.setCurrentState(PlayerState.Ready);
 
     if (autoplay && !hover) {
       this.play();

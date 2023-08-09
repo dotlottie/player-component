@@ -38,7 +38,7 @@ export const editorSlice = createSlice({
     },
     clearEditorFile: (state) => {
       state.file = undefined;
-      state.validationStatus = false;
+      state.validationStatus = true;
       state.updated = false;
     },
     updateEditorFile: (state, action) => {
@@ -66,7 +66,7 @@ export const editorSlice = createSlice({
     },
     clearEditorState: (state) => {
       state.file = undefined;
-      state.validationStatus = false;
+      state.validationStatus = true;
       state.updated = false;
       state.playbackOptions = {};
       state.animationId = '';

@@ -6,6 +6,7 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import animationSlice from './animation-slice';
 import editorSlice from './editor-slice';
+import playgroundSlice from './playground-slice';
 import stateSlice from './state-slice';
 import themeSlice from './theme-slice';
 
@@ -15,6 +16,7 @@ const store = configureStore({
     themes: themeSlice,
     states: stateSlice,
     editor: editorSlice,
+    playground: playgroundSlice,
   },
 });
 
