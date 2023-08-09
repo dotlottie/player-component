@@ -42,7 +42,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div style="height: 100vh"></div>
     <div style="width: 500px; height: 500px; margin: auto; justify-content: center">
-      <dotlottie-player controls src="https://assets5.lottiefiles.com/packages/lf20_FISfBK.json" autoplay loop class="w-10 h-10"></dotlottie-player>
+      <dotlottie-player id="dotlottie-player" controls src="https://assets5.lottiefiles.com/packages/lf20_FISfBK.json" autoplay loop class="w-10 h-10"></dotlottie-player>
     </div>
     <div style="height: 100vh"></div>
     </div>

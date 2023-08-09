@@ -40,6 +40,7 @@ export enum PlayerEvents {
   Play = 'play',
   Ready = 'ready',
   Stop = 'stop',
+  VisibilityChange = 'visibilityChange',
 }
 export enum PlayerState {
   Completed = 'completed',
@@ -186,6 +187,8 @@ export class DotLottiePlayer {
   private _scrollTicking: boolean = false;
 
   private _scrollCallback: (() => void) | undefined = undefined;
+
+  private _onShowIntersectionObserver: IntersectionObserver | undefined = undefined;
 
   private _visibilityPercentage: number = 0;
 
@@ -475,12 +478,12 @@ export class DotLottiePlayer {
     return num1 >= 0 && num1 <= 1 && num2 >= 0 && num2 <= 1;
   }
 
-  // Add frame event listener to get visiblility percentage
-  // visibilityPercentage should be set by IO
-  private _updatePosition(threshold?: [number, number]): void {
-    // To do use segments
-    const start = 0;
-    const end = this.totalFrames - 1;
+  private _updatePosition(
+    segments?: [number, number],
+    threshold?: [number, number],
+    positionCallback?: (position: number) => void,
+  ): void {
+    const [start, end] = segments ?? [0, this.totalFrames - 1];
     const [firstThreshold, lastThreshold] = threshold ?? [0, 1];
 
     if (!this._areNumbersInRange(firstThreshold, lastThreshold)) {
@@ -498,10 +501,10 @@ export class DotLottiePlayer {
 
       const positionInViewport = current / max;
 
-      console.log(positionInViewport * 100);
-
       const res =
         start + Math.round(((positionInViewport - firstThreshold) / (lastThreshold - firstThreshold)) * (end - start));
+
+      if (positionCallback) positionCallback(positionInViewport);
 
       this.goToAndStop(res, true);
     }
@@ -509,17 +512,28 @@ export class DotLottiePlayer {
     this._scrollTicking = false;
   }
 
-  private _requestTick(): void {
+  private _requestTick(
+    segments?: [number, number],
+    threshold?: [number, number],
+    positionCallback?: (position: number) => void,
+  ): void {
     if (!this._scrollTicking) {
-      requestAnimationFrame(() => this._updatePosition());
+      requestAnimationFrame(() => this._updatePosition(segments, threshold, positionCallback));
       this._scrollTicking = true;
     }
   }
 
-  public handlePlayOnScroll(_callback?: () => void): void {
+  public handlePlayOnScroll(scrollOptions?: {
+    positionCallback?: (position: number) => void;
+    segments?: [number, number];
+    threshold?: [number, number];
+  }): void {
     this.stop();
 
-    this._scrollCallback = (): void => this._requestTick();
+    if (this._scrollCallback) this.removePlayOnScroll();
+
+    this._scrollCallback = (): void =>
+      this._requestTick(scrollOptions?.segments, scrollOptions?.threshold, scrollOptions?.positionCallback);
 
     window.addEventListener('scroll', this._scrollCallback);
   }
@@ -530,6 +544,59 @@ export class DotLottiePlayer {
 
       window.removeEventListener('scroll', this._scrollCallback);
     }
+  }
+
+  public removePlayOnShow(): void {
+    this.stop();
+
+    if (this._onShowIntersectionObserver) {
+      this._onShowIntersectionObserver.disconnect();
+    }
+  }
+
+  public handlePlayOnShow(onShowOptions?: { threshold: number[] }): void {
+    this.stop();
+
+    if (!this.container) {
+      throw createError("Can't play on show, player container element not available.");
+    }
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: onShowOptions ? onShowOptions.threshold : [0],
+    };
+
+    // If no options fill the array with values from 0 to 1
+    if (!onShowOptions) {
+      for (let i = 0; i <= 1.0; i += 0.01) {
+        observerOptions.threshold.push(i);
+      }
+    }
+
+    console.log(`Observer options: `);
+    console.log(observerOptions.threshold);
+
+    const intersectionObserverCallback = (entries: IntersectionObserverEntry[]): void => {
+      entries.forEach((entry) => {
+        // const box = entry.target;
+        const visiblePct = `${Math.floor(entry.intersectionRatio * 100)}%`;
+
+        console.log(visiblePct);
+
+        this._visibilityPercentage = entry.intersectionRatio * 100;
+
+        if (entry.isIntersecting) {
+          this.play();
+          this._container?.dispatchEvent(new Event(PlayerEvents.VisibilityChange));
+        } else {
+          this.pause();
+        }
+      });
+    };
+
+    this._onShowIntersectionObserver = new IntersectionObserver(intersectionObserverCallback, observerOptions);
+    this._onShowIntersectionObserver.observe(this.container);
   }
 
   protected _validatePlaybackOptions(options?: Record<string, unknown>): Partial<PlaybackOptions> {

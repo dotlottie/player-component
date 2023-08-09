@@ -212,6 +212,13 @@ export class DotLottiePlayer extends LitElement {
             detail: {
               frame: playerState.frame,
               seeker: playerState.seeker,
+            },
+          }),
+        );
+
+        this.dispatchEvent(
+          new CustomEvent(PlayerEvents.VisibilityChange, {
+            detail: {
               visibilityPercentage: playerState.visibilityPercentage,
             },
           }),
@@ -238,14 +245,15 @@ export class DotLottiePlayer extends LitElement {
         );
       }
 
-      // Handle play on scroll
-      // To do add playback option to manifest
-      // To do add as prop
-      if (this._dotLottieCommonPlayer) {
-        this._dotLottieCommonPlayer.handlePlayOnScroll();
-      } else {
-        console.log('Player is null');
-      }
+      // // Handle play on scroll
+      // // To do add playback option to manifest
+      // // To do add as prop
+      // if (this._dotLottieCommonPlayer) {
+      //   // this._dotLottieCommonPlayer.handlePlayOnScroll();
+      //   this._dotLottieCommonPlayer.handlePlayOnShow();
+      // } else {
+      //   console.log('Player is null');
+      // }
 
       this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
     });
@@ -439,6 +447,59 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.stop();
+  }
+
+  // To do add playback option to manifest
+  // To do add as prop
+
+  /**
+   * Play the animation when it appears on screen and pause when it goes out of view.
+   *
+   * @param playOnShowOptions - what percentage of the target's visibility the observer's callback should be executed
+   * @returns
+   */
+  public playOnShow(playOnShowOptions?: { threshold: number[] }): void {
+    if (!this._dotLottieCommonPlayer) return;
+
+    this._dotLottieCommonPlayer.handlePlayOnShow(playOnShowOptions);
+  }
+
+  /**
+   * Stop the playOnShow observer.
+   * @returns
+   */
+  public stopPlayOnShow(): void {
+    if (!this._dotLottieCommonPlayer) return;
+
+    this._dotLottieCommonPlayer.stopPlayOnShow();
+  }
+
+  /**
+   * Play the animation synchronized to page scroll.
+   * @param scrollOptions
+   *  - positionCallback: callback function to get the current position of the player relative to the whole page
+   *  - segments: optional segment of animation to play
+   *  - threshold: optional visibility threshold to start playing the animation. Between 0 and 1. Defaults to [0, 1].
+   * @returns
+   */
+  public playOnScroll(scrollOptions?: {
+    positionCallback?: (position: number) => void;
+    segments?: [number, number];
+    threshold?: [number, number];
+  }): void {
+    if (!this._dotLottieCommonPlayer) return;
+
+    this._dotLottieCommonPlayer.handlePlayOnScroll(scrollOptions);
+  }
+
+  /**
+   * Stop the play on scroll observer.
+   * @returns
+   */
+  public stopPlayOnScroll(): void {
+    if (!this._dotLottieCommonPlayer) return;
+
+    this._dotLottieCommonPlayer.stopPlayOnScroll();
   }
 
   /**

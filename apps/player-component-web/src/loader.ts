@@ -44,8 +44,12 @@ export function loader(
   smileyWifi.addEventListener('click', () => player.enterInteractiveMode('smiley_wifi'));
   resetInteractivity.addEventListener('click', () => player.reset());
 
-  player.addEventListener('frame', (e) => {
-    // console.log(e);
+  // player.addEventListener('frame', (e) => {
+  //   console.log(e);
+  // });
+
+  player.addEventListener('visibilityPercentage', (e) => {
+    console.log('vp : ' + e);
   });
 
   player.addEventListener('ready', () => {
@@ -56,7 +60,7 @@ export function loader(
     if (!loaded) {
     loaded = true;
 
-      player.getManifest().states.forEach((state) => {
+      player.getManifest().states?.forEach((state) => {
         let btn = document.createElement('button');
     
         btn.innerHTML = state;
