@@ -10,8 +10,9 @@ import { Playground } from './components/playground';
 import '@dotlottie/react-player/dist/index.css';
 
 const SAMPLE_FILES = [
-  { name: 'toggle.lottie', path: '/toggle.lottie' },
-  { name: 'lf_interactivity_page.lottie', path: '/lf_interactivity_page.lottie' },
+  { name: 'toggle.lottie', path: `${import.meta.env.BASE_URL}toggle.lottie` },
+  { name: 'lf_interactivity_page.lottie', path: `${import.meta.env.BASE_URL}lf_interactivity_page.lottie` },
+  { name: 'aniki_hamster.lottie', path: `${import.meta.env.BASE_URL}aniki_hamster.lottie` },
 ];
 
 interface HomeScreenProps {
