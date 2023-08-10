@@ -112,6 +112,9 @@ jobs:
       - name: 🏗 Build
         run: pnpm build
 
+      - name: List Contents of dist Directory
+        run: ls -R ./apps/dotlottie-playground/dist
+
       - name: 🌐 Publish Playground
         if: success()
         uses: peaceiris/actions-gh-pages@v3
