@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.1.1
+
+### Patch Changes
+
+- 63fd88c: fix: font issue
+
 ## 1.1.0
 
 ### Minor Changes

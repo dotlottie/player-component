@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.1.1
+
+### Patch Changes
+
+- 63fd88c: updated karla font file
+
 ## 2.1.0
 
 ### Minor Changes
