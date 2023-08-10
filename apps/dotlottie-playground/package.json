@@ -1,11 +1,11 @@
 {
-  "name": "dotlottie-playground",
+  "name": "@dotlottie/playground",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "run-dev": "vite",
-    "build:playground": "tsc && vite build",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

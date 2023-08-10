@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - 'master'
+      - 'feat/playground'
   pull_request:
 
 concurrency:
@@ -84,3 +85,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPMJS_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+      - name: 🌐 Publish Playground
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./apps/dotlottie-playground/dist
