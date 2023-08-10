@@ -11,8 +11,15 @@ export interface EditorFile {
   path: string;
   type: string;
 }
+
+export interface EditorAnimationOptions extends PlaybackOptions {
+  assignedThemes?: string;
+  defaultActiveAnimation?: boolean;
+}
+
 interface EditorSlice {
   animationId?: string;
+  animationOptions: EditorAnimationOptions;
   file?: EditorFile;
   playbackOptions: PlaybackOptions;
   updated: boolean;
@@ -25,6 +32,7 @@ const initialState: EditorSlice = {
   updated: false,
   animationId: '',
   playbackOptions: {},
+  animationOptions: {},
 };
 
 export const editorSlice = createSlice({
@@ -60,6 +68,12 @@ export const editorSlice = createSlice({
     setEditorPlaybacOptions: (state, action) => {
       state.playbackOptions = { ...state.playbackOptions, ...(action.payload || {}) };
     },
+    setEditorAnimationOptions: (state, action) => {
+      state.animationOptions = action.payload || {};
+    },
+    updateEditorAnimationOptions: (state, action) => {
+      state.animationOptions = { ...state.animationOptions, ...(action.payload || {}) };
+    },
     clearEditorPlaybackOptions: (state) => {
       state.playbackOptions = {};
       state.animationId = '';
@@ -70,6 +84,7 @@ export const editorSlice = createSlice({
       state.updated = false;
       state.playbackOptions = {};
       state.animationId = '';
+      state.animationOptions = {};
     },
   },
 });
@@ -79,10 +94,12 @@ export const {
   clearEditorPlaybackOptions,
   clearEditorState,
   setEditorAnimationId,
+  setEditorAnimationOptions,
   setEditorFile,
   setEditorPlaybacOptions,
   setEditorUpdated,
   setEditorValidatationStatus,
+  updateEditorAnimationOptions,
   updateEditorFile,
 } = editorSlice.actions;
 

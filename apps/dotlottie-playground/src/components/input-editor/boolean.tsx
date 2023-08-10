@@ -21,7 +21,7 @@ export const BooleanEditor: React.FC<BooleanEditorProps> = ({ label, onToggle, v
       <span className="flex-1 text-lg text-left">{label}</span>
       <button
         onClick={handleToggle}
-        className={`flex items-center justify-between py-2 px-3 rounded bg-white text-gray-400 `}
+        className={`flex items-center justify-between py-2 px-3 rounded bg-white text-gray-600`}
       >
         <div>{value ? 'On' : 'Off'}</div>
         <span className={`${value ? 'text-green-700' : ''}`}>

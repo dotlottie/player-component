@@ -3,11 +3,11 @@
  */
 
 import { DotLottie, type PlayMode, type StateInfo, type DotLottieStates } from '@dotlottie/dotlottie-js';
-import { type PlaybackOptions } from '@dotlottie/react-player';
 import { type Animation } from '@lottiefiles/lottie-types';
 import React, { type ReactNode, createContext, useCallback, useContext, useState } from 'react';
 
 import { setAnimations } from '../store/animation-slice';
+import { type EditorAnimationOptions } from '../store/editor-slice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setPlayerUrl } from '../store/playground-slice';
 import { setStates } from '../store/state-slice';
@@ -30,14 +30,14 @@ interface DotLottieContextProps {
   removeDotLottieAnimation: (animationId: string) => void;
   removeDotLottieState: (stateId: string) => void;
   removeDotLottieTheme: (themeId: string) => void;
+  setAnimationOptions: (animationId: string, options: EditorAnimationOptions) => void | Promise<void>;
   setDotLottie: (dotLottie: DotLottie) => void | Promise<void>;
-  setPlaybackOptions: (animationId: string, options: PlaybackOptions) => void | Promise<void>;
 }
 
 const DotLottieContext = createContext<DotLottieContextProps>({
   dotLottie: new DotLottie(),
   setDotLottie: () => undefined,
-  setPlaybackOptions: () => undefined,
+  setAnimationOptions: () => undefined,
   addDotLottieStateMachine: () => undefined,
   fetchAndUpdateDotLottie: () => undefined,
   addDotLottieTheme: () => undefined,
@@ -185,12 +185,11 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
     });
   }, [dotLottie, workingFileName]);
 
-  const setPlaybackOptions = useCallback(
-    async (animationId: string, options: PlaybackOptions) => {
+  const setAnimationOptions = useCallback(
+    async (animationId: string, options: EditorAnimationOptions) => {
       const animation = await dotLottie.getAnimation(animationId);
 
       if (animation) {
-        animation.defaultTheme = options.defaultTheme;
         animation.loop = Boolean(options.loop);
         animation.speed = Number(options.speed);
         animation.autoplay = Boolean(options.autoplay);
@@ -199,6 +198,31 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
         animation.intermission = Number(options.intermission);
         animation.hover = Boolean(options.hover);
         animation.defaultTheme = options.defaultTheme;
+
+        if (options.assignedThemes) {
+          const themes = options.assignedThemes.split(',');
+
+          // Unassigned Themes
+          animation.themes.forEach((theme) => {
+            if (!themes.includes(theme.id)) {
+              dotLottie.unassignTheme({ animationId, themeId: theme.id });
+            }
+          });
+          // Assign Themes
+          themes.forEach((themeId) => {
+            dotLottie.assignTheme({ animationId, themeId });
+          });
+        }
+
+        animation.defaultActiveAnimation = options.defaultActiveAnimation || false;
+        // Remove default from other animations
+        if (options.defaultActiveAnimation) {
+          dotLottie.animations.forEach((anim) => {
+            if (animation.id !== anim.id) {
+              anim.defaultActiveAnimation = false;
+            }
+          });
+        }
       }
     },
     [dotLottie],
@@ -218,7 +242,7 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
         removeDotLottieState,
         removeDotLottieTheme,
         setDotLottie,
-        setPlaybackOptions,
+        setAnimationOptions,
       }}
     >
       {children}

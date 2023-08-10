@@ -26,7 +26,7 @@ export const InputNumber: React.FC<InputNumberProps> = ({ label, onChange, value
         onChange={handleChange}
         value={value}
         name={label}
-        className={`py-3 px-3 rounded bg-white text-gray-400 `}
+        className={`py-3 px-3 rounded bg-white text-gray-600`}
       />
     </div>
   );

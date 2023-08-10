@@ -2,41 +2,70 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-/* eslint no-fallthrough: "off" */
-
-import { type PlaybackOptions } from '@dotlottie/react-player';
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { BiSolidSave } from 'react-icons/bi';
 
 import { useDotLottie } from '../hooks/use-dotlottie';
-import { setEditorPlaybacOptions, setEditorUpdated } from '../store/editor-slice';
+import {
+  type EditorAnimationOptions,
+  updateEditorAnimationOptions,
+  setEditorAnimationOptions,
+  setEditorUpdated,
+} from '../store/editor-slice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 
 import { BooleanEditor } from './input-editor/boolean';
-import { InputDropdown } from './input-editor/dropdown';
 import { InputNumber } from './input-editor/input-number';
+import { InputSelect, type InputSelectOption } from './input-editor/input-select';
 
 interface PlaybackOptionsEditorProps {
   onUpdate: () => void;
 }
 
 export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ onUpdate }) => {
-  const { dotLottie, setPlaybackOptions } = useDotLottie();
+  const { dotLottie, setAnimationOptions } = useDotLottie();
   const dispatch = useAppDispatch();
 
-  const playbackOptions: PlaybackOptions = useAppSelector((state) => state.editor.playbackOptions);
+  const animationOptions: EditorAnimationOptions = useAppSelector((state) => {
+    return state.editor.animationOptions;
+  });
+
   const animationId = useAppSelector((state) => state.editor.animationId);
   const editorUpdated = useAppSelector((state) => state.editor.updated);
+  const allThemes = useAppSelector((state) => state.themes.list);
+
+  const themeSelectorOptions = useMemo(() => allThemes.map(({ name }) => ({ label: name, value: name })), [allThemes]);
+
+  const assignedThemes = useMemo<InputSelectOption[] | undefined>(() => {
+    const defaultOptions = [
+      {
+        label: 'None',
+        value: '',
+      },
+    ];
+
+    if (typeof animationOptions.assignedThemes !== 'undefined' && Array.isArray(animationOptions.assignedThemes))
+      return defaultOptions;
+
+    return defaultOptions.concat(
+      animationOptions.assignedThemes?.split(',').map((themeId) => {
+        return {
+          label: themeId,
+          value: themeId,
+        };
+      }) || [],
+    );
+  }, [animationOptions, animationId]);
 
   useEffect(() => {
-    if (!animationId) return;
+    if (!animationId) return undefined;
 
     (async (): Promise<void> => {
       const animation = await dotLottie.getAnimation(animationId);
 
       if (animation) {
         dispatch(
-          setEditorPlaybacOptions({
+          setEditorAnimationOptions({
             direction: animation.direction,
             speed: animation.speed,
             playMode: animation.playMode,
@@ -44,36 +73,57 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
             autoplay: animation.autoplay,
             hover: animation.hover,
             intermission: animation.intermission,
+            defaultTheme: animation.defaultTheme,
+            assignedThemes: animation.themes.map((theme) => theme.id).join(',') || undefined,
+            defaultActiveAnimation: animation.defaultActiveAnimation,
           }),
         );
       }
     })();
+
+    return () => {
+      dispatch(setEditorAnimationOptions({}));
+    };
   }, [dispatch, dotLottie, animationId]);
 
   const update = useCallback(
     (key: string) => {
       return (value: unknown): void => {
+        // Remove from defaultTheme, if assignedThemes doesn't have the selected theme. User must've removed it
+        if (
+          key === 'assignedThemes' &&
+          !String(value)
+            .split(',')
+            .includes(animationOptions.defaultTheme || '')
+        ) {
+          dispatch(
+            updateEditorAnimationOptions({
+              defaultTheme: '',
+            }),
+          );
+        }
+
         dispatch(
-          setEditorPlaybacOptions({
+          updateEditorAnimationOptions({
             [key]: value,
           }),
         );
         dispatch(setEditorUpdated(true));
       };
     },
-    [dispatch],
+    [dispatch, animationOptions],
   );
 
   const handleSave = useCallback(() => {
     if (animationId) {
-      setPlaybackOptions(animationId, playbackOptions);
+      setAnimationOptions(animationId, animationOptions);
       dispatch(setEditorUpdated(false));
       onUpdate();
     }
-  }, [animationId, playbackOptions, setPlaybackOptions, dispatch, onUpdate]);
+  }, [animationId, animationOptions, setAnimationOptions, dispatch, onUpdate]);
 
   return (
-    <div className="h-full flex-col">
+    <div className="h-full flex flex-col">
       <div className="flex justify-between items-stretch pr-4 flex-shrink border-b border-gray-600">
         <span className="text-white text-sm border-b border-b-blue-500 border-r border-gray-600 px-4 flex items-center">
           Animation: {animationId}
@@ -87,25 +137,26 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
           <BiSolidSave size={33} />
         </button>
       </div>
-      <div className="p-8">
+      <div className="p-8 flex-1 max-h-[calc(100vh-5.5rem)] overflow-y-auto custom-scrollbar">
+        <div className="text-white">Playback options</div>
         <ul>
-          {Object.keys(playbackOptions).map((key): React.ReactNode => {
-            if (['loop', 'autoplay', 'hover'].includes(key as keyof PlaybackOptions)) {
+          {Object.keys(animationOptions).map((key): React.ReactNode => {
+            if (['loop', 'autoplay', 'hover'].includes(key)) {
               return (
                 <li key={key}>
-                  <BooleanEditor label={key} value={playbackOptions[key]} onToggle={update(key)} />
+                  <BooleanEditor label={key} value={animationOptions[key]} onToggle={update(key)} />
                 </li>
               );
             } else if (['playMode'].includes(key)) {
               return (
                 <li key={key}>
-                  <InputDropdown
-                    label={key}
-                    value={playbackOptions[key] as string}
+                  <InputSelect
                     onChange={update(key)}
-                    items={[
-                      { name: 'Normal', value: 'normal' },
-                      { name: 'Bounce', value: 'bounce' },
+                    label={key}
+                    value={animationOptions[key] as string}
+                    options={[
+                      { label: 'Normal', value: 'normal' },
+                      { label: 'Bounce', value: 'bounce' },
                     ]}
                   />
                 </li>
@@ -113,13 +164,13 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
             } else if (['direction'].includes(key)) {
               return (
                 <li key={key}>
-                  <InputDropdown
-                    label={key}
-                    value={String(playbackOptions[key])}
+                  <InputSelect
                     onChange={update(key)}
-                    items={[
-                      { name: 'Normal', value: '1' },
-                      { name: 'Inverted', value: '-1' },
+                    label={key}
+                    value={String(animationOptions[key])}
+                    options={[
+                      { label: 'Normal', value: '1' },
+                      { label: 'Inverted', value: '-1' },
                     ]}
                   />
                 </li>
@@ -127,7 +178,18 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
             } else if (['speed', 'intermission'].includes(key)) {
               return (
                 <li key={key}>
-                  <InputNumber label={key} value={playbackOptions[key] as number} onChange={update(key)} />
+                  <InputNumber label={key} value={animationOptions[key] as number} onChange={update(key)} />
+                </li>
+              );
+            } else if (['defaultTheme'].includes(key)) {
+              return (
+                <li key={key}>
+                  <InputSelect
+                    onChange={update(key)}
+                    label="defaultTheme"
+                    options={assignedThemes || []}
+                    value={animationOptions[key] || ''}
+                  />
                 </li>
               );
             } else {
@@ -135,6 +197,21 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
             }
           })}
         </ul>
+        <div className="text-white mt-8">Other options</div>
+        <div>
+          <InputSelect
+            multiple
+            onChange={update('assignedThemes')}
+            label="Assign Themes"
+            value={animationOptions.assignedThemes}
+            options={themeSelectorOptions}
+          />
+          <BooleanEditor
+            label="Default ActiveAnimation"
+            value={animationOptions.defaultActiveAnimation}
+            onToggle={update('defaultActiveAnimation')}
+          />
+        </div>
       </div>
     </div>
   );

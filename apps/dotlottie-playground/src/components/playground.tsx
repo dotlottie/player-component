@@ -165,6 +165,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
 
   const openInEditor = useCallback(
     async (folder: string, fileName: string) => {
+      dispatch(clearEditorState());
       let fileContent: string | undefined;
       let isTheme = false;
 
@@ -329,7 +330,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
         <Button onClick={downloadDotLottie}>Download</Button>
       </div>
       <div className="flex grow border-t border-gray-600 flex-1">
-        <PanelGroup autoSaveId="dotlottie-playground" direction="horizontal">
+        <PanelGroup autoSaveId="dotlottie-playground" direction="horizontal" className="h-full">
           <Panel defaultSize={10} maxSize={40} className="bg-dark">
             <section className="flex flex-col h-full">
               <FileTree
@@ -362,7 +363,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
           </Panel>
           <PanelResizeHandle className="bg-gray-500 w-1" />
           <Panel>
-            <div className="w-full h-full relative" {...getRootProps()}>
+            <div className="flex flex-col w-full h-full relative" {...getRootProps()}>
               <input {...getInputProps()} />
               {isDragActive && (
                 <div className="absolute z-10 inset-0 bg-gray-500 opacity-80 flex justify-center items-center text-white text-3xl">
@@ -386,7 +387,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
                     </button>
                   </div>
                   <Editor
-                    className="flex-1"
+                    className="flex-1 max-h-[calc(100vh-5.5rem)]"
                     language={editorFileType}
                     width="100%"
                     theme="vs-dark"
