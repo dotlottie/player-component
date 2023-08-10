@@ -315,7 +315,7 @@ export class DotLottiePlayer extends LitElement {
   public animationCount(): number {
     if (!this._dotLottieCommonPlayer) return 0;
 
-    return this._dotLottieCommonPlayer.animations.size;
+    return this._dotLottieCommonPlayer.getManifest()?.animations.length || 0;
   }
 
   /**
@@ -324,7 +324,9 @@ export class DotLottiePlayer extends LitElement {
   public animations(): string[] {
     if (!this._dotLottieCommonPlayer) return [];
 
-    return Array.from(this._dotLottieCommonPlayer.animations.keys());
+    const manifest = this._dotLottieCommonPlayer.getManifest();
+
+    return manifest?.animations.map((animation) => animation.id) || [];
   }
 
   /**
@@ -474,7 +476,9 @@ export class DotLottiePlayer extends LitElement {
   public themes(): string[] {
     if (!this._dotLottieCommonPlayer) return [];
 
-    return Array.from(this._dotLottieCommonPlayer.themes.keys());
+    const manifest = this._dotLottieCommonPlayer.getManifest();
+
+    return manifest?.themes?.map((theme) => theme.id) || [];
   }
 
   /**
