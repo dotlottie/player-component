@@ -31,3 +31,19 @@ export function getFilename(url: string = ''): string {
 
   return lastSegmentWithExtension;
 }
+
+export function isValidLottieJSON(json: Record<string, unknown>): boolean {
+  const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
+
+  return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
+}
+
+export function isValidLottieString(str: string): boolean {
+  try {
+    const json = JSON.parse(str);
+
+    return isValidLottieJSON(json);
+  } catch (_err) {
+    return false;
+  }
+}
