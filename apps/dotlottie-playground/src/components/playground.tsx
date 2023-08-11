@@ -2,11 +2,10 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { Controls, DotLottiePlayer, type DotLottieRefProps, PlayerEvents } from '@dotlottie/react-player';
 import { type Animation } from '@lottiefiles/lottie-types';
 import Editor from '@monaco-editor/react';
 import type monaco from 'monaco-editor';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import Dropzone, { useDropzone } from 'react-dropzone';
 import { BiSolidSave } from 'react-icons/bi';
 import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
@@ -26,6 +25,7 @@ import { formatJSON, getMockDotLottieState, processFilename } from '../utils';
 import { Button } from './button';
 import { FileTree } from './file-tree';
 import { PlaybackOptionsEditor } from './playback-options-editor';
+import { Player } from './player';
 
 import '@dotlottie/react-player/dist/index.css';
 
@@ -36,7 +36,6 @@ interface PlaygroundProps {
 
 export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fileName: dotLottieFileName }) => {
   const dispatch = useAppDispatch();
-  const lottiePlayer = useRef<DotLottieRefProps>();
   const editorRef = useRef<monaco.editor.IStandaloneCodeEditor>();
   const animations = useAppSelector((state) => state.animations.list);
   const themes = useAppSelector((state) => state.themes.list);
@@ -57,7 +56,6 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
   const editorFileContent = useAppSelector((state) => state.editor.file?.content);
   const editorFileType = useAppSelector((state) => state.editor.file?.type || 'json');
   const editorAnimationId = useAppSelector((state) => state.editor.animationId);
-  const currentPlayerUrl = useAppSelector((state) => state.playground.playerUrl);
   const workingFileName = useAppSelector((state) => state.playground.workingFileName);
 
   const updateDotLottieInstance = useCallback(
@@ -209,19 +207,6 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
       dispatch(setEditorValidatationStatus(true));
     },
     [dispatch],
-  );
-
-  const [playerStates, setPlayerStates] = useState<string[]>([]);
-
-  const handlePlayerEvents = useCallback(
-    (event: PlayerEvents) => {
-      if (event === PlayerEvents.Ready) {
-        const _states = lottiePlayer.current?.getManifest()?.states;
-
-        setPlayerStates(_states || []);
-      }
-    },
-    [lottiePlayer],
   );
 
   const handleRemoveFile = useCallback(
@@ -411,30 +396,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
           </Panel>
           <PanelResizeHandle className="bg-gray-500 w-1" />
           <Panel defaultSize={25}>
-            <div>
-              {currentPlayerUrl && (
-                <>
-                  <DotLottiePlayer
-                    background="white"
-                    onEvent={handlePlayerEvents}
-                    lottieRef={lottiePlayer}
-                    src={currentPlayerUrl}
-                  >
-                    <Controls />
-                  </DotLottiePlayer>
-                  <div className="flex flex-wrap gap-2 p-2 text-white">
-                    <span>Available states:</span>
-                    {playerStates.map((state) => {
-                      return (
-                        <Button onClick={(): void => lottiePlayer.current?.enterInteractiveMode(state)} key={state}>
-                          {state}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                </>
-              )}
-            </div>
+            <Player />
           </Panel>
         </PanelGroup>
       </div>
