@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.1.2
+
+### Patch Changes
+
+- 09692e4: exposed missing methods from react-player
+
 ## 1.1.1
 
 ### Patch Changes
