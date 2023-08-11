@@ -49,7 +49,6 @@ export interface DotLottieRefProps {
   setHover: (hover: boolean) => void;
   setIntermission: (intermission: number) => void;
   setLoop: (loop: number | boolean) => void;
-  setMode(mode: PlayMode): void;
   setPlayMode: (mode: PlayMode) => void;
   setSpeed: (speed: number) => void;
   stop(): void;
@@ -181,9 +180,6 @@ export const useDotLottiePlayer = (
           },
           togglePlay: (): void => {
             dotLottiePlayer.togglePlay();
-          },
-          setMode: (mode: PlayMode): void => {
-            dotLottiePlayer.setMode(mode);
           },
           resize: (): void => {
             dotLottiePlayer.resize();

@@ -166,12 +166,66 @@ export default App;
 
 You can access these methods using the player instance:
 
-- `getLottie: () => AnimationItem | undefined`: Returns the [lottie-web](https://www.npmjs.com/package/lottie-web) instance.
-- `getManifest: () => Manifest | undefined`: Returns the `.lottie` Manifest.
-- `next: (options?: PlaybackOptions) => void`: Plays the next animation in the manifest.
-- `play: (indexOrId?: string | number, options?: PlaybackOptions) => void`: Plays the current animation.
-- `previous: (options?: PlaybackOptions) => void`: Plays the previous animation in the manifest.
-- `reset: () => void`: Goes back to the default/initial animation.
+- `getLottie(): AnimationItem | undefined`
+  Returns the [lottie-web](https://www.npmjs.com/package/lottie-web) instance.
+
+- `getManifest(): Manifest | undefined`
+  Returns the `.lottie` Manifest.
+
+- `next(getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions): void`
+  Plays the next animation in the manifest.
+
+- `play(indexOrId?: string | number, getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions): void`
+  Plays the current animation or a specified animation with passed PlaybackOptions.
+
+- `previous(getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions): void`
+  Plays the previous animation in the manifest.
+
+- `reset(): void`
+  Resets or goes back to the default/initial animation.
+
+- `resize(): void`
+  Resizes the canvas if canvas renderer.
+
+- `seek(frame: number): void`
+  Seeks to a specific frame.
+
+- `setBackground(background: string): void`
+  Sets the container background.
+
+- `setDefaultTheme(defaultTheme: string): void`
+  Sets the default theme (applies all animations).
+
+- `setDirection(direction: AnimationDirection): void`
+  Sets the player direction. (applies all animations)
+
+- `setHover(hover: boolean): void`
+  Sets whether to play on hover (applies to all animations).
+
+- `setIntermission(intermission: number): void`
+  Sets the pause between loops (applies to all animations).
+
+- `setLoop(loop: number | boolean): void`
+  Sets loop behavior (applies to all animations).
+
+- `setPlayMode(mode: PlayMode): void`
+  Sets the player play mode (e.g., bounce or normal) for all animations.
+
+- `setSpeed(speed: number): void`
+  Sets the play speed (applies all animations).
+
+- `togglePlay(): void`
+  Toggles the play state.
+
+- `pause(): void`
+  Pauses the animation.
+
+- `stop(): void`
+  Stops the animation.
+
+- `getContainer(): HTMLDivElement | undefined`
+  Gets the animation container.
+
 
 ## Contributing
 
