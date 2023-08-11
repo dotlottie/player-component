@@ -79,7 +79,7 @@ importers:
     dependencies:
       '@dotlottie/player-component': link:../../packages/player-component
     devDependencies:
-      '@nuxt/devtools': 0.7.5_nuxt@3.6.1
+      '@nuxt/devtools': 0.7.6_nuxt@3.6.1
       '@types/node': 18.16.16
       nuxt: 3.6.1_@types+node@18.16.16
 
@@ -195,7 +195,7 @@ importers:
 
   packages/common:
     specifiers:
-      '@dotlottie/dotlottie-js': 0.4.0-beta.21
+      '@dotlottie/dotlottie-js': 0.4.0-beta.23
       '@lottiefiles/lottie-types': ^1.2.0
       '@lottiefiles/relottie': 1.0.0
       '@lottiefiles/relottie-style': 0.4.1
@@ -205,7 +205,7 @@ importers:
       typescript: ^4.7.4
       xstate: ^4.38.1
     dependencies:
-      '@dotlottie/dotlottie-js': 0.4.0-beta.21
+      '@dotlottie/dotlottie-js': 0.4.0-beta.23
       '@lottiefiles/relottie': 1.0.0
       '@lottiefiles/relottie-style': 0.4.1
       '@preact/signals-core': 1.3.0
@@ -2077,8 +2077,8 @@ packages:
       - supports-color
     dev: true
 
-  /@dotlottie/dotlottie-js/0.4.0-beta.21:
-    resolution: {integrity: sha512-le3eqZpZANQYhPq2NvjI/yIbOXZ5fhGCf/EYYsLHe113KqnFWdEOdQpZsE/+s/89Wi2c2G4HQM389K5vSzTokw==}
+  /@dotlottie/dotlottie-js/0.4.0-beta.23:
+    resolution: {integrity: sha512-FiXxyzTCu0mEh3OP1TlfeAhOe6Y8imYkXNgcjQvwzk0s9T1YEJvENU4lLRr3k3J2Ul7OhPulhjX9fw19EW3mnw==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@lottiefiles/lottie-types': 1.2.0
@@ -3594,8 +3594,8 @@ packages:
     resolution: {integrity: sha512-GBzP8zOc7CGWyFQS6dv1lQz8VVpz5C2yRszbXufwG/9zhStTIH50EtD87NmWbTMwXDvZLNg8GIpb1UFdH93JCA==}
     dev: true
 
-  /@nuxt/devtools-kit/0.7.5_nuxt@3.6.1:
-    resolution: {integrity: sha512-Zadd4s2vHlFQYRBLqmCADLMs1qxht8KKCZzfdhEdCAHby/s3EkfnYIuRUBlrfuAuNxa4cyExKFpeDpQ67N5fIQ==}
+  /@nuxt/devtools-kit/0.7.6_nuxt@3.6.1:
+    resolution: {integrity: sha512-2jSQ1rgStZifRHtfsdqmmvq/O5NskLCwg34JPchBRAx9Kv5IadABlBIWz1jLuaGarI/jsEEAmA5EpfxI5z/PJQ==}
     peerDependencies:
       nuxt: ^3.6.5
       vite: '*'
@@ -3609,8 +3609,8 @@ packages:
       - supports-color
     dev: true
 
-  /@nuxt/devtools-wizard/0.7.5:
-    resolution: {integrity: sha512-A8Urgy3hJBi3MSDEsr3yzOhO1jHoE80cQHmQUqAD8sD2e2fQSOwaH5CZMVGPbnSCWDfbchy+1cCwJ30JuEfeKg==}
+  /@nuxt/devtools-wizard/0.7.6:
+    resolution: {integrity: sha512-XCznlUTk66ApYJygGc+6FVborAp2F4PAIvY4b6dVSUf1f47Hs3CPe6eEdatarmEqiTmFMInaX4y8z1hDXrFF0Q==}
     hasBin: true
     dependencies:
       consola: 3.2.3
@@ -3626,15 +3626,15 @@ packages:
       semver: 7.5.4
     dev: true
 
-  /@nuxt/devtools/0.7.5_nuxt@3.6.1:
-    resolution: {integrity: sha512-Uxjow3J0QcYnbgMA8XR/1myr6Nw8P5vA/PMxTTj8LKqSZhd2+BgjnAg1gRUmMeKQCvkUfNOD+AqTK2HOBdHaBw==}
+  /@nuxt/devtools/0.7.6_nuxt@3.6.1:
+    resolution: {integrity: sha512-2x/eS0KbzTCK4+OozSZTcbjndM2ySy84MltF/suwLP7Wp/ehY8vzRp+yMTksxLjsf0sbiAa4K8WJCzKd8wLXxA==}
     hasBin: true
     peerDependencies:
       nuxt: ^3.6.5
       vite: '*'
     dependencies:
-      '@nuxt/devtools-kit': 0.7.5_nuxt@3.6.1
-      '@nuxt/devtools-wizard': 0.7.5
+      '@nuxt/devtools-kit': 0.7.6_nuxt@3.6.1
+      '@nuxt/devtools-wizard': 0.7.6
       '@nuxt/kit': 3.6.5
       birpc: 0.2.12
       boxen: 7.1.1
@@ -3664,7 +3664,7 @@ packages:
       sirv: 2.0.3
       unimport: 3.1.3
       vite-plugin-inspect: 0.7.35_@nuxt+kit@3.6.5
-      vite-plugin-vue-inspector: 3.5.0
+      vite-plugin-vue-inspector: 3.6.0
       wait-on: 7.0.1
       which: 3.0.1
       ws: 8.13.0
@@ -17045,7 +17045,7 @@ packages:
   /unplugin/1.4.0:
     resolution: {integrity: sha512-5x4eIEL6WgbzqGtF9UV8VEC/ehKptPXDS6L2b0mv4FRMkJxRtjaJfOWDd6a8+kYbqsjklix7yWP0N3SUepjXcg==}
     dependencies:
-      acorn: 8.9.0
+      acorn: 8.10.0
       chokidar: 3.5.3
       webpack-sources: 3.2.3
       webpack-virtual-modules: 0.5.0
@@ -17427,8 +17427,8 @@ packages:
       - supports-color
     dev: true
 
-  /vite-plugin-vue-inspector/3.5.0:
-    resolution: {integrity: sha512-dDoxEi5VWkfsKflVUYxElC3XD/MOn8s/6mjCqWRDlFIQ+OsY0cW5PNTbqxGllbBBCr5SDnDmPWFS1vMJxrLVEw==}
+  /vite-plugin-vue-inspector/3.6.0:
+    resolution: {integrity: sha512-Fi+9JaMx/reuic+MWbrdw8g5TwZM5a/BmdBT8OKKZi3rK4Qw3wND9smT+Ld+Daitbgly17uvuCiull2KV/hEBQ==}
     peerDependencies:
       vite: ^3.0.0-0 || ^4.0.0-0
     dependencies:
@@ -17439,7 +17439,7 @@ packages:
       '@vue/compiler-dom': 3.3.4
       esno: 0.16.3
       kolorist: 1.8.0
-      magic-string: 0.30.1
+      magic-string: 0.30.2
       shell-quote: 1.8.1
     transitivePeerDependencies:
       - supports-color
