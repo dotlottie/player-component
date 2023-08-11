@@ -19,14 +19,18 @@ import { useCallback, useEffect, useState, useImperativeHandle } from 'react';
 import pkg from '../../package.json';
 
 export interface DotLottieRefProps {
+  getContainer: () => HTMLDivElement | undefined;
   getCurrentAnimationId: () => string | undefined;
   getLottie: () => AnimationItem | undefined;
   getManifest: () => Manifest | undefined;
   getState: () => DotLottiePlayerState;
   getVersions: () => Versions;
+  goToAndPlay(value: number | string, isFrame?: boolean, name?: string): void;
+  goToAndStop(value: number | string, isFrame?: boolean, name?: string): void;
   next: (
     getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
+  pause: () => void;
   play: (
     indexOrId?: string | number,
     getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
@@ -35,7 +39,9 @@ export interface DotLottieRefProps {
     getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
   reset: () => void;
+  resize(): void;
   revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>) => void;
+  seek: (frame: number) => void;
   setAutoplay: (autoplay: boolean) => void;
   setBackground: (background: string) => void;
   setDefaultTheme: (defaultTheme: string) => void;
@@ -43,8 +49,11 @@ export interface DotLottieRefProps {
   setHover: (hover: boolean) => void;
   setIntermission: (intermission: number) => void;
   setLoop: (loop: number | boolean) => void;
+  setMode(mode: PlayMode): void;
   setPlayMode: (mode: PlayMode) => void;
   setSpeed: (speed: number) => void;
+  stop(): void;
+  togglePlay(): void;
 }
 
 export interface Versions {
@@ -151,6 +160,33 @@ export const useDotLottiePlayer = (
           },
           revertToManifestValues: (playbackKeys?: Array<keyof PlaybackOptions | 'activeAnimationId'>) => {
             dotLottiePlayer.revertToManifestValues(playbackKeys);
+          },
+          pause: () => {
+            dotLottiePlayer.pause();
+          },
+          seek: (frame: number) => {
+            dotLottiePlayer.seek(frame);
+          },
+          getContainer: (): HTMLDivElement | undefined => {
+            return dotLottiePlayer.container;
+          },
+          goToAndPlay: (value: number | string, isFrame?: boolean, name?: string): void => {
+            dotLottiePlayer.goToAndPlay(value, isFrame, name);
+          },
+          goToAndStop: (value: number | string, isFrame?: boolean, name?: string): void => {
+            dotLottiePlayer.goToAndStop(value, isFrame, name);
+          },
+          stop: (): void => {
+            dotLottiePlayer.stop();
+          },
+          togglePlay: (): void => {
+            dotLottiePlayer.togglePlay();
+          },
+          setMode: (mode: PlayMode): void => {
+            dotLottiePlayer.setMode(mode);
+          },
+          resize: (): void => {
+            dotLottiePlayer.resize();
           },
         };
 
