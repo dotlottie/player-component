@@ -25,12 +25,6 @@ export interface DotLottieRefProps {
   getManifest: () => Manifest | undefined;
   getState: () => DotLottiePlayerState;
   getVersions: () => Versions;
-  handlePlayOnScroll: (scrollOptions?: {
-    positionCallback?: (position: number) => void;
-    segments?: [number, number];
-    threshold?: [number, number];
-  }) => void;
-  handlePlayOnShow: (playOnShowOptions?: { threshold: number[] }) => void;
   next: (
     getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
@@ -38,6 +32,12 @@ export interface DotLottieRefProps {
     indexOrId?: string | number,
     getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
+  playOnScroll: (scrollOptions?: {
+    positionCallback?: (position: number) => void;
+    segments?: [number, number];
+    threshold?: [number, number];
+  }) => void;
+  playOnShow: (playOnShowOptions?: { threshold: number[] }) => void;
   previous: (
     getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
@@ -164,18 +164,18 @@ export const useDotLottiePlayer = (
           enterInteractiveMode: (stateId: string) => {
             dotLottiePlayer.enterInteractiveMode(stateId);
           },
-          handlePlayOnShow: (playOnShowOptions?: { threshold: number[] }): void => {
-            dotLottiePlayer.handlePlayOnShow(playOnShowOptions);
+          playOnShow: (playOnShowOptions?: { threshold: number[] }): void => {
+            dotLottiePlayer.playOnShow(playOnShowOptions);
           },
           stopPlayOnShow: (): void => {
             dotLottiePlayer.stopPlayOnShow();
           },
-          handlePlayOnScroll: (scrollOptions?: {
+          playOnScroll: (scrollOptions?: {
             positionCallback?: (position: number) => void;
             segments?: [number, number];
             threshold?: [number, number];
           }): void => {
-            dotLottiePlayer.handlePlayOnScroll(scrollOptions);
+            dotLottiePlayer.playOnScroll(scrollOptions);
           },
           stopPlayOnScroll: (): void => {
             dotLottiePlayer.stopPlayOnScroll();

@@ -243,12 +243,12 @@ export class DotLottieStateMachine {
                 // playOnScroll is outside of playbackSettings type, so needs to be handled separately
                 if (playbackSettings.playOnScroll) {
                   if (playbackSettings.segments && typeof playbackSettings.segments !== 'string') {
-                    this._player.handlePlayOnScroll({
+                    this._player.playOnScroll({
                       threshold: playbackSettings.playOnScroll,
                       segments: playbackSettings.segments,
                     });
                   } else {
-                    this._player.handlePlayOnScroll({
+                    this._player.playOnScroll({
                       threshold: playbackSettings.playOnScroll,
                     });
                   }

@@ -532,7 +532,7 @@ export class DotLottiePlayer {
     }
   }
 
-  public handlePlayOnScroll(scrollOptions?: {
+  public playOnScroll(scrollOptions?: {
     positionCallback?: (position: number) => void;
     segments?: [number, number];
     threshold?: [number, number];
@@ -594,7 +594,7 @@ export class DotLottiePlayer {
     this._onShowIntersectionObserver.observe(this.container);
   }
 
-  public handlePlayOnShow(onShowOptions?: { threshold: number[] }): void {
+  public playOnShow(onShowOptions?: { threshold: number[] }): void {
     this.stop();
 
     if (!this.container) {

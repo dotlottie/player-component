@@ -245,16 +245,6 @@ export class DotLottiePlayer extends LitElement {
         );
       }
 
-      // // Handle play on scroll
-      // // To do add playback option to manifest
-      // // To do add as prop
-      // if (this._dotLottieCommonPlayer) {
-      //   // this._dotLottieCommonPlayer.handlePlayOnScroll();
-      //   this._dotLottieCommonPlayer.handlePlayOnShow();
-      // } else {
-      //   console.log('Player is null');
-      // }
-
       this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
     });
 
@@ -461,7 +451,7 @@ export class DotLottiePlayer extends LitElement {
   public playOnShow(playOnShowOptions?: { threshold: number[] }): void {
     if (!this._dotLottieCommonPlayer) return;
 
-    this._dotLottieCommonPlayer.handlePlayOnShow(playOnShowOptions);
+    this._dotLottieCommonPlayer.playOnShow(playOnShowOptions);
   }
 
   /**
@@ -489,7 +479,7 @@ export class DotLottiePlayer extends LitElement {
   }): void {
     if (!this._dotLottieCommonPlayer) return;
 
-    this._dotLottieCommonPlayer.handlePlayOnScroll(scrollOptions);
+    this._dotLottieCommonPlayer.playOnScroll(scrollOptions);
   }
 
   /**
