@@ -15,7 +15,10 @@ export function loader(
   smileyWifi: HTMLButtonElement,
   resetInteractivity: HTMLButtonElement,
   stateInput: HTMLInputElement,
+  scroll: HTMLInputElement,
 ): void {
+let isScrolling = false;
+
   const setupLoader = (): void => {
     player.load(
       'https://assets4.lottiefiles.com/packages/lf20_zyquagfl.json',
@@ -39,14 +42,23 @@ export function loader(
   );
 
   prevButton.addEventListener('click', () => player.previous());
+  
+  scroll.addEventListener('click', () => {
+    isScrolling = !isScrolling;
+
+    if (isScrolling) {
+    player.playOnScroll()} else {player.stopPlayOnScroll()}
+  });
 
   explodingPigeon.addEventListener('click', () => player.enterInteractiveMode('exploding_pigeon'));
+  
   smileyWifi.addEventListener('click', () => player.enterInteractiveMode('smiley_wifi'));
+  
   resetInteractivity.addEventListener('click', () => player.reset());
 
-  // player.addEventListener('frame', (e) => {
-  //   console.log(e);
-  // });
+  player.addEventListener('frame', (e) => {
+    // console.log(e.detail.frame);
+  });
 
   player.addEventListener('visibilityPercentage', (e) => {
     console.log('vp : ' + e);
@@ -54,6 +66,7 @@ export function loader(
 
   player.addEventListener('ready', () => {
     console.log(player.getManifest());
+    console.log(player.activeStateId)
     // player.setSpeed(5);
     // player.setDirection(-1);
     // player.setPlayMode('normal');

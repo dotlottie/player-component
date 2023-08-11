@@ -25,6 +25,12 @@ export interface DotLottieRefProps {
   getManifest: () => Manifest | undefined;
   getState: () => DotLottiePlayerState;
   getVersions: () => Versions;
+  handlePlayOnScroll: (scrollOptions?: {
+    positionCallback?: (position: number) => void;
+    segments?: [number, number];
+    threshold?: [number, number];
+  }) => void;
+  handlePlayOnShow: (playOnShowOptions?: { threshold: number[] }) => void;
   next: (
     getOptions?: (currPlaybackOptions?: PlaybackOptions, manifestPlaybackOptions?: PlaybackOptions) => PlaybackOptions,
   ) => void;
@@ -46,6 +52,8 @@ export interface DotLottieRefProps {
   setLoop: (loop: number | boolean) => void;
   setPlayMode: (mode: PlayMode) => void;
   setSpeed: (speed: number) => void;
+  stopPlayOnScroll: () => void;
+  stopPlayOnShow: () => void;
 }
 
 export interface Versions {
@@ -155,6 +163,22 @@ export const useDotLottiePlayer = (
           },
           enterInteractiveMode: (stateId: string) => {
             dotLottiePlayer.enterInteractiveMode(stateId);
+          },
+          handlePlayOnShow: (playOnShowOptions?: { threshold: number[] }): void => {
+            dotLottiePlayer.handlePlayOnShow(playOnShowOptions);
+          },
+          stopPlayOnShow: (): void => {
+            dotLottiePlayer.stopPlayOnShow();
+          },
+          handlePlayOnScroll: (scrollOptions?: {
+            positionCallback?: (position: number) => void;
+            segments?: [number, number];
+            threshold?: [number, number];
+          }): void => {
+            dotLottiePlayer.handlePlayOnScroll(scrollOptions);
+          },
+          stopPlayOnScroll: (): void => {
+            dotLottiePlayer.stopPlayOnScroll();
           },
         };
 

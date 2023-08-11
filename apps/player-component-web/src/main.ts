@@ -17,9 +17,10 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="exploding_pigeon" type="button">exploding pigeon</button>
       <button id="smiley_wifi" type="button">Smiley Wifi</button>
       <button id="reset" type="button">Reset</button>
+      <button id="scroll" type="button">Activate scroll</button>
 
       <div style="width: 500px; height: 500px; margin: auto; justify-content: center">
-<!--        <dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" autoplay loop class="w-10 h-10"></dotlottie-player>-->
+<dotlottie-player src="/lf_interactivity_page.lottie" id="dotlottie-player" autoplay loop class="w-10 h-10"></dotlottie-player>
       </div>
     </div>
     <div class="card">
@@ -42,8 +43,9 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
 
     <div style="height: 100vh"></div>
     <div style="width: 500px; height: 500px; margin: auto; justify-content: center">
-      <dotlottie-player id="dotlottie-player" controls src="https://assets5.lottiefiles.com/packages/lf20_FISfBK.json" autoplay loop class="w-10 h-10"></dotlottie-player>
-    </div>
+      <!--<dotlottie-player id="dotlottie-player" controls src="https://assets5.lottiefiles.com/packages/lf20_FISfBK.json" autoplay loop class="w-10 h-10"></dotlottie-player>-->
+      <dotlottie-player controls src="/lighthouseOnScroll.lottie" id="scroll-player" activeStateId="onShowTwo"></dotlottie-player>
+      </div>
     <div style="height: 100vh"></div>
     </div>
   </div>
@@ -68,4 +70,5 @@ loader(
   document.querySelector<HTMLButtonElement>('#smiley_wifi')!,
   document.querySelector<HTMLButtonElement>('#reset')!,
   document.querySelector<HTMLInputElement>('#state-input')!,
+  document.querySelector<HTMLInputElement>('#scroll')!,
 );
