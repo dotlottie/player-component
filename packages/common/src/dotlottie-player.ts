@@ -449,6 +449,14 @@ export class DotLottiePlayer {
     this._updateTestData();
   }
 
+  public get container(): HTMLDivElement | undefined {
+    if (this._container) {
+      return this._container as HTMLDivElement;
+    }
+
+    return undefined;
+  }
+
   public goToAndPlay(value: number | string, isFrame?: boolean, name?: string): void {
     if (!this._lottie) return;
     this._lottie.goToAndPlay(value, isFrame, name);
