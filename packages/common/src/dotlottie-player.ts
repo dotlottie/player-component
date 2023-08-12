@@ -982,11 +982,12 @@ export class DotLottiePlayer {
     let shouldRender = false;
 
     if (revertOptions.includes('activeAnimationId')) {
-      const activeAnimationId = this._getActiveAnimationId();
+      const activeAnimationId = this._dotLottieLoader.manifest?.activeAnimationId;
 
       const animation = this._getAnimationByIdOrIndex(activeAnimationId || 0);
 
       this._activeAnimationId = activeAnimationId;
+
       await this._setCurrentAnimation(animation.id);
 
       shouldRender = true;
