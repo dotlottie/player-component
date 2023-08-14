@@ -3,7 +3,12 @@
  */
 
 import type { AnimationData } from '@dotlottie/dotlottie-js';
-import { getTheme, getAnimation, getManifest, loadFromArrayBuffer } from '@dotlottie/dotlottie-js';
+import {
+  getTheme as getThemeUtil,
+  getAnimation as getAnimationUtil,
+  getManifest as getManifestUtil,
+  loadFromArrayBuffer as loadFromArrayBufferUtil,
+} from '@dotlottie/dotlottie-js';
 
 import type { Manifest } from './dotlottie-player';
 import { getFilename, isValidLottieJSON } from './utils';
@@ -67,9 +72,9 @@ export class DotLottieLoader {
 
       this._manifest = tempManifest;
     } else {
-      this._dotLottie = await loadFromArrayBuffer(await response.arrayBuffer());
+      this._dotLottie = await loadFromArrayBufferUtil(await response.arrayBuffer());
 
-      const manifest = await getManifest(this._dotLottie);
+      const manifest = await getManifestUtil(this._dotLottie);
 
       if (!manifest) {
         throw new Error('Manifest not found');
@@ -101,9 +106,9 @@ export class DotLottieLoader {
   }
 
   public async loadFromArrayBuffer(arrayBuffer: ArrayBuffer): Promise<void> {
-    this._dotLottie = await loadFromArrayBuffer(arrayBuffer);
+    this._dotLottie = await loadFromArrayBufferUtil(arrayBuffer);
 
-    const manifest = await getManifest(this._dotLottie);
+    const manifest = await getManifestUtil(this._dotLottie);
 
     if (!manifest) {
       throw new Error('Manifest not found');
@@ -121,7 +126,7 @@ export class DotLottieLoader {
       return undefined;
     }
 
-    const animation = await getAnimation(this._dotLottie, animationId, { inlineAssets: true });
+    const animation = await getAnimationUtil(this._dotLottie, animationId, { inlineAssets: true });
 
     if (animation) {
       this._animationsMap.set(animationId, animation);
@@ -139,7 +144,7 @@ export class DotLottieLoader {
       return undefined;
     }
 
-    const theme = await getTheme(this._dotLottie, themeId);
+    const theme = await getThemeUtil(this._dotLottie, themeId);
 
     if (theme) {
       this._themeMap.set(themeId, theme);
