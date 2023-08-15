@@ -49,7 +49,7 @@ jobs:
         run: pnpm lint
 
       - name: ⚛️ Setup react
-        run: cd packages/react-player && pnpm add -D react@${{ matrix.react }} react-dom@${{ matrix.react }}
+        run: cd packages/react-player && pnpm add -D react@${{ matrix.react }} react-dom@${{ matrix.react }} @types/react@${{ matrix.react }}
 
       - name: 🛡️ Test
         run: pnpm test
