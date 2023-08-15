@@ -1,5 +1,15 @@
 # @dotlottie/react-player
 
+## 1.2.0
+
+### Minor Changes
+
+- f17f39b: feat: 🎸 selective decompression of animations
+
+### Patch Changes
+
+- 410da8b: added react17 support
+
 ## 1.1.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.3.0
+
+### Minor Changes
+
+- f17f39b: feat: 🎸 selective decompression of animations
+
 ## 2.2.0
 
 ### Minor Changes
