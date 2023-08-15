@@ -11,6 +11,10 @@ concurrency:
 
 jobs:
   validate:
+    strategy:
+      fail-fast: false
+      matrix:
+        react: ['^16.8.0', '^17.0.0', '^18.0.0']
     runs-on: ubuntu-latest
     steps:
       - name: 🛑 Cancel Previous Runs
@@ -43,6 +47,9 @@ jobs:
 
       - name: 🕵️ Lint
         run: pnpm lint
+
+      - name: ⚛️ Setup react
+        run: cd packages/react-player && pnpm add -D react@${{ matrix.react }} react-dom@${{ matrix.react }}
 
       - name: 🛡️ Test
         run: pnpm test
