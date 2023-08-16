@@ -921,11 +921,11 @@ export class DotLottiePlayer {
     return this._defaultTheme;
   }
 
-  public setDefaultTheme(value: string, reRender: boolean = true): void {
+  public setDefaultTheme(value: string): void {
     this._defaultTheme = value;
     this._playbackOptions.defaultTheme = value;
 
-    if (this._animation && reRender) {
+    if (this._animation) {
       this.render();
     }
 
