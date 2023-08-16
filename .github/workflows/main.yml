@@ -36,7 +36,16 @@ jobs:
         run: pnpm build
 
       - name: 🔍 Verify types
-        run: pnpm type-check
+        uses: andresz1/size-limit-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          skip_step: install
+          clean_script: clean
+          directory: packages/player-component
+          package_manager: pnpm
+
+      - name: 📏 Verify bundle size
+        run: pnpm size-check
 
       - name: 💅 Verify format (`pnpm format` committed?)
         run: pnpm format --check --no-write
