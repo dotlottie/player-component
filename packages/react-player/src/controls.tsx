@@ -101,13 +101,11 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   }, [dotLottiePlayer]);
 
   const handleNext = useCallback(() => {
-    dotLottiePlayer.setDefaultTheme('');
-    dotLottiePlayer.next();
+    dotLottiePlayer.next((prev) => ({ ...prev, defaultTheme: '' }));
   }, [dotLottiePlayer]);
 
   const handlePrevious = useCallback(() => {
-    dotLottiePlayer.setDefaultTheme('');
-    dotLottiePlayer.previous();
+    dotLottiePlayer.previous((prev) => ({ ...prev, defaultTheme: '' }));
   }, [dotLottiePlayer]);
 
   const handleTogglePlay = useCallback(() => {
@@ -117,8 +115,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   const handleSelectItem = useCallback(
     (title: string, value: string) => {
       if (title === 'Animations') {
-        dotLottiePlayer.setDefaultTheme('');
-        dotLottiePlayer.play(value);
+        dotLottiePlayer.play(value, (prev) => ({ ...prev, defaultTheme: '' }));
       }
       if (title === 'Themes') {
         dotLottiePlayer.setDefaultTheme(value);
