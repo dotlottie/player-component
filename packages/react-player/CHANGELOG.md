@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.2.1
+
+### Patch Changes
+
+- a64d41e: fix: double render on next() and previous();
+
 ## 1.2.0
 
 ### Minor Changes
