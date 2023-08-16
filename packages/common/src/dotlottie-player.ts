@@ -1178,6 +1178,7 @@ export class DotLottiePlayer {
     direction = activeAnimation?.direction ?? this._getOption('direction');
     speed = activeAnimation?.speed ?? this._getOption('speed');
     defaultTheme = activeAnimation?.defaultTheme ?? this._getOption('defaultTheme');
+    this._defaultTheme = defaultTheme;
 
     const options = {
       ...this._animationConfig,
