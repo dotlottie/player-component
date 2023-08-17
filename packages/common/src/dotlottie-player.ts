@@ -40,6 +40,7 @@ export enum PlayerEvents {
   Play = 'play',
   Ready = 'ready',
   Stop = 'stop',
+  VisibilityChange = 'visibilityChange',
 }
 export enum PlayerState {
   Completed = 'completed',
@@ -100,6 +101,7 @@ export interface DotLottiePlayerState extends PlaybackOptions {
   frame: number;
   intermission: number;
   seeker: number;
+  visibilityPercentage: number;
 }
 
 export const DEFAULT_STATE: DotLottiePlayerState = {
@@ -116,6 +118,7 @@ export const DEFAULT_STATE: DotLottiePlayerState = {
   background: 'transparent',
   intermission: 0,
   currentAnimationId: undefined,
+  visibilityPercentage: 0,
 };
 
 export class DotLottiePlayer {
@@ -180,6 +183,14 @@ export class DotLottiePlayer {
   protected _activeStateId?: string;
 
   protected _inInteractiveMode: boolean = false;
+
+  private _scrollTicking: boolean = false;
+
+  private _scrollCallback: (() => void) | undefined = undefined;
+
+  private _onShowIntersectionObserver: IntersectionObserver | undefined = undefined;
+
+  private _visibilityPercentage: number = 0;
 
   protected _stateMachine?: DotLottieStateMachine;
 
@@ -461,6 +472,147 @@ export class DotLottiePlayer {
     } else {
       this.pause();
     }
+  }
+
+  private _areNumbersInRange(num1: number, num2: number): boolean {
+    return num1 >= 0 && num1 <= 1 && num2 >= 0 && num2 <= 1;
+  }
+
+  private _updatePosition(
+    segments?: [number, number],
+    threshold?: [number, number],
+    positionCallback?: (position: number) => void,
+  ): void {
+    const [start, end] = segments ?? [0, this.totalFrames - 1];
+    const [firstThreshold, lastThreshold] = threshold ?? [0, 1];
+
+    if (!this._areNumbersInRange(firstThreshold, lastThreshold)) {
+      logError('threshold values must be between 0 and 1');
+
+      return;
+    }
+
+    if (this.container) {
+      const { height, top } = this.container.getBoundingClientRect();
+
+      // Calculate current view percentage
+      const current = window.innerHeight - top;
+      const max = window.innerHeight + height;
+
+      const positionInViewport = current / max;
+
+      const res =
+        start + Math.round(((positionInViewport - firstThreshold) / (lastThreshold - firstThreshold)) * (end - start));
+
+      if (positionCallback) positionCallback(positionInViewport);
+
+      this.goToAndStop(res, true);
+
+      /**
+       * If we've reached the end of the animation / segments
+       * or if the animation is out of view with thresholds, we fire the complete event
+       */
+      // if (res <= start || res >= end || positionInViewport >= lastThreshold || positionInViewport <= firstThreshold) {
+      if (res >= end || positionInViewport >= lastThreshold) {
+        this._handleAnimationComplete();
+      }
+    }
+
+    this._scrollTicking = false;
+  }
+
+  private _requestTick(
+    segments?: [number, number],
+    threshold?: [number, number],
+    positionCallback?: (position: number) => void,
+  ): void {
+    if (!this._scrollTicking) {
+      requestAnimationFrame(() => this._updatePosition(segments, threshold, positionCallback));
+      this._scrollTicking = true;
+    }
+  }
+
+  public playOnScroll(scrollOptions?: {
+    positionCallback?: (position: number) => void;
+    segments?: [number, number];
+    threshold?: [number, number];
+  }): void {
+    this.stop();
+
+    if (this._scrollCallback) this.stopPlayOnScroll();
+
+    this._scrollCallback = (): void =>
+      this._requestTick(scrollOptions?.segments, scrollOptions?.threshold, scrollOptions?.positionCallback);
+
+    window.addEventListener('scroll', this._scrollCallback);
+  }
+
+  public stopPlayOnScroll(): void {
+    if (this._scrollCallback) {
+      window.removeEventListener('scroll', this._scrollCallback);
+    }
+  }
+
+  public stopPlayOnShow(): void {
+    if (this._onShowIntersectionObserver) {
+      this._onShowIntersectionObserver.disconnect();
+      this._onShowIntersectionObserver = undefined;
+    }
+  }
+
+  public addIntersectionObserver(options?: {
+    callbackOnIntersect?: (visibilityPercentage: number) => void;
+    threshold?: number[];
+  }): void {
+    if (!this.container) {
+      throw createError("Can't play on show, player container element not available.");
+    }
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px',
+      threshold: options?.threshold ? options.threshold : [0, 1],
+    };
+
+    const intersectionObserverCallback = (entries: IntersectionObserverEntry[]): void => {
+      entries.forEach((entry) => {
+        this._visibilityPercentage = entry.intersectionRatio * 100;
+
+        if (entry.isIntersecting) {
+          if (options?.callbackOnIntersect) {
+            options.callbackOnIntersect(this._visibilityPercentage);
+          }
+          this._container?.dispatchEvent(new Event(PlayerEvents.VisibilityChange));
+        } else if (options?.callbackOnIntersect) {
+          options.callbackOnIntersect(0);
+          this._container?.dispatchEvent(new Event(PlayerEvents.VisibilityChange));
+        }
+      });
+    };
+
+    this._onShowIntersectionObserver = new IntersectionObserver(intersectionObserverCallback, observerOptions);
+    this._onShowIntersectionObserver.observe(this.container);
+  }
+
+  public playOnShow(onShowOptions?: { threshold: number[] }): void {
+    this.stop();
+
+    if (!this.container) {
+      throw createError("Can't play on show, player container element not available.");
+    }
+
+    if (this._onShowIntersectionObserver) {
+      this.stopPlayOnShow();
+    }
+
+    // how to know when to pause?
+    this.addIntersectionObserver({
+      threshold: onShowOptions?.threshold ?? [],
+      callbackOnIntersect: (visibilityPercentage) => {
+        if (visibilityPercentage === 0) this.pause();
+        else this.play();
+      },
+    });
   }
 
   protected _validatePlaybackOptions(options?: Record<string, unknown>): Partial<PlaybackOptions> {
@@ -921,6 +1073,7 @@ export class DotLottiePlayer {
       autoplay: this._lottie?.autoplay ?? false,
       currentState: this._currentState,
       frame: this._frame,
+      visibilityPercentage: this._visibilityPercentage,
       seeker: this._seeker,
       direction: (this._lottie?.playDirection ?? 1) as AnimationDirection,
       hover: this._hover,

@@ -40,6 +40,8 @@ export class DotLottieStateMachine {
 
   protected _machineSchemas = new Map<string, XStateMachine>();
 
+  private _onShowPrevValue = 0;
+
   public constructor(schemas: LottieStateMachine[], player: DotLottiePlayer) {
     this._player = player;
     this._machineSchemas = this._transformToXStateSchema(schemas);
@@ -72,6 +74,9 @@ export class DotLottieStateMachine {
     this._requiresDomElement();
 
     for (const [event, handler] of this._domListeners) {
+      if (event === 'visibilityChange') {
+        this._player.stopPlayOnShow();
+      }
       this._domElement?.removeEventListener(event, handler);
       this._domListeners.delete(event);
     }
@@ -86,10 +91,11 @@ export class DotLottieStateMachine {
   protected _addEventListeners(): void {
     this._requiresDomElement();
 
-    const notifyState = (eventName: string): void =>
+    const notifyState = (eventName: string): void => {
       this._service.send({
         type: eventName,
       });
+    };
 
     const getEventHandler = (eventName: string): (() => void) => {
       function eventListener(): void {
@@ -106,7 +112,7 @@ export class DotLottieStateMachine {
         this._removeEventListeners();
 
         for (const event of state.nextEvents) {
-          if (XStateEvents.filter((item) => item !== 'complete').includes(event)) {
+          if (XStateEvents.filter((item) => item !== 'complete' && item !== 'show').includes(event)) {
             const handler = getEventHandler(event);
 
             this._domListeners.set(event, handler);
@@ -116,6 +122,22 @@ export class DotLottieStateMachine {
 
             this._player.addEventListener(event, handler);
             this._playerListeners.set(event, handler);
+          } else if (event === 'show') {
+            const handler = getEventHandler(event);
+            // to do: How do you get threshold from state machine?
+
+            this._player.addIntersectionObserver({
+              callbackOnIntersect: (visibilityPercentage) => {
+                if (visibilityPercentage > 0) {
+                  if (visibilityPercentage !== 100 && this._onShowPrevValue !== visibilityPercentage) {
+                    handler();
+                  }
+                  this._onShowPrevValue = visibilityPercentage;
+                }
+              },
+              threshold: [],
+            });
+            this._domListeners.set('visibilityChange', handler);
           }
         }
       }
@@ -197,6 +219,7 @@ export class DotLottieStateMachine {
                   this._updatePlaybackSettings(playbackSettings);
                 }
 
+                // Segments is outside of playbackSettings type, so needs to be handled separately
                 if (playbackSettings.segments) {
                   if (typeof playbackSettings.segments === 'string') {
                     this._player.goToAndPlay(playbackSettings.segments, true);
@@ -216,12 +239,29 @@ export class DotLottieStateMachine {
                     this._player.pause();
                   }
                 }
+
+                // playOnScroll is outside of playbackSettings type, so needs to be handled separately
+                if (playbackSettings.playOnScroll) {
+                  if (playbackSettings.segments && typeof playbackSettings.segments !== 'string') {
+                    this._player.playOnScroll({
+                      threshold: playbackSettings.playOnScroll,
+                      segments: playbackSettings.segments,
+                    });
+                  } else {
+                    this._player.playOnScroll({
+                      threshold: playbackSettings.playOnScroll,
+                    });
+                  }
+                }
               },
               exit: (): void => {
                 // Reset segments to remove frame interval
                 // Using force=false to prevent animation from going to frame 0
                 if (typeof playbackSettings.segments !== 'undefined') {
                   this._player.resetSegments(false);
+                }
+                if (typeof playbackSettings.playOnScroll !== 'undefined') {
+                  this._player.stopPlayOnScroll();
                 }
               },
               on: events,
