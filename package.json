@@ -34,7 +34,7 @@
     "test": "turbo run test --concurrency=1",
     "test:coverage": "turbo run test:coverage",
     "type-check": "turbo run type-check",
-    "size-check": "pnpm build && size-limit"
+    "size-check": "size-limit"
   },
   "devDependencies": {
     "@changesets/cli": "2.26.1",
