@@ -38,6 +38,11 @@ jobs:
       - name: 🔍 Verify types
         run: pnpm type-check
 
+      - name: 📏 Verify bundle size
+        uses: andresz1/size-limit-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 💅 Verify format (`pnpm format` committed?)
         run: pnpm format --check --no-write
 
