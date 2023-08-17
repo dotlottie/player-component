@@ -251,16 +251,16 @@ importers:
     specifiers:
       '@dotlottie/common': workspace:^
       '@lottiefiles/lottie-types': ^1.2.0
-      '@types/react': ^17.0.64
-      '@types/react-dom': ^17.0.20
+      '@types/react': ^16.8.0
+      '@types/react-dom': ^16.8.0
       '@vitejs/plugin-react': ^3.1.0
       autoprefixer: ^10.4.14
       axe-core: ^4.7.2
       cypress: ^12.11.0
       cypress-axe: ^1.4.0
       postcss: ^8.4.24
-      react: ^17.0.2
-      react-dom: ^17.0.2
+      react: ^16.8.0
+      react-dom: ^16.8.0
       react-use: ^17.4.0
       tsup: ^6.1.3
       typescript: ^4.7.4
@@ -268,17 +268,17 @@ importers:
     devDependencies:
       '@dotlottie/common': link:../common
       '@lottiefiles/lottie-types': 1.2.1
-      '@types/react': 17.0.64
-      '@types/react-dom': 17.0.20
+      '@types/react': 16.14.45
+      '@types/react-dom': 16.9.19
       '@vitejs/plugin-react': 3.1.0_vite@4.4.9
       autoprefixer: 10.4.14_postcss@8.4.24
       axe-core: 4.7.2
       cypress: 12.17.3
       cypress-axe: 1.4.0_tkqufruyiviw3t43okm4bmztp4
       postcss: 8.4.24
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-use: 17.4.0_sfoxds7t5ydpegc3knd667wn6m
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
+      react-use: 17.4.0_wcqkhtmu7mswc6yz4uyexck3ty
       tsup: 6.7.0_mobwpjr2w2hf2ljcabcds3ugc4
       typescript: 4.9.5
       vite: 4.4.9
@@ -4478,10 +4478,10 @@ packages:
     resolution: {integrity: sha512-ZREFYlpUmPQJ0esjxoG1fMvB2HNaD3z+mjqdSosZvd3RalncI9NEur73P8ZJz4YQdL64CmV1w0RuqoRUlhQRBw==}
     dev: true
 
-  /@types/react-dom/17.0.20:
-    resolution: {integrity: sha512-4pzIjSxDueZZ90F52mU3aPoogkHIoSIDG+oQ+wQK7Cy2B9S+MvOqY0uEA/qawKz381qrEDkvpwyt8Bm31I8sbA==}
+  /@types/react-dom/16.9.19:
+    resolution: {integrity: sha512-xC8D280Bf6p0zguJ8g62jcEOKZiUbx9sIe6O3tT/lKfR87A7A6g65q13z6D5QUMIa/6yFPkNhqjF5z/VVZEYqQ==}
     dependencies:
-      '@types/react': 17.0.64
+      '@types/react': 16.14.45
     dev: true
 
   /@types/react-dom/18.2.6:
@@ -4496,8 +4496,8 @@ packages:
       '@types/react': 18.2.20
     dev: true
 
-  /@types/react/17.0.64:
-    resolution: {integrity: sha512-IlgbX/vglDTwrCRgad6fTCzOT+D/5C0xwuvrzfuqfhg9gJrkFqAGADpUFlEtqbrP1IEo9QLSbo41MaFfoIu9Aw==}
+  /@types/react/16.14.45:
+    resolution: {integrity: sha512-XFtKkY3yuPO5VJSE6Lru9yLkVQvYE+l6NbmLp6IWCg4jo5S8Ijbpke8wC9q4NmQ5pJErT8KKboG5eY7n5n718A==}
     dependencies:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.3
@@ -12452,7 +12452,7 @@ packages:
       stylis: 4.2.0
     dev: false
 
-  /nano-css/5.3.5_sfoxds7t5ydpegc3knd667wn6m:
+  /nano-css/5.3.5_wcqkhtmu7mswc6yz4uyexck3ty:
     resolution: {integrity: sha512-vSB9X12bbNu4ALBu7nigJgRViZ6ja3OU7CeuiV1zMIbXOdmkLahgtPmh3GBOlDxbKY0CitqlPdOReGlBLSp+yg==}
     peerDependencies:
       react: '*'
@@ -12462,8 +12462,8 @@ packages:
       csstype: 3.1.2
       fastest-stable-stringify: 2.0.2
       inline-style-prefixer: 6.0.4
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
       rtl-css-js: 1.16.1
       sourcemap-codec: 1.4.8
       stacktrace-js: 2.0.2
@@ -14465,15 +14465,16 @@ packages:
       flat: 5.0.2
     dev: true
 
-  /react-dom/17.0.2_react@17.0.2:
-    resolution: {integrity: sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==}
+  /react-dom/16.14.0_react@16.14.0:
+    resolution: {integrity: sha512-1gCeQXDLoIqMgqD3IO2Ah9bnf0w9kzhwN5q4FGnHZ67hBm9yePzB5JJAIQCc8x3pFnNlwFq4RidZggNAAkzWWw==}
     peerDependencies:
-      react: 17.0.2
+      react: ^16.14.0
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
-      react: 17.0.2
-      scheduler: 0.20.2
+      prop-types: 15.8.1
+      react: 16.14.0
+      scheduler: 0.19.1
     dev: true
 
   /react-dom/18.2.0_react@18.2.0:
@@ -14499,13 +14500,13 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: true
 
-  /react-universal-interface/0.6.2_react@17.0.2+tslib@2.5.3:
+  /react-universal-interface/0.6.2_react@16.14.0+tslib@2.5.3:
     resolution: {integrity: sha512-dg8yXdcQmvgR13RIlZbTRQOoUrDciFVoSBZILwjE2LFISxZZ8loVJKAkuzswl5js8BHda79bIb2b84ehU8IjXw==}
     peerDependencies:
       react: '*'
       tslib: '*'
     dependencies:
-      react: 17.0.2
+      react: 16.14.0
       tslib: 2.5.3
     dev: true
 
@@ -14543,7 +14544,7 @@ packages:
       tslib: 2.5.3
     dev: false
 
-  /react-use/17.4.0_sfoxds7t5ydpegc3knd667wn6m:
+  /react-use/17.4.0_wcqkhtmu7mswc6yz4uyexck3ty:
     resolution: {integrity: sha512-TgbNTCA33Wl7xzIJegn1HndB4qTS9u03QUwyNycUnXaweZkE4Kq2SB+Yoxx8qbshkZGYBDvUXbXWRUmQDcZZ/Q==}
     peerDependencies:
       react: ^16.8.0  || ^17.0.0 || ^18.0.0
@@ -14555,16 +14556,25 @@ packages:
       fast-deep-equal: 3.1.3
       fast-shallow-equal: 1.0.0
       js-cookie: 2.2.1
-      nano-css: 5.3.5_sfoxds7t5ydpegc3knd667wn6m
-      react: 17.0.2
-      react-dom: 17.0.2_react@17.0.2
-      react-universal-interface: 0.6.2_react@17.0.2+tslib@2.5.3
+      nano-css: 5.3.5_wcqkhtmu7mswc6yz4uyexck3ty
+      react: 16.14.0
+      react-dom: 16.14.0_react@16.14.0
+      react-universal-interface: 0.6.2_react@16.14.0+tslib@2.5.3
       resize-observer-polyfill: 1.5.1
       screenfull: 5.2.0
       set-harmonic-interval: 1.0.1
       throttle-debounce: 3.0.1
       ts-easing: 0.2.0
       tslib: 2.5.3
+    dev: true
+
+  /react/16.14.0:
+    resolution: {integrity: sha512-0X2CImDkJGApiAlcf0ODKIneSwBPhqJawOa5wCtKbu7ZECrmS26NvtSILynQ66cgkT/RJ4LidJOc3bUESwmU8g==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+      object-assign: 4.1.1
+      prop-types: 15.8.1
     dev: true
 
   /react/17.0.2:
@@ -15559,8 +15569,8 @@ packages:
     resolution: {integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==}
     dev: true
 
-  /scheduler/0.20.2:
-    resolution: {integrity: sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==}
+  /scheduler/0.19.1:
+    resolution: {integrity: sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==}
     dependencies:
       loose-envify: 1.4.0
       object-assign: 4.1.1
