@@ -3,27 +3,20 @@
  */
 
 import type {
-  EventMap,
-  StateAnimationSettings,
+  DotLottieStatePlaybackSettings,
+  DotLottieStateTransitionEvents,
   StateTransitionOnAfter,
-  XStateTargetEvent,
 } from '@dotlottie/dotlottie-js';
-import {
-  EVENT_MAP,
-  XStateEvents,
-  type LottieStateMachine,
-  type StateSettings,
-  type StateTransitionEvents,
-  type Transitionable,
-  type XState,
-  type XStateMachine,
-} from '@dotlottie/dotlottie-js';
+import { type LottieStateMachine, type Transitionable } from '@dotlottie/dotlottie-js';
 import type { AnimationEventName } from 'lottie-web';
 import { createMachine, interpret } from 'xstate';
 
 import { DEFAULT_OPTIONS } from '../dotlottie-player';
 import type { DotLottieElement, DotLottiePlayer } from '../dotlottie-player';
 import { createError, getKeyByValue } from '../utils';
+
+import type { EventMap, XStateTargetEvent } from './xstate-machine';
+import { EVENT_MAP, XStateEvents, type XState, type XStateMachine } from './xstate-machine';
 
 export class DotLottieStateMachine {
   protected activeStateId: string = '';
@@ -166,12 +159,12 @@ export class DotLottieStateMachine {
         for (const state in states) {
           if (typeof states[state] !== 'undefined' && states[state]) {
             // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-            const stateSettings: StateSettings = states[state]!;
+            const stateSettings = states[state]!;
 
-            const playbackSettings = stateSettings.statePlaybackSettings;
+            const playbackSettings = stateSettings['playbackSettings'];
 
             const eventNames = Object.keys(stateSettings).filter((key) => key.startsWith('on')) as Array<
-              keyof StateTransitionEvents
+              keyof DotLottieStateTransitionEvents
             >;
 
             const events = {} as Record<keyof EventMap, XStateTargetEvent>;
@@ -206,10 +199,10 @@ export class DotLottieStateMachine {
                 // If the state machine is different than the current one, re-render the animation
                 const shouldRender =
                   !this._player.getAnimationInstance() ||
-                  (stateSettings.animationId && stateSettings.animationId !== this._player.currentAnimationId);
+                  (stateSettings['animationId'] && stateSettings['animationId'] !== this._player.currentAnimationId);
 
                 if (shouldRender) {
-                  this._player.play(stateSettings.animationId, () => ({
+                  this._player.play(stateSettings['animationId'], () => ({
                     ...DEFAULT_OPTIONS,
                     ...playbackSettings,
                   }));
@@ -278,7 +271,7 @@ export class DotLottieStateMachine {
     return machines;
   }
 
-  protected _updatePlaybackSettings(playbackSettings: StateAnimationSettings): void {
+  protected _updatePlaybackSettings(playbackSettings: DotLottieStatePlaybackSettings): void {
     if (!this._player.getAnimationInstance()) {
       throw new Error('Unable to update playbackSettings. Animations is not rendered yet.');
     }
