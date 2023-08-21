@@ -2,10 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-/* eslint-disable no-warning-comments */
-
-import { DotLottie } from '@dotlottie/dotlottie-js';
-import type { Manifest, ManifestAnimation, PlaybackOptions, LottieStateMachine } from '@dotlottie/dotlottie-js';
+import type { Manifest, ManifestAnimation, PlaybackOptions } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
 import type {
   AnimationConfig,
@@ -178,7 +175,6 @@ export class DotLottiePlayer {
   private readonly _light: boolean = false;
 
   private readonly _dotLottieLoader: DotLottieLoader = new DotLottieLoader();
-  protected _stateSchemas?: LottieStateMachine[];
 
   protected _activeStateId?: string;
 
@@ -193,6 +189,8 @@ export class DotLottiePlayer {
   private _visibilityPercentage: number = 0;
 
   protected _stateMachine?: DotLottieStateMachine;
+
+  private readonly _methodStack: Array<() => void> = [];
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -445,19 +443,38 @@ export class DotLottiePlayer {
   }
 
   public goToAndPlay(value: number | string, isFrame?: boolean, name?: string): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.goToAndPlay(value, isFrame, name);
+      });
+
+      return;
+    }
     this._lottie.goToAndPlay(value, isFrame, name);
     this.setCurrentState(PlayerState.Playing);
   }
 
   public goToAndStop(value: number | string, isFrame?: boolean, name?: string): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.goToAndStop(value, isFrame, name);
+      });
+
+      return;
+    }
+
     this._lottie.goToAndStop(value, isFrame, name);
     this.setCurrentState(PlayerState.Stopped);
   }
 
   public seek(value: number | string): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.seek(value);
+      });
+
+      return;
+    }
 
     let frameValue = value;
 
@@ -564,6 +581,8 @@ export class DotLottiePlayer {
   public stopPlayOnScroll(): void {
     if (this._scrollCallback) {
       window.removeEventListener('scroll', this._scrollCallback);
+
+      this._scrollCallback = undefined;
     }
   }
 
@@ -741,6 +760,8 @@ export class DotLottiePlayer {
     // As animationData won't be available at this point.
     // This avoids the error thrown if user calls play little bit earlier. Useful for the react-layer
     if ([PlayerState.Initial, PlayerState.Loading].includes(this._currentState)) {
+      logWarning('Player unable to play whilst loading.');
+
       return;
     }
 
@@ -806,13 +827,26 @@ export class DotLottiePlayer {
   }
 
   public playSegments(segment: AnimationSegment | AnimationSegment[], force?: boolean): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.playSegments(segment, force);
+      });
+
+      return;
+    }
+
     this._lottie.playSegments(segment, force);
     this.setCurrentState(PlayerState.Playing);
   }
 
   public resetSegments(force: boolean): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.resetSegments(force);
+      });
+
+      return;
+    }
 
     this._lottie.resetSegments(force);
   }
@@ -869,10 +903,6 @@ export class DotLottiePlayer {
     return this._currentAnimationId;
   }
 
-  public get container(): DotLottieElement | undefined {
-    return this._container ?? undefined;
-  }
-
   public get activeStateId(): string | undefined {
     return this._activeStateId;
   }
@@ -883,7 +913,9 @@ export class DotLottiePlayer {
     this._stateMachine?.stop();
 
     if (stateId) {
-      this._startInteractivity();
+      this._startInteractivity(stateId);
+    } else {
+      throw createError('stateId must be a non-empty string.');
     }
   }
 
@@ -998,12 +1030,25 @@ export class DotLottiePlayer {
   }
 
   public resize(): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.resize();
+      });
+
+      return;
+    }
     this._lottie.resize();
   }
 
   public stop(): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.stop();
+      });
+
+      return;
+    }
+
     this.clearCountTimer();
     this._counter = 0;
 
@@ -1013,7 +1058,13 @@ export class DotLottiePlayer {
   }
 
   public pause(): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.pause();
+      });
+
+      return;
+    }
 
     this.clearCountTimer();
     this._lottie.pause();
@@ -1021,7 +1072,13 @@ export class DotLottiePlayer {
   }
 
   public freeze(): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.freeze();
+      });
+
+      return;
+    }
 
     if (this.currentState !== PlayerState.Frozen) {
       this._stateBeforeFreeze = this.currentState;
@@ -1031,7 +1088,13 @@ export class DotLottiePlayer {
   }
 
   public unfreeze(): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.unfreeze();
+      });
+
+      return;
+    }
 
     if (this._stateBeforeFreeze === PlayerState.Playing) {
       this.play();
@@ -1141,7 +1204,13 @@ export class DotLottiePlayer {
   public setAutoplay(value: boolean): void {
     this._requireValidAutoplay(value);
 
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.setAutoplay(value);
+      });
+
+      return;
+    }
     this._lottie.autoplay = value;
     this._playbackOptions.autoplay = value;
     this._notify();
@@ -1149,7 +1218,13 @@ export class DotLottiePlayer {
   }
 
   public toggleAutoplay(): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.toggleAutoplay();
+      });
+
+      return;
+    }
     this.setAutoplay(!this._lottie.autoplay);
   }
 
@@ -1189,7 +1264,13 @@ export class DotLottiePlayer {
   }
 
   public toggleLoop(): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.toggleLoop();
+      });
+
+      return;
+    }
     this.setLoop(!this._loop);
   }
 
@@ -1332,11 +1413,36 @@ export class DotLottiePlayer {
   }
 
   public addEventListeners(): void {
-    if (!this._lottie) return;
+    if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
+      this._methodStack.push(() => {
+        this.addEventListeners();
+      });
+
+      return;
+    }
+
+    this._lottie.addEventListener('DOMLoaded', () => {
+      if (this._activeStateId) {
+        // If we detect state machines are being used, load all of them up from the file
+        if (!this._inInteractiveMode) this.enterInteractiveMode(this._activeStateId);
+      }
+
+      while (this._methodStack.length > 0) {
+        const method = this._methodStack.pop();
+
+        if (method) {
+          method();
+        }
+      }
+    });
 
     this._lottie.addEventListener('enterFrame', () => {
       // Update seeker and frame value based on the current animation frame
-      if (!this._lottie) return;
+      if (!this._lottie) {
+        logWarning('enterFrame event : Lottie is undefined.');
+
+        return;
+      }
       this._frame = this._lottie.currentFrame;
       this._seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
       // Notify state subscriptions about the frame and seeker update.
@@ -1344,7 +1450,11 @@ export class DotLottiePlayer {
     });
 
     this._lottie.addEventListener('loopComplete', () => {
-      if (!this._lottie) return;
+      if (!this._lottie) {
+        logWarning('loopComplete event : Lottie is undefined.');
+
+        return;
+      }
 
       this._container?.dispatchEvent(new Event(PlayerEvents.LoopComplete));
 
@@ -1445,26 +1555,32 @@ export class DotLottiePlayer {
   }
 
   protected async _setCurrentAnimation(animationId: string): Promise<void> {
+    this._currentState = PlayerState.Loading;
     const anim = await this._dotLottieLoader.getAnimation(animationId);
 
     this._currentAnimationId = animationId;
     this._animation = anim;
+    this._currentState = PlayerState.Ready;
   }
 
-  protected _startInteractivity(): void {
-    if (typeof this._stateSchemas === 'undefined') {
-      throw createError('no interactivity states are available.');
+  protected async _startInteractivity(stateId: string): Promise<void> {
+    if (this._dotLottieLoader.stateMachinesMap.size === 0) {
+      await this._dotLottieLoader.getStateMachines();
     }
 
-    if (typeof this._activeStateId === 'undefined') {
+    if (this._dotLottieLoader.stateMachinesMap.size === 0) {
+      throw createError('No interactivity states are available.');
+    }
+
+    if (stateId === 'undefined') {
       throw createError('stateId is not specified.');
     }
 
     if (!this._stateMachine) {
-      this._stateMachine = new DotLottieStateMachine(this._stateSchemas, this);
+      this._stateMachine = new DotLottieStateMachine(Array.from(this._dotLottieLoader.stateMachinesMap.values()), this);
     }
 
-    this._stateMachine.start(this._activeStateId);
+    this._stateMachine.start(stateId);
   }
 
   // If we go back to default animation or at animation 0 we need to use props
@@ -1645,193 +1761,6 @@ export class DotLottiePlayer {
   protected setErrorState(msg: string): void {
     this.setCurrentState(PlayerState.Error);
     logError(msg);
-  }
-
-  protected async processLottieJSON(
-    data: Record<string, unknown>,
-    filename: string,
-  ): Promise<{
-    animations: Map<string, Animation>;
-    manifest: Manifest;
-    themes: Map<string, string>;
-  }> {
-    try {
-      const animations: Map<string, Animation> = new Map();
-
-      const boilerplateManifest: Manifest = {
-        animations: [
-          {
-            id: filename,
-            speed: 1,
-            loop: true,
-            direction: 1,
-          },
-        ],
-        description: '',
-        author: '',
-        keywords: '',
-        generator: 'dotLottie-player-common',
-        revision: 1,
-        version: '1.0.0',
-      };
-
-      animations.set(filename, data as unknown as Animation);
-
-      return {
-        animations,
-        themes: new Map<string, string>(),
-        manifest: boilerplateManifest,
-      };
-    } catch (error) {
-      throw createError(`error occurred while processing lottie JSON  ${error}`);
-    }
-  }
-
-  /**
-   * Retrieves animation data from the provided source URL and processes it for playback.
-   *
-   * @param srcParsed - The parsed source URL from which to fetch animation data.
-   * @returns An object containing various animation-related data, including animations, manifest, states, themes, and more.
-   */
-  protected async getAnimationData(srcParsed: string): Promise<{
-    activeAnimationId: string;
-    animations: Map<string, Animation>;
-    manifest: Manifest;
-    states: LottieStateMachine[];
-    themes: Map<string, string>;
-  }> {
-    let response: Response;
-
-    try {
-      response = await fetch(srcParsed, {
-        method: 'GET',
-        mode: 'cors',
-      });
-    } catch (error) {
-      throw createError(`error fetching URL: ${srcParsed}`);
-    }
-
-    const contentType = response.headers.get('Content-Type');
-
-    if (contentType === 'application/json') {
-      // Handling lottie JSON files
-      const lottieJSON = await response.json();
-
-      const filename = srcParsed.includes('.json') ? getFilename(srcParsed) : 'my-animation';
-      const { animations, manifest, themes } = await this.processLottieJSON(lottieJSON, filename);
-
-      if (!animations.size || manifest.animations.length === 0 || !manifest.animations[0]) {
-        throw createError('No animation to load!');
-      }
-
-      let activeAnimationId: string;
-
-      if (manifest.activeAnimationId) {
-        activeAnimationId = manifest.activeAnimationId;
-      } else {
-        this._currentAnimationId = manifest.animations[0].id;
-        activeAnimationId = manifest.animations[0].id;
-      }
-
-      return {
-        activeAnimationId,
-        animations,
-        themes,
-        states: [],
-        manifest,
-      };
-    }
-
-    // Handling .lotte files
-    try {
-      const arrayBuffer = await response.arrayBuffer();
-      const dl = new DotLottie();
-      const dotLottie = await dl.fromArrayBuffer(arrayBuffer);
-      const lottieAnimations = dotLottie.animations;
-
-      if (!lottieAnimations.length || !dotLottie.manifest.animations.length || !dotLottie.manifest.animations[0]) {
-        throw createError('no animation to load!');
-      }
-
-      const themes: Map<string, string> = new Map();
-
-      for (const theme of dotLottie.manifest.themes || []) {
-        const existingTheme = dotLottie.getTheme(theme.id);
-
-        if (existingTheme?.data) {
-          const lss = await existingTheme.toString();
-
-          themes.set(existingTheme.id, lss);
-        }
-      }
-
-      const animations: Map<string, Animation> = new Map();
-
-      for (const anim of lottieAnimations) {
-        const animation = await dotLottie.getAnimation(anim.id);
-
-        if (animation) {
-          animations.set(
-            anim.id,
-            await animation.toJSON({
-              inlineAssets: true,
-            }),
-          );
-        }
-      }
-
-      let activeAnimationId: string;
-
-      if (dotLottie.manifest.activeAnimationId) {
-        activeAnimationId = dotLottie.manifest.activeAnimationId;
-      } else {
-        activeAnimationId = dotLottie.manifest.animations[0].id;
-      }
-
-      if (!animations.size) {
-        throw createError('no animation to load!');
-      }
-
-      const stateKeys = dotLottie.manifest.states ?? [];
-      const states = [] as LottieStateMachine[];
-
-      for (const stateKey of stateKeys) {
-        const newState = dotLottie.getStateMachine(stateKey);
-
-        if (newState) states.push(newState);
-      }
-
-      return {
-        activeAnimationId,
-        animations,
-        themes,
-        states,
-        manifest: dotLottie.manifest as Manifest,
-      };
-    } catch (error) {
-      throw createError(`getAnimationData error ${error}`);
-    }
-  }
-
-  public static isLottie(json: Record<string, unknown>): boolean {
-    const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
-
-    return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
-  }
-
-  public static parseSrc(src: string | Record<string, unknown>): string | Record<string, unknown> {
-    if (typeof src === 'object') {
-      return src;
-    }
-
-    try {
-      return JSON.parse(src);
-    } catch (error) {
-      // Try construct an absolute URL from the src URL
-      const srcUrl: URL = new URL(src, window.location.href);
-
-      return srcUrl.toString();
-    }
   }
 
   /**

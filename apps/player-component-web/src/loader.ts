@@ -61,12 +61,12 @@ let isScrolling = false;
   });
 
   player.addEventListener('visibilityPercentage', (e) => {
-    console.log('vp : ' + e);
+    // console.log('vp : ' + e);
   });
 
   player.addEventListener('ready', () => {
-    console.log(player.getManifest());
-    console.log(player.activeStateId)
+    // console.log(player.getManifest());
+    // console.log(player.activeStateId)
     // player.setSpeed(5);
     // player.setDirection(-1);
     // player.setPlayMode('normal');
