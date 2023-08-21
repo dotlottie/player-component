@@ -149,9 +149,9 @@ export class DotLottieStateMachine {
       const machine = {} as XStateMachine;
       // Loop over every toConvert key
 
-      machine.id = stateObj.id;
+      machine.id = stateObj.descriptor.id;
 
-      if (typeof stateObj.initial !== 'undefined') machine.initial = stateObj.initial;
+      if (typeof stateObj.descriptor.initial !== 'undefined') machine.initial = stateObj.descriptor.initial;
 
       if (typeof stateObj !== 'undefined') {
         const states = stateObj.states;
@@ -208,7 +208,6 @@ export class DotLottieStateMachine {
                   }));
                 } else {
                   // If animation is already rendered, update playback settings
-                  // To do: if autoplay, play animation if not don't
                   this._updatePlaybackSettings(playbackSettings);
                 }
 
@@ -224,7 +223,11 @@ export class DotLottieStateMachine {
                     if (frame1 !== 0 && frame1 === frame2) {
                       newFrame1 = frame1 - 1;
                     }
-                    this._player.playSegments([newFrame1, frame2], true);
+                    if (frame1 === 0 && frame1 === frame2) {
+                      this._player.goToAndPlay(frame1, true);
+                    } else {
+                      this._player.playSegments([newFrame1, frame2], true);
+                    }
                   }
 
                   // Pauses animation. By default `playSegments` plays animation.
@@ -265,7 +268,7 @@ export class DotLottieStateMachine {
         }
       }
       machine.states = machineStates;
-      machines.set(stateObj.id, machine);
+      machines.set(machine.id, machine);
     }
 
     return machines;
@@ -287,7 +290,7 @@ export class DotLottieStateMachine {
     }
 
     if (typeof playbackSettings.direction !== 'undefined') {
-      this._player.setDirection(playbackSettings.direction === 1 ? 1 : -1);
+      this._player.setDirection(playbackSettings.direction);
     }
 
     if (typeof playbackSettings.intermission !== 'undefined') {
