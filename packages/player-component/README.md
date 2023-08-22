@@ -32,13 +32,13 @@ dotLottie is an open-source file format that aggregates one or more Lottie files
 - Import from CDN.
 
 ```html
-<script src="https://unpkg.com/@dotlottie/player-component@1.0.0/dist/dotlottie-player.js"></script>
+<script type="module" src="https://unpkg.com/@dotlottie/player-component@2.3.0/dist/dotlottie-player.mjs" ></script>
 ```
 
 - Import from local node_modules directory.
 
 ```html
-<script src="/node_modules/@dotlottie/player-component/dist/dotlottie-player.js"></script>
+<script type="module" src="/node_modules/@dotlottie/player-component/dist/dotlottie-player.mjs"></script>
 ```
 
 #### In Javascript or TypeScript
