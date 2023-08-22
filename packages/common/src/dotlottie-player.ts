@@ -5,8 +5,6 @@
 /* eslint-disable no-warning-comments */
 
 import type { Animation } from '@lottiefiles/lottie-types';
-import style from '@lottiefiles/relottie-style';
-import { relottie } from '@lottiefiles/relottie/index';
 import type {
   AnimationConfig,
   AnimationDirection,
@@ -22,6 +20,7 @@ import type {
 import pkg from '../package.json';
 
 import { DotLottieLoader } from './dotlottie-loader';
+import { applyLottieStyleSheet } from './dotlottie-styler';
 import { Store } from './store';
 import { createError, isValidLottieJSON, isValidLottieString, logError, logWarning } from './utils';
 
@@ -1194,14 +1193,8 @@ export class DotLottiePlayer {
 
     const lottieStyleSheet = await this._dotLottieLoader.getTheme(defaultTheme);
 
-    if (lottieStyleSheet) {
-      const vFile = await relottie()
-        .use(style, {
-          lss: lottieStyleSheet,
-        })
-        .process(JSON.stringify(this._animation));
-
-      this._animation = JSON.parse(vFile.value) as Animation;
+    if (lottieStyleSheet && this._animation) {
+      this._animation = await applyLottieStyleSheet(this._animation, lottieStyleSheet);
     } else {
       this._animation = await this._dotLottieLoader.getAnimation(this._currentAnimationId ?? '');
     }
