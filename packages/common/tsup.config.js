@@ -13,6 +13,7 @@ export default defineConfig({
   sourcemap: true,
   minify: true,
   treeshake: true,
+  splitting: true,
   module: 'ESNext',
   format: ['esm'],
   tsconfig: 'tsconfig.json',
