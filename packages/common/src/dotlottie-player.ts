@@ -7,7 +7,6 @@
 import type { Animation } from '@lottiefiles/lottie-types';
 import style from '@lottiefiles/relottie-style';
 import { relottie } from '@lottiefiles/relottie/index';
-import lottie from 'lottie-web';
 import type {
   AnimationConfig,
   AnimationDirection,
@@ -17,6 +16,7 @@ import type {
   SVGRendererConfig,
   HTMLRendererConfig,
   CanvasRendererConfig,
+  LottiePlayer,
 } from 'lottie-web';
 
 import pkg from '../package.json';
@@ -1206,7 +1206,9 @@ export class DotLottiePlayer {
       this._animation = await this._dotLottieLoader.getAnimation(this._currentAnimationId ?? '');
     }
 
-    this._lottie = lottie.loadAnimation({
+    const lottiePlayer = await this._getLottiePlayerInstance();
+
+    this._lottie = lottiePlayer.loadAnimation({
       ...options,
       container: this._container as Element,
       animationData: this._animation,
@@ -1229,6 +1231,33 @@ export class DotLottiePlayer {
     }
 
     this._updateTestData();
+  }
+
+  private async _getLottiePlayerInstance(): Promise<LottiePlayer> {
+    const renderer = this._animationConfig.renderer ?? 'svg';
+
+    // eslint-disable-next-line @typescript-eslint/consistent-type-imports
+    let LottieWebModule: typeof import('lottie-web');
+
+    switch (renderer) {
+      case 'svg':
+        LottieWebModule = await import('lottie-web/build/player/lottie_svg');
+        break;
+
+      case 'canvas':
+        // @ts-ignore
+        LottieWebModule = await import('lottie-web/build/player/lottie_canvas');
+        break;
+
+      case 'html':
+        LottieWebModule = await import('lottie-web/build/player/lottie_html');
+        break;
+
+      default:
+        throw new Error(`Invalid renderer: ${renderer}`);
+    }
+
+    return LottieWebModule.default;
   }
 
   private _getActiveAnimationId(): string | undefined {
