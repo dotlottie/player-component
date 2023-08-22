@@ -190,8 +190,6 @@ export class DotLottiePlayer {
 
   protected _stateMachine?: DotLottieStateMachine;
 
-  private readonly _methodStack: Array<() => void> = [];
-
   public constructor(
     src: string | Record<string, unknown>,
     container?: DotLottieElement | null,
@@ -361,6 +359,11 @@ export class DotLottiePlayer {
     };
   }
 
+  /**
+   * Gets the current player state.
+   *
+   * @returns The current state of the player.
+   */
   public get currentState(): PlayerState {
     return this._currentState;
   }
@@ -444,9 +447,7 @@ export class DotLottiePlayer {
 
   public goToAndPlay(value: number | string, isFrame?: boolean, name?: string): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.goToAndPlay(value, isFrame, name);
-      });
+      logWarning("goToAndPlay() Can't use whilst loading.");
 
       return;
     }
@@ -456,9 +457,7 @@ export class DotLottiePlayer {
 
   public goToAndStop(value: number | string, isFrame?: boolean, name?: string): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.goToAndStop(value, isFrame, name);
-      });
+      logWarning("goToAndStop() Can't use whilst loading.");
 
       return;
     }
@@ -469,9 +468,7 @@ export class DotLottiePlayer {
 
   public seek(value: number | string): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.seek(value);
-      });
+      logWarning("seek() Can't use whilst loading.");
 
       return;
     }
@@ -752,10 +749,10 @@ export class DotLottiePlayer {
    * player.play(); // Start playing when player is paused or stopped. Doesn't change animation
    * ```
    */
-  public play(
+  public async play(
     activeAnimation?: string | number,
     getOptions?: (currPlaybackOptions: PlaybackOptions, manifestPlaybackOptions: PlaybackOptions) => PlaybackOptions,
-  ): void {
+  ): Promise<void> {
     // If the player is in the 'Initial' or 'Loading' state, playback cannot be initiated.
     // As animationData won't be available at this point.
     // This avoids the error thrown if user calls play little bit earlier. Useful for the react-layer
@@ -792,13 +789,13 @@ export class DotLottiePlayer {
 
       if (typeof getOptions === 'function') {
         // If a `getOptions` function is provided, use it to customize playback options.
-        this.render({
+        await this.render({
           id: anim.id,
           ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(anim)),
         });
       } else {
         // Otherwise it doesn't override playback options
-        this.render({
+        await this.render({
           id: anim.id,
         });
       }
@@ -813,13 +810,13 @@ export class DotLottiePlayer {
 
       if (typeof getOptions === 'function') {
         // If a `getOptions` function is provided, use it to customize playback options.
-        this.render({
+        await this.render({
           id: anim.id,
           ...getOptions(this._getPlaybackOptions(), this._getOptionsFromAnimation(anim)),
         });
       } else {
         // Otherwise it doesn't override playback options
-        this.render({
+        await this.render({
           id: anim.id,
         });
       }
@@ -828,9 +825,7 @@ export class DotLottiePlayer {
 
   public playSegments(segment: AnimationSegment | AnimationSegment[], force?: boolean): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.playSegments(segment, force);
-      });
+      logWarning("playSegments() Can't use whilst loading.");
 
       return;
     }
@@ -841,9 +836,7 @@ export class DotLottiePlayer {
 
   public resetSegments(force: boolean): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.resetSegments(force);
-      });
+      logWarning("resetSegments() Can't use whilst loading.");
 
       return;
     }
@@ -907,6 +900,42 @@ export class DotLottiePlayer {
     return this._activeStateId;
   }
 
+  /**
+   * Gets the state machines from file and starts the specified state machine.
+   * @param stateId - The identifier of the state machine to use.
+   * @returns
+   */
+  protected async _startInteractivity(stateId: string): Promise<void> {
+    if (!this._inInteractiveMode) {
+      logError(
+        "Can't start initeractivity. Not in interactive mode. Call enterInteractiveMode(stateId: string) to start.",
+      );
+
+      return;
+    }
+    if (this._dotLottieLoader.stateMachinesMap.size === 0) {
+      await this._dotLottieLoader.getStateMachines();
+    }
+
+    if (this._dotLottieLoader.stateMachinesMap.size === 0) {
+      throw createError('No interactivity states are available.');
+    }
+
+    if (stateId === 'undefined') {
+      throw createError('stateId is not specified.');
+    }
+
+    if (!this._stateMachine) {
+      this._stateMachine = new DotLottieStateMachine(Array.from(this._dotLottieLoader.stateMachinesMap.values()), this);
+    }
+
+    this._stateMachine.start(stateId);
+  }
+
+  /**
+   * Enters interactive mode for the specified state machine and starts it.
+   * @param stateId - The identifier of the state machine to use.
+   */
   public enterInteractiveMode(stateId: string): void {
     this._inInteractiveMode = stateId.length > 0;
     this._activeStateId = stateId;
@@ -919,8 +948,12 @@ export class DotLottiePlayer {
     }
   }
 
+  /**
+   * Exits interactive mode and stops the current state machine.
+   */
   public exitInteractiveMode(): void {
     this._inInteractiveMode = false;
+    this._activeStateId = '';
     this._stateMachine?.stop();
   }
 
@@ -935,7 +968,7 @@ export class DotLottiePlayer {
       throw createError('animation not found.');
     }
 
-    this.render(anim);
+    this.play(activeId);
   }
 
   public previous(
@@ -1031,9 +1064,7 @@ export class DotLottiePlayer {
 
   public resize(): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.resize();
-      });
+      logWarning("resize() Can't use whilst loading.");
 
       return;
     }
@@ -1042,9 +1073,7 @@ export class DotLottiePlayer {
 
   public stop(): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.stop();
-      });
+      logWarning("stop() Can't use whilst loading.");
 
       return;
     }
@@ -1059,9 +1088,7 @@ export class DotLottiePlayer {
 
   public pause(): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.pause();
-      });
+      logWarning("pause() Can't use whilst loading.");
 
       return;
     }
@@ -1073,9 +1100,7 @@ export class DotLottiePlayer {
 
   public freeze(): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.freeze();
-      });
+      logWarning("freeze() Can't use whilst loading.");
 
       return;
     }
@@ -1089,9 +1114,7 @@ export class DotLottiePlayer {
 
   public unfreeze(): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.unfreeze();
-      });
+      logWarning("unfreeze() Can't use whilst loading.");
 
       return;
     }
@@ -1205,9 +1228,7 @@ export class DotLottiePlayer {
     this._requireValidAutoplay(value);
 
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.setAutoplay(value);
-      });
+      logWarning("setAutoplay() Can't use whilst loading.");
 
       return;
     }
@@ -1219,9 +1240,7 @@ export class DotLottiePlayer {
 
   public toggleAutoplay(): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.toggleAutoplay();
-      });
+      logWarning("toggleAutoplay() Can't use whilst loading.");
 
       return;
     }
@@ -1265,9 +1284,7 @@ export class DotLottiePlayer {
 
   public toggleLoop(): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.toggleLoop();
-      });
+      logWarning("toggleLoop() Can't use whilst loading.");
 
       return;
     }
@@ -1414,9 +1431,7 @@ export class DotLottiePlayer {
 
   public addEventListeners(): void {
     if (!this._lottie || [PlayerState.Loading].includes(this._currentState)) {
-      this._methodStack.push(() => {
-        this.addEventListeners();
-      });
+      logWarning("addEventListeners() Can't use whilst loading.");
 
       return;
     }
@@ -1425,14 +1440,6 @@ export class DotLottiePlayer {
       if (this._activeStateId) {
         // If we detect state machines are being used, load all of them up from the file
         if (!this._inInteractiveMode) this.enterInteractiveMode(this._activeStateId);
-      }
-
-      while (this._methodStack.length > 0) {
-        const method = this._methodStack.pop();
-
-        if (method) {
-          method();
-        }
       }
     });
 
@@ -1489,23 +1496,23 @@ export class DotLottiePlayer {
         // 1. Pause:  Pause the player
         // 2. Set Timer:  Resume.
 
-        this._lottie.goToAndPlay(startFrame, true);
+        this.goToAndPlay(startFrame, true);
         // 1. Pause
-        this._lottie.pause();
+        this.pause();
 
         // 2. Set a timeout to resume animation after intermission duration.
         this._counterInterval = window.setTimeout(() => {
           if (!this._lottie) return;
 
           // Next Play event
-          this._lottie.setDirection(newDirection as AnimationDirection);
-          this._lottie.goToAndPlay(startFrame, true);
+          this.setDirection(newDirection as AnimationDirection);
+          this.goToAndPlay(startFrame, true);
         }, this._intermission);
       } else {
         // Without intermission keep playing without interruption
         // Note: A manual goToAndPlay is required to handle bounce
-        this._lottie.setDirection(newDirection as AnimationDirection);
-        this._lottie.goToAndPlay(newDirection === -1 ? this._lottie.totalFrames - 1 : 0, true);
+        this.setDirection(newDirection as AnimationDirection);
+        this.goToAndPlay(newDirection === -1 ? this.totalFrames - 1 : 0, true);
       }
     });
 
@@ -1530,10 +1537,10 @@ export class DotLottiePlayer {
             newDirection = Number(newDirection) * -1;
           }
 
-          const startFrame = newDirection === -1 ? this._lottie.totalFrames - 1 : 0;
+          const startFrame = newDirection === -1 ? this.totalFrames - 1 : 0;
 
-          this._lottie.setDirection(newDirection as 1 | -1);
-          this._lottie.goToAndPlay(startFrame, true);
+          this.setDirection(newDirection as 1 | -1);
+          this.goToAndPlay(startFrame, true);
         }, this._intermission);
       } else {
         this._handleAnimationComplete();
@@ -1561,26 +1568,6 @@ export class DotLottiePlayer {
     this._currentAnimationId = animationId;
     this._animation = anim;
     this._currentState = PlayerState.Ready;
-  }
-
-  protected async _startInteractivity(stateId: string): Promise<void> {
-    if (this._dotLottieLoader.stateMachinesMap.size === 0) {
-      await this._dotLottieLoader.getStateMachines();
-    }
-
-    if (this._dotLottieLoader.stateMachinesMap.size === 0) {
-      throw createError('No interactivity states are available.');
-    }
-
-    if (stateId === 'undefined') {
-      throw createError('stateId is not specified.');
-    }
-
-    if (!this._stateMachine) {
-      this._stateMachine = new DotLottieStateMachine(Array.from(this._dotLottieLoader.stateMachinesMap.values()), this);
-    }
-
-    this._stateMachine.start(stateId);
   }
 
   // If we go back to default animation or at animation 0 we need to use props
@@ -1650,8 +1637,8 @@ export class DotLottiePlayer {
     }
 
     // Modifying for current animation
-    this._lottie.setDirection(direction);
-    this._lottie.setSpeed(speed);
+    this.setDirection(direction);
+    this.setSpeed(speed);
 
     if (autoplay && !hover) {
       this.play();

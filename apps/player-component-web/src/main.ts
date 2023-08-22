@@ -20,7 +20,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="scroll" type="button">Activate scroll</button>
 
       <div style="width: 500px; height: 500px; margin: auto; justify-content: center">
-        <dotlottie-player controls src="/lf_interactivity_page.lottie" id="dotlottie-player" autoplay loop class="w-10 h-10" activeStateId="state_segments"></dotlottie-player>
+        <dotlottie-player controls src="/lf_interactivity_page.lottie" id="dotlottie-player" autoplay loop class="w-10 h-10"></dotlottie-player>
       </div>
     </div>
     <div class="card">

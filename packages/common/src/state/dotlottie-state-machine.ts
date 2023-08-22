@@ -13,7 +13,7 @@ import { createMachine, interpret } from 'xstate';
 
 import { DEFAULT_OPTIONS } from '../dotlottie-player';
 import type { DotLottieElement, DotLottiePlayer } from '../dotlottie-player';
-import { createError, getKeyByValue } from '../utils';
+import { createError, getKeyByValue, logError } from '../utils';
 
 import type { EventMap, XStateTargetEvent } from './xstate-machine';
 import { EVENT_MAP, XStateEvents, type XState, type XStateMachine } from './xstate-machine';
@@ -41,6 +41,11 @@ export class DotLottieStateMachine {
     this._domElement = player.container;
   }
 
+  /**
+   * Start the state machine with the passed id.
+   *
+   * @param stateId - The id of the state machine to start
+   */
   public start(stateId: string): void {
     this.stop();
 
@@ -57,12 +62,18 @@ export class DotLottieStateMachine {
     this._service.start();
   }
 
+  /**
+   * Stop the state machine.
+   */
   public stop(): void {
     this._removeEventListeners();
     this._service?.stop();
     this._player.stop();
   }
 
+  /**
+   * Removes all event listeners on the player and container.
+   */
   protected _removeEventListeners(): void {
     this._requiresDomElement();
 
@@ -81,6 +92,10 @@ export class DotLottieStateMachine {
     }
   }
 
+  /**
+   * Adds event listeners to the player and container.
+   * Subscribes to the state machine and listens for state changes.
+   */
   protected _addEventListeners(): void {
     this._requiresDomElement();
 
@@ -137,10 +152,19 @@ export class DotLottieStateMachine {
     });
   }
 
+  /**
+   * Subscribe to state changes.
+   * @param callback - Callback function to be called when state changes.
+   */
   public subscribe(callback: () => void): () => void {
     throw createError(callback.toString());
   }
 
+  /**
+   * Transform custom defined state machine to XState schema.
+   * @param toConvert - Custom defined state machine to convert to XState schema
+   * @returns - XState schema
+   */
   protected _transformToXStateSchema(toConvert: LottieStateMachine[]): Map<string, XStateMachine> {
     const machines = new Map<string, XStateMachine>();
 
@@ -202,52 +226,20 @@ export class DotLottieStateMachine {
                   (stateSettings['animationId'] && stateSettings['animationId'] !== this._player.currentAnimationId);
 
                 if (shouldRender) {
-                  this._player.play(stateSettings['animationId'], () => ({
-                    ...DEFAULT_OPTIONS,
-                    ...playbackSettings,
-                  }));
+                  this._player
+                    .play(stateSettings['animationId'], () => ({
+                      ...DEFAULT_OPTIONS,
+                      ...playbackSettings,
+                    }))
+                    .then(() => {
+                      this._updatePlaybackSettings(playbackSettings);
+                    })
+                    .catch((error) => {
+                      logError(`State machine error: ${error.message}`);
+                    });
                 } else {
                   // If animation is already rendered, update playback settings
                   this._updatePlaybackSettings(playbackSettings);
-                }
-
-                // Segments is outside of playbackSettings type, so needs to be handled separately
-                if (playbackSettings.segments) {
-                  if (typeof playbackSettings.segments === 'string') {
-                    this._player.goToAndPlay(playbackSettings.segments, true);
-                  } else {
-                    const [frame1, frame2] = playbackSettings.segments;
-                    let newFrame1 = frame1;
-
-                    // Solves: If both frames are same lottie-web takes animation to frame 0
-                    if (frame1 !== 0 && frame1 === frame2) {
-                      newFrame1 = frame1 - 1;
-                    }
-                    if (frame1 === 0 && frame1 === frame2) {
-                      this._player.goToAndPlay(frame1, true);
-                    } else {
-                      this._player.playSegments([newFrame1, frame2], true);
-                    }
-                  }
-
-                  // Pauses animation. By default `playSegments` plays animation.
-                  if (!playbackSettings.autoplay) {
-                    this._player.pause();
-                  }
-                }
-
-                // playOnScroll is outside of playbackSettings type, so needs to be handled separately
-                if (playbackSettings.playOnScroll) {
-                  if (playbackSettings.segments && typeof playbackSettings.segments !== 'string') {
-                    this._player.playOnScroll({
-                      threshold: playbackSettings.playOnScroll,
-                      segments: playbackSettings.segments,
-                    });
-                  } else {
-                    this._player.playOnScroll({
-                      threshold: playbackSettings.playOnScroll,
-                    });
-                  }
                 }
               },
               exit: (): void => {
@@ -274,6 +266,54 @@ export class DotLottieStateMachine {
     return machines;
   }
 
+  /**
+   * Handles playSegments playback setting.
+   * @param playbackSettings - Playback settings containing segments
+   */
+  protected _handlePlaySegments(playbackSettings: DotLottieStatePlaybackSettings): void {
+    if (typeof playbackSettings.segments === 'string') {
+      this._player.goToAndPlay(playbackSettings.segments, true);
+    } else {
+      const [frame1, frame2] = playbackSettings.segments as [number, number];
+      let newFrame1 = frame1;
+
+      // Solves: If both frames are same lottie-web takes animation to frame 0
+      if (frame1 !== 0 && frame1 === frame2) {
+        newFrame1 = frame1 - 1;
+      }
+      if (frame1 === 0 && frame1 === frame2) {
+        this._player.goToAndPlay(frame1, true);
+      } else {
+        this._player.playSegments([newFrame1, frame2], true);
+      }
+    }
+  }
+
+  /**
+   * Handles playOnScroll playback setting.
+   * @param playbackSettings - Playback settings containing playOnScroll
+   */
+  protected _handlePlayOnScroll(playbackSettings: DotLottieStatePlaybackSettings): void {
+    const threshold = playbackSettings.playOnScroll as [number, number];
+
+    if (playbackSettings.segments && typeof playbackSettings.segments !== 'string') {
+      const segments = playbackSettings.segments as [number, number];
+
+      this._player.playOnScroll({
+        threshold,
+        segments,
+      });
+    } else {
+      this._player.playOnScroll({
+        threshold,
+      });
+    }
+  }
+
+  /**
+   * Update the playback settings of the current animation.
+   * @param playbackSettings - Playback settings
+   */
   protected _updatePlaybackSettings(playbackSettings: DotLottieStatePlaybackSettings): void {
     if (!this._player.getAnimationInstance()) {
       throw new Error('Unable to update playbackSettings. Animations is not rendered yet.');
@@ -312,8 +352,27 @@ export class DotLottieStateMachine {
     if (typeof playbackSettings.defaultTheme !== 'undefined') {
       this._player.setDefaultTheme(playbackSettings.defaultTheme);
     }
+
+    // playOnScroll only accepts segments as a tuple
+    // frame markers are not supported
+    if (typeof playbackSettings.playOnScroll !== 'undefined') {
+      this._handlePlayOnScroll(playbackSettings);
+    }
+
+    // Segments is outside of playbackSettings type, so needs to be handled separately
+    if (playbackSettings.segments) {
+      this._handlePlaySegments(playbackSettings);
+    }
+
+    // Pauses animation. By default `playSegments` plays animation.
+    if (!playbackSettings.autoplay) {
+      this._player.pause();
+    }
   }
 
+  /**
+   * Throws an error if the DOM element is not defined.
+   */
   protected _requiresDomElement(): void {
     if (!this._domElement) {
       throw createError('Requires a DOM element to attach events.');
