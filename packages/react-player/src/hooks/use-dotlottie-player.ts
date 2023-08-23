@@ -20,6 +20,7 @@ import pkg from '../../package.json';
 
 export interface DotLottieRefProps {
   enterInteractiveMode: (stateId: string) => void;
+  exitInteractiveMode: () => void;
   getContainer: () => HTMLDivElement | undefined;
   getCurrentAnimationId: () => string | undefined;
   getLottie: () => AnimationItem | undefined;
@@ -211,6 +212,9 @@ export const useDotLottiePlayer = (
           },
           stopPlayOnScroll: (): void => {
             dotLottiePlayer.stopPlayOnScroll();
+          },
+          exitInteractiveMode: (): void => {
+            dotLottiePlayer.exitInteractiveMode();
           },
         };
 
