@@ -7,6 +7,7 @@ export interface PlayerProps {
   src: string;
   playbackOptions?: PlaybackOptions;
   controls?: boolean;
+  light?: boolean;
 }
 
 export default function Player(props: PlayerProps) {
@@ -23,6 +24,7 @@ export default function Player(props: PlayerProps) {
         playMode={props.playbackOptions?.playMode}
         speed={props.playbackOptions?.speed}
         controls={props.controls}
+        light={props.light}
       ></dotlottie-player>
     </div>
   );
