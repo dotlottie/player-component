@@ -97,4 +97,75 @@ describe('Interactivity: enter/exit interactivity', () => {
     // cy.get('[name="autoplay"]').should('have.value', 'true');
     // cy.get('[name="speed"]').should('have.value', 3);
   });
+
+  it('should be able change between interactivity states', () => {
+    function Wrapper(): JSX.Element {
+      const lottieRef = useRef<DotLottieRefProps>();
+
+      return (
+        <>
+          <button
+            data-testid="start_toggle"
+            onClick={(): void => {
+              lottieRef.current?.enterInteractiveMode('state_toggle');
+            }}
+          >
+            Start Toggle
+          </button>
+          <button
+            data-testid="start_exploding_pigeon"
+            onClick={(): void => {
+              lottieRef.current?.enterInteractiveMode('exploding_pigeon');
+            }}
+          >
+            Start Exploding Pigeon
+          </button>
+          <button
+            data-testid="exit_interactivity"
+            onClick={(): void => {
+              lottieRef.current?.exitInteractiveMode();
+            }}
+          >
+            Exit Interactivity
+          </button>
+          <PlayerStateWrapper
+            onRef={(ref): void => {
+              if (ref) {
+                lottieRef.current = ref;
+              }
+            }}
+          >
+            <DotLottiePlayer
+              src={`/lf_interactivity_page.lottie`}
+              style={{ height: '400px', display: 'inline-block' }}
+              speed={3}
+              loop
+              autoplay
+            >
+              <Controls />
+            </DotLottiePlayer>
+            ,
+          </PlayerStateWrapper>
+          ,
+        </>
+      );
+    }
+    cy.mount(<Wrapper />);
+
+    // Before interactivity
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[name="activeStateId"]').should('have.value', '');
+
+    // Start Interactivity
+    cy.get('[data-testid="start_toggle"]').click();
+    cy.get('[name="activeStateId"]').should('have.value', 'state_toggle');
+
+    // State: playSun
+    cy.get('[data-testid="start_exploding_pigeon"]').click();
+    cy.get('[name="activeStateId"]').should('have.value', 'exploding_pigeon');
+
+    // Exit interactivity
+    cy.get('[data-testid="exit_interactivity"]').click();
+    cy.get('[name="activeStateId"]').should('have.value', '');
+  });
 });

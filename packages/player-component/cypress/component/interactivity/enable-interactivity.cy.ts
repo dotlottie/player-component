@@ -74,4 +74,51 @@ describe('Interactivity: enter/exit interactivity', () => {
 
   });
 
+  it('should be able change between interactivity states', () => {
+    cy.mount(
+        html`
+          <button
+            data-testid="start_toggle"
+            @click=${(): void => {
+              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer).enterInteractiveMode('state_toggle');
+            }}
+          >
+            Start toggle
+          </button>
+          <button
+            data-testid="start_exploding_pigeon"
+            @click=${(): void => {
+              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer).enterInteractiveMode('exploding_pigeon');
+            }}
+          >
+            Start exploding pigeon
+          </button>
+          <button
+            data-testid="exit_interactivity"
+            @click=${(): void => {
+              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer).exitInteractiveMode();
+            }}
+          >
+            Exit Interactivity
+          </button>
+          <dotlottie-player data-testid="testPlayer" autoplay loop speed="3" controls style="height: 200px;" src="/lf_interactivity_page.lottie">
+          </dotlottie-player>
+        `
+        );
+
+    // Before interactivity
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+
+    // Start Interactivity
+    cy.get('[data-testid="start_toggle"]').click();
+    cy.get('[name="activeStateId"]').should('have.value', 'state_toggle');
+
+    // State: playSun
+    cy.get('[data-testid="start_exploding_pigeon"]').click();
+    cy.get('[name="activeStateId"]').should('have.value', 'exploding_pigeon');
+
+    // Exit interactivity
+    cy.get('[data-testid="exit_interactivity"]').click();
+    cy.get('[name="activeStateId"]').should('have.value', '');
+  });
 });
