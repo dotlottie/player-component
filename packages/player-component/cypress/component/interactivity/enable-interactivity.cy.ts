@@ -67,10 +67,11 @@ describe('Interactivity: enter/exit interactivity', () => {
     // Exit interactivity
     cy.get('[data-testid="exit_interactivity"]').click();
     cy.get('[name="activeStateId"]').should('have.value', '');
-    // Playback options are lost. ?
-    // cy.get('[name="loop"]').should('have.value', 'true');
-    // cy.get('[name="autoplay"]').should('have.value', 'true');
-    // cy.get('[name="speed"]').should('have.value', 3);
+
+    // Verify if Player PlaybackOptions match
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 3);
 
   });
 
@@ -120,5 +121,9 @@ describe('Interactivity: enter/exit interactivity', () => {
     // Exit interactivity
     cy.get('[data-testid="exit_interactivity"]').click();
     cy.get('[name="activeStateId"]').should('have.value', '');
+    // Verify if Player PlaybackOptions match
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 3);
   });
 });

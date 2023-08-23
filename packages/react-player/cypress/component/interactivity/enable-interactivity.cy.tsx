@@ -23,7 +23,7 @@ describe('Interactivity: enter/exit interactivity', () => {
               lottieRef.current?.enterInteractiveMode('state_toggle');
             }}
           >
-            Exit Interactivity
+            Start Interactivity
           </button>
           <button
             data-testid="exit_interactivity"
@@ -31,7 +31,7 @@ describe('Interactivity: enter/exit interactivity', () => {
               lottieRef.current?.exitInteractiveMode();
             }}
           >
-            Start Interactivity
+            Exit Interactivity
           </button>
           <PlayerStateWrapper
             onRef={(ref): void => {
@@ -92,10 +92,9 @@ describe('Interactivity: enter/exit interactivity', () => {
     // Exit interactivity
     cy.get('[data-testid="exit_interactivity"]').click();
     cy.get('[name="activeStateId"]').should('have.value', '');
-    // Playback options are lost. ?
-    // cy.get('[name="loop"]').should('have.value', 'true');
-    // cy.get('[name="autoplay"]').should('have.value', 'true');
-    // cy.get('[name="speed"]').should('have.value', 3);
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 3);
   });
 
   it('should be able change between interactivity states', () => {
@@ -167,5 +166,9 @@ describe('Interactivity: enter/exit interactivity', () => {
     // Exit interactivity
     cy.get('[data-testid="exit_interactivity"]').click();
     cy.get('[name="activeStateId"]').should('have.value', '');
+    // Verify if player PlaybackOtions match
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 3);
   });
 });

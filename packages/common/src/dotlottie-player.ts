@@ -128,6 +128,9 @@ export class DotLottiePlayer {
 
   protected _animationConfig: Omit<AnimationConfig<RendererType>, 'container'>;
 
+  // This variable holds the playbackOptions prior to interactivity mode.
+  protected _prevPlaybackOptions: PlaybackOptions = {};
+
   protected _playbackOptions: PlaybackOptions;
 
   protected _hover: boolean = false;
@@ -319,6 +322,56 @@ export class DotLottiePlayer {
     }
 
     return allOptions;
+  }
+
+  /**
+   * Sets playbackOptions from an object.
+   */
+  protected _setPlabackOptions(options: PlaybackOptions): void {
+    Object.keys(options).forEach((key: unknown) => {
+      const value: unknown = options[key as keyof PlaybackOptions];
+
+      if (typeof value === 'undefined') {
+        return;
+      }
+
+      switch (key) {
+        case 'loop':
+          this.setLoop(value as number | boolean);
+          break;
+
+        case 'hover':
+          this.setHover(value as boolean);
+          break;
+
+        case 'speed':
+          this.setSpeed(value as number);
+          break;
+
+        case 'autoplay':
+          this.setAutoplay(value as boolean);
+          break;
+
+        case 'playMode':
+          this.setMode(value as PlayMode);
+          break;
+
+        case 'direction':
+          this.setDirection(value as AnimationDirection);
+          break;
+
+        case 'defaultTheme':
+          this._updateDefaultTheme(value as string);
+          break;
+
+        case 'intermission':
+          this.setIntermission(value as number);
+          break;
+
+        default:
+          break;
+      }
+    });
   }
 
   /**
@@ -931,11 +984,17 @@ export class DotLottiePlayer {
    * @param stateId - The identifier of the state machine to use.
    */
   public enterInteractiveMode(stateId: string): void {
+    const _isInteractiveBefore = this._inInteractiveMode;
+
     this._inInteractiveMode = stateId.length > 0;
     this._activeStateId = stateId;
     this._stateMachine?.stop();
 
     if (stateId) {
+      // Cache the player PlaybackOptions before entering interactivity mode for the first time.
+      if (!_isInteractiveBefore) {
+        this._prevPlaybackOptions = { ...this._playbackOptions };
+      }
       this._startInteractivity(stateId);
     } else {
       throw createError('stateId must be a non-empty string.');
@@ -949,6 +1008,16 @@ export class DotLottiePlayer {
     this._inInteractiveMode = false;
     this._activeStateId = '';
     this._stateMachine?.stop();
+
+    // Resets playbackOptions used in interactivity mode
+    this._playbackOptions = {};
+    // Update the playbackOptions from user / player
+    this._setPlabackOptions(this._prevPlaybackOptions);
+    // clear cached values.
+    this._prevPlaybackOptions = {};
+
+    // go to and play the default animation.
+    this.play(this._getActiveAnimationId());
   }
 
   public reset(): void {
