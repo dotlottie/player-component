@@ -327,7 +327,7 @@ export class DotLottiePlayer {
   /**
    * Sets playbackOptions from an object.
    */
-  protected _setPlabackOptions(options: PlaybackOptions): void {
+  protected _setPlaybackOptions(options: PlaybackOptions): void {
     Object.keys(options).forEach((key: unknown) => {
       const value: unknown = options[key as keyof PlaybackOptions];
 
@@ -1012,7 +1012,7 @@ export class DotLottiePlayer {
     // Resets playbackOptions used in interactivity mode
     this._playbackOptions = {};
     // Update the playbackOptions from user / player
-    this._setPlabackOptions(this._prevPlaybackOptions);
+    this._setPlaybackOptions(this._prevPlaybackOptions);
     // clear cached values.
     this._prevPlaybackOptions = {};
 
