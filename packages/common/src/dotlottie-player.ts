@@ -151,6 +151,7 @@ export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, '
   PlaybackOptions & {
     activeAnimationId?: string | null;
     background?: string;
+    light?: boolean;
     testId?: string | undefined;
   };
 
@@ -235,6 +236,8 @@ export class DotLottiePlayer {
 
   protected _seeker: number = 0;
 
+  private readonly _light: boolean = false;
+
   private readonly _dotLottieLoader: DotLottieLoader = new DotLottieLoader();
 
   public constructor(
@@ -275,6 +278,10 @@ export class DotLottiePlayer {
       },
       ...(options || {}),
     };
+
+    if (options?.light) {
+      this._light = options.light;
+    }
 
     this._listenToHover();
     this._listenToVisibilityChange();
@@ -1233,18 +1240,36 @@ export class DotLottiePlayer {
     let LottieWebModule: typeof import('lottie-web');
 
     switch (renderer) {
-      case 'svg':
-        LottieWebModule = await import('lottie-web/build/player/lottie_svg');
-        break;
+      case 'svg': {
+        if (this._light) {
+          LottieWebModule = await import(`lottie-web/build/player/lottie_light`);
+        } else {
+          LottieWebModule = await import(`lottie-web/build/player/lottie_svg`);
+        }
 
-      case 'canvas':
-        // @ts-ignore
-        LottieWebModule = await import('lottie-web/build/player/lottie_canvas');
         break;
+      }
 
-      case 'html':
-        LottieWebModule = await import('lottie-web/build/player/lottie_html');
+      case 'canvas': {
+        if (this._light) {
+          LottieWebModule = await import(`lottie-web/build/player/lottie_light_canvas`);
+        } else {
+          // @ts-ignore
+          LottieWebModule = await import(`lottie-web/build/player/lottie_canvas`);
+        }
+
         break;
+      }
+
+      case 'html': {
+        if (this._light) {
+          LottieWebModule = await import(`lottie-web/build/player/lottie_light_html`);
+        } else {
+          LottieWebModule = await import(`lottie-web/build/player/lottie_html`);
+        }
+
+        break;
+      }
 
       default:
         throw new Error(`Invalid renderer: ${renderer}`);

@@ -21,6 +21,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   direction?: 1 | -1;
   hover?: boolean;
   intermission?: number;
+  light?: boolean;
   loop?: number | boolean;
   lottieRef?: MutableRefObject<DotLottieRefProps | undefined>;
   onEvent?: <T extends PlayerEvents>(name: T, params?: unknown) => void;
@@ -51,6 +52,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   testId,
   children,
   defaultTheme,
+  light = false,
   ...props
 }) => {
   const container = useRef(null);
@@ -75,6 +77,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     autoplay: hover ? false : autoplay,
     testId,
     defaultTheme,
+    light,
   });
 
   const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);

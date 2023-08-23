@@ -112,6 +112,9 @@ export class DotLottiePlayer extends LitElement {
   @property({ type: String })
   public activeAnimationId?: string | null = null;
 
+  @property({ type: Boolean })
+  public light?: boolean = false;
+
   @state()
   private _seeker: number = 0;
 
@@ -282,6 +285,7 @@ export class DotLottiePlayer extends LitElement {
       autoplay: this.hasAttribute('autoplay') ? this.autoplay : undefined,
       activeAnimationId: this.hasAttribute('activeAnimationId') ? this.activeAnimationId : undefined,
       defaultTheme: this.hasAttribute('defaultTheme') ? this.defaultTheme : undefined,
+      light: this.light,
     });
 
     await this._dotLottieCommonPlayer.load(playbackOptions);
