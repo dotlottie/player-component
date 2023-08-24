@@ -18,7 +18,8 @@ export default function Home() {
             direction: 1,
             autoplay: true,
             speed: 1,
-            playMode: 'bounce',
+            playMode: "bounce",
+            light: true
           }}
           controls
         />

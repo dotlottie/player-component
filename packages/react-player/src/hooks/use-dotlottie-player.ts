@@ -14,9 +14,11 @@ import type {
 } from '@dotlottie/common';
 import { DotLottiePlayer } from '@dotlottie/common';
 import type { MutableRefObject } from 'react';
-import { useCallback, useEffect, useState, useImperativeHandle } from 'react';
+import { useCallback, useState, useImperativeHandle } from 'react';
 
 import pkg from '../../package.json';
+
+import { useEffectOnce } from './use-effect-once';
 
 export interface DotLottieRefProps {
   getContainer: () => HTMLDivElement | undefined;
@@ -74,7 +76,7 @@ export const useDotLottiePlayer = (
   const getDotLottiePlayer = useCallback(async () => {
     const dl = new DotLottiePlayer(src, container.current, config);
 
-    dl.load();
+    await dl.load();
 
     return dl;
   }, [container]);
@@ -192,7 +194,7 @@ export const useDotLottiePlayer = (
     );
   }
 
-  useEffect(() => {
+  useEffectOnce(() => {
     (async (): Promise<void> => {
       setDotLottiePlayer(await getDotLottiePlayer());
     })();
@@ -200,7 +202,7 @@ export const useDotLottiePlayer = (
     return () => {
       dotLottiePlayer.destroy();
     };
-  }, [getDotLottiePlayer]);
+  });
 
   return dotLottiePlayer;
 };

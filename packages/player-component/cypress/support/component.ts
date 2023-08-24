@@ -6,7 +6,7 @@ import 'cypress-axe';
 
 import { mount } from 'cypress-ct-lit';
 
-import '../../dist/dotlottie-player.js';
+import '../../dist/dotlottie-player';
 
 declare global {
   namespace Cypress {
