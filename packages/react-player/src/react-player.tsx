@@ -48,7 +48,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   rendererSettings = {},
   lottieRef,
   src,
-  className,
+  className = '',
   testId,
   children,
   defaultTheme,
