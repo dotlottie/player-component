@@ -6,6 +6,7 @@ import type { RendererSettings, PlayMode } from '@dotlottie/common';
 import { PlayerState, PlayerEvents } from '@dotlottie/common';
 import React, { useEffect, useRef } from 'react';
 import type { MutableRefObject } from 'react';
+import { useUpdateEffect } from 'react-use';
 
 import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
@@ -169,7 +170,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [activeAnimationId]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof activeStateId !== 'undefined') {
       dotLottiePlayer.enterInteractiveMode(activeStateId);
     }

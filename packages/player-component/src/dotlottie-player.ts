@@ -643,12 +643,21 @@ export class DotLottiePlayer extends LitElement {
   /**
    * Changes the Interactivity state id and starts it.
    *
-   * @param value - Playback speed.
+   * @param stateId - state machine id.
    */
   public enterInteractiveMode(stateId: string): void {
     if (!this._dotLottieCommonPlayer) return;
 
     this._dotLottieCommonPlayer.enterInteractiveMode(stateId);
+  }
+
+  /**
+   * Exits the Interactivity mode.
+   */
+  public exitInteractiveMode(): void {
+    if (!this._dotLottieCommonPlayer) return;
+
+    this._dotLottieCommonPlayer.exitInteractiveMode();
   }
 
   /**

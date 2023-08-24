@@ -22,6 +22,7 @@ import { useEffectOnce } from './use-effect-once';
 
 export interface DotLottieRefProps {
   enterInteractiveMode: (stateId: string) => void;
+  exitInteractiveMode: () => void;
   getContainer: () => HTMLDivElement | undefined;
   getCurrentAnimationId: () => string | undefined;
   getLottie: () => AnimationItem | undefined;
@@ -213,6 +214,9 @@ export const useDotLottiePlayer = (
           },
           stopPlayOnScroll: (): void => {
             dotLottiePlayer.stopPlayOnScroll();
+          },
+          exitInteractiveMode: (): void => {
+            dotLottiePlayer.exitInteractiveMode();
           },
         };
 
