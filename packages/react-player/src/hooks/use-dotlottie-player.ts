@@ -202,7 +202,7 @@ export const useDotLottiePlayer = (
     return () => {
       dotLottiePlayer.destroy();
     };
-  }, []);
+  });
 
   return dotLottiePlayer;
 };

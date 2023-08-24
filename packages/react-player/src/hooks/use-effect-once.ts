@@ -2,26 +2,25 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DependencyList } from 'react';
 import { useEffect, useRef } from 'react';
 
 type Callback = () => void | (() => void);
 
-export const useEffectOnce = (effect: Callback, deps: DependencyList): void => {
+export const useEffectOnce = (effect: Callback): void => {
   const calledRef = useRef(false);
 
   useEffect(() => {
     let cleanup: void | (() => void);
 
-    if (calledRef.current) {
+    if (!calledRef.current) {
       cleanup = effect();
+      calledRef.current = true;
     }
 
     return () => {
-      calledRef.current = true;
       if (typeof cleanup === 'function') {
         cleanup();
       }
     };
-  }, deps);
+  });
 };
