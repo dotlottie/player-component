@@ -103,30 +103,32 @@ describe('Interactivity: enter/exit interactivity', () => {
 
       return (
         <>
-          <button
-            data-testid="start_toggle"
-            onClick={(): void => {
-              lottieRef.current?.enterInteractiveMode('state_toggle');
-            }}
-          >
-            Start Toggle
-          </button>
-          <button
-            data-testid="start_exploding_pigeon"
-            onClick={(): void => {
-              lottieRef.current?.enterInteractiveMode('exploding_pigeon');
-            }}
-          >
-            Start Exploding Pigeon
-          </button>
-          <button
-            data-testid="exit_interactivity"
-            onClick={(): void => {
-              lottieRef.current?.exitInteractiveMode();
-            }}
-          >
-            Exit Interactivity
-          </button>
+          <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', width: '200px', zIndex: 10 }}>
+            <button
+              data-testid="start_toggle"
+              onClick={(): void => {
+                lottieRef.current?.enterInteractiveMode('state_toggle');
+              }}
+            >
+              Start Toggle
+            </button>
+            <button
+              data-testid="start_exploding_pigeon"
+              onClick={(): void => {
+                lottieRef.current?.enterInteractiveMode('exploding_pigeon');
+              }}
+            >
+              Start Exploding Pigeon
+            </button>
+            <button
+              data-testid="exit_interactivity"
+              onClick={(): void => {
+                lottieRef.current?.exitInteractiveMode();
+              }}
+            >
+              Exit Interactivity
+            </button>
+          </div>
           <PlayerStateWrapper
             onRef={(ref): void => {
               if (ref) {
