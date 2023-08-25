@@ -18,7 +18,7 @@ import { createError, getKeyByValue, logError } from '../utils';
 import type { EventMap, XStateTargetEvent } from './xstate-machine';
 import { EVENT_MAP, XStateEvents, type XState, type XStateMachine } from './xstate-machine';
 
-export class DotLottieStateMachine {
+export class DotLottieStateMachineManager {
   protected activeStateId: string = '';
 
   protected _service: any;

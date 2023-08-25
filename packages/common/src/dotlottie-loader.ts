@@ -198,15 +198,9 @@ export class DotLottieLoader {
 
     const stateMachine = await getStateMachineUtil(this._dotLottie, stateMachineId);
 
-    // console.log('Got: ');
-    // console.log(stateMachine);
-
     if (stateMachine) {
       this._stateMachinesMap.set(stateMachine.descriptor.id, stateMachine);
     }
-
-    // console.log('returning stateMachine');
-    // console.log(stateMachine);
 
     return stateMachine;
   }

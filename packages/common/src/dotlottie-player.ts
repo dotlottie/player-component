@@ -22,7 +22,7 @@ import type {
 import pkg from '../package.json';
 
 import { DotLottieLoader } from './dotlottie-loader';
-import { DotLottieStateMachine } from './state/dotlottie-state-machine';
+import { DotLottieStateMachineManager } from './state/dotlottie-state-machine-manager';
 import { Store } from './store';
 import { createError, isValidLottieJSON, isValidLottieString, logError, logWarning } from './utils';
 
@@ -189,7 +189,7 @@ export class DotLottiePlayer {
 
   private _visibilityPercentage: number = 0;
 
-  protected _stateMachine?: DotLottieStateMachine;
+  protected _stateMachine?: DotLottieStateMachineManager;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -973,7 +973,10 @@ export class DotLottiePlayer {
     }
 
     if (!this._stateMachine) {
-      this._stateMachine = new DotLottieStateMachine(Array.from(this._dotLottieLoader.stateMachinesMap.values()), this);
+      this._stateMachine = new DotLottieStateMachineManager(
+        Array.from(this._dotLottieLoader.stateMachinesMap.values()),
+        this,
+      );
     }
 
     this._stateMachine.start(stateId);
