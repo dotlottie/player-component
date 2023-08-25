@@ -73,10 +73,10 @@ export const useDotLottiePlayer = (
     return new DotLottiePlayer(src, container.current, config);
   });
 
-  const getDotLottiePlayer = useCallback(async () => {
+  const getDotLottiePlayer = useCallback(() => {
     const dl = new DotLottiePlayer(src, container.current, config);
 
-    await dl.load();
+    dl.load();
 
     return dl;
   }, [container]);
@@ -195,9 +195,7 @@ export const useDotLottiePlayer = (
   }
 
   useEffectOnce(() => {
-    (async (): Promise<void> => {
-      setDotLottiePlayer(await getDotLottiePlayer());
-    })();
+    setDotLottiePlayer(getDotLottiePlayer());
 
     return () => {
       dotLottiePlayer.destroy();
