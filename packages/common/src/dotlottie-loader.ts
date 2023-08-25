@@ -50,7 +50,7 @@ export class DotLottieLoader {
 
     const contentType = response.headers.get('content-type');
 
-    if (contentType === 'application/json') {
+    if (contentType?.includes('application/json')) {
       const json = await response.json();
 
       if (!isValidLottieJSON(json)) {
