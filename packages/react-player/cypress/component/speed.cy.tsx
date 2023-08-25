@@ -59,6 +59,7 @@ describe('Speed', () => {
               src={`/cool-dog.lottie`}
               style={{ height: '400px', display: 'inline-block' }}
               speed={speed}
+              loop
               autoplay
             >
               <Controls />
