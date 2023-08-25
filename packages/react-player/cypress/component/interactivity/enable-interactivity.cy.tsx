@@ -103,7 +103,18 @@ describe('Interactivity: enter/exit interactivity', () => {
 
       return (
         <>
-          <div style={{ position: 'absolute', display: 'flex', flexDirection: 'column', width: '200px', zIndex: 10 }}>
+          <div
+            style={{
+              left: 0,
+              top: 0,
+              position: 'fixed',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '2px',
+              width: '200px',
+              zIndex: 100,
+            }}
+          >
             <button
               data-testid="start_toggle"
               onClick={(): void => {
