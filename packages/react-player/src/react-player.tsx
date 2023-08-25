@@ -177,7 +177,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
 
     return () => {
       dotLottiePlayer.exitInteractiveMode();
-    }
+    };
   }, [activeStateId]);
 
   /**
