@@ -2,9 +2,11 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { AnimationData } from '@dotlottie/dotlottie-js';
+import type { AnimationData, LottieStateMachine } from '@dotlottie/dotlottie-js';
 import {
   getTheme as getThemeUtil,
+  getStateMachine as getStateMachineUtil,
+  getStateMachines as getStateMachinesUtil,
   getAnimation as getAnimationUtil,
   getManifest as getManifestUtil,
   loadFromArrayBuffer as loadFromArrayBufferUtil,
@@ -20,6 +22,8 @@ export class DotLottieLoader {
 
   private readonly _themeMap: Map<string, string> = new Map();
 
+  private readonly _stateMachinesMap: Map<string, LottieStateMachine> = new Map();
+
   private _manifest?: Manifest;
 
   public get dotLottie(): Uint8Array | undefined {
@@ -32,6 +36,10 @@ export class DotLottieLoader {
 
   public get themeMap(): Map<string, string> {
     return this._themeMap;
+  }
+
+  public get stateMachinesMap(): Map<string, LottieStateMachine> {
+    return this._stateMachinesMap;
   }
 
   public get manifest(): Manifest | undefined {
@@ -151,5 +159,49 @@ export class DotLottieLoader {
     }
 
     return theme;
+  }
+
+  public async getStateMachines(): Promise<LottieStateMachine[] | undefined> {
+    if (!this._dotLottie) {
+      return undefined;
+    }
+
+    const stateMachines: Record<string, string> = await getStateMachinesUtil(this._dotLottie);
+
+    for (const key in stateMachines) {
+      if (key) {
+        const stateMachine = stateMachines[key];
+
+        if (stateMachine) {
+          const parsedStateMachine = JSON.parse(stateMachine);
+
+          if (parsedStateMachine) {
+            const id = parsedStateMachine.descriptor.id;
+
+            if (!this._stateMachinesMap.get(id)) this._stateMachinesMap.set(id, parsedStateMachine);
+          }
+        }
+      }
+    }
+
+    return Array.from(this._stateMachinesMap.values());
+  }
+
+  public async getStateMachine(stateMachineId: string): Promise<LottieStateMachine | undefined> {
+    if (this._stateMachinesMap.get(stateMachineId)) {
+      return this._stateMachinesMap.get(stateMachineId);
+    }
+
+    if (!this._dotLottie) {
+      return undefined;
+    }
+
+    const stateMachine = await getStateMachineUtil(this._dotLottie, stateMachineId);
+
+    if (stateMachine) {
+      this._stateMachinesMap.set(stateMachine.descriptor.id, stateMachine);
+    }
+
+    return stateMachine;
   }
 }

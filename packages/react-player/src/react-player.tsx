@@ -6,6 +6,7 @@ import type { RendererSettings, PlayMode } from '@dotlottie/common';
 import { PlayerState, PlayerEvents } from '@dotlottie/common';
 import React, { useEffect, useRef } from 'react';
 import type { MutableRefObject } from 'react';
+import { useUpdateEffect } from 'react-use';
 
 import type { DotLottieRefProps } from './hooks/use-dotlottie-player';
 import { useDotLottiePlayer } from './hooks/use-dotlottie-player';
@@ -14,6 +15,7 @@ import { DotLottieProvider } from './providers';
 
 export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElement> {
   activeAnimationId?: string;
+  activeStateId?: string;
   autoplay?: boolean;
   background?: string;
   className?: string;
@@ -53,6 +55,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   children,
   defaultTheme,
   light = false,
+  activeStateId,
   ...props
 }) => {
   const container = useRef(null);
@@ -78,6 +81,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     testId,
     defaultTheme,
     light,
+    activeStateId,
   });
 
   const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);
@@ -165,6 +169,16 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
       dotLottiePlayer.play(activeAnimationId);
     }
   }, [activeAnimationId]);
+
+  useUpdateEffect(() => {
+    if (typeof activeStateId !== 'undefined') {
+      dotLottiePlayer.enterInteractiveMode(activeStateId);
+    }
+
+    return () => {
+      dotLottiePlayer.exitInteractiveMode();
+    };
+  }, [activeStateId]);
 
   /**
    * Adding event listeners if dotLottiePlayer is available

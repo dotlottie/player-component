@@ -22,11 +22,12 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@dotlottie/dotlottie-js": "^0.4.2",
+    "@dotlottie/dotlottie-js": "0.5.2",
     "@lottiefiles/relottie": "1.0.0",
     "@lottiefiles/relottie-style": "0.4.1",
     "@preact/signals-core": "^1.2.3",
-    "lottie-web": "^5.12.2"
+    "lottie-web": "^5.12.2",
+    "xstate": "^4.38.1"
   },
   "devDependencies": {
     "@lottiefiles/lottie-types": "^1.2.0",
