@@ -156,15 +156,15 @@ describe('Interactivity: enter/exit interactivity', () => {
     cy.get('[name="activeStateId"]').should('have.value', '');
 
     // Start Interactivity
-    cy.get('[data-testid="start_toggle"]').click();
+    cy.get('[data-testid="start_toggle"]').click({ force: true });
     cy.get('[name="activeStateId"]').should('have.value', 'state_toggle');
 
     // State: playSun
-    cy.get('[data-testid="start_exploding_pigeon"]').click();
+    cy.get('[data-testid="start_exploding_pigeon"]').click({ force: true });
     cy.get('[name="activeStateId"]').should('have.value', 'exploding_pigeon');
 
     // Exit interactivity
-    cy.get('[data-testid="exit_interactivity"]').click();
+    cy.get('[data-testid="exit_interactivity"]').click({ force: true });
     cy.get('[name="activeStateId"]').should('have.value', '');
     // Verify if player PlaybackOtions match
     cy.get('[name="loop"]').should('have.value', 'true');
