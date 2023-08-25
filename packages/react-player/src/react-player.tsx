@@ -174,6 +174,10 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     if (typeof activeStateId !== 'undefined') {
       dotLottiePlayer.enterInteractiveMode(activeStateId);
     }
+
+    return () => {
+      dotLottiePlayer.exitInteractiveMode();
+    }
   }, [activeStateId]);
 
   /**
