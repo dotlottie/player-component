@@ -13,8 +13,8 @@ export const useEffectOnce = (effect: Callback): void => {
     let cleanup: void | (() => void);
 
     if (!calledRef.current) {
-      cleanup = effect();
       calledRef.current = true;
+      cleanup = effect();
     }
 
     return () => {
@@ -22,5 +22,5 @@ export const useEffectOnce = (effect: Callback): void => {
         cleanup();
       }
     };
-  });
+  }, []);
 };
