@@ -5,13 +5,13 @@
 import React, { useCallback } from 'react';
 import { PiToggleLeftFill, PiToggleRightFill } from 'react-icons/pi';
 
-interface BooleanEditorProps {
+interface InputBooleanProps {
   label: string;
   onToggle?: (value: boolean) => void;
   value?: boolean;
 }
 
-export const BooleanEditor: React.FC<BooleanEditorProps> = ({ label, onToggle, value }) => {
+export const InputBoolean: React.FC<InputBooleanProps> = ({ label, onToggle, value }) => {
   const handleToggle = useCallback(() => {
     onToggle?.(!value);
   }, [onToggle, value]);

@@ -14,9 +14,7 @@ import {
 } from '../store/editor-slice';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 
-import { BooleanEditor } from './input-editor/boolean';
-import { InputNumber } from './input-editor/input-number';
-import { InputSelect, type InputSelectOption } from './input-editor/input-select';
+import { InputBoolean, InputNumber, InputSelect, type InputSelectOption } from './input-fields';
 
 interface PlaybackOptionsEditorProps {
   onUpdate: () => void;
@@ -144,7 +142,7 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
             if (['loop', 'autoplay', 'hover'].includes(key)) {
               return (
                 <li key={key}>
-                  <BooleanEditor label={key} value={animationOptions[key]} onToggle={update(key)} />
+                  <InputBoolean label={key} value={animationOptions[key]} onToggle={update(key)} />
                 </li>
               );
             } else if (['playMode'].includes(key)) {
@@ -206,7 +204,7 @@ export const PlaybackOptionsEditor: React.FC<PlaybackOptionsEditorProps> = ({ on
             value={animationOptions.assignedThemes}
             options={themeSelectorOptions}
           />
-          <BooleanEditor
+          <InputBoolean
             label="Default ActiveAnimation"
             value={animationOptions.defaultActiveAnimation}
             onToggle={update('defaultActiveAnimation')}
