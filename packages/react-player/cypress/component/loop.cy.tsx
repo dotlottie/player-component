@@ -103,7 +103,7 @@ describe('Loop', () => {
 
     cy.get('[name="loop"]').should('have.value', 'true');
 
-    cy.get('[data-testid="update"]').click();
+    cy.get('[data-testid="update"]').click({ force: true });
     cy.get('[name="loop"]').should('have.value', 'false');
   });
 });
