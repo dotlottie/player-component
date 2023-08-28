@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - 'master'
-      - 'feat/playground'
   pull_request:
 
 concurrency:
@@ -57,7 +56,7 @@ jobs:
   release:
     needs: validate
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'dotlottie/player-component' && github.ref == 'refs/heads/master' && github.event_name == 'push' }}
+    if: ${{ github.repository == 'dotlottie/player-component' && github.event_name == 'push' }}
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
@@ -95,7 +94,7 @@ jobs:
   deploy:
     needs: validate
     runs-on: ubuntu-latest
-    if: ${{ github.repository == 'dotlottie/player-component' && github.ref == 'refs/heads/feat/playground' && github.event_name == 'push' }}
+    if: ${{ github.repository == 'dotlottie/player-component' && github.ref == 'master' && github.event_name == 'push' }}
     steps:
       - name: ⬇️ Checkout repo
         uses: actions/checkout@v2
