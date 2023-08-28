@@ -962,7 +962,7 @@ export class DotLottiePlayer {
   protected async _startInteractivity(stateId: string): Promise<void> {
     if (!this._inInteractiveMode) {
       logError(
-        "Can't start initeractivity. Not in interactive mode. Call enterInteractiveMode(stateId: string) to start.",
+        "Can't start interactivity. Not in interactive mode. Call enterInteractiveMode(stateId: string) to start.",
       );
 
       return;
@@ -994,17 +994,19 @@ export class DotLottiePlayer {
    * @param stateId - The identifier of the state machine to use.
    */
   public enterInteractiveMode(stateId: string): void {
-    const _isInteractiveBefore = this._inInteractiveMode;
-
-    this._inInteractiveMode = stateId.length > 0;
-    this._activeStateId = stateId;
-    this._stateMachineManager?.stop();
-
     if (stateId) {
       // Cache the player PlaybackOptions before entering interactivity mode for the first time.
-      if (!_isInteractiveBefore) {
+      if (!this._inInteractiveMode) {
         this._prevPlaybackOptions = { ...this._playbackOptions };
       }
+
+      if (this._inInteractiveMode) {
+        this._stateMachineManager?.stop();
+      }
+
+      this._activeStateId = stateId;
+      this._inInteractiveMode = true;
+
       this._startInteractivity(stateId);
     } else {
       throw createError('stateId must be a non-empty string.');
@@ -1015,27 +1017,31 @@ export class DotLottiePlayer {
    * Exits interactive mode and stops the current state machine.
    */
   public exitInteractiveMode(): void {
+    if (!this._inInteractiveMode) {
+      return;
+    }
+
     this._inInteractiveMode = false;
     this._activeStateId = '';
     this._stateMachineManager?.stop();
 
     // Resets playbackOptions used in interactivity mode
     this._playbackOptions = {};
+
     // Update the playbackOptions from user / player
     this._setPlaybackOptions(this._prevPlaybackOptions);
+
     // clear cached values.
     this._prevPlaybackOptions = {};
 
-    // go to and play the default animation.
-    this.play(this._getActiveAnimationId());
+    this.reset();
   }
 
   public reset(): void {
     const activeId = this._getActiveAnimationId();
-
     const anim = this._dotLottieLoader.manifest?.animations.find((animation) => animation.id === activeId);
 
-    this.exitInteractiveMode();
+    if (this._inInteractiveMode) this.exitInteractiveMode();
 
     if (!anim) {
       throw createError('animation not found.');
@@ -1509,13 +1515,6 @@ export class DotLottiePlayer {
       return;
     }
 
-    this._lottie.addEventListener('DOMLoaded', () => {
-      if (this._activeStateId) {
-        // If we detect state machines are being used, load all of them up from the file
-        if (!this._inInteractiveMode) this.enterInteractiveMode(this._activeStateId);
-      }
-    });
-
     this._lottie.addEventListener('enterFrame', () => {
       // Update seeker and frame value based on the current animation frame
       if (!this._lottie) {
@@ -1696,6 +1695,13 @@ export class DotLottiePlayer {
     }
 
     const lottiePlayer = await this._getLottiePlayerInstance();
+
+    if (this._activeStateId && !this._inInteractiveMode) {
+      // If we detect state machines are being used, load all of them up from the file
+      this.enterInteractiveMode(this._activeStateId);
+
+      return;
+    }
 
     this._lottie = lottiePlayer.loadAnimation({
       ...options,

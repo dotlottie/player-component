@@ -6,6 +6,7 @@ import type { LottieStateMachine } from '@dotlottie/dotlottie-js';
 
 import type { DotLottiePlayer } from './dotlottie-player';
 import type { DotLottieStateMachineManager } from './state/dotlottie-state-machine-manager';
+import { createError } from './utils';
 
 /**
  * Load all the state machines in to XState.
@@ -20,6 +21,10 @@ export async function loadStateMachines(
 ): Promise<DotLottieStateMachineManager> {
   // Dynamically load state machine related dependencies
   const [{ DotLottieStateMachineManager }] = await Promise.all([import('./state/dotlottie-state-machine-manager')]);
+
+  if (!stateMachines.length) {
+    throw createError('No state machines available inside this .lottie!');
+  }
 
   return new DotLottieStateMachineManager(stateMachines, player);
 }

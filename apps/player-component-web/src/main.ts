@@ -12,6 +12,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
     <h1>dotLottie player</h1>
     <div class="card">
       <button id="counter" type="button">Load animation</button>
+      <button id="exit" type="button">exit</button>
       <button id="next" type="button">Next</button>
       <button id="prev" type="button">Prev</button>
       <button id="exploding_pigeon" type="button">exploding pigeon</button>
@@ -20,7 +21,7 @@ document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
       <button id="scroll" type="button">Activate scroll</button>
 
       <div style="width: 500px; height: 500px; margin: auto; justify-content: center">
-        <dotlottie-player controls src="/lf_interactivity_page.lottie" id="dotlottie-player" autoplay loop class="w-10 h-10"></dotlottie-player>
+        <dotlottie-player activeStateId="exploding_pigeon" controls src="/lf_interactivity_page.lottie" id="dotlottie-player" autoplay loop class="w-10 h-10"></dotlottie-player>
       </div>
     </div>
     <div class="card">
@@ -71,4 +72,5 @@ loader(
   document.querySelector<HTMLButtonElement>('#reset')!,
   document.querySelector<HTMLInputElement>('#state-input')!,
   document.querySelector<HTMLInputElement>('#scroll')!,
+  document.querySelector<HTMLButtonElement>('#exit')!,
 );
