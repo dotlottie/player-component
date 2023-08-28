@@ -58,6 +58,7 @@ describe('Intermission', () => {
             <DotLottiePlayer
               src={`/cool-dog.lottie`}
               style={{ height: '400px', display: 'inline-block' }}
+              loop
               autoplay
               intermission={intermission}
             >
