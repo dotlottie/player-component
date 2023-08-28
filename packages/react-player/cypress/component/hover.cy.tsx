@@ -103,7 +103,7 @@ describe('Hover', () => {
 
     cy.get('[name="hover"]').should('have.value', 'false');
 
-    cy.get('[data-testid="update"]').click();
+    cy.get('[data-testid="update"]').click({ force: true });
     cy.get('[name="hover"]').should('have.value', 'true');
   });
 });

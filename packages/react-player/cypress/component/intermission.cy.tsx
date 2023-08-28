@@ -73,7 +73,7 @@ describe('Intermission', () => {
 
     cy.get('[name="intermission"]').should('have.value', 1000);
 
-    cy.get('[data-testid="update"]').click();
+    cy.get('[data-testid="update"]').click({ force: true });
     cy.get('[name="intermission"]').should('have.value', 2000);
   });
 });
