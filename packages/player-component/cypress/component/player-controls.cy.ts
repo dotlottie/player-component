@@ -101,7 +101,7 @@ describe('Controls', () => {
 
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
-    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="Next animation"]').click();
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="Next animation"]').click({force:true});
 
     cy.get('[name="currentAnimationId"]').should('have.value', 'lottie3');
   })

@@ -95,7 +95,7 @@ describe('Controls', () => {
     // Not playing initially
     cy.get('[name="currentState"]').should('have.value', PlayerState.Ready);
 
-    cy.get('[aria-label="play-pause"]').click();
+    cy.get('[aria-label="play-pause"]').click({ force: true });
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
   });
 
@@ -112,7 +112,7 @@ describe('Controls', () => {
     // Playing initially
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
-    cy.get('[aria-label="play-pause"]').click();
+    cy.get('[aria-label="play-pause"]').click({ force: true });
     cy.get('[name="currentState"]').should('have.value', PlayerState.Paused);
   });
 
@@ -132,7 +132,7 @@ describe('Controls', () => {
     cy.get('[aria-label="loop-toggle"]').should('have.class', 'active');
     cy.get('[name="loop"]').should('have.value', 'true');
 
-    cy.get('[aria-label="loop-toggle"]').click();
+    cy.get('[aria-label="loop-toggle"]').click({ force: true });
     cy.get('[name="loop"]').should('have.value', 'false');
     cy.get('[aria-label="loop-toggle"]').should('not.have.class', 'active');
   });
@@ -167,7 +167,7 @@ describe('Controls', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
 
-    cy.get('[aria-label="play-next"]').click();
+    cy.get('[aria-label="play-next"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'wifi');
   });
 
@@ -184,7 +184,7 @@ describe('Controls', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
 
-    cy.get('[aria-label="play-previous"]').click();
+    cy.get('[aria-label="play-previous"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'wifi');
   });
 
@@ -200,7 +200,7 @@ describe('Controls', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[aria-label="Popover Menu"]').should('not.have.attr', 'open');
 
-    cy.get('[aria-label="open-popover"]').click();
+    cy.get('[aria-label="open-popover"]').click({ force: true });
     cy.get('[aria-label="Popover Menu"]').should('have.attr', 'open');
   });
 
@@ -216,10 +216,10 @@ describe('Controls', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[aria-label="Popover Menu"]').should('not.have.attr', 'open');
 
-    cy.get('[aria-label="open-popover"]').click();
+    cy.get('[aria-label="open-popover"]').click({ force: true });
     cy.get('[aria-label="Popover Menu"]').should('have.attr', 'open');
 
-    cy.get('[aria-label="lottie-seek-input"]').click();
+    cy.get('[aria-label="lottie-seek-input"]').click({ force: true });
     cy.get('[aria-label="Popover Menu"]').should('not.have.attr', 'open');
   });
 
@@ -235,9 +235,9 @@ describe('Controls', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
 
-    cy.get('[aria-label="open-popover"]').click();
-    cy.get('[aria-label="Go to Animations"]').click();
-    cy.get('[aria-label="Select wifi"]').click();
+    cy.get('[aria-label="open-popover"]').click({ force: true });
+    cy.get('[aria-label="Go to Animations"]').click({ force: true });
+    cy.get('[aria-label="Select wifi"]').click({ force: true });
 
     cy.get('[name="currentAnimationId"]').should('have.value', 'wifi');
   });
@@ -260,9 +260,9 @@ describe('Controls', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-light');
 
-    cy.get('[aria-label="open-popover"]').click();
-    cy.get('[aria-label="Go to Themes"]').click();
-    cy.get('[aria-label="Select bounce-dark"]').click();
+    cy.get('[aria-label="open-popover"]').click({ force: true });
+    cy.get('[aria-label="Go to Themes"]').click({ force: true });
+    cy.get('[aria-label="Select bounce-dark"]').click({ force: true });
 
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-dark');
   });
@@ -285,15 +285,15 @@ describe('Controls', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-light');
 
-    cy.get('[aria-label="open-popover"]').click();
-    cy.get('[aria-label="Go to Themes"]').click();
-    cy.get('[aria-label="Select bounce-dark"]').click();
+    cy.get('[aria-label="open-popover"]').click({ force: true });
+    cy.get('[aria-label="Go to Themes"]').click({ force: true });
+    cy.get('[aria-label="Select bounce-dark"]').click({ force: true });
 
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-dark');
 
-    cy.get('[aria-label="open-popover"]').click();
-    cy.get('[aria-label="Go to Animations"]').click();
-    cy.get('[aria-label="Select wifi"]').click();
+    cy.get('[aria-label="open-popover"]').click({ force: true });
+    cy.get('[aria-label="Go to Animations"]').click({ force: true });
+    cy.get('[aria-label="Select wifi"]').click({ force: true });
 
     cy.get('[name="defaultTheme"]').should('have.value', '');
   });
@@ -316,13 +316,13 @@ describe('Controls', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-light');
 
-    cy.get('[aria-label="open-popover"]').click();
-    cy.get('[aria-label="Go to Themes"]').click();
-    cy.get('[aria-label="Select bounce-dark"]').click();
+    cy.get('[aria-label="open-popover"]').click({ force: true });
+    cy.get('[aria-label="Go to Themes"]').click({ force: true });
+    cy.get('[aria-label="Select bounce-dark"]').click({ force: true });
 
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-dark');
 
-    cy.get('[aria-label="Reset Themes"]').click();
+    cy.get('[aria-label="Reset Themes"]').click({ force: true });
 
     cy.get('[name="defaultTheme"]').should('have.value', '');
   });

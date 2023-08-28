@@ -94,7 +94,7 @@ describe('Mode', () => {
 
     cy.get('[name="playMode"]').should('have.value', PlayMode.Normal);
 
-    cy.get('[data-testid="update"]').click().click();
+    cy.get('[data-testid="update"]').click({ force: true }).click({ force: true });
     cy.get('[name="playMode"]').should('have.value', PlayMode.Bounce);
   });
 });

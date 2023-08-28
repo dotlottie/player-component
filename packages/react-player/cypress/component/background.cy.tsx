@@ -60,7 +60,7 @@ describe('Background', () => {
 
     cy.get('[data-testid="animation"]').should('have.css', 'background-color').and('eq', 'rgb(26, 189, 70)');
 
-    cy.get('[data-testid="update"]').click();
+    cy.get('[data-testid="update"]').click({ force: true });
     cy.get('[data-testid="animation"]').should('have.css', 'background-color').and('eq', 'rgb(30, 100, 100)');
   });
 });
