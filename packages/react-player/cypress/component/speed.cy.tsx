@@ -73,7 +73,7 @@ describe('Speed', () => {
 
     cy.get('[name="speed"]').should('have.value', 1);
 
-    cy.get('[data-testid="update"]').click();
+    cy.get('[data-testid="update"]').click({ force: true });
     cy.get('[name="speed"]').should('have.value', 3);
   });
 });
