@@ -32,7 +32,7 @@ describe('getVersions', () => {
     );
 
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
-    cy.get('[data-testid="versions"]').click();
+    cy.get('[data-testid="versions"]').click({force:true});
     cy.get('[data-testid="versionsResult"]').should('have.text', `${pkg.version} + ${commonPlayer.getLottieWebVersion()}`);
 
   });

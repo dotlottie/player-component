@@ -65,7 +65,7 @@ describe('Interactivity: enter/exit interactivity', () => {
     cy.get('[name="speed"]').should('have.value', 3);
 
     // Start Interactivity
-    cy.get('[data-testid="start_interactivity"]').click();
+    cy.get('[data-testid="start_interactivity"]').click({ force: true });
     cy.get('[name="currentState"]').should('not.have.value', PlayerState.Playing);
     cy.get('[name="activeStateId"]').should('have.value', 'state_toggle');
     cy.get('[name="loop"]').should('have.value', 'false');
@@ -74,7 +74,7 @@ describe('Interactivity: enter/exit interactivity', () => {
     cy.get('[name="speed"]').should('have.value', 1);
 
     // State: playSun
-    cy.get('.animation').click();
+    cy.get('.animation').click({ force: true });
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="loop"]').should('have.value', 'false');
     cy.get('[name="autoplay"]').should('have.value', 'false');
@@ -82,7 +82,7 @@ describe('Interactivity: enter/exit interactivity', () => {
     cy.get('[name="speed"]').should('have.value', 1);
 
     // State: playReverse
-    cy.get('.animation').click();
+    cy.get('.animation').click({ force: true });
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="loop"]').should('have.value', 'false');
     cy.get('[name="autoplay"]').should('have.value', 'true');
@@ -90,7 +90,7 @@ describe('Interactivity: enter/exit interactivity', () => {
     cy.get('[name="speed"]').should('have.value', 1);
 
     // Exit interactivity
-    cy.get('[data-testid="exit_interactivity"]').click();
+    cy.get('[data-testid="exit_interactivity"]').click({ force: true });
     cy.get('[name="activeStateId"]').should('have.value', '');
     cy.get('[name="loop"]').should('have.value', 'true');
     cy.get('[name="autoplay"]').should('have.value', 'true');

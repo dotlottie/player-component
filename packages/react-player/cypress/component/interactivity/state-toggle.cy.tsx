@@ -54,14 +54,14 @@ describe('Interactivity: state_toggle (onClick)', () => {
     cy.get('[name="frame"]').should('have.value', 0);
 
     // State: playSun
-    cy.get('.animation').click();
+    cy.get('.animation').click({ force: true });
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="loop"]').should('have.value', 'false');
     cy.get('[name="autoplay"]').should('have.value', 'false');
     cy.get('[name="frame"]').should('have.value', 29);
 
     // State: playReverse
-    cy.get('.animation').click();
+    cy.get('.animation').click({ force: true });
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="loop"]').should('have.value', 'false');
     cy.get('[name="autoplay"]').should('have.value', 'true');

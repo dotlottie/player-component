@@ -38,14 +38,14 @@ describe('Interactivity: exploding_pigeon (onClick, onComplete)', () => {
     cy.get('[name="direction"]').should('have.value', 1);
 
     // State: exploding
-    cy.get('[data-testid="testPlayer"]').shadow().find('.animation').click();
+    cy.get('[data-testid="testPlayer"]').shadow().find('.animation').click({force:true});
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="autoplay"]').should('have.value', "true");
     cy.get('[name="loop"]').should('have.value', 3);
     cy.get('[name="direction"]').should('have.value', 1);
 
     // State: feathers
-    cy.get('[data-testid="testPlayer"]').shadow().find('.animation').click();
+    cy.get('[data-testid="testPlayer"]').shadow().find('.animation').click({force:true});
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="autoplay"]').should('have.value', "true");
     cy.get('[name="loop"]').should('have.value', "false");

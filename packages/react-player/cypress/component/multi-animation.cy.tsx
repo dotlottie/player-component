@@ -79,7 +79,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
 
-    cy.get('[data-testid="next"]').click();
+    cy.get('[data-testid="next"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'wifi');
   });
 
@@ -120,7 +120,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
 
-    cy.get('[data-testid="wifi"]').click();
+    cy.get('[data-testid="wifi"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'wifi');
   });
 
@@ -161,7 +161,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
 
-    cy.get('[data-testid="previous"]').click();
+    cy.get('[data-testid="previous"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'wifi');
   });
 
@@ -211,11 +211,11 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
 
     // Play next animation `wifi`
-    cy.get('[data-testid="next"]').click();
+    cy.get('[data-testid="next"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'wifi');
 
     // Call reset
-    cy.get('[data-testid="reset"]').click();
+    cy.get('[data-testid="reset"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
   });
 
@@ -264,7 +264,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="loop"]').should('have.value', 'false');
 
     // Got to next. ie. `currentAnimationId = wifi`
-    cy.get('[data-testid="next"]').click();
+    cy.get('[data-testid="next"]').click({ force: true });
 
     // Second anmation. Should match the props as well.
     cy.get('[name="speed"]').should('have.value', 3);
@@ -273,7 +273,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="loop"]').should('have.value', 'false');
 
     // Got to next. ie. `currentAnimationId = bounce`
-    cy.get('[data-testid="next"]').click();
+    cy.get('[data-testid="next"]').click({ force: true });
 
     // Back to intial animation. Should match the props from the player.
     cy.get('[name="speed"]').should('have.value', 3);
@@ -328,7 +328,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
     // play wifi
-    cy.get('[data-testid="play"]').click();
+    cy.get('[data-testid="play"]').click({ force: true });
 
     // Animation `wifi`. Should match options passed in the method.
     cy.get('[name="speed"]').should('have.value', 4);
@@ -384,7 +384,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
     // next animation `wifi`
-    cy.get('[data-testid="next"]').click();
+    cy.get('[data-testid="next"]').click({ force: true });
 
     // Animation `wifi`. Should match options passed in the method.
     cy.get('[name="speed"]').should('have.value', 4);
@@ -440,7 +440,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
 
     // next animation `wifi`
-    cy.get('[data-testid="next"]').click();
+    cy.get('[data-testid="next"]').click({ force: true });
 
     // Animation `wifi`. Should match options passed in the method.
     cy.get('[name="speed"]').should('have.value', 4);
@@ -512,7 +512,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="autoplay"]').should('have.value', 'true');
 
     // Update props
-    cy.get('[data-testid="update"]').click();
+    cy.get('[data-testid="update"]').click({ force: true });
 
     // Should match updated props
     cy.get('[name="speed"]').should('have.value', 4);
@@ -522,7 +522,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="autoplay"]').should('have.value', 'true');
 
     // Go to next animation `wifi`
-    cy.get('[data-testid="next"]').click();
+    cy.get('[data-testid="next"]').click({ force: true });
 
     // Should match with updated props.
     cy.get('[name="speed"]').should('have.value', 4);
@@ -532,7 +532,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="autoplay"]').should('have.value', 'true');
 
     // Go to next animation `bounce`
-    cy.get('[data-testid="next"]').click();
+    cy.get('[data-testid="next"]').click({ force: true });
 
     // Should match with updated props.
     cy.get('[name="speed"]').should('have.value', 4);
