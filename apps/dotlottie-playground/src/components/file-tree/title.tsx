@@ -3,12 +3,12 @@
  */
 
 import React, { type HTMLAttributes, useCallback } from 'react';
-import Dropzone from 'react-dropzone';
 import { AiFillFileAdd } from 'react-icons/ai';
 import { FaFolder } from 'react-icons/fa';
 import { LuUpload } from 'react-icons/lu';
 
 import { cn } from '../../utils';
+import { Dropzone } from '../dropzone';
 
 const AVAILABLE_BUTTONS = ['add', 'upload'] as const;
 
@@ -57,7 +57,7 @@ export const Title: React.FC<TitleProps> = ({ buttons, onClickAdd, onUpload, tit
 
             case 'upload':
               buttonsToDisplay.push(
-                <Dropzone key={item} onDrop={onDrop}>
+                <Dropzone key={item} onDrop={onDrop} accept={title === 'Themes' ? 'lss' : 'json'}>
                   {({ getInputProps, getRootProps }): JSX.Element => (
                     <button {...getRootProps()} className="hover:text-white" title="Upload">
                       <input {...getInputProps()} />

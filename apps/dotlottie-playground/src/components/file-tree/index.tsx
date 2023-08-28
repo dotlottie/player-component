@@ -3,11 +3,11 @@
  */
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
 import { RxCross2 } from 'react-icons/rx';
 import { useKey } from 'react-use';
 
 import { useAppSelector } from '../../store/hooks';
+import { Dropzone } from '../dropzone';
 
 import { AddNew } from './add-new';
 import { FileIcon } from './file-icon';
@@ -98,12 +98,6 @@ export const FileTree: React.FC<FileTreeProps> = ({
     [handleUpload],
   );
 
-  const { getInputProps, getRootProps, isDragActive } = useDropzone({
-    onDrop,
-    noClick: true,
-    multiple: false,
-  });
-
   const editorFileName = useAppSelector((state) => state.editor.file?.name);
   const editorAnimationId = useAppSelector((state) => state.editor.animationId);
 
@@ -115,52 +109,61 @@ export const FileTree: React.FC<FileTreeProps> = ({
         onUpload={handleUpload}
         buttons={title === 'Animations' ? ['upload'] : ['upload', 'add']}
       />
-      <div className="relative h-full overflow-y-auto custom-scrollbar" {...getRootProps()}>
-        <input {...getInputProps()} />
-        {isDragActive && (
-          <div className="absolute inset-0 bg-black opacity-50 text-white flex justify-center items-center">
-            Drop {title}
-          </div>
-        )}
-        <ul className="w-full py-2">
-          {Array.isArray(files) &&
-            files.map((file, index) => {
-              return (
-                <li
-                  key={index}
-                  data-value={title}
-                  className={`w-full ${
-                    editorAnimationId === file.name || editorFileName === file.name
-                      ? 'bg-gray-700 text-gray-100'
-                      : 'text-gray-400'
-                  }`}
-                >
-                  <button
-                    onClick={handleClick(file.name)}
-                    className="group w-full flex items-center gap-1 px-2 py-1 pl-4 text-sm whitespace-nowrap hover:text-white"
-                  >
-                    <span>
-                      <FileIcon type={file.type} />
-                    </span>
-                    <span className="flex-1 text-left">{file.name}</span>
-                    <span
-                      onClick={handleRemove(file.name)}
-                      title="Remove"
-                      className="justify-self-end text-gray-400 hover:text-white opacity-0 group-hover:opacity-100"
-                    >
-                      <RxCross2 size={20} />
-                    </span>
-                  </button>
-                </li>
-              );
-            })}
+      <div className="relative h-full overflow-y-auto custom-scrollbar">
+        <Dropzone onDrop={onDrop} accept={title === 'Themes' ? 'lss' : 'json'} noClick>
+          {(state): JSX.Element => {
+            return (
+              <div {...state.getRootProps()}>
+                <input {...state.getInputProps()} />
+                {state.isDragActive && (
+                  <div className="absolute inset-0 bg-black opacity-50 text-white flex justify-center items-center">
+                    Drop {title}
+                  </div>
+                )}
+                <ul className="w-full py-2">
+                  {Array.isArray(files) &&
+                    files.map((file, index) => {
+                      return (
+                        <li
+                          key={index}
+                          data-value={title}
+                          className={`w-full ${
+                            editorAnimationId === file.name || editorFileName === file.name
+                              ? 'bg-gray-700 text-gray-100'
+                              : 'text-gray-400'
+                          }`}
+                        >
+                          <button
+                            onClick={handleClick(file.name)}
+                            className="group w-full flex items-center gap-1 px-2 py-1 pl-4 text-sm whitespace-nowrap hover:text-white"
+                          >
+                            <span>
+                              <FileIcon type={file.type} />
+                            </span>
+                            <span className="flex-1 text-left">{file.name}</span>
+                            <span
+                              onClick={handleRemove(file.name)}
+                              title="Remove"
+                              className="justify-self-end text-gray-400 hover:text-white opacity-0 group-hover:opacity-100"
+                            >
+                              <RxCross2 size={20} />
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
 
-          {displayAdd && (
-            <li>
-              <AddNew onAdd={handleAddNew} extension={title === 'Themes' ? 'lss' : 'json'} />
-            </li>
-          )}
-        </ul>
+                  {displayAdd && (
+                    <li>
+                      <AddNew onAdd={handleAddNew} extension={title === 'Themes' ? 'lss' : 'json'} />
+                    </li>
+                  )}
+                </ul>
+              </div>
+            );
+          }}
+        </Dropzone>
+        <div></div>
       </div>
     </div>
   );

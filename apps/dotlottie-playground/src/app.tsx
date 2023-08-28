@@ -3,9 +3,11 @@
  */
 
 import React, { useCallback, useState } from 'react';
-import { useDropzone } from 'react-dropzone';
 import { BsFileZipFill } from 'react-icons/bs';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
+import { Dropzone } from './components/dropzone';
 import { Playground } from './components/playground';
 import '@dotlottie/react-player/dist/index.css';
 
@@ -50,8 +52,6 @@ const HomeScreen = ({ onStart }: HomeScreenProps): React.ReactNode => {
     [onStart],
   );
 
-  const { getInputProps, getRootProps, isDragActive } = useDropzone({ onDrop, noClick: true });
-
   const fetchLottieAndStart = useCallback(async (url: string, name: string) => {
     const resp = await fetch(url);
     const arrayBuffer = await resp.arrayBuffer();
@@ -69,32 +69,37 @@ const HomeScreen = ({ onStart }: HomeScreenProps): React.ReactNode => {
   );
 
   return (
-    <div {...getRootProps()} className="h-full bg-dark text-white flex justify-center items-center">
-      <input {...getInputProps()} />
-      {isDragActive ? (
-        <h1 className="text-5xl mb-4">Drop it!!!! Almost there :)</h1>
-      ) : (
-        <div className="p-10 rounded text-gray-400 max-w-2xl">
-          <h1 className="text-5xl mb-4">DotLottie Playground :)</h1>
-          <p className="text-2xl mb-6">
-            To start drop a <span className="text-red-600">.lottie</span>. You could also select a sample file below.
-          </p>
-          <h2 className="text-lg mb-2">Sample files</h2>
-          <ul className="text-sm">
-            {SAMPLE_FILES.map((file) => {
-              return (
-                <li key={file.name}>
-                  <button className="flex gap-2 items-center hover:text-white mb-1" onClick={startWith(file)}>
-                    <BsFileZipFill className="fill-yellow-500" />
-                    {file.name}
-                  </button>
-                </li>
-              );
-            })}
-          </ul>
+    <Dropzone onDrop={onDrop} accept="lottie" noClick>
+      {(state): JSX.Element => (
+        <div {...state.getRootProps()} className="h-full bg-dark text-white flex justify-center items-center">
+          <input {...state.getInputProps()} />
+          {state.isDragActive ? (
+            <h1 className="text-5xl mb-4">Drop it!!!! Almost there :)</h1>
+          ) : (
+            <div className="p-10 rounded text-gray-400 max-w-2xl">
+              <h1 className="text-5xl mb-4">DotLottie Playground :)</h1>
+              <p className="text-2xl mb-6">
+                To start drop a <span className="text-red-600">.lottie</span>. You could also select a sample file
+                below.
+              </p>
+              <h2 className="text-lg mb-2">Sample files</h2>
+              <ul className="text-sm">
+                {SAMPLE_FILES.map((file) => {
+                  return (
+                    <li key={file.name}>
+                      <button className="flex gap-2 items-center hover:text-white mb-1" onClick={startWith(file)}>
+                        <BsFileZipFill className="fill-yellow-500" />
+                        {file.name}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            </div>
+          )}
         </div>
       )}
-    </div>
+    </Dropzone>
   );
 };
 
@@ -118,6 +123,7 @@ const App: React.FC = () => {
       ) : (
         <HomeScreen onStart={onStart} />
       )}
+      <ToastContainer />
     </div>
   );
 };
