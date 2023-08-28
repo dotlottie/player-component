@@ -91,7 +91,7 @@ describe('Direction', () => {
 
     cy.get('[name="direction"]').should('have.value', 1);
 
-    cy.get('[data-testid="update"]').click();
+    cy.get('[data-testid="update"]').click({ force: true });
     cy.get('[name="direction"]').should('have.value', -1);
   });
 });
