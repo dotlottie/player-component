@@ -16,12 +16,14 @@ export function loader(
   resetInteractivity: HTMLButtonElement,
   stateInput: HTMLInputElement,
   scroll: HTMLInputElement,
+  exitInteractive: HTMLButtonElement,
+
 ): void {
 let isScrolling = false;
 
   const setupLoader = (): void => {
     player.load(
-      'https://assets4.lottiefiles.com/packages/lf20_zyquagfl.json',
+      '/lf_interactivity_page.lottie',
       {
         preserveAspectRatio: 'xMidYMid slice',
       },
@@ -31,11 +33,16 @@ let isScrolling = false;
       },
     );
 
-    // player.enterInteractiveMode();
-    // player.setSpeed(5);
-  };
+    player.addEventListener("ready", () => {
+      player.enterInteractiveMode('exploding_pigeon')
+  }, {once:true})
+};
 
   element.addEventListener('click', (): void => setupLoader());
+  
+  exitInteractive.addEventListener('click', (): void => {
+    player.exitInteractiveMode();
+  });
 
   nextButton.addEventListener('click', () =>
     player.next(),
