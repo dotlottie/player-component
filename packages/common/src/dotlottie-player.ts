@@ -20,8 +20,9 @@ import type {
 import pkg from '../package.json';
 
 import { DotLottieLoader } from './dotlottie-loader';
+import { loadStateMachines } from './dotlottie-state-machine-loader';
 import { applyLottieStyleSheet } from './dotlottie-styler';
-import { DotLottieStateMachineManager } from './state/dotlottie-state-machine-manager';
+import type { DotLottieStateMachineManager } from './state/dotlottie-state-machine-manager';
 import { Store } from './store';
 import { createError, isValidLottieJSON, isValidLottieString, logError, logWarning } from './utils';
 
@@ -191,7 +192,7 @@ export class DotLottiePlayer {
 
   private _visibilityPercentage: number = 0;
 
-  protected _stateMachine?: DotLottieStateMachineManager;
+  protected _stateMachineManager?: DotLottieStateMachineManager;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -978,14 +979,14 @@ export class DotLottiePlayer {
       throw createError('stateId is not specified.');
     }
 
-    if (!this._stateMachine) {
-      this._stateMachine = new DotLottieStateMachineManager(
+    if (!this._stateMachineManager) {
+      this._stateMachineManager = await loadStateMachines(
         Array.from(this._dotLottieLoader.stateMachinesMap.values()),
         this,
       );
     }
 
-    this._stateMachine.start(stateId);
+    this._stateMachineManager.start(stateId);
   }
 
   /**
@@ -997,7 +998,7 @@ export class DotLottiePlayer {
 
     this._inInteractiveMode = stateId.length > 0;
     this._activeStateId = stateId;
-    this._stateMachine?.stop();
+    this._stateMachineManager?.stop();
 
     if (stateId) {
       // Cache the player PlaybackOptions before entering interactivity mode for the first time.
@@ -1016,7 +1017,7 @@ export class DotLottiePlayer {
   public exitInteractiveMode(): void {
     this._inInteractiveMode = false;
     this._activeStateId = '';
-    this._stateMachine?.stop();
+    this._stateMachineManager?.stop();
 
     // Resets playbackOptions used in interactivity mode
     this._playbackOptions = {};
