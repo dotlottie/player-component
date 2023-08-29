@@ -989,16 +989,14 @@ export class DotLottiePlayer extends LitElement {
                                 @click=${(): void => {
                                   this._animationsTabIsOpen = !this._animationsTabIsOpen;
                                   this._popoverIsOpen = !this._popoverIsOpen;
-                                  this.setTheme('');
-                                  this.play(animationName);
+                                  this.play(animationName, (prev) => ({ ...prev, defaultTheme: '' }));
                                   this.requestUpdate();
                                 }}
                                 @keydown=${(key: KeyboardEvent): void => {
                                   if (key.code === 'Space' || key.code === 'Enter') {
                                     this._animationsTabIsOpen = !this._animationsTabIsOpen;
                                     this._popoverIsOpen = !this._popoverIsOpen;
-                                    this.setTheme('');
-                                    this.play(animationName);
+                                    this.play(animationName, (prev) => ({ ...prev, defaultTheme: '' }));
                                     this.requestUpdate();
                                   }
                                 }}
