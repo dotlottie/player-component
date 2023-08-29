@@ -1,5 +1,17 @@
 # @dotlottie/common
 
+## 0.4.0
+
+### Minor Changes
+
+- e89d991: added state machine support
+- 00452b2: feat: 🎸 add `light` prop to dynamically load a lighter version of the lottie-web renderer
+- 965458c: feat: optional load of state machine deps
+
+### Patch Changes
+
+- 00452b2: perf: ⚡️ reduce bundle size
+
 ## 0.3.0
 
 ### Minor Changes
