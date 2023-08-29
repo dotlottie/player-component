@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.4.2
+
+### Patch Changes
+
+- 921cfe6: fix: 🐛 broken UMD with code splitting
+
 ## 2.4.1
 
 ### Patch Changes
