@@ -1,5 +1,19 @@
 # @dotlottie/react-player
 
+## 1.3.0
+
+### Minor Changes
+
+- e89d991: added state machine support
+- 00452b2: feat: 🎸 add `light` prop to dynamically load a lighter version of the lottie-web renderer
+
+### Patch Changes
+
+- 8286537: fix: set default value for className props to prevent undefined
+- 28c1581: fix: content-type check for .json urls
+- 00452b2: perf: ⚡️ reduce bundle size
+- 35b2074: fix: tests
+
 ## 1.2.1
 
 ### Patch Changes
