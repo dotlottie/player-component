@@ -13,7 +13,6 @@ export default defineConfig((options) => ({
   sourcemap: true,
   minify: !options.watch,
   treeshake: true,
-  splitting: true,
   module: 'ESNext',
   format: ['esm', 'umd'],
   tsconfig: 'tsconfig.json',
