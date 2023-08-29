@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.splitter-drag-bar {
+  flex-shrink: 0;
+  width: 5px;
+  background-color: #d1d5db;
+  cursor: col-resize;
+  transition: background-color 0.15s 0.15s ease-in-out;
+}
+
+.splitter-drag-bar.splitter-drag-bar--dragging,
+.sample-drag-bar:hover {
+  background-color: #63b3ed;
+}
+
+.splitter-drag-bar.splitter-drag-bar--horizontal {
+  height: 5px;
+  width: 100%;
+  cursor: row-resize;
+}
+
+[hidden] {
+  display: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: #1e1e1e;
+  border-left: 1px solid rgba(156, 163, 175, 0.4);
+}
+
+/* Handle */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(120, 119, 119, 0.8);
+}
+
+/* Handle on hover */
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(120, 119, 119, 1);
+}

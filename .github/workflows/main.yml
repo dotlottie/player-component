@@ -90,3 +90,39 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPMJS_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+
+  deploy:
+    needs: validate
+    runs-on: ubuntu-latest
+    if: ${{ github.repository == 'dotlottie/player-component' && github.ref == 'master' && github.event_name == 'push' }}
+    steps:
+      - name: ⬇️ Checkout repo
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+
+      - name: ⎔ Setup pnpm@7
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: ⎔ Setup Node@18
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 📥 Download deps
+        run: pnpm install
+
+      - name: 🏗 Build
+        run: pnpm build
+
+      - name: List Contents of dist Directory
+        run: ls -R ./apps/dotlottie-playground/dist
+
+      - name: 🌐 Publish Playground
+        if: success()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          publish_dir: ./apps/dotlottie-playground/dist

@@ -180,6 +180,12 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     };
   }, [activeStateId]);
 
+  useUpdateEffect(() => {
+    if (typeof src !== 'undefined') {
+      dotLottiePlayer.updateSrc(src);
+    }
+  }, [src]);
+
   /**
    * Adding event listeners if dotLottiePlayer is available
    */

@@ -1,0 +1,15 @@
+{
+  "descriptor": {
+    "id": "<file_name>",
+    "initial": "initialState"
+  },
+  "states": {
+    "initialState": {
+      "animationId": "animationId",
+      "playbackSettings": {
+        "autoplay": true,
+        "loop": true
+      }
+    }
+  }
+}
