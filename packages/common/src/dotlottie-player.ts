@@ -1516,7 +1516,7 @@ export class DotLottiePlayer {
     }
 
     this._lottie.addEventListener('enterFrame', () => {
-      if (Math.round(this._frame) >= 0 && Math.round(this._frame) < 1 && this.direction === -1) {
+      if (Math.floor(this._frame) >= 0 && Math.floor(this._frame) < 1 && this.direction === -1) {
         this._handleAnimationComplete();
       }
       // Update seeker and frame value based on the current animation frame
