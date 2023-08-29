@@ -15,7 +15,7 @@ export default defineConfig((options) => ({
   treeshake: true,
   splitting: true,
   module: 'ESNext',
-  format: ['esm'],
+  format: ['esm', 'umd'],
   tsconfig: 'tsconfig.json',
   outDir: 'dist',
   platform: 'browser',
