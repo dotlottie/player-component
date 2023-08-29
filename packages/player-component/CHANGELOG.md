@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.4.1
+
+### Patch Changes
+
+- df21884: fix: 🐛 double render when selective animations.
+
 ## 2.4.0
 
 ### Minor Changes
