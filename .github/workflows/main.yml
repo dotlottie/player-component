@@ -28,6 +28,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'pnpm'
 
       - name: 📥 Download deps
         run: pnpm install
@@ -72,6 +73,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+          cache: 'pnpm'
 
       - name: 📥 Download deps
         run: pnpm install
