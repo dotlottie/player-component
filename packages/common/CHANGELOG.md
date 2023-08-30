@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.5.0
+
+### Minor Changes
+
+- 3a4a56a: fires the complete event if direction is -1 and frame 0 is hit
+
 ## 0.4.0
 
 ### Minor Changes
