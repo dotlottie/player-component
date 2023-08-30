@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.4.0
+
+### Minor Changes
+
+- 1716af8: complete event now fires if direction is -1 and frame 0 is hit
+
 ## 1.3.0
 
 ### Minor Changes

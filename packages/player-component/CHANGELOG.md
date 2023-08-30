@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.5.0
+
+### Minor Changes
+
+- 1716af8: complete event now fires if direction is -1 and frame 0 is hit
+
 ## 2.4.2
 
 ### Patch Changes
