@@ -1516,17 +1516,27 @@ export class DotLottiePlayer {
     }
 
     this._lottie.addEventListener('enterFrame', () => {
-      if (Math.floor(this._frame) >= 0 && Math.floor(this._frame) < 1 && this.direction === -1) {
-        this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
-      }
       // Update seeker and frame value based on the current animation frame
       if (!this._lottie) {
         logWarning('enterFrame event : Lottie is undefined.');
 
         return;
       }
+      const flooredFrame = Math.floor(this._lottie.currentFrame);
+
       this._frame = this._lottie.currentFrame;
       this._seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
+
+      if (flooredFrame === 0) {
+        this._frame = flooredFrame;
+        this._seeker = flooredFrame;
+
+        if (this.direction === -1) {
+          this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
+          if (!this.loop) this.setCurrentState(PlayerState.Completed);
+        }
+      }
+
       // Notify state subscriptions about the frame and seeker update.
       this._notify();
     });
