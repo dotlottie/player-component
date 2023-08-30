@@ -3,4 +3,4 @@
 '@dotlottie/react-player': minor
 ---
 
-updated common core - ready for release
+complete event now fires if direction is -1 and frame 0 is hit
