@@ -1522,8 +1522,21 @@ export class DotLottiePlayer {
 
         return;
       }
+      const flooredFrame = Math.floor(this._lottie.currentFrame);
+
       this._frame = this._lottie.currentFrame;
       this._seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
+
+      if (flooredFrame === 0) {
+        this._frame = flooredFrame;
+        this._seeker = flooredFrame;
+
+        if (this.direction === -1) {
+          this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
+          if (!this.loop) this.setCurrentState(PlayerState.Completed);
+        }
+      }
+
       // Notify state subscriptions about the frame and seeker update.
       this._notify();
     });
