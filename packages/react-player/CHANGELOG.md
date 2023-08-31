@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.4.1
+
+### Patch Changes
+
+- 2c999e9: fix: 🐛 removed set autoplay warning
+
 ## 1.4.0
 
 ### Minor Changes
