@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.5.1
+
+### Patch Changes
+
+- 9f83088: refactor: 💡 remove the use of local var this.\_frame
+
 ## 0.5.0
 
 ### Minor Changes
