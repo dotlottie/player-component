@@ -172,10 +172,6 @@ export class DotLottiePlayer {
 
   public state = new Store<DotLottiePlayerState>(DEFAULT_STATE);
 
-  protected _frame: number = 0;
-
-  protected _seeker: number = 0;
-
   private readonly _light: boolean = false;
 
   private readonly _dotLottieLoader: DotLottieLoader = new DotLottieLoader();
@@ -1383,6 +1379,26 @@ export class DotLottiePlayer {
     }
   }
 
+  protected get _frame(): number {
+    if (!this._lottie) return 0;
+
+    if (this.currentState === PlayerState.Completed) {
+      if (this.direction === -1) {
+        return Math.floor(this._lottie.currentFrame);
+      } else {
+        return this._lottie.totalFrames;
+      }
+    }
+
+    return this._lottie.currentFrame;
+  }
+
+  protected get _seeker(): number {
+    if (!this._lottie) return 0;
+
+    return (this._frame / this._lottie.totalFrames) * 100;
+  }
+
   /**
    * Reverts playback options to their values as defined in the manifest for specified keys.
    *
@@ -1524,13 +1540,7 @@ export class DotLottiePlayer {
       }
       const flooredFrame = Math.floor(this._lottie.currentFrame);
 
-      this._frame = this._lottie.currentFrame;
-      this._seeker = (this._lottie.currentFrame / this._lottie.totalFrames) * 100;
-
       if (flooredFrame === 0) {
-        this._frame = flooredFrame;
-        this._seeker = flooredFrame;
-
         if (this.direction === -1) {
           this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
           if (!this.loop) this.setCurrentState(PlayerState.Completed);
