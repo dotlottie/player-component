@@ -1382,6 +1382,14 @@ export class DotLottiePlayer {
   protected get _frame(): number {
     if (!this._lottie) return 0;
 
+    if (this.currentState === PlayerState.Completed) {
+      if (this.direction === -1) {
+        return 0;
+      } else {
+        return this._lottie.totalFrames;
+      }
+    }
+
     return this._lottie.currentFrame;
   }
 
@@ -1533,6 +1541,15 @@ export class DotLottiePlayer {
         logWarning('enterFrame event : Lottie is undefined.');
 
         return;
+      }
+
+      const flooredFrame = Math.floor(this._lottie.currentFrame);
+
+      if (flooredFrame === 0) {
+        if (this.direction === -1) {
+          this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
+          if (!this.loop) this.setCurrentState(PlayerState.Completed);
+        }
       }
 
       // Notify state subscriptions about the frame and seeker update.
