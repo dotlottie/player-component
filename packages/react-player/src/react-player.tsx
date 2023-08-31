@@ -92,7 +92,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   /**
    * Updating prop changes.
    */
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof loop === 'undefined') {
       dotLottiePlayer.revertToManifestValues(['loop']);
     } else {
@@ -100,7 +100,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [loop]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof autoplay === 'undefined') {
       dotLottiePlayer.revertToManifestValues(['autoplay']);
     } else {
@@ -108,7 +108,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [autoplay]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof direction === 'undefined') {
       dotLottiePlayer.revertToManifestValues(['direction']);
     } else {
@@ -116,7 +116,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [direction]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof speed === 'undefined') {
       dotLottiePlayer.revertToManifestValues(['speed']);
     } else {
@@ -124,7 +124,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [speed]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof playMode === 'undefined') {
       dotLottiePlayer.revertToManifestValues(['playMode']);
     } else {
@@ -132,7 +132,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [playMode]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof hover === 'undefined') {
       dotLottiePlayer.revertToManifestValues(['hover']);
     } else {
@@ -140,7 +140,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [hover]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof background === 'undefined') {
       dotLottiePlayer.setBackground('transparent');
     } else {
@@ -148,7 +148,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [background]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof intermission === 'undefined') {
       dotLottiePlayer.revertToManifestValues(['intermission']);
     } else {
@@ -156,7 +156,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [intermission]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (typeof defaultTheme === 'undefined' || !defaultTheme) {
       dotLottiePlayer.revertToManifestValues(['defaultTheme']);
     } else {
@@ -164,7 +164,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     }
   }, [defaultTheme]);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     if (activeAnimationId) {
       dotLottiePlayer.play(activeAnimationId);
     }

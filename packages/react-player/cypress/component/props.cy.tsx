@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { PlayMode } from '@dotlottie/common';
+import { PlayMode, PlayerState } from '@dotlottie/common';
 import React from 'react';
 
 import { DotLottiePlayer } from '../../src/react-player';
@@ -13,6 +13,7 @@ describe('Override playMode', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
+          activeAnimationId="hola"
           src={`/speed_3_bounce_and_reverse_playback.lottie`}
           style={{ height: '400px', display: 'inline-block' }}
           playMode={PlayMode.Normal}
@@ -20,6 +21,7 @@ describe('Override playMode', () => {
       </PlayerStateWrapper>,
     );
 
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="playMode"]').should('have.value', PlayMode.Normal);
   });
 });
@@ -36,6 +38,7 @@ describe('Override speed', () => {
       </PlayerStateWrapper>,
     );
 
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="speed"]').should('have.value', 1);
   });
 });
@@ -52,6 +55,7 @@ describe('Override loop', () => {
       </PlayerStateWrapper>,
     );
 
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="loop"]').should('have.value', 5);
   });
 });
