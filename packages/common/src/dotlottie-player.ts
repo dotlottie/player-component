@@ -1382,14 +1382,6 @@ export class DotLottiePlayer {
   protected get _frame(): number {
     if (!this._lottie) return 0;
 
-    if (this.currentState === PlayerState.Completed) {
-      if (this.direction === -1) {
-        return Math.floor(this._lottie.currentFrame);
-      } else {
-        return this._lottie.totalFrames;
-      }
-    }
-
     return this._lottie.currentFrame;
   }
 
@@ -1518,10 +1510,14 @@ export class DotLottiePlayer {
     // If loop = number, and animation has reached the end, call stop to go to frame 0
     if (typeof this._loop === 'number') this.stop();
 
-    this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
+    const lastFrame = this.direction === -1 ? 0 : this.totalFrames;
+
+    this._lottie?.goToAndStop(lastFrame, true);
+
     this._counter = 0;
     this.clearCountTimer();
     this.setCurrentState(PlayerState.Completed);
+    this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
   }
 
   public addEventListeners(): void {
@@ -1537,14 +1533,6 @@ export class DotLottiePlayer {
         logWarning('enterFrame event : Lottie is undefined.');
 
         return;
-      }
-      const flooredFrame = Math.floor(this._lottie.currentFrame);
-
-      if (flooredFrame === 0) {
-        if (this.direction === -1) {
-          this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
-          if (!this.loop) this.setCurrentState(PlayerState.Completed);
-        }
       }
 
       // Notify state subscriptions about the frame and seeker update.
