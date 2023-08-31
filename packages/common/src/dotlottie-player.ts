@@ -1520,7 +1520,7 @@ export class DotLottiePlayer {
 
     const lastFrame = this.direction === -1 ? 0 : this.totalFrames;
 
-    this._lottie?.goToAndStop(lastFrame, true);
+    this.goToAndStop(lastFrame, true);
 
     this._counter = 0;
     this.clearCountTimer();
