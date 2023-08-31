@@ -53,7 +53,7 @@ describe('Interactivity: enter/exit interactivity', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[name="loop"]').should('have.value', 'false');
     cy.get('[name="autoplay"]').should('have.value', 'false');
-    cy.get('[name="frame"]').should('have.value', 29);
+    cy.get('[name="frame"]').should('have.value', 30);
     cy.get('[name="speed"]').should('have.value', 1);
 
     // State: playReverse
