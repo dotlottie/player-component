@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.4.2
+
+### Patch Changes
+
+- 9f83088: refactor: 💡 remove the use of local var this.\_frame
+
 ## 1.4.1
 
 ### Patch Changes
