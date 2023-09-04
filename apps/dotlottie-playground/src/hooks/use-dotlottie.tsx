@@ -2,9 +2,15 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { DotLottie, type PlayMode, type DotLottieStateMachine } from '@dotlottie/dotlottie-js';
+import {
+  DotLottie,
+  type PlayMode,
+  type DotLottieStateMachine,
+  DotLottieStateMachineSchema,
+} from '@dotlottie/dotlottie-js';
 import { type Animation } from '@lottiefiles/lottie-types';
 import React, { type ReactNode, createContext, useCallback, useContext, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { setAnimations } from '../store/animation-slice';
 import { type EditorAnimationOptions } from '../store/editor-slice';
@@ -101,9 +107,21 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
     }
   }, [dotLottie]);
 
+  const requiresValidStateMachineSchema = useCallback((stateMachine: DotLottieStateMachine) => {
+    try {
+      DotLottieStateMachineSchema.parse(stateMachine);
+    } catch (error) {
+      toast('Invalid state schema. Please verify the json.', { type: 'error' });
+      throw error;
+    }
+  }, []);
+
   // Add State
   const addDotLottieStateMachine = useCallback(
     (stateMachine: DotLottieStateMachine, previousStateId?: string): void => {
+      // dispaly and throw Error
+      requiresValidStateMachineSchema(stateMachine);
+
       if (previousStateId) {
         dotLottie.removeStateMachine(previousStateId);
       } else {
