@@ -24,7 +24,7 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({ onChange, title })
   }, [edit]);
 
   const handleSave = useCallback(() => {
-    onChange(`${updatedTitle}.lottie`);
+    onChange(updatedTitle ? `${updatedTitle}.lottie` : title);
     setEdit(false);
   }, [updatedTitle, onchange, setEdit]);
 
@@ -47,13 +47,15 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({ onChange, title })
       handleSave();
     },
     {},
-    [handleSave, edit],
+    [handleSave],
   );
 
   return (
     <div className="group flex items-center">
       {edit && (
         <input
+          autoFocus
+          className="bg-transparent outline-none"
           type="text"
           onBlur={handleSave}
           defaultValue={title.replace(/.lottie$/u, '')}
