@@ -7,12 +7,11 @@ import React, {
   useCallback,
   type MouseEventHandler,
   useState,
-  type ChangeEventHandler,
   useRef,
+  type KeyboardEventHandler,
 } from 'react';
 import { BiSolidEdit } from 'react-icons/bi';
 import { RxCross2 } from 'react-icons/rx';
-import { useKey } from 'react-use';
 
 import { processFilename } from '../../utils';
 
@@ -30,7 +29,6 @@ interface EditableItemProps extends HTMLAttributes<HTMLButtonElement> {
 
 export const EditableItem: React.FC<EditableItemProps> = ({ editable, file, onRemove, onRename, ...props }) => {
   const [editMode, setEditMode] = useState(false);
-  const [updatedValue, setUpdatedValue] = useState(file.name);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleRemove = useCallback<MouseEventHandler<HTMLSpanElement>>(
@@ -50,28 +48,19 @@ export const EditableItem: React.FC<EditableItemProps> = ({ editable, file, onRe
   );
 
   const triggerRename = useCallback(() => {
-    if (inputRef.current) {
+    if (inputRef.current && inputRef.current.value !== file.name) {
       onRename?.(file.name, processFilename(inputRef.current.value));
     }
     setEditMode(false);
-  }, [onRename, updatedValue, setEditMode, inputRef]);
+  }, [onRename, setEditMode, inputRef]);
 
-  useKey(
-    'Enter',
-    () => {
-      if (editMode) {
+  const checkForEnterKey = useCallback<KeyboardEventHandler<HTMLInputElement>>(
+    (event) => {
+      if (event.key === 'Enter') {
         triggerRename();
       }
     },
-    {},
-    [editMode],
-  );
-
-  const handleChangeName = useCallback<ChangeEventHandler<HTMLInputElement>>(
-    (event) => {
-      setUpdatedValue(event.target.value);
-    },
-    [setUpdatedValue],
+    [triggerRename],
   );
 
   return (
@@ -85,7 +74,7 @@ export const EditableItem: React.FC<EditableItemProps> = ({ editable, file, onRe
       {editMode && (
         <input
           ref={inputRef}
-          onChange={handleChangeName}
+          onKeyDown={checkForEnterKey}
           onBlur={triggerRename}
           autoFocus
           className="outline-none bg-transparent flex-1 text-left"
@@ -94,17 +83,13 @@ export const EditableItem: React.FC<EditableItemProps> = ({ editable, file, onRe
       )}
       {!editMode && <span className="flex-1 text-left">{file.name}</span>}
       {!editMode && (
-        <div className="flex justify-self-end text-gray-400 ">
+        <div className="flex justify-self-end text-gray-400 gap-1">
           {editable && (
-            <span onClick={enterEditMode} className="opacity-0 group-hover:opacity-100">
+            <span onClick={enterEditMode} className="hover:text-white opacity-0 group-hover:opacity-100">
               <BiSolidEdit size={20} />
             </span>
           )}
-          <span
-            onClick={handleRemove}
-            title="Remove"
-            className="justify-self-end text-gray-400 hover:text-white opacity-0 group-hover:opacity-100"
-          >
+          <span onClick={handleRemove} title="Remove" className="hover:text-white opacity-0 group-hover:opacity-100">
             <RxCross2 size={20} />
           </span>
         </div>

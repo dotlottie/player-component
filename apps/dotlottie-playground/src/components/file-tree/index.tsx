@@ -56,10 +56,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
 
   const handleRemove = useCallback(
     (fileName: string) => {
-      return (event: React.MouseEvent) => {
-        event.stopPropagation();
-        onRemove?.(title, fileName);
-      };
+      onRemove?.(title, fileName);
     },
     [onRemove, title],
   );

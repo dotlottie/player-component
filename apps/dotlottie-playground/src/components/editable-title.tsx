@@ -2,9 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import React, { type ChangeEventHandler, useCallback, useState } from 'react';
+import React, { useCallback, useState, useRef, type KeyboardEventHandler } from 'react';
 import { BiSolidEdit } from 'react-icons/bi';
-import { useKey } from 'react-use';
 
 import { cn } from '../utils';
 
@@ -15,7 +14,7 @@ interface EditableTitleProps {
 
 export const EditableTitle: React.FC<EditableTitleProps> = ({ onChange, title }) => {
   const [edit, setEdit] = useState(false);
-  const [updatedTitle, setUpdatedTitle] = useState(title.replace(/.lottie$/u, ''));
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = useCallback((): void => {
     if (!edit) {
@@ -24,29 +23,16 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({ onChange, title })
   }, [edit]);
 
   const handleSave = useCallback(() => {
-    onChange(updatedTitle ? `${updatedTitle}.lottie` : title);
+    onChange(inputRef.current?.value ? `${inputRef.current.value}.lottie` : title);
     setEdit(false);
-  }, [updatedTitle, onchange, setEdit]);
+  }, [onchange, setEdit]);
 
-  const handlValueChanged = useCallback<ChangeEventHandler<HTMLInputElement>>(
+  const checkForEnterKey = useCallback<KeyboardEventHandler<HTMLInputElement>>(
     (event) => {
-      setUpdatedTitle(event.target.value);
+      if (event.key === 'Enter') {
+        handleSave();
+      }
     },
-    [setUpdatedTitle],
-  );
-
-  useKey('Escape', () => {
-    setEdit(false);
-  });
-
-  useKey(
-    'Enter',
-    () => {
-      if (!edit) return;
-
-      handleSave();
-    },
-    {},
     [handleSave],
   );
 
@@ -54,12 +40,13 @@ export const EditableTitle: React.FC<EditableTitleProps> = ({ onChange, title })
     <div className="group flex items-center">
       {edit && (
         <input
+          ref={inputRef}
           autoFocus
           className="bg-transparent outline-none"
           type="text"
+          onKeyDown={checkForEnterKey}
           onBlur={handleSave}
           defaultValue={title.replace(/.lottie$/u, '')}
-          onChange={handlValueChanged}
         />
       )}
       {!edit && <span>{title || 'unnamed.lottie'}</span>}
