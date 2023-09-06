@@ -3,7 +3,7 @@
  */
 
 import type { RendererSettings, PlayMode } from '@dotlottie/common';
-import { PlayerState, PlayerEvents } from '@dotlottie/common';
+import { DotLottiePlayer as DotLottiePlayerCommon, PlayerState, PlayerEvents } from '@dotlottie/common';
 import React, { useEffect, useRef } from 'react';
 import type { MutableRefObject } from 'react';
 import { useUpdateEffect } from 'react-use';
@@ -59,8 +59,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   ...props
 }) => {
   const container = useRef(null);
-
-  const dotLottiePlayer = useDotLottiePlayer(src, container, {
+  const config = {
     lottieRef,
     renderer,
     activeAnimationId,
@@ -82,7 +81,9 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     defaultTheme,
     light,
     activeStateId,
-  });
+  };
+
+  const { dotLottiePlayer, setDotLottiePlayer } = useDotLottiePlayer(src, container, config);
 
   const currentState = useSelectDotLottieState(dotLottiePlayer, (state) => state.currentState);
   const frame = useSelectDotLottieState(dotLottiePlayer, (state) => state.frame);
@@ -182,7 +183,10 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
 
   useUpdateEffect(() => {
     if (typeof src !== 'undefined') {
-      dotLottiePlayer.updateSrc(src);
+      const dl = new DotLottiePlayerCommon(src, container.current, config);
+
+      dl.load();
+      setDotLottiePlayer(dl);
     }
   }, [src]);
 
