@@ -47,6 +47,7 @@ export class DotLottieLoader {
   }
 
   public async loadFromUrl(url: string): Promise<void> {
+    this.clearCache();
     const response = await fetch(url, {
       method: 'GET',
       mode: 'cors',
@@ -93,6 +94,7 @@ export class DotLottieLoader {
   }
 
   public loadFromLottieJSON(json: Record<string, unknown>): void {
+    this.clearCache();
     if (!isValidLottieJSON(json)) {
       throw new Error('Invalid lottie JSON');
     }
@@ -114,6 +116,7 @@ export class DotLottieLoader {
   }
 
   public async loadFromArrayBuffer(arrayBuffer: ArrayBuffer): Promise<void> {
+    this.clearCache();
     this._dotLottie = await loadFromArrayBufferUtil(arrayBuffer);
 
     const manifest = await getManifestUtil(this._dotLottie);
@@ -203,5 +206,11 @@ export class DotLottieLoader {
     }
 
     return stateMachine;
+  }
+
+  public clearCache(): void {
+    this._stateMachinesMap.clear();
+    this._themeMap.clear();
+    this._animationsMap.clear();
   }
 }

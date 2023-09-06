@@ -188,7 +188,7 @@ export class DotLottiePlayer {
 
   private _visibilityPercentage: number = 0;
 
-  protected _stateMachineManager?: DotLottieStateMachineManager;
+  protected _stateMachineManager: DotLottieStateMachineManager | undefined;
 
   public constructor(
     src: string | Record<string, unknown>,
@@ -443,6 +443,7 @@ export class DotLottiePlayer {
     this._src = src;
     this._activeAnimationId = undefined;
     this._currentAnimationId = undefined;
+    this._stateMachineManager = undefined;
     this.load();
   }
 
