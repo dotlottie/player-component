@@ -13,7 +13,7 @@ import '@dotlottie/react-player/dist/index.css';
 
 const SAMPLE_FILES = [
   { name: 'toggle.lottie', path: `${import.meta.env.BASE_URL}toggle.lottie` },
-  { name: 'lf_interactivity_page.lottie', path: `${import.meta.env.BASE_URL}lf_interactivity_page.lottie` },
+  { name: 'interactivity_example.lottie', path: `${import.meta.env.BASE_URL}interactivity_example.lottie` },
   { name: 'aniki_hamster.lottie', path: `${import.meta.env.BASE_URL}aniki_hamster.lottie` },
 ];
 

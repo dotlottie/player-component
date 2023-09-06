@@ -60,7 +60,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
 }) => {
   const container = useRef(null);
 
-  const dotLottiePlayer = useDotLottiePlayer(src, container, {
+  const { dotLottiePlayer, initDotLottiePlayer } = useDotLottiePlayer(src, container, {
     lottieRef,
     renderer,
     activeAnimationId,
@@ -182,7 +182,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
 
   useUpdateEffect(() => {
     if (typeof src !== 'undefined') {
-      dotLottiePlayer.updateSrc(src);
+      initDotLottiePlayer();
     }
   }, [src]);
 

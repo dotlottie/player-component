@@ -2,9 +2,15 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { DotLottie, type PlayMode, type DotLottieStateMachine } from '@dotlottie/dotlottie-js';
+import {
+  DotLottie,
+  type PlayMode,
+  type DotLottieStateMachine,
+  DotLottieStateMachineSchema,
+} from '@dotlottie/dotlottie-js';
 import { type Animation } from '@lottiefiles/lottie-types';
 import React, { type ReactNode, createContext, useCallback, useContext, useState } from 'react';
+import { toast } from 'react-toastify';
 
 import { setAnimations } from '../store/animation-slice';
 import { type EditorAnimationOptions } from '../store/editor-slice';
@@ -25,6 +31,7 @@ interface DotLottieContextProps {
   removeDotLottieAnimation: (animationId: string) => void;
   removeDotLottieState: (stateId: string) => void;
   removeDotLottieTheme: (themeId: string) => void;
+  renameDotLottieAnimation: (animationId: string, newAnimationId: string) => void | Promise<void>;
   setAnimationOptions: (animationId: string, options: EditorAnimationOptions) => void | Promise<void>;
   setDotLottie: (dotLottie: DotLottie) => void | Promise<void>;
 }
@@ -41,6 +48,7 @@ const DotLottieContext = createContext<DotLottieContextProps>({
   removeDotLottieAnimation: () => undefined,
   removeDotLottieState: () => undefined,
   removeDotLottieTheme: () => undefined,
+  renameDotLottieAnimation: () => undefined,
   buildAndUpdateUrl: () => undefined,
 });
 
@@ -58,26 +66,32 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
   );
 
   const fetchAndUpdateDotLottie = useCallback(async () => {
-    const _anims = dotLottie.manifest.animations.map((item) => {
-      return {
-        name: `${item.id}`,
-        type: 'json',
-      };
-    });
+    const _anims = dotLottie.manifest.animations
+      .map((item) => {
+        return {
+          name: `${item.id}`,
+          type: 'json',
+        };
+      })
+      .sort((item1, item2) => (item1.name > item2.name ? 1 : -1));
 
-    const _states = dotLottie.stateMachines.map((item) => {
-      return {
-        name: `${item.id}`,
-        type: 'json',
-      };
-    });
+    const _states = dotLottie.stateMachines
+      .map((item) => {
+        return {
+          name: `${item.id}`,
+          type: 'json',
+        };
+      })
+      .sort((item1, item2) => (item1.name > item2.name ? 1 : -1));
 
-    const _themes = dotLottie.themes.map((item) => {
-      return {
-        name: `${item.id}`,
-        type: 'lss',
-      };
-    });
+    const _themes = dotLottie.themes
+      .map((item) => {
+        return {
+          name: `${item.id}`,
+          type: 'lss',
+        };
+      })
+      .sort((item1, item2) => (item1.name > item2.name ? 1 : -1));
 
     dispatch(setAnimations(_anims));
     dispatch(setStates(_states));
@@ -101,9 +115,21 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
     }
   }, [dotLottie]);
 
+  const requiresValidStateMachineSchema = useCallback((stateMachine: DotLottieStateMachine) => {
+    try {
+      DotLottieStateMachineSchema.parse(stateMachine);
+    } catch (error) {
+      toast('Invalid state schema. Please verify the json.', { type: 'error' });
+      throw error;
+    }
+  }, []);
+
   // Add State
   const addDotLottieStateMachine = useCallback(
     (stateMachine: DotLottieStateMachine, previousStateId?: string): void => {
+      // dispaly and throw Error
+      requiresValidStateMachineSchema(stateMachine);
+
       if (previousStateId) {
         dotLottie.removeStateMachine(previousStateId);
       } else {
@@ -128,6 +154,35 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
       buildAndUpdateUrl();
     },
     [dotLottie, fetchAndUpdateDotLottie],
+  );
+
+  // Add Animation
+  const renameDotLottieAnimation = useCallback(
+    async (animationId: string, newAnimationId: string) => {
+      const animation = await dotLottie.getAnimation(animationId);
+
+      if (animation) {
+        try {
+          dotLottie.addAnimation({
+            id: newAnimationId,
+            data: animation.data,
+          });
+
+          dotLottie.removeAnimation(animationId);
+        } catch (error) {
+          toast(error.message, {
+            type: 'error',
+          });
+
+          // eslint-disable-next-line no-console
+          console.error(error);
+        }
+      }
+
+      fetchAndUpdateDotLottie();
+      buildAndUpdateUrl();
+    },
+    [dotLottie, fetchAndUpdateDotLottie, buildAndUpdateUrl],
   );
 
   // Add Animation
@@ -236,6 +291,7 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
         removeDotLottieAnimation,
         removeDotLottieState,
         removeDotLottieTheme,
+        renameDotLottieAnimation,
         setDotLottie,
         setAnimationOptions,
       }}

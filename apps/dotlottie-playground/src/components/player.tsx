@@ -17,13 +17,20 @@ export const Player: React.FC<PlayerProps> = () => {
   const currentPlayerUrl = useAppSelector((state) => state.playground.playerUrl);
   const [playerStates, setPlayerStates] = useState<string[]>([]);
   const [activeStateId, setActiveStateId] = useState('');
+  const [currentFrame, setCurrentFrame] = useState(0);
 
   const handlePlayerEvents = useCallback(
-    (event: PlayerEvents) => {
+    (event: PlayerEvents, params: unknown) => {
       if (event === PlayerEvents.Ready) {
         const _states = lottiePlayer.current?.getManifest()?.states;
 
         setPlayerStates(_states || []);
+      }
+
+      if (event === PlayerEvents.Frame) {
+        const { frame } = params as { frame: number };
+
+        setCurrentFrame(Math.floor(frame));
       }
 
       const currentState = lottiePlayer.current?.getState();
@@ -63,7 +70,14 @@ export const Player: React.FC<PlayerProps> = () => {
           lottieRef={lottiePlayer}
           src={currentPlayerUrl}
         >
-          <Controls />
+          <div className="bg-white">
+            <Controls />
+            <div className="px-3 pb-1">
+              <span className="bg-gray-300 rounded px-2">
+                # <span>{currentFrame}</span>
+              </span>
+            </div>
+          </div>
         </DotLottiePlayer>
         <div className="flex flex-wrap gap-2 p-2 text-white">
           <div className="text-white">

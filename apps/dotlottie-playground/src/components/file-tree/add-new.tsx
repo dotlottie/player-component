@@ -12,7 +12,7 @@ interface AddNewProps {
   extension: SupportedFileTypes;
   onAdd: (value: string) => void;
 }
-export const AddNew: React.FC<AddNewProps> = ({ extension, onAdd }) => {
+export const AddNew: React.FC<AddNewProps> = ({ onAdd }) => {
   const ref = useRef<ElementRef<'input'>>(null);
 
   const handleBlur = useCallback<FocusEventHandler<HTMLInputElement>>(
@@ -38,8 +38,14 @@ export const AddNew: React.FC<AddNewProps> = ({ extension, onAdd }) => {
       <span>
         <FileIcon type="json" />
       </span>
-      <input ref={ref} type="text" className="bg-gray-white text-black" onKeyUp={handleKeyUp} onBlur={handleBlur} />
-      <span>{extension}</span>
+      <input
+        autoFocus
+        ref={ref}
+        type="text"
+        className="bg-transparent outline-none"
+        onKeyUp={handleKeyUp}
+        onBlur={handleBlur}
+      />
     </div>
   );
 };

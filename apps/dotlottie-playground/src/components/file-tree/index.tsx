@@ -3,14 +3,14 @@
  */
 
 import React, { useCallback, useMemo, useState } from 'react';
-import { RxCross2 } from 'react-icons/rx';
 import { useKey } from 'react-use';
 
+import { useDotLottie } from '../../hooks/use-dotlottie';
 import { useAppSelector } from '../../store/hooks';
 import { Dropzone } from '../dropzone';
 
 import { AddNew } from './add-new';
-import { FileIcon } from './file-icon';
+import { EditableItem } from './editable-item';
 import { Title } from './title';
 
 const FILE_TYPES = ['json', 'lss'] as const;
@@ -41,6 +41,8 @@ export const FileTree: React.FC<FileTreeProps> = ({
   onUpload,
   title,
 }) => {
+  const { renameDotLottieAnimation } = useDotLottie();
+
   const handleClick = useCallback(
     (fileName: string) => {
       return () => {
@@ -54,10 +56,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
 
   const handleRemove = useCallback(
     (fileName: string) => {
-      return (event: React.MouseEvent) => {
-        event.stopPropagation();
-        onRemove?.(title, fileName);
-      };
+      onRemove?.(title, fileName);
     },
     [onRemove, title],
   );
@@ -82,6 +81,15 @@ export const FileTree: React.FC<FileTreeProps> = ({
       setDisplayAdd(false);
     },
     [onAddNew, title, fileExtention],
+  );
+
+  const handleRename = useCallback(
+    (id: string, previousId: string) => {
+      if (title === 'Animations') {
+        renameDotLottieAnimation(id, previousId);
+      }
+    },
+    [title, renameDotLottieAnimation],
   );
 
   const handleUpload = useCallback(
@@ -122,10 +130,10 @@ export const FileTree: React.FC<FileTreeProps> = ({
                 )}
                 <ul className="w-full py-2">
                   {Array.isArray(files) &&
-                    files.map((file, index) => {
+                    files.map((file) => {
                       return (
                         <li
-                          key={index}
+                          key={file.name}
                           data-value={title}
                           className={`w-full ${
                             editorAnimationId === file.name || editorFileName === file.name
@@ -133,22 +141,13 @@ export const FileTree: React.FC<FileTreeProps> = ({
                               : 'text-gray-400'
                           }`}
                         >
-                          <button
+                          <EditableItem
+                            onRemove={handleRemove}
+                            onRename={handleRename}
+                            editable={title === 'Animations'}
+                            file={file}
                             onClick={handleClick(file.name)}
-                            className="group w-full flex items-center gap-1 px-2 py-1 pl-4 text-sm whitespace-nowrap hover:text-white"
-                          >
-                            <span>
-                              <FileIcon type={file.type} />
-                            </span>
-                            <span className="flex-1 text-left">{file.name}</span>
-                            <span
-                              onClick={handleRemove(file.name)}
-                              title="Remove"
-                              className="justify-self-end text-gray-400 hover:text-white opacity-0 group-hover:opacity-100"
-                            >
-                              <RxCross2 size={20} />
-                            </span>
-                          </button>
+                          />
                         </li>
                       );
                     })}

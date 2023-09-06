@@ -25,6 +25,7 @@ import { formatJSON, getMockDotLottieState, processFilename } from '../utils';
 
 import { Button } from './button';
 import { Dropzone } from './dropzone';
+import { EditableTitle } from './editable-title';
 import { FileTree } from './file-tree';
 import { PlaybackOptionsEditor } from './playback-options-editor';
 import { Player } from './player';
@@ -302,6 +303,13 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
     [dispatch],
   );
 
+  const handleChangeTitle = useCallback(
+    (value: string): void => {
+      dispatch(setWorkingFileName(value));
+    },
+    [setWorkingFileName, dispatch],
+  );
+
   return (
     <div className="h-full flex flex-col">
       <div className="w-full bg-dark p-2 flex gap-2 justify-end">
@@ -314,7 +322,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
           )}
         </Dropzone>
         <div className="flex-1 flex justify-center items-center text-gray-400 text-sm">
-          <span>{workingFileName || 'unnamed.lottie'}</span>
+          <EditableTitle title={workingFileName} onChange={handleChangeTitle} />
         </div>
         <Button onClick={downloadDotLottie}>Download</Button>
       </div>
