@@ -78,7 +78,7 @@ export const useDotLottiePlayer = (
   config?: DotLottieConfig<RendererType> & {
     lottieRef?: MutableRefObject<DotLottieRefProps | undefined>;
   },
-): { dotLottiePlayer: DotLottiePlayer; setDotLottiePlayer: (player: DotLottiePlayer) => void } => {
+): { dotLottiePlayer: DotLottiePlayer; initDotLottiePlayer: () => void } => {
   const [dotLottiePlayer, setDotLottiePlayer] = useState<DotLottiePlayer>(() => {
     return new DotLottiePlayer(src, container.current, config);
   });
@@ -89,7 +89,11 @@ export const useDotLottiePlayer = (
     dl.load();
 
     return dl;
-  }, [container]);
+  }, [container, src, config]);
+
+  const initDotLottiePlayer = useCallback(() => {
+    setDotLottiePlayer(getDotLottiePlayer());
+  }, [getDotLottiePlayer]);
 
   if (config?.lottieRef) {
     useImperativeHandle(
@@ -227,7 +231,7 @@ export const useDotLottiePlayer = (
   }
 
   useEffectOnce(() => {
-    setDotLottiePlayer(getDotLottiePlayer());
+    initDotLottiePlayer();
 
     return () => {
       dotLottiePlayer.destroy();
@@ -236,6 +240,6 @@ export const useDotLottiePlayer = (
 
   return {
     dotLottiePlayer,
-    setDotLottiePlayer,
+    initDotLottiePlayer,
   };
 };
