@@ -1744,8 +1744,9 @@ export class DotLottiePlayer {
     }
 
     // Modifying for current animation
-    this.setDirection(direction);
-    this.setSpeed(speed);
+    // Please do not call this.setSpeed / this.setDirection here. It updates this._playbackOptions. We don't want that.
+    this._lottie.setDirection(direction);
+    this._lottie.setSpeed(speed);
 
     if (autoplay && !hover) {
       this.play();

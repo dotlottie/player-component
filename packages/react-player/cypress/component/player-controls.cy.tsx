@@ -267,7 +267,7 @@ describe('Controls', () => {
     cy.get('[name="defaultTheme"]').should('have.value', 'bounce-dark');
   });
 
-  it('should reset themes when switching animation', () => {
+  it('should not reset themes when switching animation', () => {
     cy.mount(
       <PlayerStateWrapper>
         <DotLottiePlayer
@@ -295,7 +295,7 @@ describe('Controls', () => {
     cy.get('[aria-label="Go to Animations"]').click({ force: true });
     cy.get('[aria-label="Select wifi"]').click({ force: true });
 
-    cy.get('[name="defaultTheme"]').should('have.value', '');
+    cy.get('[name="defaultTheme"]').should('have.value', 'bounce-dark');
   });
 
   it('should be able reset selected themes', () => {
