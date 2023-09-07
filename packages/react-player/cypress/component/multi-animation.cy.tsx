@@ -124,6 +124,64 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentAnimationId"]').should('have.value', 'wifi');
   });
 
+  it("should use manifest playbackoptions if doesn't override by the player", () => {
+    function Wrapper(): JSX.Element {
+      const lottieRef = useRef<DotLottieRefProps>();
+
+      return (
+        <>
+          <button
+            data-testid="next"
+            onClick={(): void => {
+              lottieRef.current?.next();
+            }}
+          >
+            next
+          </button>
+          <PlayerStateWrapper
+            onRef={(ref: DotLottieRefProps) => {
+              lottieRef.current = ref;
+            }}
+          >
+            <DotLottiePlayer src={`/cartoon_puppy_swords.lottie`} style={{ height: '400px', display: 'inline-block' }}>
+              <Controls />
+            </DotLottiePlayer>
+          </PlayerStateWrapper>
+        </>
+      );
+    }
+
+    cy.mount(<Wrapper />);
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[name="currentAnimationId"]').should('have.value', 'puppy');
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 1);
+    cy.get('[name="direction"]').should('have.value', 1);
+
+    cy.get('[data-testid="next"]').click({ force: true });
+    cy.get('[name="currentAnimationId"]').should('have.value', 'swords');
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 2);
+    cy.get('[name="direction"]').should('have.value', -1);
+
+    cy.get('[data-testid="next"]').click({ force: true });
+    cy.get('[name="currentAnimationId"]').should('have.value', 'cartoon');
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 1);
+    cy.get('[name="direction"]').should('have.value', 1);
+
+    cy.get('[data-testid="next"]').click({ force: true });
+    cy.get('[name="currentAnimationId"]').should('have.value', 'puppy');
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 1);
+    cy.get('[name="direction"]').should('have.value', 1);
+  });
+
   it('should be able to go to previous animation', () => {
     function Wrapper(): JSX.Element {
       const lottieRef = useRef<DotLottieRefProps>();
