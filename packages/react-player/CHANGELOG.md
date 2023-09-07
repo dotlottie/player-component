@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.4.3
+
+### Patch Changes
+
+- 3083f09: fix: 🐛 updating src doesn't clear previously loaded states
+
 ## 1.4.2
 
 ### Patch Changes
