@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.5.2
+
+### Patch Changes
+
+- 7334ef0: fix: speed and direction not picking up the manifest values
+
 ## 0.5.1
 
 ### Patch Changes
