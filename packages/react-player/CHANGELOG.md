@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.4.4
+
+### Patch Changes
+
+- 7334ef0: fix: speed and direction not picking up the manifest values
+
 ## 1.4.3
 
 ### Patch Changes
