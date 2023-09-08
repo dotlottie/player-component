@@ -195,7 +195,7 @@ export class DotLottiePlayer {
     container?: DotLottieElement | null,
     options?: DotLottieConfig<RendererType>,
   ) {
-    this._src = src;
+    this._src = structuredClone(src);
 
     if (options?.testId) {
       this._testId = options.testId;
@@ -440,7 +440,7 @@ export class DotLottiePlayer {
 
   public updateSrc(src: Record<string, unknown> | string): void {
     if (this._src === src) return;
-    this._src = src;
+    this._src = structuredClone(src);
     this._activeAnimationId = undefined;
     this._currentAnimationId = undefined;
     this.load();
