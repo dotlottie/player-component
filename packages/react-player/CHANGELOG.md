@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.4.5
+
+### Patch Changes
+
+- b2f4617: fix: 🐛 json reference is being modified by lotti-web
+
 ## 1.4.4
 
 ### Patch Changes

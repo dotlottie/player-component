@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.5.3
+
+### Patch Changes
+
+- b2f4617: fix: 🐛 json reference is being modified by lotti-web
+
 ## 2.5.2
 
 ### Patch Changes
