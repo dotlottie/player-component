@@ -80,11 +80,11 @@ export const useDotLottiePlayer = (
   },
 ): { dotLottiePlayer: DotLottiePlayer; initDotLottiePlayer: () => void } => {
   const [dotLottiePlayer, setDotLottiePlayer] = useState<DotLottiePlayer>(() => {
-    return new DotLottiePlayer(src, container.current, config);
+    return new DotLottiePlayer(structuredClone(src), container.current, config);
   });
 
   const getDotLottiePlayer = useCallback(() => {
-    const dl = new DotLottiePlayer(src, container.current, config);
+    const dl = new DotLottiePlayer(structuredClone(src), container.current, config);
 
     dl.load();
 
