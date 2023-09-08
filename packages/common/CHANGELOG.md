@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.5.3
+
+### Patch Changes
+
+- b2f4617: fix: 🐛 json reference is being modified by lotti-web
+
 ## 0.5.2
 
 ### Patch Changes
