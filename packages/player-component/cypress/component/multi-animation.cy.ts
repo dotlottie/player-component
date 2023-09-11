@@ -181,7 +181,7 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentAnimationId"]').should('have.value', 'bounce');
   });
 
-  it('should use manifest playbackoptions if doesn\'t override by the player', () => {
+  it('should use manifest playbackoptions on next(), if doesn\'t override by the player', () => {
     cy.mount(
       html`
         <div>
@@ -196,7 +196,7 @@ describe('Multi-Animation', () => {
           <dotlottie-player
             data-testid="testPlayer"
             style="height: 200px;"
-            src="/cartoon_puppy_swords.lottie"
+            src="/puppy_sword_cartoon.lottie"
           >
           </dotlottie-player>
         </div>
@@ -207,30 +207,82 @@ describe('Multi-Animation', () => {
     cy.get('[name="currentAnimationId"]').should('have.value', 'puppy');
     cy.get('[name="loop"]').should('have.value', 'true');
     cy.get('[name="autoplay"]').should('have.value', 'true');
-    cy.get('[name="speed"]').should('have.value', 1);
+    cy.get('[name="speed"]').should('have.value', 20);
     cy.get('[name="direction"]').should('have.value', 1);
+    cy.get('[name="direction"]').should('have.value', 1);
+
+    // wait for 1st loop to complete
+    cy.get('[name="frame"]', {timeout: 10000}).should((input) => {
+      const value = parseFloat(input.val() as string);
+
+      expect(value).to.greaterThan(100);
+    });
+    // confirm next loop
+    cy.get('[name="frame"]', {timeout: 10000}).should((input) => {
+      const value = parseFloat(input.val() as string);
+
+      expect(value).to.lessThan(10);
+    });
 
     cy.get('[data-testid="next"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'swords');
     cy.get('[name="loop"]').should('have.value', 'true');
     cy.get('[name="autoplay"]').should('have.value', 'true');
-    cy.get('[name="speed"]').should('have.value', 2);
+    cy.get('[name="speed"]').should('have.value', 5);
     cy.get('[name="direction"]').should('have.value', -1);
 
     cy.get('[data-testid="next"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'cartoon');
     cy.get('[name="loop"]').should('have.value', 'true');
     cy.get('[name="autoplay"]').should('have.value', 'true');
-    cy.get('[name="speed"]').should('have.value', 1);
+    cy.get('[name="speed"]').should('have.value', 20);
     cy.get('[name="direction"]').should('have.value', 1);
 
     cy.get('[data-testid="next"]').click({ force: true });
     cy.get('[name="currentAnimationId"]').should('have.value', 'puppy');
     cy.get('[name="loop"]').should('have.value', 'true');
     cy.get('[name="autoplay"]').should('have.value', 'true');
-    cy.get('[name="speed"]').should('have.value', 1);
+    cy.get('[name="speed"]').should('have.value', 20);
     cy.get('[name="direction"]').should('have.value', 1);
   });
+
+  it('should use manifest playbackoptions when selecting animations, if doesn\'t override by the player', () => {
+    cy.mount(
+      html`
+        <dotlottie-player data-testid="testPlayer" controls style="height: 200px;" src="/puppy_sword_cartoon.lottie">
+        </dotlottie-player>
+      `,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[name="currentAnimationId"]').should('have.value', 'puppy');
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 20);
+    cy.get('[name="direction"]').should('have.value', 1);
+
+    // select swords animation
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="options"]').click({force: true});
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="animations"]').click({force: true});
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="swords"]').click({force: true});
+
+    cy.get('[name="currentAnimationId"]').should('have.value', 'swords');
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 5);
+    cy.get('[name="direction"]').should('have.value', -1);
+
+    // select cartoon animation
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="options"]').click({force: true});
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="animations"]').click({force: true});
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="cartoon"]').click({force: true});
+
+    cy.get('[name="currentAnimationId"]').should('have.value', 'cartoon');
+    cy.get('[name="loop"]').should('have.value', 'true');
+    cy.get('[name="autoplay"]').should('have.value', 'true');
+    cy.get('[name="speed"]').should('have.value', 20);
+    cy.get('[name="direction"]').should('have.value', 1);
+  })
 
   it('should apply props to all animations', () => {
     cy.mount(

@@ -5,6 +5,8 @@
 import { PlayerState } from '@dotlottie/common';
 import { html } from 'lit';
 
+import { type DotLottiePlayer } from '../..';
+
 describe('Player', () => {
   it('should mount', () => {
     cy.mount(
@@ -91,6 +93,39 @@ describe('Player', () => {
 
     cy.get('[name="currentState"]').should('have.value', PlayerState.Error);
     cy.get('[data-testid="testPlayer"]').shadow().find('.error').should('exist');
+  });
+
+  it('should not render twice with multiple render calls', () => {
+    cy.mount(
+      html`
+        <div>
+          <button
+            data-testid="render"
+            @click=${(): void => {
+              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.play('wifi');
+              (document.querySelector('[data-testid="testPlayer"]') as DotLottiePlayer)?.setTheme('dark-wifi');
+            }}
+          >
+            next
+          </button>
+          <dotlottie-player
+            background="green"
+            data-testid="testPlayer"
+            activeAnimationId="bounce"
+            loop
+            autoplay
+            controls
+            style="height: 200px;"
+            src="/bounce_wifi.lottie"
+          >
+          </dotlottie-player>
+        </div>
+      `,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[data-testid="render"]').click({force:true});
+    cy.get('[data-testid="testPlayer"]').shadow().find('.animation > svg').should('have.length', 1);
   });
 
 });
