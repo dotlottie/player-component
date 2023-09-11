@@ -1658,8 +1658,6 @@ export class DotLottiePlayer {
       throw createError('no animation selected');
     }
 
-    this.destroy();
-
     let loop: number | boolean = DEFAULT_OPTIONS.loop ?? false;
     let autoplay: boolean = DEFAULT_OPTIONS.autoplay ?? false;
     let mode: PlayMode = DEFAULT_OPTIONS.playMode ?? PlayMode.Normal;
@@ -1687,15 +1685,6 @@ export class DotLottiePlayer {
       loop: typeof loop === 'number' ? true : loop,
     };
 
-    // Modifying for current animation before render
-    this._setPlayerState(() => ({
-      defaultTheme,
-      playMode: mode,
-      intermission,
-      hover,
-      loop,
-    }));
-
     const lottieStyleSheet = await this._dotLottieLoader.getTheme(defaultTheme);
 
     if (lottieStyleSheet && this._animation) {
@@ -1712,6 +1701,17 @@ export class DotLottiePlayer {
 
       return;
     }
+
+    this.destroy();
+
+    // Modifying for current animation before render
+    this._setPlayerState(() => ({
+      defaultTheme,
+      playMode: mode,
+      intermission,
+      hover,
+      loop,
+    }));
 
     this._lottie = lottiePlayer.loadAnimation({
       ...options,
