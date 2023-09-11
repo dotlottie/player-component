@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.5.4
+
+### Patch Changes
+
+- 60262ef: fix: 🐛 manifest options were not used when changing animaiton
+
 ## 0.5.3
 
 ### Patch Changes
