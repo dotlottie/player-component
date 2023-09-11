@@ -9,9 +9,11 @@ import { useAppSelector } from '../store/hooks';
 
 import { Button } from './button';
 
-interface PlayerProps {}
+interface PlayerProps {
+  activeAnimationId?: string;
+}
 
-export const Player: React.FC<PlayerProps> = () => {
+export const Player: React.FC<PlayerProps> = ({ activeAnimationId }) => {
   const lottiePlayer = useRef<DotLottieRefProps>();
 
   const currentPlayerUrl = useAppSelector((state) => state.playground.playerUrl);
@@ -65,6 +67,7 @@ export const Player: React.FC<PlayerProps> = () => {
     <div>
       <>
         <DotLottiePlayer
+          activeAnimationId={activeAnimationId || undefined}
           background="white"
           onEvent={handlePlayerEvents}
           lottieRef={lottiePlayer}

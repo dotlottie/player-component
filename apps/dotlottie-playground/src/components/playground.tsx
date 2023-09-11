@@ -414,7 +414,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
           </Panel>
           <PanelResizeHandle className="bg-gray-500 w-1" />
           <Panel defaultSize={25}>
-            <Player />
+            <Player activeAnimationId={editorAnimationId} />
           </Panel>
         </PanelGroup>
       </div>

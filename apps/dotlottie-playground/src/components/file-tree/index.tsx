@@ -6,7 +6,8 @@ import React, { useCallback, useMemo, useState } from 'react';
 import { useKey } from 'react-use';
 
 import { useDotLottie } from '../../hooks/use-dotlottie';
-import { useAppSelector } from '../../store/hooks';
+import { clearEditorState } from '../../store/editor-slice';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { Dropzone } from '../dropzone';
 
 import { AddNew } from './add-new';
@@ -42,6 +43,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
   title,
 }) => {
   const { renameDotLottieAnimation } = useDotLottie();
+  const dispatch = useAppDispatch();
 
   const handleClick = useCallback(
     (fileName: string) => {
@@ -87,6 +89,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
     (id: string, previousId: string) => {
       if (title === 'Animations') {
         renameDotLottieAnimation(id, previousId);
+        dispatch(clearEditorState());
       }
     },
     [title, renameDotLottieAnimation],
