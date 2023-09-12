@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.5.4
+
+### Patch Changes
+
+- 60262ef: fix: 🐛 manifest options were not used when changing animaiton
+
 ## 2.5.3
 
 ### Patch Changes
