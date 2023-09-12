@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.4.6
+
+### Patch Changes
+
+- 60262ef: fix: 🐛 manifest options were not used when changing animaiton
+
 ## 1.4.5
 
 ### Patch Changes
