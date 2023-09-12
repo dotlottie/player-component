@@ -214,10 +214,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     dotLottiePlayer.addEventListener('loopComplete', () => {
       onEvent?.(PlayerEvents.LoopComplete);
     });
-
-    return () => {
-      dotLottiePlayer.destroy();
-    };
   }, [dotLottiePlayer]);
 
   useEffect(() => {

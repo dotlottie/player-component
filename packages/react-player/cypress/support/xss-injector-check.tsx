@@ -5,10 +5,9 @@
 import React, { useEffect } from 'react';
 import type { ReactNode } from 'react';
 
-export const XssInjectorCheck: React.FC<{ children: ReactNode; }> = ({ children }) => {
-
+export const XssInjectorCheck: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
-    const script = document.createElement("script");
+    const script = document.createElement('script');
 
     script.innerHTML = `
     function xssCallback(doc, win, storage) {
@@ -34,20 +33,26 @@ export const XssInjectorCheck: React.FC<{ children: ReactNode; }> = ({ children 
       <div>
         <div>
           <div>Document</div>
-          <div id="resultDoc" data-testid="resultDoc">✅</div>
+          <div id="resultDoc" data-testid="resultDoc">
+            ✅
+          </div>
         </div>
         <div>
           <div>Window</div>
-          <div id="resultWindow" data-testid="resultWindow">✅</div>
+          <div id="resultWindow" data-testid="resultWindow">
+            ✅
+          </div>
           <div id="dumpWindow"></div>
         </div>
         <div>
           <div>Local Storage</div>
-          <div id="resultStorage" data-testid="resultStorage">✅</div>
+          <div id="resultStorage" data-testid="resultStorage">
+            ✅
+          </div>
         </div>
       </div>
 
       {children}
     </>
-  )
+  );
 };

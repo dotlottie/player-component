@@ -14,11 +14,16 @@ describe('Worker', () => {
     cy.mount(
       <XssInjectorCheck>
         <PlayerStateWrapper>
-          <DotLottiePlayer worker src={`/xss-animation.json`} style={{ height: '400px', display: 'inline-block' }} autoplay>
+          <DotLottiePlayer
+            worker
+            src={`/xss-animation.json`}
+            style={{ height: '400px', display: 'inline-block' }}
+            autoplay
+          >
             <Controls />
           </DotLottiePlayer>
         </PlayerStateWrapper>
-      </XssInjectorCheck>
+      </XssInjectorCheck>,
     );
 
     cy.get('[data-testid="resultDoc"]').should('have.text', '✅');
@@ -34,7 +39,7 @@ describe('Worker', () => {
             <Controls />
           </DotLottiePlayer>
         </PlayerStateWrapper>
-      </XssInjectorCheck>
+      </XssInjectorCheck>,
     );
 
     cy.get('[data-testid="resultDoc"]').should('have.text', '❌');
