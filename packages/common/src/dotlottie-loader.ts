@@ -7,7 +7,6 @@ import {
   getTheme as getThemeUtil,
   getStateMachine as getStateMachineUtil,
   getStateMachines as getStateMachinesUtil,
-  getAllAudio as getAllAudioUtil,
   getAnimation as getAnimationUtil,
   getManifest as getManifestUtil,
   loadFromArrayBuffer as loadFromArrayBufferUtil,
@@ -22,8 +21,6 @@ export class DotLottieLoader {
   private readonly _animationsMap: Map<string, AnimationData> = new Map();
 
   private readonly _themeMap: Map<string, string> = new Map();
-
-  private _audioRecord: Record<string, string> = {};
 
   private readonly _stateMachinesMap: Map<string, LottieStateMachine> = new Map();
 
@@ -47,10 +44,6 @@ export class DotLottieLoader {
 
   public get manifest(): Manifest | undefined {
     return this._manifest;
-  }
-
-  public get audioRecord(): Record<string, string> {
-    return this._audioRecord;
   }
 
   public async loadFromUrl(url: string): Promise<void> {
@@ -166,18 +159,6 @@ export class DotLottieLoader {
     }
 
     return theme;
-  }
-
-  public async getAllAudio(): Promise<Record<string, string> | undefined> {
-    if (!this._dotLottie) {
-      return undefined;
-    }
-
-    const audio: Record<string, string> = await getAllAudioUtil(this._dotLottie);
-
-    this._audioRecord = audio;
-
-    return audio;
   }
 
   public async getStateMachines(): Promise<LottieStateMachine[] | undefined> {
