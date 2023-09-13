@@ -29,7 +29,14 @@ import { loadStateMachines } from './dotlottie-state-machine-loader';
 import { applyLottieStyleSheet } from './dotlottie-styler';
 import type { DotLottieStateMachineManager } from './state/dotlottie-state-machine-manager';
 import { Store } from './store';
-import { createError, isValidLottieJSON, isValidLottieString, logError, logWarning } from './utils';
+import {
+  createError,
+  isValidLottieJSON,
+  isValidLottieString,
+  logError,
+  logWarning,
+  lottieContainsAudio,
+} from './utils';
 
 export type { AnimationDirection, AnimationItem, AnimationSegment };
 
@@ -197,6 +204,8 @@ export class DotLottiePlayer {
 
   private _visibilityPercentage: number = 0;
 
+  private _howlerInstance: HowlerGlobal | undefined = undefined;
+
   protected _stateMachineManager?: DotLottieStateMachineManager;
 
   public constructor(
@@ -347,7 +356,7 @@ export class DotLottiePlayer {
     const options = getOptions(this._getPlaybackOptions());
 
     try {
-      PlaybackOptionsSchema.parse(options);
+      PlaybackOptionsSchema._parse(options);
     } catch (error) {
       logWarning(`Invalid PlaybackOptions, ${JSON.stringify(options, null, 2)}`);
 
@@ -1229,6 +1238,11 @@ export class DotLottiePlayer {
     }
     this._counter = 0;
     this._lottie?.destroy();
+
+    if (this._howlerInstance) {
+      this._howlerInstance.unload();
+      this._howlerInstance = undefined;
+    }
   }
 
   public getAnimationInstance(): AnimationItem | undefined {
@@ -1733,6 +1747,27 @@ export class DotLottiePlayer {
       hover,
       loop,
     }));
+
+    if (this._animation && lottieContainsAudio(this._animation)) {
+      const howlerModule = await import('howler');
+
+      if (this._howlerInstance) {
+        this._howlerInstance.unload();
+      }
+
+      // Initialize Howler instance outside of the callback so that we have instant access to it
+      this._howlerInstance = howlerModule.default.Howler;
+
+      const howl = (assetPath: string): AudioFactory => {
+        const howlInstance = new howlerModule.default.Howl({
+          src: [assetPath],
+        });
+
+        return howlInstance;
+      };
+
+      options['audioFactory'] = howl;
+    }
 
     this._lottie = lottiePlayer.loadAnimation({
       ...options,

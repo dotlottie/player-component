@@ -2,6 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
+import type { Animation, Asset } from '@lottiefiles/lottie-types';
+
 export function createError(error: string, prefix = 'dotLottie-common'): Error {
   const err = new Error(`[${prefix}]: ${error}`);
 
@@ -36,6 +38,22 @@ export function isValidLottieJSON(json: Record<string, unknown>): boolean {
   const mandatory: string[] = ['v', 'ip', 'op', 'layers', 'fr', 'w', 'h'];
 
   return mandatory.every((field: string) => Object.prototype.hasOwnProperty.call(json, field));
+}
+
+export function isAudioAsset(asset: Asset.Value): boolean {
+  return !('h' in asset) && !('w' in asset) && 'p' in asset && 'e' in asset && 'u' in asset && 'id' in asset;
+}
+
+export function lottieContainsAudio(json: Animation): boolean {
+  const assets: Asset.Value[] | undefined = json.assets;
+
+  if (assets) {
+    return assets.some((asset: Asset.Value) => {
+      return isAudioAsset(asset);
+    });
+  }
+
+  return false;
 }
 
 export function isValidLottieString(str: string): boolean {

@@ -299,6 +299,10 @@ export class DotLottiePlayer extends LitElement {
       return;
     }
 
+    if (this._dotLottieCommonPlayer) {
+      this._dotLottieCommonPlayer.destroy();
+    }
+
     /**
      * User's can call the load method - only do new initialization inside firstConnected()
      */
