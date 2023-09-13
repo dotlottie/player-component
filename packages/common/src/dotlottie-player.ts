@@ -1759,6 +1759,8 @@ export class DotLottiePlayer {
       loop,
     }));
 
+    let audioFactory;
+
     if (this._animation && lottieContainsAudio(this._animation)) {
       if (this._howlerInstance) {
         this._howlerInstance.unload();
@@ -1772,14 +1774,23 @@ export class DotLottiePlayer {
         return this._howlerInstance;
       };
 
-      options['audioFactory'] = howl;
+      audioFactory = howl;
     }
 
-    this._lottie = lottiePlayer.loadAnimation({
-      ...options,
-      container: this._container as Element,
-      animationData: this._animation,
-    });
+    if (audioFactory) {
+      this._lottie = lottiePlayer.loadAnimation({
+        ...options,
+        container: this._container as Element,
+        animationData: this._animation,
+        audioFactory,
+      });
+    } else {
+      this._lottie = lottiePlayer.loadAnimation({
+        ...options,
+        container: this._container as Element,
+        animationData: this._animation,
+      });
+    }
 
     // Define our own reset segments for worker if its un-implemented
     // eslint-disable-next-line no-secrets/no-secrets
