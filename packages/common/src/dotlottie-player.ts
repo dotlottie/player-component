@@ -2,6 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
+/* eslint-disable max-classes-per-file */
+
 import {
   type Manifest,
   type ManifestAnimation,
@@ -9,6 +11,7 @@ import {
   PlaybackOptionsSchema,
 } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
+import { Howl } from 'howler';
 import type {
   AnimationConfig,
   AnimationDirection,
@@ -135,6 +138,14 @@ export const DEFAULT_STATE: DotLottiePlayerState = {
   visibilityPercentage: 0,
 };
 
+// Extend the Howl class with the custom setVolume method
+class CustomHowl extends Howl {
+  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
+  setVolume(): void {
+    this.volume();
+  }
+}
+
 export class DotLottiePlayer {
   protected _lottie?: AnimationItem;
 
@@ -204,7 +215,7 @@ export class DotLottiePlayer {
 
   private _visibilityPercentage: number = 0;
 
-  private _howlerInstance: HowlerGlobal | undefined = undefined;
+  private _howlerInstance: CustomHowl | undefined = undefined;
 
   protected _stateMachineManager?: DotLottieStateMachineManager;
 
@@ -1749,21 +1760,16 @@ export class DotLottiePlayer {
     }));
 
     if (this._animation && lottieContainsAudio(this._animation)) {
-      const howlerModule = await import('howler');
-
       if (this._howlerInstance) {
         this._howlerInstance.unload();
       }
 
-      // Initialize Howler instance outside of the callback so that we have instant access to it
-      this._howlerInstance = howlerModule.default.Howler;
-
       const howl = (assetPath: string): AudioFactory => {
-        const howlInstance = new howlerModule.default.Howl({
+        this._howlerInstance = new CustomHowl({
           src: [assetPath],
         });
 
-        return howlInstance;
+        return this._howlerInstance;
       };
 
       options['audioFactory'] = howl;
