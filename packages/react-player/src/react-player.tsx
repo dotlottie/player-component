@@ -33,6 +33,7 @@ export interface DotLottiePlayerProps extends React.HTMLAttributes<HTMLDivElemen
   speed?: number;
   src: Record<string, unknown> | string;
   testId?: string;
+  worker?: boolean;
 }
 
 export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
@@ -55,6 +56,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
   children,
   defaultTheme,
   light = false,
+  worker = false,
   activeStateId,
   ...props
 }) => {
@@ -81,6 +83,7 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     testId,
     defaultTheme,
     light,
+    worker,
     activeStateId,
   });
 
@@ -211,10 +214,6 @@ export const DotLottiePlayer: React.FC<DotLottiePlayerProps> = ({
     dotLottiePlayer.addEventListener('loopComplete', () => {
       onEvent?.(PlayerEvents.LoopComplete);
     });
-
-    return () => {
-      dotLottiePlayer.destroy();
-    };
   }, [dotLottiePlayer]);
 
   useEffect(() => {
