@@ -140,13 +140,21 @@ export class DotLottiePlayer extends LitElement {
   // Controls state
   private _hasMultipleAnimations = false;
 
+  private _hasMultipleThemes = false;
+
+  private _hasMultipleStates = false;
+
   private _popoverIsOpen = false;
 
   private _animationsTabIsOpen = false;
 
+  private _statesTabIsOpen = false;
+
   private _styleTabIsOpen = false;
 
   private _themesForCurrentAnimation: ManifestTheme[] = [];
+
+  private _statesForCurrentAnimation: string[] = [];
 
   /**
    * Get number of loops or boolean value of loop.
@@ -251,6 +259,15 @@ export class DotLottiePlayer extends LitElement {
         );
       }
 
+      if (manifest && manifest.states) {
+        this._hasMultipleStates = manifest.states.length > 0;
+
+        this._statesForCurrentAnimation = [];
+        manifest.states.forEach((newState: string) => {
+          this._statesForCurrentAnimation.push(newState);
+        });
+      }
+
       this.dispatchEvent(new CustomEvent(PlayerEvents.Ready));
     });
 
@@ -309,14 +326,28 @@ export class DotLottiePlayer extends LitElement {
 
     await this._dotLottieCommonPlayer.load(playbackOptions);
 
-    this._hasMultipleAnimations = this.animationCount() > 1;
-
     const manifest = this.getManifest();
 
-    if (manifest && manifest.themes) {
-      this._themesForCurrentAnimation = manifest.themes.filter((theme) =>
-        theme.animations.includes(this.getCurrentAnimationId() || ''),
-      );
+    // Init controls state
+    this._hasMultipleAnimations = this.animationCount() > 1;
+
+    if (manifest) {
+      if (manifest.themes) {
+        this._themesForCurrentAnimation = manifest.themes.filter((theme) =>
+          theme.animations.includes(this.getCurrentAnimationId() || ''),
+        );
+
+        this._hasMultipleThemes = manifest.themes.length > 0;
+      }
+
+      if (manifest.states) {
+        this._hasMultipleStates = manifest.states.length > 0;
+
+        this._statesForCurrentAnimation = [];
+        manifest.states.forEach((newState: string) => {
+          this._statesForCurrentAnimation.push(newState);
+        });
+      }
     }
 
     /**
@@ -564,6 +595,15 @@ export class DotLottiePlayer extends LitElement {
     if (!this._dotLottieCommonPlayer) return '';
 
     return this._dotLottieCommonPlayer.defaultTheme;
+  }
+
+  /**
+   * @returns The current active state machine
+   */
+  public getActiveStateMachine(): string | undefined {
+    if (!this._dotLottieCommonPlayer) return '';
+
+    return this._dotLottieCommonPlayer.activeStateId;
   }
 
   /**
@@ -859,7 +899,7 @@ export class DotLottiePlayer extends LitElement {
             />
           </svg>
         </button>
-        ${this._hasMultipleAnimations
+        ${this._hasMultipleAnimations || this._hasMultipleThemes || this._hasMultipleStates
           ? html`
               <button
                 id="lottie-animation-options"
@@ -900,7 +940,7 @@ export class DotLottiePlayer extends LitElement {
               aria-label="lottie animations themes popover"
               style="min-height: ${this.themes().length > 0 ? '84px' : 'auto'}"
             >
-              ${!this._animationsTabIsOpen && !this._styleTabIsOpen
+              ${!this._animationsTabIsOpen && !this._styleTabIsOpen && !this._statesTabIsOpen
                 ? html`
                     <button
                       class="popover-button"
@@ -931,7 +971,7 @@ export class DotLottiePlayer extends LitElement {
                     </button>
                   `
                 : html``}
-              ${this.themes().length > 0 && !this._styleTabIsOpen && !this._animationsTabIsOpen
+              ${this._hasMultipleThemes && !this._styleTabIsOpen && !this._animationsTabIsOpen && !this._statesTabIsOpen
                 ? html` <button
                     class="popover-button"
                     aria-label="Themes"
@@ -948,6 +988,34 @@ export class DotLottiePlayer extends LitElement {
                     }}
                   >
                     <div class="popover-button-text">Themes</div>
+                    <div>
+                      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M10.4697 17.5303C10.1768 17.2374 10.1768 16.7626 10.4697 16.4697L14.9393 12L10.4697 7.53033C10.1768 7.23744 10.1768 6.76256 10.4697 6.46967C10.7626 6.17678 11.2374 6.17678 11.5303 6.46967L16.5303 11.4697C16.8232 11.7626 16.8232 12.2374 16.5303 12.5303L11.5303 17.5303C11.2374 17.8232 10.7626 17.8232 10.4697 17.5303Z"
+                          fill="#4C5863"
+                        />
+                      </svg>
+                    </div>
+                  </button>`
+                : ''}
+              ${this._hasMultipleStates && !this._styleTabIsOpen && !this._animationsTabIsOpen && !this._statesTabIsOpen
+                ? html` <button
+                    class="popover-button"
+                    aria-label="States"
+                    @click=${(): void => {
+                      this._statesTabIsOpen = !this._statesTabIsOpen;
+                      this.requestUpdate();
+                    }}
+                    @keydown=${(key: KeyboardEvent): void => {
+                      if (key.code === 'Space' || key.code === 'Enter') {
+                        this._statesTabIsOpen = !this._statesTabIsOpen;
+                        this.requestUpdate();
+                      }
+                    }}
+                  >
+                    <div class="popover-button-text">States</div>
                     <div>
                       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -1023,7 +1091,7 @@ export class DotLottiePlayer extends LitElement {
                                           />
                                         </svg>
                                       `
-                                    : html``}
+                                    : html`<div style="width: 24px; height: 24px"></div>`}
                                 </div>
                                 <div>${animationName}</div>
                               </button>
@@ -1111,9 +1179,93 @@ export class DotLottiePlayer extends LitElement {
                                           />
                                         </svg>
                                       `
-                                    : html``}
+                                    : html`<div style="width: 24px; height: 24px"></div>`}
                                 </div>
                                 <div>${themeName.id}</div>
+                              </button>
+                            </li>
+                          `;
+                        })}
+                      </ul>
+                    </div>`
+                : html``}
+              ${this._statesTabIsOpen
+                ? html`<div class="option-title-themes-row">
+                      <button
+                        class="option-title-button themes"
+                        aria-label="Back to main popover menu"
+                        @click=${(): void => {
+                          this._statesTabIsOpen = !this._statesTabIsOpen;
+                          this.requestUpdate();
+                        }}
+                      >
+                        <div class="option-title-chevron">
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M13.5303 6.46967C13.8232 6.76256 13.8232 7.23744 13.5303 7.53033L9.06066 12L13.5303 16.4697C13.8232 16.7626 13.8232 17.2374 13.5303 17.5303C13.2374 17.8232 12.7626 17.8232 12.4697 17.5303L7.46967 12.5303C7.17678 12.2374 7.17678 11.7626 7.46967 11.4697L12.4697 6.46967C12.7626 6.17678 13.2374 6.17678 13.5303 6.46967Z"
+                              fill="#20272C"
+                            />
+                          </svg>
+                        </div>
+                        <div class="option-title-text">States</div>
+                        <button
+                          class="reset-btn"
+                          @click=${(): void => {
+                            this.exitInteractiveMode();
+                            this.requestUpdate();
+                          }}
+                        >
+                          Reset
+                        </button>
+                      </button>
+                    </div>
+                    <div class="option-title-separator"></div>
+                    <div class="option-row">
+                      <ul>
+                        ${this._statesForCurrentAnimation.map((stateName) => {
+                          return html`
+                            <li>
+                              <button
+                                class="option-button"
+                                aria-label="${stateName}"
+                                @click=${(): void => {
+                                  this.enterInteractiveMode(stateName);
+                                }}
+                                @keydown=${(key: KeyboardEvent): void => {
+                                  if (key.code === 'Space' || key.code === 'Enter') {
+                                    this.enterInteractiveMode(stateName);
+                                  }
+                                }}
+                              >
+                                <div class="option-tick">
+                                  ${this.getActiveStateMachine() === stateName
+                                    ? html`
+                                        <svg
+                                          width="24"
+                                          height="24"
+                                          viewBox="0 0 24 24"
+                                          fill="none"
+                                          xmlns="http://www.w3.org/2000/svg"
+                                        >
+                                          <path
+                                            fill-rule="evenodd"
+                                            clip-rule="evenodd"
+                                            d="M20.5281 5.9372C20.821 6.23009 20.821 6.70497 20.5281 6.99786L9.46297 18.063C9.32168 18.2043 9.12985 18.2833 8.93004 18.2826C8.73023 18.2819 8.53895 18.2015 8.39864 18.0593L3.46795 13.0596C3.1771 12.7647 3.1804 12.2898 3.47532 11.999C3.77024 11.7081 4.2451 11.7114 4.53595 12.0063L8.93634 16.4683L19.4675 5.9372C19.7604 5.64431 20.2352 5.64431 20.5281 5.9372Z"
+                                            fill="#20272C"
+                                          />
+                                        </svg>
+                                      `
+                                    : html`<div style="width: 24px; height: 24px"></div>`}
+                                </div>
+                                <div>${stateName}</div>
                               </button>
                             </li>
                           `;
