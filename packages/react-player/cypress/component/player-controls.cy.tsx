@@ -326,4 +326,56 @@ describe('Controls', () => {
 
     cy.get('[name="defaultTheme"]').should('have.value', '');
   });
+
+  it('should be able to change state using popover', () => {
+    cy.mount(
+      <PlayerStateWrapper>
+        <DotLottiePlayer
+          src={`/lf_interactivity_page.lottie`}
+          style={{ height: '400px', display: 'inline-block' }}
+          loop
+          autoplay
+        >
+          <Controls />
+        </DotLottiePlayer>
+      </PlayerStateWrapper>,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[name="activeStateId"]').should('have.value', '');
+
+    cy.get('[aria-label="open-popover"]').click({ force: true });
+    cy.get('[aria-label="Go to States"]').click({ force: true });
+    cy.get('[aria-label="Select state_toggle"]').click({ force: true });
+
+    cy.get('[name="activeStateId"]').should('have.value', 'state_toggle');
+  });
+
+  it('should be able reset selected states', () => {
+    cy.mount(
+      <PlayerStateWrapper>
+        <DotLottiePlayer
+          src={`/lf_interactivity_page.lottie`}
+          style={{ height: '400px', display: 'inline-block' }}
+          loop
+          autoplay
+        >
+          <Controls />
+        </DotLottiePlayer>
+      </PlayerStateWrapper>,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[name="activeStateId"]').should('have.value', '');
+
+    cy.get('[aria-label="open-popover"]').click({ force: true });
+    cy.get('[aria-label="Go to States"]').click({ force: true });
+    cy.get('[aria-label="Select state_toggle"]').click({ force: true });
+
+    cy.get('[name="activeStateId"]').should('have.value', 'state_toggle');
+
+    cy.get('[aria-label="Reset States"]').click({ force: true });
+
+    cy.get('[name="activeStateId"]').should('have.value', '');
+  });
 });

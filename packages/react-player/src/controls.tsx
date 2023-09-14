@@ -33,6 +33,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   const currentAnimationId = useDotLottieState((state) => state.currentAnimationId);
   const defaultTheme = useDotLottieState((state) => state.defaultTheme);
   const direction = useDotLottieState((state) => state.direction);
+  const activeStateId = useDotLottieState((state) => state.activeStateId);
 
   const isPlaying = useMemo(() => {
     return currentState === PlayerState.Playing;
@@ -42,6 +43,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
 
   const [animations, setAnimations] = useState<ManifestAnimation[]>([]);
   const [themes, setThemes] = useState<ManifestTheme[]>([]);
+  const [states, setStates] = useState<string[]>([]);
 
   const popoverItems = useMemo(() => {
     const manuItems = [];
@@ -53,11 +55,21 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       .filter((theme) => theme.animations.includes(currentAnimationId || ''))
       .map((theme) => ({ value: theme.id, selected: defaultTheme === theme.id }));
 
+    const _states = states.map((state) => ({ value: state, selected: activeStateId === state }));
+
     if (Array.isArray(_animations) && _animations.length !== 0) {
       manuItems.push({
         title: 'Animations',
         items: _animations,
         enableReset: false,
+      });
+    }
+
+    if (Array.isArray(_states) && _states.length !== 0) {
+      manuItems.push({
+        title: 'States',
+        items: _states,
+        enableReset: true,
       });
     }
 
@@ -70,7 +82,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
     }
 
     return manuItems;
-  }, [animations, themes, currentAnimationId, defaultTheme]);
+  }, [animations, themes, currentAnimationId, defaultTheme, states, activeStateId]);
 
   const shouldDisplayPopover = useMemo(() => {
     if (buttons.includes('themes') && Array.isArray(themes) && themes.length) {
@@ -120,6 +132,13 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       if (title === 'Themes') {
         dotLottiePlayer.setDefaultTheme(value);
       }
+      if (title === 'States') {
+        if (value) {
+          dotLottiePlayer.enterInteractiveMode(value);
+        } else {
+          dotLottiePlayer.exitInteractiveMode();
+        }
+      }
     },
     [dotLottiePlayer],
   );
@@ -134,6 +153,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   function updateManifest(): void {
     const _animations = dotLottiePlayer.getManifest()?.animations;
     const _themes = dotLottiePlayer.getManifest()?.themes;
+    const _states = dotLottiePlayer.getManifest()?.states;
 
     if (_animations) {
       setAnimations(_animations);
@@ -141,6 +161,10 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
 
     if (_themes) {
       setThemes(_themes);
+    }
+
+    if (_states) {
+      setStates(_states);
     }
   }
 
