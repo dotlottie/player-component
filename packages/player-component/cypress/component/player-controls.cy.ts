@@ -144,4 +144,23 @@ describe('Controls', () => {
     cy.get('[name="defaultTheme"]').should('have.value', 'theme2');
   })
 
+  it('should be able to switch states', () => {
+    cy.mount(
+      html`
+        <dotlottie-player data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/lf_interactivity_page.lottie">
+        </dotlottie-player>
+      `,
+    );
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="options"]').click({force: true});
+
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="States"]').click({force: true});
+    
+    cy.get('[data-testid="testPlayer"]').shadow().find('[aria-label="exploding_pigeon"]').click({force: true});
+
+    cy.get('[name="activeStateId"]').should('have.value', 'exploding_pigeon');
+  })
+
 });
