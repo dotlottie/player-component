@@ -18,7 +18,7 @@ describe('Audio', () => {
     );
 
     cy.window().should('have.property', 'Howl');
-    cy.window().its('Howler').its('_howls').should('have.length', 3);
+    cy.window().its('Howler').its('_howls').should('have.length', 1);
   });
 
   it('Howler should not have any howls loaded if the active animation is changed', () => {

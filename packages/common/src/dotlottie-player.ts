@@ -2,8 +2,6 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-/* eslint-disable max-classes-per-file */
-
 import {
   type Manifest,
   type ManifestAnimation,
@@ -11,7 +9,6 @@ import {
   PlaybackOptionsSchema,
 } from '@dotlottie/dotlottie-js';
 import type { Animation } from '@lottiefiles/lottie-types';
-import { Howl } from 'howler';
 import type {
   AnimationConfig,
   AnimationDirection,
@@ -27,6 +24,7 @@ import type {
 
 import pkg from '../package.json';
 
+import type { DotLottieAudio } from './dotlottie-audio';
 import { DotLottieLoader } from './dotlottie-loader';
 import { loadStateMachines } from './dotlottie-state-machine-loader';
 import { applyLottieStyleSheet } from './dotlottie-styler';
@@ -138,14 +136,6 @@ export const DEFAULT_STATE: DotLottiePlayerState = {
   visibilityPercentage: 0,
 };
 
-// Extend the Howl class with the custom setVolume method
-class CustomHowl extends Howl {
-  // eslint-disable-next-line @typescript-eslint/explicit-member-accessibility
-  setVolume(): void {
-    this.volume();
-  }
-}
-
 export class DotLottiePlayer {
   protected _lottie?: AnimationItem;
 
@@ -215,7 +205,7 @@ export class DotLottiePlayer {
 
   private _visibilityPercentage: number = 0;
 
-  private _howlerInstance: CustomHowl | undefined = undefined;
+  private _howlerInstance: DotLottieAudio | undefined = undefined;
 
   protected _stateMachineManager?: DotLottieStateMachineManager;
 
@@ -1762,12 +1752,13 @@ export class DotLottiePlayer {
     let audioFactory;
 
     if (this._animation && lottieContainsAudio(this._animation)) {
-      if (this._howlerInstance) {
-        this._howlerInstance.unload();
-      }
+      const { DotLottieAudio } = await import('./dotlottie-audio');
 
-      const howl = (assetPath: string): AudioFactory => {
-        this._howlerInstance = new CustomHowl({
+      const howl = (assetPath: string): DotLottieAudio => {
+        if (this._howlerInstance) {
+          this._howlerInstance.unload();
+        }
+        this._howlerInstance = new DotLottieAudio({
           src: [assetPath],
         });
 
