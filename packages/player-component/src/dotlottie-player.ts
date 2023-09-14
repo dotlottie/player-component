@@ -115,6 +115,9 @@ export class DotLottiePlayer extends LitElement {
   @property({ type: Boolean })
   public light?: boolean = false;
 
+  @property({ type: Boolean })
+  public worker?: boolean = false;
+
   /**
    * Interactivity state id.
    */
@@ -317,6 +320,7 @@ export class DotLottiePlayer extends LitElement {
       activeAnimationId: this.hasAttribute('activeAnimationId') ? this.activeAnimationId : undefined,
       defaultTheme: this.hasAttribute('defaultTheme') ? this.defaultTheme : undefined,
       light: this.light,
+      worker: this.worker,
       activeStateId: this.hasAttribute('activeStateId') ? this.activeStateId : undefined,
     });
 

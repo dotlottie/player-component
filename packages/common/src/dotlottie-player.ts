@@ -91,6 +91,7 @@ export type DotLottieConfig<T extends RendererType> = Omit<AnimationConfig<T>, '
     background?: string;
     light?: boolean;
     testId?: string | undefined;
+    worker?: boolean;
   };
 
 declare global {
@@ -180,6 +181,8 @@ export class DotLottiePlayer {
 
   private readonly _light: boolean = false;
 
+  private readonly _worker: boolean = false;
+
   private readonly _dotLottieLoader: DotLottieLoader = new DotLottieLoader();
 
   protected _activeStateId?: string;
@@ -241,6 +244,10 @@ export class DotLottiePlayer {
 
     if (options?.light) {
       this._light = options.light;
+    }
+
+    if (options?.worker) {
+      this._worker = options.worker;
     }
 
     this._listenToHover();
@@ -1696,6 +1703,7 @@ export class DotLottiePlayer {
       // If loop is a number pass to lottie-web as `true`.
       // See 'loopComplete' to understand how loops are handled.
       loop: typeof loop === 'number' ? true : loop,
+      renderer: this._worker ? 'svg' : this._animationConfig.renderer ?? 'svg',
     };
 
     const lottieStyleSheet = await this._dotLottieLoader.getTheme(defaultTheme);
@@ -1732,6 +1740,15 @@ export class DotLottiePlayer {
       animationData: this._animation,
     });
 
+    // Define our own reset segments for worker if its un-implemented
+    // eslint-disable-next-line no-secrets/no-secrets
+    // This can be removed when this PR is merged: https://github.com/airbnb/lottie-web/commit/a77933060a2da15557818ae03326eb77945e4b65
+    if (typeof this._lottie.resetSegments === 'undefined') {
+      this._lottie.resetSegments = (): void => {
+        this._lottie?.playSegments([0, this._lottie.totalFrames], true);
+      };
+    }
+
     this.addEventListeners();
 
     if (this._container) {
@@ -1757,6 +1774,17 @@ export class DotLottiePlayer {
     // eslint-disable-next-line @typescript-eslint/consistent-type-imports
     let LottieWebModule: typeof import('lottie-web');
 
+    if (this._worker) {
+      if (renderer !== 'svg') {
+        logWarning(
+          'Worker is only supported with svg renderer. Change or remove renderer prop to get rid of this warning.',
+        );
+      }
+      // @ts-ignore
+      LottieWebModule = await import(`lottie-web/build/player/lottie_worker`);
+
+      return LottieWebModule.default;
+    }
     switch (renderer) {
       case 'svg': {
         if (this._light) {
