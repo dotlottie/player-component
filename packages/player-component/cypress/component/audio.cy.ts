@@ -8,12 +8,12 @@ describe('Audio', () => {
   it('Howler should be present in the window if theres audio inside the animation', () => {
     cy.mount(
       html`
-        <dotlottie-player data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/audio.lottie">
+        <dotlottie-player speed=10 data-testid="testPlayer" autoplay loop controls style="height: 200px;" src="/audio.lottie">
         </dotlottie-player>
       `,
     );
 
-    cy.window().its('Howler').its('_howls').should('have.length', 1);
+    cy.window().its('Howler').its('_howls').should('have.length', 3);
     cy.window().should('have.property', 'Howl');
   });
 

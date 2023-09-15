@@ -205,7 +205,7 @@ export class DotLottiePlayer {
 
   private _visibilityPercentage: number = 0;
 
-  private _howlerInstance: DotLottieAudio | undefined = undefined;
+  private _howlerInstance: DotLottieAudio[] = [];
 
   protected _stateMachineManager?: DotLottieStateMachineManager;
 
@@ -1228,9 +1228,22 @@ export class DotLottiePlayer {
   }
 
   public destroy(): void {
+    console.log('Destroy..');
     if (this._container?.__lottie) {
       this._container.__lottie.destroy();
       this._container.__lottie = null;
+    }
+    console.log(`Howler length:${this._howlerInstance.length}`);
+
+    if (this._howlerInstance.length) {
+      console.log('Destroying instances...');
+      // Loop over the instances and unload
+      this._howlerInstance.forEach((instance) => {
+        console.log('Unloading');
+
+        instance.unload();
+      });
+      this._howlerInstance = [];
     }
 
     this.clearCountTimer();
@@ -1239,11 +1252,6 @@ export class DotLottiePlayer {
     }
     this._counter = 0;
     this._lottie?.destroy();
-
-    if (this._howlerInstance) {
-      this._howlerInstance.unload();
-      this._howlerInstance = undefined;
-    }
   }
 
   public getAnimationInstance(): AnimationItem | undefined {
@@ -1755,14 +1763,25 @@ export class DotLottiePlayer {
       const { DotLottieAudio } = await import('./dotlottie-audio');
 
       const howl = (assetPath: string): DotLottieAudio => {
-        if (this._howlerInstance) {
-          this._howlerInstance.unload();
-        }
-        this._howlerInstance = new DotLottieAudio({
+        // if (this._howlerInstance) {
+        //   this._howlerInstance.unload();
+        //   this._howlerInstance = undefined;
+        // }
+
+        const audioInstance = new DotLottieAudio({
           src: [assetPath],
         });
 
-        return this._howlerInstance;
+        this._howlerInstance.push(audioInstance);
+
+        console.log('what is this');
+        console.log(this);
+        console.log(this._howlerInstance);
+
+        // console.log('loggin...');
+        // console.log(audioInstance);
+
+        return audioInstance;
       };
 
       audioFactory = howl;
