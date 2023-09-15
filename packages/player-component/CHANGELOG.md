@@ -1,5 +1,16 @@
 # @dotlottie/player-component
 
+## 2.6.0
+
+### Minor Changes
+
+- 5d6a1fb: adds lottie_worker via the 'worker' prop
+- ffa1b15: statemachine selection list on controls
+
+### Patch Changes
+
+- 56422f0: fix: 🐛 added default filterSize, fixes the drop shadows
+
 ## 2.5.4
 
 ### Patch Changes
