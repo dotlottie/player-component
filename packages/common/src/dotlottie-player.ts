@@ -230,6 +230,8 @@ export class DotLottiePlayer {
       this._activeStateId = options.activeStateId;
     }
 
+    const { rendererSettings, ...optionsReset } = options || {};
+
     this._animationConfig = {
       loop: false,
       autoplay: false,
@@ -238,8 +240,15 @@ export class DotLottiePlayer {
         clearCanvas: true,
         progressiveLoad: true,
         hideOnTransparent: true,
+        filterSize: {
+          width: '200%',
+          height: '200%',
+          x: '-50%',
+          y: '-50%',
+        },
+        ...rendererSettings,
       },
-      ...(options || {}),
+      ...optionsReset,
     };
 
     if (options?.light) {
