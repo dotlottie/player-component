@@ -230,7 +230,7 @@ export class DotLottiePlayer {
       this._activeStateId = options.activeStateId;
     }
 
-    const { rendererSettings, ...optionsReset } = options || {};
+    const { rendererSettings, ...optionsRest } = options || {};
 
     this._animationConfig = {
       loop: false,
@@ -248,7 +248,7 @@ export class DotLottiePlayer {
         },
         ...rendererSettings,
       },
-      ...optionsReset,
+      ...optionsRest,
     };
 
     if (options?.light) {
