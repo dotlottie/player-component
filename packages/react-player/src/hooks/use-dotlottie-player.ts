@@ -92,8 +92,10 @@ export const useDotLottiePlayer = (
   }, [container, src, config]);
 
   const initDotLottiePlayer = useCallback(() => {
+    dotLottiePlayer.destroy();
+
     setDotLottiePlayer(getDotLottiePlayer());
-  }, [getDotLottiePlayer]);
+  }, [getDotLottiePlayer, dotLottiePlayer]);
 
   if (config?.lottieRef) {
     useImperativeHandle(

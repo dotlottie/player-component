@@ -24,12 +24,20 @@ import type {
 
 import pkg from '../package.json';
 
+import type { DotLottieAudio } from './dotlottie-audio';
 import { DotLottieLoader } from './dotlottie-loader';
 import { loadStateMachines } from './dotlottie-state-machine-loader';
 import { applyLottieStyleSheet } from './dotlottie-styler';
 import type { DotLottieStateMachineManager } from './state/dotlottie-state-machine-manager';
 import { Store } from './store';
-import { createError, isValidLottieJSON, isValidLottieString, logError, logWarning } from './utils';
+import {
+  createError,
+  isValidLottieJSON,
+  isValidLottieString,
+  logError,
+  logWarning,
+  lottieContainsAudio,
+} from './utils';
 
 export type { AnimationDirection, AnimationItem, AnimationSegment };
 
@@ -197,6 +205,8 @@ export class DotLottiePlayer {
 
   private _visibilityPercentage: number = 0;
 
+  private _audios: DotLottieAudio[] = [];
+
   protected _stateMachineManager?: DotLottieStateMachineManager;
 
   public constructor(
@@ -356,7 +366,7 @@ export class DotLottiePlayer {
     const options = getOptions(this._getPlaybackOptions());
 
     try {
-      PlaybackOptionsSchema.parse(options);
+      PlaybackOptionsSchema._parse(options);
     } catch (error) {
       logWarning(`Invalid PlaybackOptions, ${JSON.stringify(options, null, 2)}`);
 
@@ -1232,6 +1242,14 @@ export class DotLottiePlayer {
       this._container.__lottie = null;
     }
 
+    if (this._audios.length) {
+      // Loop over the instances and unload
+      this._audios.forEach((instance) => {
+        instance.unload();
+      });
+      this._audios = [];
+    }
+
     this.clearCountTimer();
     if (typeof document !== 'undefined') {
       document.removeEventListener('visibilitychange', () => this._onVisibilityChange());
@@ -1743,11 +1761,38 @@ export class DotLottiePlayer {
       loop,
     }));
 
-    this._lottie = lottiePlayer.loadAnimation({
-      ...options,
-      container: this._container as Element,
-      animationData: this._animation,
-    });
+    let audioFactory;
+
+    if (this._animation && lottieContainsAudio(this._animation)) {
+      const { DotLottieAudio } = await import('./dotlottie-audio');
+
+      const howl = (assetPath: string): DotLottieAudio => {
+        const audioInstance = new DotLottieAudio({
+          src: [assetPath],
+        });
+
+        this._audios.push(audioInstance);
+
+        return audioInstance;
+      };
+
+      audioFactory = howl;
+    }
+
+    if (audioFactory) {
+      this._lottie = lottiePlayer.loadAnimation({
+        ...options,
+        container: this._container as Element,
+        animationData: this._animation,
+        audioFactory,
+      });
+    } else {
+      this._lottie = lottiePlayer.loadAnimation({
+        ...options,
+        container: this._container as Element,
+        animationData: this._animation,
+      });
+    }
 
     // Define our own reset segments for worker if its un-implemented
     // eslint-disable-next-line no-secrets/no-secrets
