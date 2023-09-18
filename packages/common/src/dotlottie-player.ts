@@ -205,7 +205,7 @@ export class DotLottiePlayer {
 
   private _visibilityPercentage: number = 0;
 
-  private _howlerInstance: DotLottieAudio[] = [];
+  private _audios: DotLottieAudio[] = [];
 
   protected _stateMachineManager?: DotLottieStateMachineManager;
 
@@ -1233,12 +1233,12 @@ export class DotLottiePlayer {
       this._container.__lottie = null;
     }
 
-    if (this._howlerInstance.length) {
+    if (this._audios.length) {
       // Loop over the instances and unload
-      this._howlerInstance.forEach((instance) => {
+      this._audios.forEach((instance) => {
         instance.unload();
       });
-      this._howlerInstance = [];
+      this._audios = [];
     }
 
     this.clearCountTimer();
@@ -1762,7 +1762,7 @@ export class DotLottiePlayer {
           src: [assetPath],
         });
 
-        this._howlerInstance.push(audioInstance);
+        this._audios.push(audioInstance);
 
         return audioInstance;
       };
