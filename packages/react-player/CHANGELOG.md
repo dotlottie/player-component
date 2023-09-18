@@ -1,5 +1,16 @@
 # @dotlottie/react-player
 
+## 1.5.0
+
+### Minor Changes
+
+- 5d6a1fb: adds lottie_worker via the 'worker' prop
+
+### Patch Changes
+
+- 56422f0: fix: 🐛 added default filterSize, fixes the drop shadows
+- 79fd9ad: feat: 🎸 state selector menu
+
 ## 1.4.6
 
 ### Patch Changes
