@@ -1,5 +1,15 @@
 # @dotlottie/common
 
+## 0.6.0
+
+### Minor Changes
+
+- 5d6a1fb: adds lottie_worker via the 'worker' prop
+
+### Patch Changes
+
+- 56422f0: fix: 🐛 added default filterSize, fixes the drop shadows
+
 ## 0.5.4
 
 ### Patch Changes
