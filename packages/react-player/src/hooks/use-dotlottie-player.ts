@@ -92,8 +92,6 @@ export const useDotLottiePlayer = (
   }, [container, src, config]);
 
   const initDotLottiePlayer = useCallback(() => {
-    console.log('Destroy from init called.');
-    console.log(dotLottiePlayer);
     dotLottiePlayer.destroy();
 
     setDotLottiePlayer(getDotLottiePlayer());
@@ -238,7 +236,6 @@ export const useDotLottiePlayer = (
     initDotLottiePlayer();
 
     return () => {
-      console.log('Destroy from useEffectOnce called.');
       dotLottiePlayer.destroy();
     };
   });

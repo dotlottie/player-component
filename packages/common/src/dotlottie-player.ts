@@ -1228,19 +1228,14 @@ export class DotLottiePlayer {
   }
 
   public destroy(): void {
-    console.log('Destroy..');
     if (this._container?.__lottie) {
       this._container.__lottie.destroy();
       this._container.__lottie = null;
     }
-    console.log(`Howler length:${this._howlerInstance.length}`);
 
     if (this._howlerInstance.length) {
-      console.log('Destroying instances...');
       // Loop over the instances and unload
       this._howlerInstance.forEach((instance) => {
-        console.log('Unloading');
-
         instance.unload();
       });
       this._howlerInstance = [];
@@ -1763,23 +1758,11 @@ export class DotLottiePlayer {
       const { DotLottieAudio } = await import('./dotlottie-audio');
 
       const howl = (assetPath: string): DotLottieAudio => {
-        // if (this._howlerInstance) {
-        //   this._howlerInstance.unload();
-        //   this._howlerInstance = undefined;
-        // }
-
         const audioInstance = new DotLottieAudio({
           src: [assetPath],
         });
 
         this._howlerInstance.push(audioInstance);
-
-        console.log('what is this');
-        console.log(this);
-        console.log(this._howlerInstance);
-
-        // console.log('loggin...');
-        // console.log(audioInstance);
 
         return audioInstance;
       };
