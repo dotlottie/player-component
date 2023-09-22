@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import type { DotLottiePlayer, DotLottiePlayerState } from '@dotlottie/common';
+import type { DotLottieCommonPlayer, DotLottiePlayerState } from '@dotlottie/common';
 import { DEFAULT_STATE } from '@dotlottie/common';
 import { useCallback } from 'react';
 
@@ -12,7 +12,7 @@ export type Unsubscribe = () => void;
 export type Subscribe = (onStateChange: () => void) => Unsubscribe;
 
 export function useSelectDotLottieState<T>(
-  dotLottiePlayer: DotLottiePlayer,
+  dotLottiePlayer: DotLottieCommonPlayer,
   selector: (state: DotLottiePlayerState) => T,
 ): T {
   const getSelection = useCallback(() => {

@@ -12,19 +12,26 @@ import { useSyncExternalStore } from './use-sync-external-store';
 
 export type Unsubscribe = () => void;
 export type Subscribe = (onStateChange: () => void) => Unsubscribe;
+const noop = (): void => {
+  //
+};
 
-export function useDotLottieState<T>(selector: (state: DotLottiePlayerState) => T): T {
-  const dotlottiePlayer = useDotLottieContext();
+export function useDotLottieState<T>(selector: (state: DotLottiePlayerState) => T): T | undefined {
+  const dotLottiePlayer = useDotLottieContext();
 
   const getSelection = useCallback(() => {
-    return selector(dotlottiePlayer.getState());
-  }, [selector, dotlottiePlayer]);
+    if (dotLottiePlayer === null) return undefined;
+
+    return selector(dotLottiePlayer.getState());
+  }, [selector, dotLottiePlayer]);
 
   const subscribe = useCallback<Subscribe>(
     (listener: () => void) => {
-      return dotlottiePlayer.state.subscribe(listener);
+      if (dotLottiePlayer === null) return noop;
+
+      return dotLottiePlayer.state.subscribe(listener);
     },
-    [dotlottiePlayer],
+    [dotLottiePlayer],
   );
 
   const getServerSnapshot = (): T => {

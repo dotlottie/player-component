@@ -12,7 +12,7 @@ import type { AnimationEventName } from 'lottie-web';
 import { createMachine, interpret } from 'xstate';
 
 import { DEFAULT_OPTIONS } from '../dotlottie-player';
-import type { DotLottieElement, DotLottiePlayer } from '../dotlottie-player';
+import type { DotLottieElement, DotLottieCommonPlayer } from '../dotlottie-player';
 import { createError, getKeyByValue, logError } from '../utils';
 
 import type { EventMap, XStateTargetEvent } from './xstate-machine';
@@ -29,13 +29,13 @@ export class DotLottieStateMachineManager {
 
   protected _playerListeners = new Map<AnimationEventName, () => void>();
 
-  protected _player: DotLottiePlayer;
+  protected _player: DotLottieCommonPlayer;
 
   protected _machineSchemas = new Map<string, XStateMachine>();
 
   private _onShowPrevValue = 0;
 
-  public constructor(schemas: LottieStateMachine[], player: DotLottiePlayer) {
+  public constructor(schemas: LottieStateMachine[], player: DotLottieCommonPlayer) {
     this._player = player;
     this._machineSchemas = this._transformToXStateSchema(schemas);
     this._domElement = player.container;

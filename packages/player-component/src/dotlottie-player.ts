@@ -4,7 +4,7 @@
 
 import type { RendererType, DotLottiePlayerState, PlaybackOptions, Manifest, ManifestTheme } from '@dotlottie/common';
 import {
-  DotLottiePlayer as DotLottieCommonPlayer,
+  DotLottieCommonPlayer,
   PlayerState,
   PlayMode,
   PlayerEvents,

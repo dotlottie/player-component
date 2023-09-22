@@ -136,7 +136,7 @@ export const DEFAULT_STATE: DotLottiePlayerState = {
   visibilityPercentage: 0,
 };
 
-export class DotLottiePlayer {
+export class DotLottieCommonPlayer {
   protected _lottie?: AnimationItem;
 
   protected _src: string | Record<string, unknown>;
@@ -441,6 +441,14 @@ export class DotLottiePlayer {
       mode: this._mode,
       speed: this._lottie.playSpeed,
     };
+  }
+
+  public setContainer(container: DotLottieElement): void {
+    if (container !== this._container) {
+      this._container = container;
+      this.setBackground(this._background);
+      this._listenToHover();
+    }
   }
 
   /**
@@ -1697,6 +1705,26 @@ export class DotLottiePlayer {
     this._currentState = PlayerState.Ready;
   }
 
+  protected async _getAudioFactory(): Promise<((assetPath: string) => DotLottieAudio) | null> {
+    if (this._animation && lottieContainsAudio(this._animation)) {
+      const { DotLottieAudio } = await import('./dotlottie-audio');
+
+      const audioFactory = (assetPath: string): DotLottieAudio => {
+        const audioInstance = new DotLottieAudio({
+          src: [assetPath],
+        });
+
+        this._audios.push(audioInstance);
+
+        return audioInstance;
+      };
+
+      return audioFactory;
+    }
+
+    return null;
+  }
+
   // If we go back to default animation or at animation 0 we need to use props
   protected async render(activeAnimation?: Partial<ManifestAnimation>): Promise<void> {
     if (activeAnimation?.id) {
@@ -1733,15 +1761,18 @@ export class DotLottiePlayer {
       renderer: this._worker ? 'svg' : this._animationConfig.renderer ?? 'svg',
     };
 
-    const lottieStyleSheet = await this._dotLottieLoader.getTheme(defaultTheme);
+    // load the dependencies in parallel
+    const [lottieStyleSheet, lottiePlayer, audioFactory] = await Promise.all([
+      this._dotLottieLoader.getTheme(defaultTheme),
+      this._getLottiePlayerInstance(),
+      this._getAudioFactory(),
+    ]);
 
     if (lottieStyleSheet && this._animation) {
       this._animation = await applyLottieStyleSheet(this._animation, lottieStyleSheet);
     } else {
       this._animation = await this._dotLottieLoader.getAnimation(this._currentAnimationId ?? '');
     }
-
-    const lottiePlayer = await this._getLottiePlayerInstance();
 
     if (this._activeStateId && !this._inInteractiveMode) {
       // If we detect state machines are being used, load all of them up from the file
@@ -1760,24 +1791,6 @@ export class DotLottiePlayer {
       hover,
       loop,
     }));
-
-    let audioFactory;
-
-    if (this._animation && lottieContainsAudio(this._animation)) {
-      const { DotLottieAudio } = await import('./dotlottie-audio');
-
-      const howl = (assetPath: string): DotLottieAudio => {
-        const audioInstance = new DotLottieAudio({
-          src: [assetPath],
-        });
-
-        this._audios.push(audioInstance);
-
-        return audioInstance;
-      };
-
-      audioFactory = howl;
-    }
 
     if (audioFactory) {
       this._lottie = lottiePlayer.loadAnimation({
