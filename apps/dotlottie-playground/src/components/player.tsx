@@ -2,7 +2,8 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { DotLottiePlayer, Controls, PlayerEvents, type DotLottieRefProps } from '@dotlottie/react-player';
+import type { DotLottieCommonPlayer } from '@dotlottie/react-player';
+import { DotLottiePlayer, Controls, PlayerEvents } from '@dotlottie/react-player';
 import React, { useState, useCallback, useRef } from 'react';
 
 import { useAppSelector } from '../store/hooks';
@@ -14,7 +15,7 @@ interface PlayerProps {
 }
 
 export const Player: React.FC<PlayerProps> = ({ activeAnimationId }) => {
-  const lottiePlayer = useRef<DotLottieRefProps>();
+  const lottiePlayer = useRef<DotLottieCommonPlayer>();
 
   const currentPlayerUrl = useAppSelector((state) => state.playground.playerUrl);
   const [playerStates, setPlayerStates] = useState<string[]>([]);
@@ -70,7 +71,7 @@ export const Player: React.FC<PlayerProps> = ({ activeAnimationId }) => {
           activeAnimationId={activeAnimationId || undefined}
           background="white"
           onEvent={handlePlayerEvents}
-          lottieRef={lottiePlayer}
+          ref={lottiePlayer}
           src={currentPlayerUrl}
         >
           <div className="bg-white">
