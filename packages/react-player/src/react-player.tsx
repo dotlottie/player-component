@@ -23,6 +23,8 @@ export interface Props extends React.HTMLAttributes<HTMLDivElement> {
   intermission?: number;
   light?: boolean;
   loop?: number | boolean;
+  /** @deprecated Use `ref` instead. */
+  lottieRef?: React.Ref<DotLottieCommonPlayer>;
   onEvent?: <T extends PlayerEvents>(name: T, params?: unknown) => void;
   playMode?: PlayMode;
   renderer?: 'svg' | 'canvas' | 'html';
@@ -56,6 +58,7 @@ export const DotLottiePlayer = React.forwardRef<DotLottieCommonPlayer | null, Pr
       light = false,
       worker = false,
       activeStateId,
+      lottieRef,
       ...props
     },
     ref,
@@ -92,6 +95,14 @@ export const DotLottiePlayer = React.forwardRef<DotLottieCommonPlayer | null, Pr
 
     React.useImperativeHandle<DotLottieCommonPlayer, DotLottieCommonPlayer>(
       ref,
+      () => {
+        return dotLottieCommonPlayer;
+      },
+      [dotLottieCommonPlayer],
+    );
+
+    React.useImperativeHandle<DotLottieCommonPlayer, DotLottieCommonPlayer>(
+      lottieRef,
       () => {
         return dotLottieCommonPlayer;
       },
