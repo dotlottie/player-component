@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import { PlayerState, DotLottiePlayer as commonPlayer } from '@dotlottie/common';
+import { PlayerState, DotLottieCommonPlayer } from '@dotlottie/common';
 import { html } from 'lit';
 
 import type { DotLottiePlayer } from '../..';
@@ -33,7 +33,7 @@ describe('getVersions', () => {
 
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
     cy.get('[data-testid="versions"]').click({force:true});
-    cy.get('[data-testid="versionsResult"]').should('have.text', `${pkg.version} + ${commonPlayer.getLottieWebVersion()}`);
+    cy.get('[data-testid="versionsResult"]').should('have.text', `${pkg.version} + ${DotLottieCommonPlayer.getLottieWebVersion()}`);
 
   });
 });

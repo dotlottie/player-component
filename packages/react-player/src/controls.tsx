@@ -101,42 +101,42 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   }, [setPopover]);
 
   const toggleLoop = useCallback(() => {
-    dotLottiePlayer.toggleLoop();
+    dotLottiePlayer?.toggleLoop();
   }, [dotLottiePlayer]);
 
   const handleFreeze = useCallback(() => {
-    dotLottiePlayer.freeze();
+    dotLottiePlayer?.freeze();
   }, [dotLottiePlayer]);
 
   const handleUnfreeze = useCallback(() => {
-    dotLottiePlayer.unfreeze();
+    dotLottiePlayer?.unfreeze();
   }, [dotLottiePlayer]);
 
   const handleNext = useCallback(() => {
-    dotLottiePlayer.next();
+    dotLottiePlayer?.next();
   }, [dotLottiePlayer]);
 
   const handlePrevious = useCallback(() => {
-    dotLottiePlayer.previous();
+    dotLottiePlayer?.previous();
   }, [dotLottiePlayer]);
 
   const handleTogglePlay = useCallback(() => {
-    dotLottiePlayer.togglePlay();
+    dotLottiePlayer?.togglePlay();
   }, [dotLottiePlayer]);
 
   const handleSelectItem = useCallback(
     (title: string, value: string) => {
       if (title === 'Animations') {
-        dotLottiePlayer.play(value);
+        dotLottiePlayer?.play(value);
       }
       if (title === 'Themes') {
-        dotLottiePlayer.setDefaultTheme(value);
+        dotLottiePlayer?.setDefaultTheme(value);
       }
       if (title === 'States') {
         if (value) {
-          dotLottiePlayer.enterInteractiveMode(value);
+          dotLottiePlayer?.enterInteractiveMode(value);
         } else {
-          dotLottiePlayer.exitInteractiveMode();
+          dotLottiePlayer?.exitInteractiveMode();
         }
       }
     },
@@ -145,15 +145,15 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
 
   const handleSeek = useCallback<FormEventHandler<HTMLInputElement>>(
     (event) => {
-      dotLottiePlayer.seek(String(event.currentTarget.value).concat('%'));
+      dotLottiePlayer?.seek(String(event.currentTarget.value).concat('%'));
     },
     [dotLottiePlayer],
   );
 
   function updateManifest(): void {
-    const _animations = dotLottiePlayer.getManifest()?.animations;
-    const _themes = dotLottiePlayer.getManifest()?.themes;
-    const _states = dotLottiePlayer.getManifest()?.states;
+    const _animations = dotLottiePlayer?.getManifest()?.animations;
+    const _themes = dotLottiePlayer?.getManifest()?.themes;
+    const _states = dotLottiePlayer?.getManifest()?.states;
 
     if (_animations) {
       setAnimations(_animations);
@@ -171,10 +171,10 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
   useEffect(() => {
     if (typeof dotLottiePlayer === 'undefined') return undefined;
 
-    dotLottiePlayer.addEventListener('DOMLoaded', updateManifest);
+    dotLottiePlayer?.addEventListener('DOMLoaded', updateManifest);
 
     return () => {
-      dotLottiePlayer.removeEventListener('DOMLoaded', updateManifest);
+      dotLottiePlayer?.removeEventListener('DOMLoaded', updateManifest);
     };
   }, [dotLottiePlayer]);
 

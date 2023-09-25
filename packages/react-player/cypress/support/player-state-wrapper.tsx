@@ -6,20 +6,20 @@ import type { DotLottiePlayerState } from '@dotlottie/common';
 import React, { useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 import { PlayerEvents } from '../../';
-import type { DotLottieRefProps } from '../../';
+import type { DotLottieCommonPlayer } from '../../';
 
 export const PlayerStateWrapper: React.FC<{
   children: ReactNode;
-  onRef?: (ref: DotLottieRefProps | undefined) => void;
+  onRef?: (ref: DotLottieCommonPlayer | null) => void;
 }> = ({ children, onRef }) => {
-  const lottieRef = useRef<DotLottieRefProps>();
+  const dotLottiePlayerRef = useRef<DotLottieCommonPlayer | null>(null);
   const [state, setState] = useState<DotLottiePlayerState>();
 
   function onEvent(event: PlayerEvents): void {
-    const currentState = lottieRef.current?.getState?.();
+    const currentState = dotLottiePlayerRef.current?.getState();
 
     if (event === PlayerEvents.Ready) {
-      onRef?.(lottieRef.current);
+      onRef?.(dotLottiePlayerRef.current);
     }
 
     if (!currentState) return;
@@ -69,7 +69,7 @@ export const PlayerStateWrapper: React.FC<{
 
         return React.cloneElement<any>(child, {
           onEvent,
-          lottieRef,
+          ref: dotLottiePlayerRef,
         });
       })}
     </div>

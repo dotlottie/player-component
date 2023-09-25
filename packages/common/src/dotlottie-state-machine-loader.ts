@@ -4,7 +4,7 @@
 
 import type { LottieStateMachine } from '@dotlottie/dotlottie-js';
 
-import type { DotLottiePlayer } from './dotlottie-player';
+import type { DotLottieCommonPlayer } from './dotlottie-player';
 import type { DotLottieStateMachineManager } from './state/dotlottie-state-machine-manager';
 import { createError } from './utils';
 
@@ -17,7 +17,7 @@ import { createError } from './utils';
  */
 export async function loadStateMachines(
   stateMachines: LottieStateMachine[],
-  player: DotLottiePlayer,
+  player: DotLottieCommonPlayer,
 ): Promise<DotLottieStateMachineManager> {
   // Dynamically load state machine related dependencies
   const [{ DotLottieStateMachineManager }] = await Promise.all([import('./state/dotlottie-state-machine-manager')]);

@@ -3,18 +3,14 @@
  */
 
 import React, { useEffect, useRef, useState } from 'react';
-import { DotLottiePlayer, PlayMode, Controls } from '@dotlottie/react-player';
-import type { DotLottieRefProps, ManifestAnimation, ManifestTheme } from '@dotlottie/react-player';
+import { DotLottiePlayer, Controls, PlayMode } from '@dotlottie/react-player';
+import type {  ManifestAnimation, ManifestTheme, DotLottieCommonPlayer } from '@dotlottie/react-player';
 import { ThemeContext } from '../App';
 
 const lotties = [
   {
     from: 'Multiple themes (.lottie)',
     src: 'https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie',
-  },
-  {
-    from: 'Multiple lottie (.lottie)',
-    src: './amazing.lottie',
   },
   {
     from: '.lottie',
@@ -32,7 +28,7 @@ const lotties = [
   },
   {
     from: 'Local .lottie',
-    src: './test.lottie',
+    src: './audio.lottie',
   },
 ];
 
@@ -59,7 +55,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
   const [animations, setAnimations] = useState<ManifestAnimation[]>();
   const [themes, setThemes] = useState<ManifestTheme[]>();
   const [ready, setReady] = useState(false);
-  const lottieRef = useRef<DotLottieRefProps>();
+  const dotLottiePlayerRef = useRef<DotLottieCommonPlayer | null>(null);
 
   function handleClick(): void {
     const otherLotties = lotties.filter((lottie) => lottie.src !== src);
@@ -71,16 +67,16 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
   }
 
   useEffect(() => {
-    if (lottieRef && lottieRef.current && ready) {
-      scroll ? lottieRef.current?.playOnScroll() : lottieRef.current?.stopPlayOnScroll();
+    if (dotLottiePlayerRef && dotLottiePlayerRef.current && ready) {
+      scroll ? dotLottiePlayerRef.current?.playOnScroll() : dotLottiePlayerRef.current?.stopPlayOnScroll();
     }
-  }, [scroll, lottieRef]);
+  }, [scroll, dotLottiePlayerRef]);
 
   useEffect(() => {
-    if (lottieRef && lottieRef.current && ready) {
-      show ? lottieRef.current?.playOnShow() : lottieRef.current?.stopPlayOnShow();
+    if (dotLottiePlayerRef && dotLottiePlayerRef.current && ready) {
+      show ? dotLottiePlayerRef.current?.playOnShow() : dotLottiePlayerRef.current?.stopPlayOnShow();
     }
-  }, [show, lottieRef]);
+  }, [show, dotLottiePlayerRef]);
 
   useEffect(() => {
     if (!animations) return;
@@ -150,14 +146,14 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           )}
           <button
             onClick={(): void => {
-              lottieRef.current?.previous();
+              dotLottiePlayerRef.current?.previous();
             }}
           >
             Prev
           </button>
           <button
             onClick={(): void => {
-              lottieRef.current?.next((_, manifest) => {
+              dotLottiePlayerRef.current?.next((_, manifest) => {
                 return {
                   ...manifest,
                 };
@@ -168,21 +164,21 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           </button>
           <button
             onClick={(): void => {
-              lottieRef.current?.next();
+              dotLottiePlayerRef.current?.next();
             }}
           >
             Next
           </button>
           <button
             onClick={(): void => {
-              lottieRef.current?.play();
+              dotLottiePlayerRef.current?.play();
             }}
           >
             Play
           </button>
           <button
             onClick={(): void => {
-              lottieRef.current?.reset();
+              dotLottiePlayerRef.current?.reset();
             }}
           >
             Reset
@@ -234,7 +230,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           </label>
           <button
             onClick={() => {
-              lottieRef.current?.revertToManifestValues([]);
+              dotLottiePlayerRef.current?.revertToManifestValues([]);
               setBackground('transparent');
             }}
           >
@@ -242,7 +238,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           </button>
         </div>
         <DotLottiePlayer
-          lottieRef={lottieRef}
+          ref={dotLottiePlayerRef}
           src={src}
           style={{ height: '400px', display: 'inline-block' }}
           hover={playOnHover}
@@ -257,9 +253,9 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
           onEvent={(name): void => {
             switch (name) {
               case 'ready':
-                console.log('onPlayerReady', lottieRef.current?.getManifest()?.animations);
-                setAnimations(lottieRef.current?.getManifest()?.animations);
-                setThemes(lottieRef.current?.getManifest()?.themes);
+                console.log('onPlayerReady', dotLottiePlayerRef.current?.getManifest()?.animations);
+                setAnimations(dotLottiePlayerRef.current?.getManifest()?.animations);
+                setThemes(dotLottiePlayerRef.current?.getManifest()?.themes);
                 setReady(true);
                 break;
 
