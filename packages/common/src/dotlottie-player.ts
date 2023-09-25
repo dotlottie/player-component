@@ -1408,8 +1408,8 @@ export class DotLottieCommonPlayer {
   public setBackground(color: string): void {
     this._requireValidBackground(color);
 
+    this._background = color;
     if (this._container) {
-      this._background = color;
       this._container.style.backgroundColor = color;
     }
   }
