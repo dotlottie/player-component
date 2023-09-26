@@ -238,6 +238,14 @@ export const DotLottiePlayer = React.forwardRef<DotLottieCommonPlayer | null, Pr
       dotLottieCommonPlayerRef.current.addEventListener('data_failed', onDataFailed);
       dotLottieCommonPlayerRef.current.addEventListener('complete', onComplete);
       dotLottieCommonPlayerRef.current.addEventListener('loopComplete', onLoopComplete);
+
+      return (): void => {
+        dotLottieCommonPlayerRef.current.removeEventListener('DOMLoaded', onDOMLoaded);
+        dotLottieCommonPlayerRef.current.removeEventListener('data_ready', onDataReady);
+        dotLottieCommonPlayerRef.current.removeEventListener('data_failed', onDataFailed);
+        dotLottieCommonPlayerRef.current.removeEventListener('complete', onComplete);
+        dotLottieCommonPlayerRef.current.removeEventListener('loopComplete', onLoopComplete);
+      };
     }, []);
 
     useEffect(() => {
