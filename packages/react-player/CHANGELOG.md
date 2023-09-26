@@ -1,5 +1,16 @@
 # @dotlottie/react-player
 
+## 1.6.0
+
+### Minor Changes
+
+- 4634c13: automatic audio detection and support
+
+### Patch Changes
+
+- c1d0f54: fix: 🐛 worker and audio support in react player
+- b5e2b23: fix: 🐛 cleanup for eventListeners
+
 ## 1.5.0
 
 ### Minor Changes

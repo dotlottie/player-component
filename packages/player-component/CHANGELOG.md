@@ -1,5 +1,15 @@
 # @dotlottie/player-component
 
+## 2.7.0
+
+### Minor Changes
+
+- 4634c13: automatic audio detection and support
+
+### Patch Changes
+
+- c1d0f54: fix: 🐛 worker and audio support in react player
+
 ## 2.6.0
 
 ### Minor Changes
