@@ -1541,7 +1541,6 @@ export class DotLottieCommonPlayer {
       if (name === 'complete') {
         this._container?.removeEventListener(name, cb);
       } else {
-        console.log('here', name, this._listeners, this._lottie);
         this._lottie?.removeEventListener(name, cb);
       }
 
