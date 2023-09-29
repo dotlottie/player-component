@@ -137,7 +137,7 @@ export const DEFAULT_STATE: DotLottiePlayerState = {
 };
 
 export class DotLottieCommonPlayer {
-  protected _lottie?: AnimationItem;
+  protected _lottie: AnimationItem | undefined;
 
   protected _src: string | Record<string, unknown>;
 
@@ -1264,6 +1264,7 @@ export class DotLottieCommonPlayer {
     }
     this._counter = 0;
     this._lottie?.destroy();
+    this._lottie = undefined;
   }
 
   public getAnimationInstance(): AnimationItem | undefined {
