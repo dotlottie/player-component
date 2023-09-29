@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.7.1
+
+### Patch Changes
+
+- 940a873: fix: 🐛 error removing eventListeners when unmount
+
 ## 0.7.0
 
 ### Minor Changes

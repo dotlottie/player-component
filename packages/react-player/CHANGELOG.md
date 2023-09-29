@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.6.1
+
+### Patch Changes
+
+- 940a873: fix: 🐛 error removing eventListeners when unmount
+
 ## 1.6.0
 
 ### Minor Changes
