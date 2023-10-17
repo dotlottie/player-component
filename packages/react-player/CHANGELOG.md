@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.6.2
+
+### Patch Changes
+
+- 8d9c419: fix: 🐛 react-player types build issue
+
 ## 1.6.1
 
 ### Patch Changes
