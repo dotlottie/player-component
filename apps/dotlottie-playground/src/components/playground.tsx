@@ -83,6 +83,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
           setDotLottie(newInstance);
         } catch (error) {
           toast(error.message, { type: 'error' });
+          throw error;
         }
       }
     },
