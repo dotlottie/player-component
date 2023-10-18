@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.6.3
+
+### Patch Changes
+
+- 34afa16: fix: 🐛 react-player couldn't find package "@dotlottie/common"
+
 ## 1.6.2
 
 ### Patch Changes
