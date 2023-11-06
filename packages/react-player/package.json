@@ -45,7 +45,7 @@
     "axe-core": "^4.7.2",
     "cypress": "^12.11.0",
     "cypress-axe": "^1.4.0",
-    "postcss": "^8.4.24",
+    "postcss": "^8.4.31",
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-use": "^17.4.0",
