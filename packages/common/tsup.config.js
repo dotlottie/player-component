@@ -21,7 +21,7 @@ export default defineConfig((options) => ({
   tsconfig: 'tsconfig.json',
   outDir: 'dist',
   platform: 'browser',
-  target: ['esnext'],
+  target: ['esnext', 'chrome79'],
   entry: ['./src/*.ts'],
   noExternal: Object.keys(pkg.dependencies ?? []),
   onSuccess: () => {
