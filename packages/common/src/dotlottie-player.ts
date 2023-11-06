@@ -214,7 +214,8 @@ export class DotLottieCommonPlayer {
     container?: DotLottieElement | null,
     options?: DotLottieConfig<RendererType>,
   ) {
-    this._src = structuredClone(src);
+    if (typeof src === 'string') this._src = src;
+    else this._src = Object.assign({}, src);
 
     if (options?.testId) {
       this._testId = options.testId;
@@ -482,7 +483,8 @@ export class DotLottieCommonPlayer {
 
   public updateSrc(src: Record<string, unknown> | string): void {
     if (this._src === src) return;
-    this._src = structuredClone(src);
+    if (typeof src === 'string') this._src = src;
+    else this._src = Object.assign({}, src);
     this._activeAnimationId = undefined;
     this._currentAnimationId = undefined;
     this.load();

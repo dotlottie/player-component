@@ -41,6 +41,7 @@ module.exports = {
     '@typescript-eslint/prefer-for-of': 'off',
     '@typescript-eslint/dot-notation': 'off',
     '@typescript-eslint/member-ordering': 'off',
+    'prefer-object-spread': 'warn',
 
     // Disable the async generator warning
     'no-restricted-syntax': 'off',
