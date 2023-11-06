@@ -9,6 +9,7 @@
   "author": "Afsal <afsal@lottiefiles.com>",
   "license": "MIT",
   "module": "dist/index.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist"
@@ -18,7 +19,8 @@
     "animation",
     "react",
     "component",
-    "player"
+    "player",
+    "react"
   ],
   "scripts": {
     "build": "tsup",
@@ -31,9 +33,10 @@
   "peerDependencies": {
     "react": "^16.8.0 || ^17.0.0 || ^18.0.0"
   },
-  "dependencies": {},
+  "dependencies": {
+    "@dotlottie/common": "workspace:*"
+  },
   "devDependencies": {
-    "@dotlottie/common": "workspace:^",
     "@lottiefiles/lottie-types": "^1.2.0",
     "@types/react": "^16.8.0",
     "@types/react-dom": "^16.8.0",
@@ -46,7 +49,7 @@
     "react": "^16.8.0",
     "react-dom": "^16.8.0",
     "react-use": "^17.4.0",
-    "tsup": "^6.1.3",
+    "tsup": "^7.2.0",
     "typescript": "^4.7.4",
     "vite": "^4.2.1"
   }
