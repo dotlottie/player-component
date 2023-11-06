@@ -20,7 +20,7 @@ export default defineConfig({
   tsconfig: 'tsconfig.json',
   outDir: 'dist',
   platform: 'browser',
-  target: ['esnext'],
+  target: ['esnext', 'chrome79'],
   entry: ['./src/*.ts', './src/*.tsx', './src/*.css'],
   external: ['react'],
 });
