@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.7.2
+
+### Patch Changes
+
+- 65a151b: fix: replace structuredClone with Object.assign
+
 ## 0.7.1
 
 ### Patch Changes
