@@ -1,5 +1,13 @@
 # @dotlottie/react-player
 
+## 1.6.5
+
+### Patch Changes
+
+- eee0aea: fix: 🐛 target build for chrome79
+- Updated dependencies [eee0aea]
+  - @dotlottie/common@0.7.3
+
 ## 1.6.4
 
 ### Patch Changes

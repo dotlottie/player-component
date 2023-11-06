@@ -1,5 +1,13 @@
 # @dotlottie/player-component
 
+## 2.7.2
+
+### Patch Changes
+
+- eee0aea: fix: 🐛 target build for chrome79
+- Updated dependencies [eee0aea]
+  - @dotlottie/common@0.7.3
+
 ## 2.7.1
 
 ### Patch Changes

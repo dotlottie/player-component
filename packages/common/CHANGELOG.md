@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.7.3
+
+### Patch Changes
+
+- eee0aea: fix: 🐛 target build for chrome79
+
 ## 0.7.2
 
 ### Patch Changes
