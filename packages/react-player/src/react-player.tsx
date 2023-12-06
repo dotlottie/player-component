@@ -126,6 +126,8 @@ export const DotLottiePlayer = React.forwardRef<DotLottieCommonPlayer | null, Pr
     }, [loop]);
 
     useUpdateEffect(() => {
+      if ([PlayerState.Initial, PlayerState.Loading].includes(currentState)) return;
+
       if (typeof autoplay === 'undefined') {
         dotLottieCommonPlayerRef.current.revertToManifestValues(['autoplay']);
       } else {
