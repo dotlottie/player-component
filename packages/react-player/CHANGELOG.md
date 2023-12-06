@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.6.6
+
+### Patch Changes
+
+- fbf5b55: fix: 🐛 setAutoplay fires on initial load next14
+
 ## 1.6.5
 
 ### Patch Changes
