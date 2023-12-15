@@ -24,7 +24,7 @@
   "dependencies": {
     "@dotlottie/dotlottie-js": "0.6.0",
     "@lottiefiles/relottie": "1.0.0",
-    "@lottiefiles/relottie-style": "0.4.1",
+    "@lottiefiles/relottie-style": "0.4.3",
     "@preact/signals-core": "^1.2.3",
     "howler": "^2.2.3",
     "lottie-web": "^5.12.2",
