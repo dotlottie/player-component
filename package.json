@@ -26,7 +26,7 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
     "release": "pnpm release:version && pnpm release:publish",
-    "release:publish": "pnpm clean && pnpm build && changeset publish",
+    "release:publish": "pnpm clean && pnpm build && pnpm publish -r && changeset tag",
     "release:version": "changeset version",
     "renderers:update-releases": "turbo run update-releases",
     "stats:eslint": "pnpm run stats:eslint",
