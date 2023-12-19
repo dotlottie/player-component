@@ -32,6 +32,13 @@ jobs:
       - name: 📥 Download deps
         run: pnpm install
 
+      - name: NPM Whoami (for debugging)
+        run: pnpm whoami
+        env:
+          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+
       - name: 🏗 Build
         run: pnpm build
 
@@ -78,13 +85,6 @@ jobs:
 
       - name: 🏗 Build
         run: pnpm build
-
-      - name: NPM Whoami (for debugging)
-        run: pnpm whoami
-        env:
-          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPMJS_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPMJS_TOKEN }}
 
       - name: 🚀 Release
         uses: changesets/action@v1
