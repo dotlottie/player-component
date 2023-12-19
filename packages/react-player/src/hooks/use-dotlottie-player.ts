@@ -5,7 +5,9 @@
 import type { DotLottieConfig, DotLottieElement, RendererType } from '@dotlottie/common';
 import { DotLottieCommonPlayer } from '@dotlottie/common';
 import type { MutableRefObject } from 'react';
-import { useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef, useState, useEffect } from 'react';
+
+export const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 export const useDotLottiePlayer = (
   src: Record<string, unknown> | string,
@@ -16,7 +18,7 @@ export const useDotLottiePlayer = (
 
   const loadedRef = useRef(false);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     async function load(): Promise<void> {
       if (!loadedRef.current && containerRef.current) {
         loadedRef.current = true;
