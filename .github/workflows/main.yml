@@ -32,6 +32,13 @@ jobs:
       - name: 📥 Download deps
         run: pnpm install
 
+      - name: Create NPMRC file for @dotlottie
+        run: |
+          echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" > .npmrc
+          echo "@dotlottie:registry=https://registry.npmjs.org/" >> .npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPMJS_TOKEN }}
+
       - name: 🚀 Release
         uses: changesets/action@v1
         with:
