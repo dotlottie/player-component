@@ -3,7 +3,11 @@
   "version": "1.6.8",
   "type": "module",
   "description": "dotlottie animation player react component.",
-  "repository": "https://github.com/dotlottie/player-component.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotlottie/player-component.git",
+    "directory": "packages/react-player"
+  },
   "homepage": "https://dotlottie.com/players",
   "bugs": "https://github.com/dotlottie/player-component/issues",
   "author": "Afsal <afsal@lottiefiles.com>",

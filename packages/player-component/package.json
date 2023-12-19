@@ -2,7 +2,11 @@
   "name": "@dotlottie/player-component",
   "version": "2.7.3",
   "description": "dotLottie animation player web component.",
-  "repository": "https://github.com/dotlottie/player-component.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotlottie/player-component.git",
+    "directory": "packages/player-component"
+  },
   "homepage": "https://dotlottie.com/players",
   "bugs": "https://github.com/dotlottie/player-component/issues",
   "author": "Jawish Hameed <jawish@lottiefiles.com>",

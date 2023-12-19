@@ -5,6 +5,11 @@
   "description": "",
   "author": "Afsal <afsal@lottiefiles.com>, Sam Osborne <sam@lottiefiles.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotlottie/player-component.git",
+    "directory": "packages/common"
+  },
   "engines": {
     "node": ">18.0.0"
   },

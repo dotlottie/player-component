@@ -1,7 +1,10 @@
 {
   "name": "@dotlottie/player-component-monorepo",
   "description": "dotLottie web players.",
-  "repository": "https://github.com/dotlottie/player-component.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dotlottie/player-component.git"
+  },
   "homepage": "https://dotlottie.com/players",
   "bugs": "https://github.com/dotlottie/player-component/issues",
   "license": "MIT",
@@ -26,8 +29,8 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
     "release": "pnpm release:version && pnpm release:publish",
-    "release:publish": "pnpm clean && pnpm build && cat ~/.npmrc && npm publish -r --access public && changeset tag",
-    "release:version": "echo 'No version script defined'",
+    "release:publish": "pnpm clean && pnpm build && cat ~/.npmrc && npm publish -r --access public --scope @dotlottie && changeset tag",
+    "release:version": "changeset version",
     "renderers:update-releases": "turbo run update-releases",
     "stats:eslint": "pnpm run stats:eslint",
     "stats:ts": "pnpm run stats:ts",
@@ -59,5 +62,6 @@
     "typescript": "4.7.4",
     "zx": "7.2.2"
   },
-  "packageManager": "pnpm@8.8.0"
+  "packageManager": "pnpm@8.8.0",
+  "version": ""
 }
