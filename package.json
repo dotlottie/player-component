@@ -1,6 +1,7 @@
 {
   "name": "@dotlottie/player-component-monorepo",
   "description": "dotLottie web players.",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dotlottie/player-component.git"
@@ -29,8 +30,8 @@
     "preinstall": "npx only-allow pnpm",
     "prepare": "husky install",
     "release": "pnpm release:version && pnpm release:publish",
-    "release:publish": "pnpm clean && pnpm build && changeset publish",
-    "release:version": "changeset version",
+    "release:publish": "pnpm clean && pnpm build && pnpm publish -r && changeset tag",
+    "release:version": "changeset version && pnpm install --no-frozen-lockfile",
     "renderers:update-releases": "turbo run update-releases",
     "stats:eslint": "pnpm run stats:eslint",
     "stats:ts": "pnpm run stats:ts",
