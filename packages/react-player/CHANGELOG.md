@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.6.8
+
+### Patch Changes
+
+- 293f9bb: fix: 🐛 useLayoutEffect does nothing on the server warning
+
 ## 1.6.7
 
 ### Patch Changes
