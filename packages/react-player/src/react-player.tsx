@@ -35,6 +35,18 @@ export interface Props extends React.HTMLAttributes<HTMLDivElement> {
   worker?: boolean;
 }
 
+const styles: Record<string, React.CSSProperties> = {
+  animation: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+  },
+  // With controls Users must import css
+  animationWithControls: {
+    position: 'relative',
+  },
+};
+
 export const DotLottiePlayer = React.forwardRef<DotLottieCommonPlayer | null, Props>(
   (
     {
@@ -296,7 +308,7 @@ export const DotLottiePlayer = React.forwardRef<DotLottieCommonPlayer | null, Pr
             data-name={`${currentAnimationId}`}
             role="figure"
             className={`animation ${children ? 'controls' : ''}`}
-            style={{ position: 'relative' }}
+            style={children ? styles.animationWithControls : styles.animation}
             {...(testId && {
               'data-testid': `animation`,
             })}
