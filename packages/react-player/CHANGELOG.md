@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.6.9
+
+### Patch Changes
+
+- d5bbe07: fix: 🐛 removed the use of css file when there are no controls
+
 ## 1.6.8
 
 ### Patch Changes
