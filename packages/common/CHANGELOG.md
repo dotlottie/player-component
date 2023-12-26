@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.7.5
+
+### Patch Changes
+
+- 64e1d02: fix: 🐛 deepClone to prevent lottie-web mutating lottie json obj #282
+
 ## 0.7.4
 
 ### Patch Changes
