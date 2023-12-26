@@ -32,6 +32,7 @@ import type { DotLottieStateMachineManager } from './state/dotlottie-state-machi
 import { Store } from './store';
 import {
   createError,
+  deepCloneLottieJson,
   isValidLottieJSON,
   isValidLottieString,
   logError,
@@ -214,8 +215,11 @@ export class DotLottieCommonPlayer {
     container?: DotLottieElement | null,
     options?: DotLottieConfig<RendererType>,
   ) {
-    if (typeof src === 'string') this._src = src;
-    else this._src = Object.assign({}, src);
+    if (typeof src === 'string') {
+      this._src = src;
+    } else {
+      this._src = deepCloneLottieJson(src);
+    }
 
     if (options?.testId) {
       this._testId = options.testId;
@@ -483,8 +487,13 @@ export class DotLottieCommonPlayer {
 
   public updateSrc(src: Record<string, unknown> | string): void {
     if (this._src === src) return;
-    if (typeof src === 'string') this._src = src;
-    else this._src = Object.assign({}, src);
+
+    if (typeof src === 'string') {
+      this._src = src;
+    } else {
+      this._src = deepCloneLottieJson(src);
+    }
+
     this._activeAnimationId = undefined;
     this._currentAnimationId = undefined;
     this.load();
