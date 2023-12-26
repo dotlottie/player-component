@@ -62,6 +62,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.CUSTOM_GITHUB_TOKEN }}
+          fetch-depth: 0
 
       - name: ⎔ Setup pnpm@v8
         uses: pnpm/action-setup@v2
