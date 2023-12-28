@@ -81,15 +81,6 @@ export function getKeyByValue<T extends Record<string, unknown>, V>(object: T, v
  * @param obj  - Lottie JSON
  * @returns  - Deep clone of the Lottie JSON
  */
-export function deepCloneLottieJson(obj: Record<string, unknown>): Record<string, unknown> {
-  return Object.keys(obj).reduce((accumulator: Record<string, unknown>, key: string) => {
-    const value = obj[key];
-
-    return Object.assign(accumulator, {
-      [key]:
-        value instanceof Object && value.constructor === Object
-          ? deepCloneLottieJson(value as Record<string, unknown>)
-          : value,
-    });
-  }, {});
+export function deepCloneLottieJson<T>(obj: T): T {
+  return JSON.parse(JSON.stringify(obj));
 }
