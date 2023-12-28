@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.6.11
+
+### Patch Changes
+
+- 52e45e3: fix: 🐛 tsconfig jsx compile option for react 16.8 compatibility
+
 ## 1.6.10
 
 ### Patch Changes
