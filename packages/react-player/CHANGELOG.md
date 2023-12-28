@@ -1,5 +1,12 @@
 # @dotlottie/react-player
 
+## 1.6.12
+
+### Patch Changes
+
+- Updated dependencies [477d72e]
+  - @dotlottie/common@0.7.6
+
 ## 1.6.11
 
 ### Patch Changes
