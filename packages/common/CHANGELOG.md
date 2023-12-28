@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.7.6
+
+### Patch Changes
+
+- 477d72e: fix: 🐛 deep clone lottie json does shallow copy for nested keys
+
 ## 0.7.5
 
 ### Patch Changes

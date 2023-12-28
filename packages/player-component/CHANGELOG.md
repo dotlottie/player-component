@@ -1,5 +1,12 @@
 # @dotlottie/player-component
 
+## 2.7.5
+
+### Patch Changes
+
+- Updated dependencies [477d72e]
+  - @dotlottie/common@0.7.6
+
 ## 2.7.4
 
 ### Patch Changes
