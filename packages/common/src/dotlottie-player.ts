@@ -1598,7 +1598,7 @@ export class DotLottieCommonPlayer {
           if (!this.loop) this.setCurrentState(PlayerState.Completed);
 
           // Fix: First loopComplete is not fired by lottie-web when direction is -1
-          if (this._loop && this._lottie.playCount === 0) {
+          if (this.currentState === PlayerState.Playing && this._loop && this._lottie.playCount === 0) {
             this._lottie.triggerEvent('loopComplete', {
               currentLoop: this._lottie.playCount,
               direction: this.direction,
