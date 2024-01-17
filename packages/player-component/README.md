@@ -64,7 +64,7 @@ Add the element `dotlottie-player` and set the `src` property to a URL pointing 
   autoplay
   controls
   loop
-  mode="normal"
+  playMode="normal"
   src="http://dotlottieio.s3-website-us-east-1.amazonaws.com/sample_files/animation-external-image.lottie"
   style="width: 320px"
 >
