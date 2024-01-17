@@ -1,5 +1,13 @@
 # @dotlottie/react-player
 
+## 1.6.13
+
+### Patch Changes
+
+- 871336a: fix: 🐛 First loopComplete event was not firing when direction is -1
+- Updated dependencies [871336a]
+  - @dotlottie/common@0.7.7
+
 ## 1.6.12
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @dotlottie/player-component
 
+## 2.7.6
+
+### Patch Changes
+
+- 871336a: fix: 🐛 First loopComplete event was not firing when direction is -1
+- Updated dependencies [871336a]
+  - @dotlottie/common@0.7.7
+
 ## 2.7.5
 
 ### Patch Changes
