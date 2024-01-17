@@ -1,4 +1,4 @@
-# DotLottie Players
+# dotLottie Players
 
 The official player components for dotLottie, which allows you to embed and play dotLottie animations in your web applications.
 
