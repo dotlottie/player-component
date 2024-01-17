@@ -4,4 +4,4 @@
 '@dotlottie/react-player': patch
 ---
 
-fix: 🐛 First loopComplete event was not firing
+fix: 🐛 First loopComplete event was not firing when direction is -1
