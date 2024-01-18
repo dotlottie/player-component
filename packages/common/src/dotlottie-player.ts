@@ -1841,8 +1841,8 @@ export class DotLottieCommonPlayer {
     }));
 
     if (autoplay && !hover) {
-      if (loop === false && direction === -1) { 
-        // Trigger manual play since. Autoplay doesn't work in this scenario. 
+      if (loop === false && direction === -1) {
+        // Trigger manual play since. Autoplay doesn't work in this scenario.
         // See logic within play() function: `if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) `
         this.play();
       } else {

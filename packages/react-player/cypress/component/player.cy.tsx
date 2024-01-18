@@ -90,7 +90,7 @@ describe('Player', () => {
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
   });
 
-it('should fire initial `loopComplete` when direction is `-1`', () => {
+  it('should fire initial `loopComplete` when direction is `-1`', () => {
     function Wrapper(): JSX.Element {
       const lottieRef = useRef<DotLottieRefProps>();
       const [initialLoopComplete, setIntialLoopComplete] = useState(false);
@@ -100,16 +100,16 @@ it('should fire initial `loopComplete` when direction is `-1`', () => {
           <PlayerStateWrapper
             onRef={(ref: DotLottieRefProps): void => {
               lottieRef.current = ref;
-              const lottie  = ref.getAnimationInstance();
+              const lottie = ref.getAnimationInstance();
               ref.addEventListener('loopComplete', () => {
                 // Start of second loop
                 if (lottie.playCount === -2) {
                   setIntialLoopComplete(true);
                 }
-              })
+              });
             }}
           >
-            <input data-testid="initialLoopComplete" value={String(initialLoopComplete)}/>
+            <input data-testid="initialLoopComplete" value={String(initialLoopComplete)} />
             <DotLottiePlayer
               testId="testPlayer"
               src={`/bounce_wifi.lottie`}
