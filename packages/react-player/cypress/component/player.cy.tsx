@@ -3,7 +3,7 @@
  */
 
 import { PlayerState } from '@dotlottie/common';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { DotLottieRefProps } from '../../dist';
 
 import { Controls } from '../../src/controls';
@@ -88,6 +88,48 @@ describe('Player', () => {
     );
 
     cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+  });
+
+it('should fire initial `loopComplete` when direction is `-1`', () => {
+    function Wrapper(): JSX.Element {
+      const lottieRef = useRef<DotLottieRefProps>();
+      const [initialLoopComplete, setIntialLoopComplete] = useState(false);
+
+      return (
+        <>
+          <PlayerStateWrapper
+            onRef={(ref: DotLottieRefProps): void => {
+              lottieRef.current = ref;
+              const lottie  = ref.getAnimationInstance();
+              ref.addEventListener('loopComplete', () => {
+                // Start of second loop
+                if (lottie.playCount === -2) {
+                  setIntialLoopComplete(true);
+                }
+              })
+            }}
+          >
+            <input data-testid="initialLoopComplete" value={String(initialLoopComplete)}/>
+            <DotLottiePlayer
+              testId="testPlayer"
+              src={`/bounce_wifi.lottie`}
+              style={{ height: '400px', display: 'inline-block' }}
+              loop
+              autoplay
+              speed={10}
+              direction={-1}
+            >
+              <Controls />
+            </DotLottiePlayer>
+          </PlayerStateWrapper>
+        </>
+      );
+    }
+
+    cy.mount(<Wrapper />);
+
+    cy.get('[name="currentState"]').should('have.value', PlayerState.Playing);
+    cy.get('[data-testid="initialLoopComplete"]').should('have.value', 'true');
   });
 
   it('should be able to load valid .lottie urls with additional query params', () => {
