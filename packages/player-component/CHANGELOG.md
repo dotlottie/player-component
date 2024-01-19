@@ -1,5 +1,13 @@
 # @dotlottie/player-component
 
+## 2.7.7
+
+### Patch Changes
+
+- 7f40780: fix: loopComplete event does not fire after first cycle if direction is -1
+- Updated dependencies [7f40780]
+  - @dotlottie/common@0.7.8
+
 ## 2.7.6
 
 ### Patch Changes

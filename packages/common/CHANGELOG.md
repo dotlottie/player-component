@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.7.8
+
+### Patch Changes
+
+- 7f40780: fix: loopComplete event does not fire after first cycle if direction is -1
+
 ## 0.7.7
 
 ### Patch Changes
