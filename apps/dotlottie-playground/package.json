@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dotlottie/dotlottie-js": "0.5.2",
+    "@dotlottie/dotlottie-js": "^0.6.2",
     "@dotlottie/react-player": "workspace:^",
     "@lottiefiles/lottie-types": "^1.2.0",
     "@monaco-editor/react": "^4.5.1",
