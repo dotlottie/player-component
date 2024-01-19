@@ -117,7 +117,7 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
 
   const requiresValidStateMachineSchema = useCallback((stateMachine: DotLottieStateMachine) => {
     try {
-      DotLottieStateMachineSchema.parse(stateMachine);
+      DotLottieStateMachineSchema._parse(stateMachine);
     } catch (error) {
       toast('Invalid state schema. Please verify the json.', { type: 'error' });
       throw error;
