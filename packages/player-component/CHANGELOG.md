@@ -1,5 +1,13 @@
 # @dotlottie/player-component
 
+## 2.7.8
+
+### Patch Changes
+
+- 82fa43d: fix: upgrade dependencies with vulnerability issues
+- Updated dependencies [82fa43d]
+  - @dotlottie/common@0.7.9
+
 ## 2.7.7
 
 ### Patch Changes
