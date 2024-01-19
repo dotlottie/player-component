@@ -1596,16 +1596,6 @@ export class DotLottieCommonPlayer {
         if (this.direction === -1) {
           this._container?.dispatchEvent(new Event(PlayerEvents.Complete));
           if (!this.loop) this.setCurrentState(PlayerState.Completed);
-
-          // Fix: First loopComplete is not fired by lottie-web when direction is -1
-          if (this.currentState === PlayerState.Playing && this._loop && this._lottie.playCount === 0) {
-            this._lottie.triggerEvent('loopComplete', {
-              currentLoop: this._lottie.playCount,
-              direction: this.direction,
-              totalLoops: typeof this.loop === 'number' ? this.loop : Infinity,
-              type: 'loopComplete',
-            });
-          }
         }
       }
 
@@ -1851,7 +1841,13 @@ export class DotLottieCommonPlayer {
     }));
 
     if (autoplay && !hover) {
-      this.play();
+      if (loop === false && direction === -1) {
+        // Trigger manual play since. Autoplay doesn't work in this scenario.
+        // See logic within play() function: `if (this._lottie.playDirection === -1 && this._lottie.currentFrame === 0) `
+        this.play();
+      } else {
+        this.setCurrentState(PlayerState.Playing);
+      }
     }
 
     this._updateTestData();
