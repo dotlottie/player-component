@@ -27,7 +27,6 @@ import pkg from '../package.json';
 import type { DotLottieAudio } from './dotlottie-audio';
 import { DotLottieLoader } from './dotlottie-loader';
 import { loadStateMachines } from './dotlottie-state-machine-loader';
-import { applyLottieStyleSheet } from './dotlottie-styler';
 import type { DotLottieStateMachineManager } from './state/dotlottie-state-machine-manager';
 import { Store } from './store';
 import {
@@ -528,7 +527,7 @@ export class DotLottieCommonPlayer {
     return this._dotLottieLoader.animationsMap;
   }
 
-  public get themes(): Map<string, string> {
+  public get themes(): Map<string, Record<string, unknown>> {
     return this._dotLottieLoader.themeMap;
   }
 
@@ -1774,14 +1773,18 @@ export class DotLottieCommonPlayer {
     };
 
     // load the dependencies in parallel
-    const [lottieStyleSheet, lottiePlayer, audioFactory] = await Promise.all([
+    const [theme, lottiePlayer, audioFactory] = await Promise.all([
       this._dotLottieLoader.getTheme(defaultTheme),
       this._getLottiePlayerInstance(),
       this._getAudioFactory(),
     ]);
 
-    if (lottieStyleSheet && this._animation) {
-      this._animation = await applyLottieStyleSheet(this._animation, lottieStyleSheet);
+    if (theme && this._animation) {
+      this._animation = {
+        ...this._animation,
+        // @ts-ignore
+        slots: theme,
+      };
     } else {
       this._animation = await this._dotLottieLoader.getAnimation(this._currentAnimationId ?? '');
     }

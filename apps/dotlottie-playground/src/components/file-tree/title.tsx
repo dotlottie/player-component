@@ -57,7 +57,7 @@ export const Title: React.FC<TitleProps> = ({ buttons, onClickAdd, onUpload, tit
 
             case 'upload':
               buttonsToDisplay.push(
-                <Dropzone key={item} onDrop={onDrop} accept={title === 'Themes' ? 'lss' : 'json'}>
+                <Dropzone key={item} onDrop={onDrop} accept={'json'}>
                   {({ getInputProps, getRootProps }): JSX.Element => (
                     <button {...getRootProps()} className="hover:text-white" title="Upload">
                       <input {...getInputProps()} />

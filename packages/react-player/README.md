@@ -75,7 +75,7 @@ The `DotLottiePlayer` component accepts the following props:
 | `renderer`         | How to render                             | `'svg' \| 'html' \| 'canvas'`   | `svg`       |
 | `speed`            | Play speed                                | `number`                        | `1`         |
 | `onEvent`          | Listen to player events                   | `function`                      | `undefined` |
-| `defaultTheme`     | Default lss theme to use                  | `string`                        | `undefined` |
+| `defaultTheme`     | Default .lottie theme to use                  | `string`                        | `undefined` |
 
 ## Events
 

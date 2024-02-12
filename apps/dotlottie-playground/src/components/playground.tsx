@@ -171,7 +171,6 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
     async (folder: string, fileName: string) => {
       dispatch(clearEditorState());
       let fileContent: string | undefined;
-      let isTheme = false;
 
       switch (folder) {
         case 'States':
@@ -180,7 +179,6 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
 
         case 'Themes':
           fileContent = await dotLottie.getTheme(fileName)?.toString();
-          isTheme = true;
           break;
 
         default:
@@ -191,9 +189,9 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
         dispatch(
           setEditorFile({
             name: fileName,
-            type: isTheme ? 'css' : 'json',
+            type: 'json',
             path: folder,
-            content: isTheme ? fileContent : formatJSON(fileContent),
+            content: formatJSON(fileContent),
           }),
         );
       }
@@ -243,7 +241,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
 
   const handleUpload = useCallback(
     async (title: string, file: File) => {
-      const fileName = processFilename(file.name).replace(/(.json|.lss)/gu, '');
+      const fileName = processFilename(file.name).replace(/(.json)/gu, '');
       let parsedContent: unknown;
 
       switch (title) {
@@ -276,7 +274,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
 
   const handleAddNew = useCallback(
     async (title: string, fileName: string) => {
-      const updatedFileName = processFilename(fileName).replace(/(.json|.lss)/gu, '');
+      const updatedFileName = processFilename(fileName).replace(/(.json)/gu, '');
       let mockState: DotLottieStateMachine;
 
       switch (title) {
@@ -287,7 +285,7 @@ export const Playground: React.FC<PlaygroundProps> = ({ file: dotLottieFile, fil
           break;
 
         case 'Themes':
-          addDotLottieTheme('/* Make your animations colorful */', updatedFileName);
+          addDotLottieTheme('{}', updatedFileName);
           break;
 
         default:
