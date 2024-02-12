@@ -52,7 +52,7 @@ export const Controls: React.FC<ControlsProps> = ({ buttons = AVAILABLE_BUTTONS,
       selected: currentAnimationId === anim.id,
     }));
     const _themes = themes
-      .filter((theme) => theme.animations.includes(currentAnimationId || ''))
+      .filter((theme) => theme.animations.length === 0 || theme.animations.includes(currentAnimationId || ''))
       .map((theme) => ({ value: theme.id, selected: defaultTheme === theme.id }));
 
     const _states = states.map((state) => ({ value: state, selected: activeStateId === state }));

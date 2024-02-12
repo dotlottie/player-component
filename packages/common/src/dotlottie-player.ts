@@ -1780,11 +1780,9 @@ export class DotLottieCommonPlayer {
     ]);
 
     if (theme && this._animation) {
-      this._animation = {
-        ...this._animation,
-        // @ts-ignore
-        slots: theme,
-      };
+      this._animation = deepCloneLottieJson(this._animation);
+      // @ts-ignore
+      this._animation['slots'] = theme;
     } else {
       this._animation = await this._dotLottieLoader.getAnimation(this._currentAnimationId ?? '');
     }
