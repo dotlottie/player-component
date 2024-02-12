@@ -90,8 +90,8 @@ importers:
   apps/dotlottie-playground:
     dependencies:
       '@dotlottie/dotlottie-js':
-        specifier: ^0.6.2
-        version: 0.6.2
+        specifier: ^0.7.0
+        version: 0.7.0
       '@dotlottie/react-player':
         specifier: workspace:^
         version: link:../../packages/react-player
@@ -2406,17 +2406,6 @@ packages:
     transitivePeerDependencies:
       - supports-color
     dev: true
-
-  /@dotlottie/dotlottie-js@0.6.2:
-    resolution: {integrity: sha512-3UGG60r7Dz868KvPYIBhuO6HPX2M5CpcXulXilLbQZ91eWKkF+amoJSdkSfdLtWjjcwu/jSgeErAercxC2StBw==}
-    engines: {node: '>=18.0.0'}
-    dependencies:
-      browser-image-hash: 0.0.5
-      fflate: 0.8.1
-      sharp: 0.33.2
-      sharp-phash: 2.1.0(sharp@0.33.2)
-      valibot: 0.13.1
-    dev: false
 
   /@dotlottie/dotlottie-js@0.7.0:
     resolution: {integrity: sha512-K1v7x4Gch2JWriUlsYW3dmFbCi1/EQC3gSl/xuu1KD+qxwBnXWPaVXkx5tWsP5ZmfYuJq4YtPIySp6qeKeEd2A==}

@@ -148,7 +148,7 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
       dotLottie.removeTheme(themeId);
       dotLottie.addTheme({
         id: themeId,
-        data: theme,
+        data: JSON.parse(theme),
       });
       fetchAndUpdateDotLottie();
       buildAndUpdateUrl();
