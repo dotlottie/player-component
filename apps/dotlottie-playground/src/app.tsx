@@ -15,6 +15,10 @@ const SAMPLE_FILES = [
   { name: 'toggle.lottie', path: `${import.meta.env.BASE_URL}toggle.lottie` },
   { name: 'interactivity_example.lottie', path: `${import.meta.env.BASE_URL}interactivity_example.lottie` },
   { name: 'aniki_hamster.lottie', path: `${import.meta.env.BASE_URL}aniki_hamster.lottie` },
+  {
+    name: 'theming_example.lottie',
+    path: `${import.meta.env.BASE_URL}theming_example.lottie`,
+  },
 ];
 
 interface HomeScreenProps {
