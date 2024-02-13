@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.7.10
+
+### Patch Changes
+
+- 163dcc2: refactor: 💡 theming from lss to lottie slots
+
 ## 0.7.9
 
 ### Patch Changes
