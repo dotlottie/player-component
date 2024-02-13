@@ -10,7 +10,7 @@ import { ThemeContext } from '../App';
 const lotties = [
   {
     from: 'Multiple themes (.lottie)',
-    src: 'https://lottie.host/c7029f2f-d015-4d88-93f6-7693bf88692b/d7j8UjWsGt.lottie',
+    src: 'https://lottie.host/7ebddb46-c455-4191-ab23-b351ad9f4208/oX63nkjFYw.lottie',
   },
   {
     from: '.lottie',
@@ -133,7 +133,7 @@ const Item: React.FC<ItemProps> = (props: ItemProps) => {
               <option value="">Please select a theme</option>
               {activeAnimationId
                 ? themes
-                  .filter((theme) => theme.animations.includes(activeAnimationId))
+                  .filter((theme) => theme.animations.includes(activeAnimationId) || theme.animations.length === 0)
                   .map((theme) => {
                     return (
                       <option key={theme.id} value={theme.id}>

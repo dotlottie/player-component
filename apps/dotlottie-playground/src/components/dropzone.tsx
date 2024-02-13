@@ -7,7 +7,7 @@ import ReactDropzone, { type DropzoneState, type FileError, type FileRejection, 
 import { toast } from 'react-toastify';
 
 interface DropzoneProps {
-  accept: 'lottie' | 'json' | 'lss';
+  accept: 'lottie' | 'json';
   children: (state: DropzoneState) => JSX.Element;
   multiple?: boolean;
   noClick?: boolean;
@@ -36,13 +36,6 @@ export const Dropzone: React.FC<DropzoneProps> = ({ accept, children, multiple, 
     if (accept === 'json' && file.type !== 'application/json') {
       return {
         message: 'Invalid .json',
-        code: ErrorCode.FileInvalidType,
-      };
-    }
-
-    if (accept === 'lss' && !fileName.endsWith('.lss')) {
-      return {
-        message: 'Invalid .lss',
         code: ErrorCode.FileInvalidType,
       };
     }

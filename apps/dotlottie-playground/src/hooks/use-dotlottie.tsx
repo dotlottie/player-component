@@ -88,7 +88,7 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
       .map((item) => {
         return {
           name: `${item.id}`,
-          type: 'lss',
+          type: 'json',
         };
       })
       .sort((item1, item2) => (item1.name > item2.name ? 1 : -1));
@@ -148,7 +148,7 @@ export const DotLottieProvider: React.FC<{ children: ReactNode }> = ({ children 
       dotLottie.removeTheme(themeId);
       dotLottie.addTheme({
         id: themeId,
-        data: theme,
+        data: JSON.parse(theme),
       });
       fetchAndUpdateDotLottie();
       buildAndUpdateUrl();

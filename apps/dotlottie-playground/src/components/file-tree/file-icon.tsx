@@ -3,14 +3,15 @@
  */
 
 import React from 'react';
-import { BsFiletypeJson, BsFiletypeCss } from 'react-icons/bs';
+import { BsFiletypeJson } from 'react-icons/bs';
 
 import type { SupportedFileTypes } from '.';
 
 export const FileIcon = ({ type }: { type: SupportedFileTypes }): JSX.Element => {
-  if (type === 'lss') {
-    return <BsFiletypeCss />;
-  } else {
-    return <BsFiletypeJson />;
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  if (type !== 'json') {
+    return <></>;
   }
+
+  return <BsFiletypeJson />;
 };

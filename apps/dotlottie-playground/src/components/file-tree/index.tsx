@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useKey } from 'react-use';
 
 import { useDotLottie } from '../../hooks/use-dotlottie';
@@ -14,7 +14,7 @@ import { AddNew } from './add-new';
 import { EditableItem } from './editable-item';
 import { Title } from './title';
 
-const FILE_TYPES = ['json', 'lss'] as const;
+const FILE_TYPES = ['json'] as const;
 
 export type SupportedFileTypes = typeof FILE_TYPES[number];
 
@@ -54,8 +54,6 @@ export const FileTree: React.FC<FileTreeProps> = ({
     [onClick, title],
   );
 
-  const fileExtention = useMemo(() => (title.toLowerCase() === 'themes' ? 'lss' : 'json'), [title]);
-
   const handleRemove = useCallback(
     (fileName: string) => {
       onRemove?.(title, fileName);
@@ -79,10 +77,10 @@ export const FileTree: React.FC<FileTreeProps> = ({
 
   const handleAddNew = useCallback(
     (value: string) => {
-      onAddNew?.(title, `${value}.${fileExtention}`);
+      onAddNew?.(title, `${value}.json`);
       setDisplayAdd(false);
     },
-    [onAddNew, title, fileExtention],
+    [onAddNew, title],
   );
 
   const handleRename = useCallback(
@@ -121,7 +119,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
         buttons={title === 'Animations' ? ['upload'] : ['upload', 'add']}
       />
       <div className="relative h-full overflow-y-auto custom-scrollbar">
-        <Dropzone onDrop={onDrop} accept={title === 'Themes' ? 'lss' : 'json'} noClick>
+        <Dropzone onDrop={onDrop} accept={'json'} noClick>
           {(state): JSX.Element => {
             return (
               <div {...state.getRootProps()}>
@@ -157,7 +155,7 @@ export const FileTree: React.FC<FileTreeProps> = ({
 
                   {displayAdd && (
                     <li>
-                      <AddNew onAdd={handleAddNew} extension={title === 'Themes' ? 'lss' : 'json'} />
+                      <AddNew onAdd={handleAddNew} extension={'json'} />
                     </li>
                   )}
                 </ul>

@@ -20,7 +20,7 @@ export class DotLottieLoader {
 
   private readonly _animationsMap: Map<string, AnimationData> = new Map();
 
-  private readonly _themeMap: Map<string, string> = new Map();
+  private readonly _themeMap: Map<string, Record<string, unknown>> = new Map();
 
   private readonly _stateMachinesMap: Map<string, LottieStateMachine> = new Map();
 
@@ -34,7 +34,7 @@ export class DotLottieLoader {
     return this._animationsMap;
   }
 
-  public get themeMap(): Map<string, string> {
+  public get themeMap(): Map<string, Record<string, unknown>> {
     return this._themeMap;
   }
 
@@ -143,9 +143,9 @@ export class DotLottieLoader {
     return animation;
   }
 
-  public async getTheme(themeId: string): Promise<string | undefined> {
+  public async getTheme(themeId: string): Promise<Record<string, unknown> | undefined> {
     if (this._themeMap.get(themeId)) {
-      return this._themeMap.get(themeId) as string;
+      return this._themeMap.get(themeId);
     }
 
     if (!this._dotLottie) {

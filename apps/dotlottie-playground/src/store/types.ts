@@ -2,7 +2,7 @@
  * Copyright 2023 Design Barn Inc.
  */
 
-export const SUPPORTED_FILE_TYPES = ['json', 'lss'] as const;
+export const SUPPORTED_FILE_TYPES = ['json'] as const;
 export const EDITOR_ACTIONS = [
   'themes_add',
   'themes_remove',
