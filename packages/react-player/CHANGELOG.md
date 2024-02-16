@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.6.17
+
+### Patch Changes
+
+- 9c78f2a: chore: 🤖 fix homepage link in package.json
+
 ## 1.6.16
 
 ### Patch Changes
