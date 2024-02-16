@@ -4,7 +4,7 @@
   "type": "module",
   "description": "dotlottie animation player react component.",
   "repository": "https://github.com/dotlottie/player-component.git",
-  "homepage": "https://dotlottie.com/players",
+  "homepage": "https://dotlottie.io/players",
   "bugs": "https://github.com/dotlottie/player-component/issues",
   "author": "Afsal <afsal@lottiefiles.com>",
   "license": "MIT",
