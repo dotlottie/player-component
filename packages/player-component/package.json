@@ -3,7 +3,7 @@
   "version": "2.7.9",
   "description": "dotLottie animation player web component.",
   "repository": "https://github.com/dotlottie/player-component.git",
-  "homepage": "https://dotlottie.com/players",
+  "homepage": "https://dotlottie.io/players",
   "bugs": "https://github.com/dotlottie/player-component/issues",
   "author": "Jawish Hameed <jawish@lottiefiles.com>",
   "license": "MIT",

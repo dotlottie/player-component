@@ -2,7 +2,7 @@
   "name": "@dotlottie/player-component-monorepo",
   "description": "dotLottie web players.",
   "repository": "https://github.com/dotlottie/player-component.git",
-  "homepage": "https://dotlottie.com/players",
+  "homepage": "https://dotlottie.io/players",
   "bugs": "https://github.com/dotlottie/player-component/issues",
   "license": "MIT",
   "workspaces": [
