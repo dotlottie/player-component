@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.7.10
+
+### Patch Changes
+
+- 9c78f2a: chore: 🤖 fix homepage link in package.json
+
 ## 2.7.9
 
 ### Patch Changes
