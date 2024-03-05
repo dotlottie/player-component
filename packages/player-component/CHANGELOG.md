@@ -1,5 +1,11 @@
 # @dotlottie/player-component
 
+## 2.7.11
+
+### Patch Changes
+
+- 0587998: fix: 🐛 box-sizing css rule scope
+
 ## 2.7.10
 
 ### Patch Changes
