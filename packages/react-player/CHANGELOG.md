@@ -1,5 +1,11 @@
 # @dotlottie/react-player
 
+## 1.6.18
+
+### Patch Changes
+
+- 0587998: fix: 🐛 box-sizing css rule scope
+
 ## 1.6.17
 
 ### Patch Changes
