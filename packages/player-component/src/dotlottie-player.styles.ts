@@ -11,10 +11,6 @@ export default css`
     src: url('./fonts/Karla-regular.woff') format('woff');
   }
 
-  * {
-    box-sizing: border-box;
-  }
-
   :host {
     --lottie-player-toolbar-height: 35px;
     --lottie-player-toolbar-background-color: transparent;
@@ -35,6 +31,10 @@ export default css`
     font-style: normal;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+  }
+
+  :host * {
+    box-sizing: border-box;
   }
 
   .active {

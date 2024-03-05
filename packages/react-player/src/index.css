@@ -4,10 +4,6 @@
   src: url('./fonts/Karla-Regular.woff') format('woff');
 }
 
-* {
-  box-sizing: border-box;
-}
-
 .dotlottie-container {
   --lottie-player-theme-color: rgb(0, 221, 179);
   --lottie-player-seeker-thumb-color: #00c1a2;
@@ -27,6 +23,10 @@
   font-style: normal;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+.dotlottie-container * {
+  box-sizing: border-box;
 }
 
 .main {
