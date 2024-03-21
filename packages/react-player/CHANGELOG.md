@@ -1,5 +1,13 @@
 # @dotlottie/react-player
 
+## 1.6.19
+
+### Patch Changes
+
+- 75a9885: fix: 🐛 playback ends on lastFrame
+- Updated dependencies [75a9885]
+  - @dotlottie/common@0.7.11
+
 ## 1.6.18
 
 ### Patch Changes
