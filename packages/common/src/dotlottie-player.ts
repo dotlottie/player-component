@@ -1564,7 +1564,7 @@ export class DotLottieCommonPlayer {
     // If loop = number, and animation has reached the end, call stop to go to frame 0
     if (typeof this._loop === 'number') this.stop();
 
-    const lastFrame = this.direction === -1 ? 0 : this.totalFrames;
+    const lastFrame = this.direction === -1 ? 0 : this.totalFrames - 1;
 
     this.goToAndStop(lastFrame, true);
 
