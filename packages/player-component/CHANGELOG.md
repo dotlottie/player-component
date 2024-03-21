@@ -1,5 +1,13 @@
 # @dotlottie/player-component
 
+## 2.7.12
+
+### Patch Changes
+
+- 75a9885: fix: 🐛 playback ends on lastFrame
+- Updated dependencies [75a9885]
+  - @dotlottie/common@0.7.11
+
 ## 2.7.11
 
 ### Patch Changes

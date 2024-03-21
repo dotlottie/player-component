@@ -1,5 +1,11 @@
 # @dotlottie/common
 
+## 0.7.11
+
+### Patch Changes
+
+- 75a9885: fix: 🐛 playback ends on lastFrame
+
 ## 0.7.10
 
 ### Patch Changes
