@@ -1,3 +1,6 @@
+> # ⚠️ This package is no longer maintained. Please use the latest dotlottie-web [here](https://github.com/LottieFiles/dotlottie-web) for the latest features and updates.
+---
+
  <h1 align="center">dotlottie-player Web Component</h1>
 
 <div align="center">
