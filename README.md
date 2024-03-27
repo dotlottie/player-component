@@ -1,3 +1,6 @@
+> # ⚠️ This package is no longer maintained. Please use the latest dotlottie-web [here](https://github.com/LottieFiles/dotlottie-web) for the latest features and updates.
+---
+
 # dotLottie Players
 
 The official player components for dotLottie, which allows you to embed and play dotLottie animations in your web applications.
